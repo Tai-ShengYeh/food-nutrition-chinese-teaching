@@ -746,7 +746,7 @@ async function castVote(option){
 async function showResults(myVote){
   const labels = ['10億','10億-50億','100億','千億'];
   const display = {'10億':'10 億美元','10億-50億':'10–50 億美元','100億':'100–500 億美元','千億':'超過千億美元 ✅ 正確'};
-  let counts = {10億:0,'10億-50億':0,'100億':0,'千億':0};
+  let counts = {'10億':0,'10億-50億':0,'100億':0,'千億':0};
   try{
     const res = await fetch(`${SB_URL}/rest/v1/interactions?session_id=eq.${SESSION}&game_id=eq.warmup-vote`,{
       headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}

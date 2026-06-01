@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>流程排序｜W11 AI 餐飲剩食革命</title>
 <style>
-:root{--g:#059669;--g2:#10b981;--gd:#022c22;--gold:#f0b429;
-  --bg:#0a0d12;--surf:#13171f;--surf2:#1d2230;
-  --text:#e2e8f0;--text2:#94a3b8;--border:#1e2a3a;--radius:12px}
+:root{--g:#059669;--g2:#047857;--gd:#d1fae5;--gold:#ea580c;
+  --bg:#f8fafc;--surf:#ffffff;--surf2:#eef2f7;
+  --text:#1f2937;--text2:#4b5563;--border:#e2e8f0;--radius:12px}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;
-  min-height:100vh;padding:24px 16px 60px}
+  min-height:100vh;font-size:17px;padding:24px 16px 60px}
 .page{max-width:720px;margin:0 auto;text-align:center}
 h1{font-size:1.6rem;font-weight:800;color:var(--g2);margin-bottom:6px}
 .sub{color:var(--text2);font-size:.88rem;margin-bottom:8px}
@@ -26,12 +26,12 @@ h1{font-size:1.6rem;font-weight:800;color:var(--g2);margin-bottom:6px}
 .sort-item.dragging{opacity:.4;cursor:grabbing}
 .sort-item.over{border-color:var(--gold);background:rgba(240,180,41,.05)}
 .sort-item.correct{border-color:var(--g);background:var(--gd);cursor:default}
-.sort-item.wrong{border-color:#ef4444;background:#450a0a}
+.sort-item.wrong{border-color:#dc2626;background:#fee2e2}
 .item-num{font-size:1.4rem;font-weight:900;color:var(--text3);width:36px;
   height:36px;border-radius:50%;background:var(--surf2);display:flex;
   align-items:center;justify-content:center;flex-shrink:0}
 .sort-item.correct .item-num{background:var(--g);color:#fff}
-.sort-item.wrong .item-num{background:#ef4444;color:#fff}
+.sort-item.wrong .item-num{background:#dc2626;color:#fff}
 .item-content{flex:1}
 .item-title{font-size:.95rem;font-weight:700}
 .item-desc{font-size:.78rem;color:var(--text2);margin-top:3px}

@@ -19,13 +19,19 @@
    }
    ============================================================ */
 
+// ⚠️  Firebase API key intentionally omitted from public repo.
+//    Firebase web API keys are public by design (security via Firestore Rules),
+//    but GitHub secret scanning flags them regardless.
+//    In the live classroom environment the real key is loaded from the local copy.
+//    On GitHub Pages the key is empty → isReady() returns false →
+//    Firebase writes are silently skipped; Supabase remains the active backend.
 const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyCTLhRf7jcJH_AwUzbV4MawkrKNPrIVG5Y",
+  apiKey: "",
   authDomain: "my-teaching-tools-517a0.firebaseapp.com",
   projectId: "my-teaching-tools-517a0",
   storageBucket: "my-teaching-tools-517a0.firebasestorage.app",
-  messagingSenderId: "244288457011",
-  appId: "1:244288457011:web:4b3ff8a846a6c50b169646"
+  messagingSenderId: "",
+  appId: ""
 };
 
 const FIREBASE_VERSION = '10.7.0';

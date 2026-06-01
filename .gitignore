@@ -1,0 +1,20 @@
+# ── 私密設定檔（不上傳 GitHub）────────────────────────────────────────
+# 如果本機有含真實 API key 的設定，請命名為 *.local.js 或 *.secret.js
+*.local.js
+*.secret.js
+firebase-config.local.js
+supabase-config.local.js
+
+# ── Firebase 部署快取 ─────────────────────────────────────────────────
+.firebase/
+hosting..cache
+
+# ── 系統檔 ───────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── 原始資料 / 個資（絕對不上傳）────────────────────────────────────
+*.json.bak
+w1w2w3_raw.json
+w4_raw.json
+*_raw.json

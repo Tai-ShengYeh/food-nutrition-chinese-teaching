@@ -1,0 +1,1459 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>蛋白質的未來餐桌 ｜ 高職彈性課程</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<style>
+html, body { font-size: 18px; }
+
+:root{
+  --bg:#0a0e27; --bg-2:#11163a; --bg-3:#1a2050;
+  --ink:#eef3ff; --ink-2:#b8c5e0; --ink-3:#7a8bb8; --ink-4:#4a5680;
+  --accent:#00d4ff;
+  --accent-2:#ff006e;
+  --accent-3:#ffb800;
+  --green:#00ff9d;
+  --card-bg: rgba(255,255,255,0.04);
+  --card-border: rgba(0,212,255,0.18);
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+body{
+  font-family:'Noto Sans TC', system-ui, sans-serif;
+  background:var(--bg); color:var(--ink);
+  overflow:hidden; height:100vh; width:100vw; position:relative;
+}
+body::before{
+  content:''; position:fixed; inset:0; z-index:0;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(0,212,255,0.10) 0%, transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(255,0,110,0.08) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(26,32,80,0.6) 0%, transparent 60%);
+  pointer-events:none;
+}
+
+#progress{
+  position:fixed; top:0; left:0; height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  z-index:1000; transition:width .45s ease; width:0;
+  box-shadow:0 0 12px rgba(0,212,255,0.6);
+}
+#section-tag{
+  position:fixed; top:18px; left:32px; z-index:999;
+  font-family:'JetBrains Mono', monospace;
+  font-size:clamp(0.75rem,1vw,0.9rem);
+  letter-spacing:.25em; color:var(--accent);
+  text-shadow:0 0 8px rgba(0,212,255,0.6);
+}
+#pageInfo{
+  position:fixed; bottom:18px; right:32px; z-index:999;
+  font-family:'JetBrains Mono', monospace;
+  font-size:clamp(0.75rem,1vw,0.9rem); color:var(--ink-3);
+}
+#hint{
+  position:fixed; bottom:18px; left:32px; z-index:999;
+  font-family:'JetBrains Mono', monospace;
+  font-size:clamp(0.65rem,0.85vw,0.78rem); color:var(--ink-4);
+}
+
+/* 課堂工具列（右上） */
+#toolBar{
+  position:fixed; top:12px; right:20px; z-index:1100;
+  display:flex; align-items:center; gap:8px;
+}
+.tool-btn{
+  height:42px; padding:0 14px; border-radius:50px;
+  border:1px solid var(--card-border);
+  background:rgba(0,212,255,0.08);
+  color:var(--accent); cursor:pointer;
+  font-family:inherit; font-size:.85rem;
+  display:inline-flex; align-items:center; gap:6px;
+  backdrop-filter:blur(8px);
+  transition:all .2s;
+}
+.tool-btn:hover{ background:var(--accent); color:var(--bg); }
+.tool-btn.qr{ border-color:var(--accent-2); color:var(--accent-2); background:rgba(255,0,110,0.08); }
+.tool-btn.qr:hover{ background:var(--accent-2); color:#fff; }
+.tool-btn.session{
+  padding:0 16px; font-family:'JetBrains Mono', monospace;
+  font-size:.75rem; letter-spacing:.1em;
+  color:var(--ink-2); border-color:var(--ink-4);
+  background:rgba(255,255,255,0.04);
+}
+.tool-btn .badge{
+  margin-left:6px; min-width:18px; height:18px; padding:0 4px;
+  border-radius:50%; background:var(--accent-2); color:#fff;
+  font-family:'JetBrains Mono', monospace;
+  font-size:.65rem; font-weight:700;
+  display:none; align-items:center; justify-content:center;
+}
+.tool-btn .badge.show{ display:inline-flex; }
+#liveIndicator{
+  width:8px; height:8px; border-radius:50%;
+  background:var(--green); margin-right:4px;
+  animation:pulse 1.6s infinite;
+}
+@keyframes pulse{
+  0%,100%{ opacity:1; transform:scale(1); }
+  50%{ opacity:.4; transform:scale(.7); }
+}
+
+/* QR Code 浮窗 */
+#qrModal{
+  position:fixed; inset:0; z-index:1500;
+  background:rgba(10,14,39,0.93); backdrop-filter:blur(12px);
+  display:none; align-items:center; justify-content:center;
+  flex-direction:column; padding:40px;
+}
+#qrModal.show{ display:flex; }
+#qrModal .qr-card{
+  background:#fff; padding:36px;
+  border-radius:24px; text-align:center;
+  box-shadow:0 30px 100px rgba(0,0,0,0.5);
+  max-width:520px;
+}
+#qrModal .qr-card h2{ color:#0a0e27; font-size:1.6rem; margin-bottom:8px; }
+#qrModal .qr-card .sub{ color:#666; font-size:1rem; margin-bottom:20px; }
+#qrTarget{ display:flex; justify-content:center; margin:0 auto 16px; min-height:360px; align-items:center; }
+#qrTarget img{ width:360px !important; height:360px !important; display:block; image-rendering:pixelated; image-rendering:crisp-edges; }
+.qr-loading{ color:#666; font-size:.95rem; }
+#qrModal .url-strip{
+  background:#f0f4ff; color:#0a0e27;
+  padding:10px 16px; border-radius:10px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:.95rem; word-break:break-all;
+  margin-bottom:14px;
+}
+#qrModal .session-hint{
+  color:#0a0e27; font-size:.9rem; margin-bottom:18px;
+  background:#fff7d6; padding:8px 14px; border-radius:8px;
+  display:inline-block;
+}
+#qrModal .session-hint b{ font-family:'JetBrains Mono', monospace; color:#ff006e; }
+#qrModal .close-x{
+  position:absolute; top:24px; right:32px;
+  background:none; border:none; color:#fff;
+  font-size:2rem; cursor:pointer; opacity:.7;
+}
+#qrModal .close-x:hover{ opacity:1; }
+
+/* 紀錄面板 */
+#recordPanel{
+  position:fixed; top:0; right:-460px; bottom:0; width:440px;
+  background:rgba(10,14,39,0.96);
+  backdrop-filter:blur(20px);
+  border-left:1px solid var(--card-border);
+  z-index:1200; padding:30px 26px;
+  overflow-y:auto;
+  transition:right .35s ease;
+  box-shadow:-10px 0 40px rgba(0,0,0,0.5);
+}
+#recordPanel.open{ right:0; }
+#recordPanel h2{
+  font-size:1.4rem; margin-bottom:18px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+#recordPanel h2 .close{
+  cursor:pointer; color:var(--ink-3);
+  font-size:1.6rem; font-weight:400;
+  background:none; border:none;
+}
+#recordPanel h3{
+  font-size:.95rem; color:var(--accent);
+  margin:18px 0 10px; padding-bottom:6px;
+  border-bottom:1px solid var(--card-border);
+  display:flex; justify-content:space-between;
+}
+#recordPanel h3 .cnt{ font-family:'JetBrains Mono', monospace; font-size:.8rem; color:var(--ink-3); }
+.rec-row{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:8px 4px; font-size:.85rem; color:var(--ink-2);
+  border-bottom:1px solid rgba(184,197,224,0.05);
+  gap:10px;
+}
+.rec-row .v{ color:var(--accent); font-weight:700; font-family:'JetBrains Mono', monospace; white-space:nowrap; }
+.rec-row .l{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.rec-list{ max-height:160px; overflow-y:auto; }
+.rec-empty{ color:var(--ink-4); font-size:.8rem; text-align:center; padding:14px; }
+.rec-actions{
+  margin-top:24px; display:grid; grid-template-columns:1fr 1fr; gap:8px;
+}
+.rec-actions button{
+  padding:10px; border:1px solid var(--card-border);
+  background:transparent; color:var(--ink-2);
+  border-radius:10px; cursor:pointer; font-family:inherit;
+  font-size:.8rem; transition:all .2s;
+}
+.rec-actions button:hover{ border-color:var(--accent); color:var(--accent); }
+.rec-actions button.danger{ grid-column:span 2; border-color:rgba(255,0,110,0.3); }
+.rec-actions button.danger:hover{ border-color:var(--accent-2); color:var(--accent-2); }
+
+#statusToast{
+  position:fixed; bottom:32px; left:50%; transform:translateX(-50%) translateY(60px);
+  z-index:1300; padding:12px 20px;
+  background:rgba(0,255,157,0.15); border:1px solid var(--green);
+  color:var(--green); border-radius:50px;
+  font-size:.9rem; opacity:0; transition:all .35s;
+}
+#statusToast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+#statusToast.error{ background:rgba(255,0,110,0.15); border-color:var(--accent-2); color:var(--accent-2); }
+
+/* slide 容器 */
+.slide{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  padding:70px 80px;
+  opacity:0; pointer-events:none;
+  transition:opacity .55s ease, transform .55s ease;
+  transform:translateY(16px);
+  overflow:hidden; z-index:1;
+}
+.slide.active{ opacity:1; pointer-events:auto; transform:translateY(0); }
+.slide-inner{ width:100%; max-width:1320px; max-height:100%; }
+
+.kicker{
+  font-family:'JetBrains Mono', monospace;
+  font-size:clamp(0.72rem,1vw,0.9rem);
+  letter-spacing:.3em; color:var(--accent);
+  margin-bottom:14px;
+  display:inline-flex; align-items:center; gap:10px;
+}
+.kicker::before{ content:''; width:30px; height:2px; background:var(--accent); }
+
+.slide-title{
+  font-size:clamp(1.5rem,3.2vw,2.8rem);
+  font-weight:900; line-height:1.2;
+  margin-bottom:18px; letter-spacing:.02em;
+}
+.slide-subtitle{
+  font-size:clamp(0.95rem,1.5vw,1.25rem);
+  color:var(--ink-2); font-weight:400;
+  line-height:1.6; margin-bottom:30px;
+}
+.accent{ color:var(--accent); }
+.accent-2{ color:var(--accent-2); }
+.warn{ color:var(--accent-3); }
+.green{ color:var(--green); }
+
+.glass-card{
+  background:var(--card-bg);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border:1px solid var(--card-border);
+  border-radius:16px; padding:28px;
+  position:relative; overflow:hidden;
+}
+.glass-card::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  opacity:0.6;
+}
+
+p, li{ font-size:clamp(0.9rem,1.4vw,1.15rem); line-height:1.7; color:var(--ink-2); }
+li{ margin-bottom:8px; }
+
+/* === 封面 === */
+.cover{ text-align:center; position:relative; }
+.cover-grid{
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(circle at center, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 75%);
+}
+.cover-molecule{ width:240px; height:240px; margin:0 auto 26px; position:relative; }
+.cover h1{
+  font-size:clamp(2.5rem, 6vw, 5rem);
+  font-weight:900; letter-spacing:.05em;
+  background:linear-gradient(135deg, var(--accent) 0%, #fff 50%, var(--accent-2) 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  margin-bottom:14px;
+  filter:drop-shadow(0 0 24px rgba(0,212,255,0.3));
+}
+.cover .sub{
+  font-size:clamp(1rem,1.6vw,1.4rem);
+  color:var(--ink-2); letter-spacing:.4em; margin-bottom:30px;
+}
+.cover .meta{
+  display:inline-flex; gap:14px; align-items:center;
+  font-family:'JetBrains Mono', monospace;
+  font-size:clamp(0.7rem,0.95vw,0.85rem);
+  color:var(--ink-3);
+  padding:8px 18px; border:1px solid var(--card-border);
+  border-radius:50px; background:rgba(0,212,255,0.04);
+}
+
+/* === 痛點 === */
+.big-q{
+  font-size:clamp(2rem,4.5vw,3.6rem);
+  font-weight:900; line-height:1.3;
+  text-align:center; margin-bottom:46px;
+}
+.big-q .underline{
+  background:linear-gradient(transparent 60%, rgba(255,0,110,0.35) 60%);
+  padding:0 8px;
+}
+.stat-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:26px; }
+.stat-card{ text-align:center; padding:32px 22px; }
+.stat-card .num{
+  font-family:'JetBrains Mono', monospace;
+  font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:900; color:var(--accent);
+  line-height:1; margin-bottom:12px;
+  text-shadow:0 0 30px rgba(0,212,255,0.4);
+}
+.stat-card .label{ font-size:clamp(0.85rem,1.2vw,1rem); color:var(--ink); font-weight:500; margin-bottom:6px; }
+.stat-card .desc{ font-size:clamp(0.75rem,1vw,0.85rem); color:var(--ink-3); }
+
+/* === 三來源卡 === */
+.three-source{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:24px; }
+.source-card{ padding:30px 20px; text-align:center; transition:transform .3s, border-color .3s; }
+.source-card:hover{ transform:translateY(-6px); border-color:var(--accent); }
+.source-icon{ font-size:clamp(3rem,5vw,4.5rem); margin-bottom:12px; display:block; }
+.source-name{ font-size:clamp(1.2rem,1.8vw,1.5rem); font-weight:700; margin-bottom:6px; }
+.source-tip{ font-size:.85rem; color:var(--ink-3); line-height:1.5; }
+
+/* === 兩股潮流 === */
+.trend-grid{ display:grid; grid-template-columns:1fr 1fr; gap:30px; margin-top:24px; }
+.trend-card{ padding:32px; text-align:center; }
+.trend-card .icon{ font-size:3.5rem; display:block; margin-bottom:14px; }
+.trend-card h3{ font-size:1.4rem; font-weight:900; margin-bottom:10px; color:var(--accent); }
+.trend-card .arrow{ font-size:.85rem; color:var(--accent-2); margin-top:14px; letter-spacing:.2em; }
+.trend-card.right h3{ color:var(--accent-2); }
+
+/* === 投票（老師端：顯示班級即時結果）=== */
+.live-vote-grid{
+  display:grid; grid-template-columns:repeat(5,1fr); gap:18px; margin:30px 0 14px;
+}
+.vote-box{
+  position:relative; padding:24px 12px 18px;
+  background:var(--card-bg); border:1px solid var(--card-border);
+  border-radius:14px; text-align:center;
+  overflow:hidden;
+}
+.vote-box::before{
+  content:''; position:absolute; left:0; bottom:0; width:100%;
+  background:linear-gradient(180deg, rgba(0,212,255,0.25), rgba(255,0,110,0.18));
+  transition:height .6s cubic-bezier(.34,1.56,.64,1);
+  height:0%;
+}
+.vote-box > *{ position:relative; z-index:1; }
+.vote-emoji{ font-size:clamp(2.4rem,4vw,3.4rem); display:block; margin-bottom:8px; }
+.vote-name{ font-size:clamp(0.95rem,1.3vw,1.1rem); font-weight:700; }
+.vote-count{
+  font-family:'JetBrains Mono', monospace;
+  font-size:clamp(1.8rem,3vw,2.4rem); font-weight:900;
+  color:var(--accent); margin-top:10px;
+  text-shadow:0 0 12px rgba(0,212,255,0.5);
+}
+.vote-pct{ font-size:.8rem; color:var(--ink-3); margin-top:2px; }
+
+.vote-instr{
+  margin-top:14px; padding:14px 20px;
+  background:rgba(255,184,0,0.08);
+  border:1px solid var(--accent-3); border-radius:12px;
+  display:flex; align-items:center; gap:18px; justify-content:center;
+  flex-wrap:wrap;
+}
+.vote-instr .icon{ font-size:1.8rem; }
+.vote-instr strong{ color:var(--accent-3); }
+
+/* === 兩欄通用 === */
+.two-col{ display:grid; grid-template-columns:1fr 1fr; gap:50px; align-items:center; }
+.two-col-reverse{ display:grid; grid-template-columns:1fr 1fr; gap:50px; align-items:center; }
+.big-stat{
+  font-family:'JetBrains Mono', monospace;
+  font-size:clamp(4rem,8vw,7rem);
+  font-weight:900; line-height:1; color:var(--accent);
+  text-shadow:0 0 40px rgba(0,212,255,0.4); margin-bottom:8px;
+}
+.big-stat-label{ font-size:clamp(0.9rem,1.3vw,1.1rem); color:var(--ink-2); margin-bottom:24px; }
+.chart-wrap{
+  background:var(--card-bg); border:1px solid var(--card-border);
+  border-radius:14px; padding:18px; height:340px;
+}
+
+/* === 豆類 === */
+.bean-list{ display:flex; flex-direction:column; gap:12px; }
+.bean-item{
+  display:flex; align-items:center; gap:14px;
+  padding:14px 18px; background:var(--card-bg);
+  border:1px solid var(--card-border); border-radius:12px;
+}
+.bean-emoji{ font-size:1.7rem; }
+.bean-info{ flex:1; }
+.bean-name{ font-weight:700; font-size:1.05rem; }
+.bean-desc{ font-size:.8rem; color:var(--ink-3); margin-top:2px; }
+.bean-pct{ font-family:'JetBrains Mono', monospace; font-weight:900; font-size:1.4rem; color:var(--accent); }
+
+/* === 詳解 === */
+.detail-visual{
+  width:100%; aspect-ratio:1/1; max-height:55vh;
+  background:linear-gradient(135deg, var(--bg-2), var(--bg-3));
+  border:1px solid var(--card-border); border-radius:24px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:clamp(8rem,15vw,12rem);
+  position:relative; overflow:hidden;
+}
+.detail-visual::before{
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(circle at center, rgba(0,212,255,0.15), transparent 60%);
+}
+.detail-features{ display:flex; flex-direction:column; gap:12px; margin-top:16px; }
+.feature{
+  display:flex; gap:12px; align-items:flex-start;
+  padding:12px 16px;
+  border-left:3px solid var(--accent);
+  background:rgba(0,212,255,0.04);
+}
+.feature-icon{ font-size:1.4rem; flex-shrink:0; }
+.feature-text strong{ color:var(--accent); display:block; margin-bottom:2px; }
+.case-tag{
+  display:inline-block; margin-top:12px;
+  padding:6px 14px; font-family:'JetBrains Mono', monospace;
+  font-size:.8rem; color:var(--accent-2);
+  border:1px solid var(--accent-2); border-radius:50px;
+}
+
+/* === 配對遊戲（老師端：顯示班級即時得分排行）=== */
+.match-leaderboard{
+  display:grid; grid-template-columns:2fr 1fr; gap:30px;
+}
+.match-stats-card{ padding:26px; }
+.match-stats-card h3{ font-size:1.15rem; margin-bottom:14px; color:var(--accent); }
+.match-stat-row{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:10px 0; border-bottom:1px solid var(--card-border);
+  font-family:'JetBrains Mono', monospace;
+}
+.match-stat-row .l{ color:var(--ink-2); font-size:.95rem; }
+.match-stat-row .v{ color:var(--accent); font-weight:700; font-size:1.05rem; }
+.leaderboard{ padding:26px; }
+.lb-row{
+  display:flex; align-items:center; gap:14px;
+  padding:10px 0; border-bottom:1px solid var(--card-border);
+}
+.lb-rank{
+  width:32px; height:32px; border-radius:50%;
+  background:var(--card-bg); border:1px solid var(--accent);
+  color:var(--accent);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'JetBrains Mono', monospace; font-weight:700;
+  flex-shrink:0;
+}
+.lb-row.gold .lb-rank{ background:var(--accent-3); color:#0a0e27; border:none; }
+.lb-row.silver .lb-rank{ background:#c0c4d0; color:#0a0e27; border:none; }
+.lb-row.bronze .lb-rank{ background:#cd7f32; color:#0a0e27; border:none; }
+.lb-name{ flex:1; font-weight:700; }
+.lb-time{
+  font-family:'JetBrains Mono', monospace;
+  font-size:.85rem; color:var(--ink-3);
+}
+
+/* === 速食大戰 === */
+.fastfood-hero{ text-align:center; }
+.fastfood-hero .battle-badge{
+  display:inline-block; padding:8px 24px;
+  background:linear-gradient(135deg, var(--accent-2), var(--accent-3));
+  color:#fff; font-weight:900;
+  border-radius:50px; margin-bottom:20px;
+  font-size:1rem; letter-spacing:.15em;
+  box-shadow:0 0 30px rgba(255,0,110,0.4);
+}
+.fastfood-hero h2{ font-size:clamp(2rem,4.5vw,3.6rem); font-weight:900; line-height:1.2; margin-bottom:18px; }
+.fastfood-hero p{ font-size:clamp(1rem,1.5vw,1.2rem); max-width:900px; margin:0 auto 28px; }
+.protein-target{
+  display:inline-flex; align-items:center; gap:18px;
+  padding:20px 30px; margin-top:14px;
+  background:rgba(255,184,0,0.08);
+  border:1px solid var(--accent-3); border-radius:14px;
+}
+.protein-target .num{ font-family:'JetBrains Mono', monospace; font-size:2.4rem; font-weight:900; color:var(--accent-3); }
+.protein-target .text{ text-align:left; font-size:.95rem; }
+.protein-target .text strong{ color:var(--accent-3); display:block; }
+
+/* === 品牌比拼 === */
+.brand-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:20px; }
+.brand-card{ padding:22px 16px; text-align:center; transition:transform .25s; }
+.brand-card:hover{ transform:translateY(-6px); border-color:var(--accent); }
+.brand-name{ font-size:1.05rem; font-weight:900; margin-bottom:6px; }
+.brand-logo{ font-size:3rem; display:block; margin-bottom:8px; }
+.brand-protein{
+  font-family:'JetBrains Mono', monospace;
+  font-size:2.4rem; font-weight:900;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  line-height:1;
+}
+.brand-unit{ font-family:'JetBrains Mono', monospace; font-size:.85rem; color:var(--ink-3); margin-top:4px; }
+.brand-product{ font-size:.78rem; color:var(--ink-2); margin-top:10px; line-height:1.4; min-height:32px; }
+.refresher-strip{
+  margin-top:26px; padding:20px 28px;
+  background:linear-gradient(90deg, rgba(255,0,110,0.12), rgba(255,184,0,0.08));
+  border:1px solid var(--accent-2);
+  border-radius:14px;
+  display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+}
+.refresher-strip .big{ font-size:2.5rem; }
+.refresher-strip .title{ font-weight:900; font-size:1.15rem; color:var(--ink); margin-bottom:4px; }
+.refresher-strip .desc{ font-size:.9rem; color:var(--ink-2); }
+.refresher-strip .stat{ margin-left:auto; text-align:right; }
+.refresher-strip .stat .v{ font-family:'JetBrains Mono', monospace; font-size:1.6rem; font-weight:900; color:var(--accent-2); }
+.refresher-strip .stat .l{ font-size:.75rem; color:var(--ink-3); }
+
+/* === 認證 === */
+.cert-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.cert-card{ padding:20px 16px; text-align:center; }
+.cert-icon-wrap{
+  width:60px; height:60px; margin:0 auto 12px;
+  border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:2rem;
+  background:linear-gradient(135deg, var(--accent), var(--accent-2));
+}
+.cert-info h3{ font-size:1.1rem; font-weight:700; margin-bottom:8px; }
+.cert-info p{ font-size:.85rem; line-height:1.5; color:var(--ink-2); }
+
+/* === 決策樹（老師端：顯示班級結果分佈）=== */
+.dt-summary{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:24px;
+}
+.dt-result-card{
+  padding:26px; text-align:center;
+}
+.dt-result-card .emoji{ font-size:3rem; display:block; margin-bottom:8px; }
+.dt-result-card .title{ font-size:1.05rem; font-weight:700; margin-bottom:8px; }
+.dt-result-card .count{
+  font-family:'JetBrains Mono', monospace;
+  font-size:2.4rem; font-weight:900; color:var(--accent);
+  line-height:1;
+}
+.dt-result-card .pct{ font-size:.8rem; color:var(--ink-3); margin-top:6px; }
+
+.recent-decisions{
+  margin-top:20px; padding:20px;
+}
+.recent-decisions h3{ font-size:.95rem; color:var(--accent); margin-bottom:10px; }
+.rd-item{
+  display:inline-block; margin:4px 6px 4px 0;
+  padding:6px 12px; font-size:.8rem;
+  background:rgba(0,212,255,0.08);
+  border:1px solid var(--card-border); border-radius:50px;
+}
+.rd-item .name{ color:var(--ink); font-weight:700; }
+.rd-item .result{ color:var(--accent); margin-left:6px; }
+
+/* === 重點整理 === */
+.summary-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.summary-card{ padding:22px; }
+.summary-num{
+  font-family:'JetBrains Mono', monospace;
+  font-size:2rem; font-weight:900; color:var(--accent);
+  line-height:1; margin-bottom:10px;
+}
+.summary-title{ font-size:1rem; font-weight:700; margin-bottom:8px; color:var(--ink); }
+.summary-desc{ font-size:.85rem; color:var(--ink-2); line-height:1.5; }
+
+/* === CTA === */
+.cta-page{ text-align:center; position:relative; }
+.cta-page h1{
+  font-size:clamp(2.4rem, 5.5vw, 4.5rem);
+  font-weight:900; line-height:1.25; margin-bottom:24px;
+  background:linear-gradient(135deg, #fff, var(--accent), var(--accent-2));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.cta-sub{ font-size:clamp(1rem,1.6vw,1.4rem); color:var(--ink-2); margin-bottom:40px; }
+.cta-actions{ display:flex; justify-content:center; gap:18px; flex-wrap:wrap; }
+.cta-pill{
+  padding:14px 26px;
+  background:var(--card-bg); border:1px solid var(--accent);
+  border-radius:50px; color:var(--accent);
+  font-size:.95rem; font-weight:500;
+}
+.cta-pill strong{ display:block; font-size:1.05rem; color:var(--ink); margin-bottom:2px; }
+
+@media (max-width:900px){
+  #toolBar{ top:4px; right:6px; }
+  .tool-btn{ height:36px; padding:0 10px; font-size:.75rem; }
+  .live-vote-grid{ grid-template-columns:repeat(3,1fr); }
+  .two-col, .two-col-reverse, .trend-grid, .match-leaderboard{ grid-template-columns:1fr; gap:24px; }
+  .stat-grid, .three-source, .cert-grid, .brand-grid, .summary-grid, .dt-summary{ grid-template-columns:1fr 1fr; }
+  #recordPanel{ width:88%; right:-100%; }
+  #recordPanel.open{ right:0; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="section-tag">— 引起動機 —</div>
+<div id="pageInfo">01 / 15</div>
+<div id="hint">← → 切頁 ｜ F 全螢幕 ｜ Q 顯示 QR Code ｜ R 看班級紀錄</div>
+
+<!-- 課堂工具列 -->
+<div id="toolBar">
+  <button class="tool-btn session" id="sessionBtn" title="點按更換課堂代碼">
+    <span id="liveIndicator"></span>
+    <span id="sessionLabel">—</span>
+  </button>
+  <button class="tool-btn qr" onclick="showQR()">📱 學生掃碼</button>
+  <button class="tool-btn" onclick="togglePanel()">📊 班級紀錄<span class="badge" id="recBadge">0</span></button>
+</div>
+
+<!-- QR Code 浮窗 -->
+<div id="qrModal" onclick="if(event.target.id==='qrModal') hideQR()">
+  <button class="close-x" onclick="hideQR()">×</button>
+  <div class="qr-card">
+    <h2>📱 同學請掃 QR Code</h2>
+    <div class="sub">用手機開啟，即可加入課堂互動</div>
+    <div id="qrTarget"><div class="qr-loading">產生 QR Code 中…</div></div>
+    <div class="url-strip" id="qrUrl">—</div>
+    <div class="session-hint">本場課堂代碼：<b id="qrSession">—</b></div>
+    <div style="font-size:.85rem;color:#666;margin-top:8px">
+      ESC 或點外面關閉
+    </div>
+  </div>
+</div>
+
+<!-- 紀錄面板 -->
+<div id="recordPanel">
+  <h2>📊 班級互動紀錄 <button class="close" onclick="togglePanel()">×</button></h2>
+  <div style="font-size:.78rem;color:var(--ink-3);margin-bottom:8px">
+    課堂代碼：<span id="panelSession" style="color:var(--accent);font-family:'JetBrains Mono',monospace">—</span>
+    · 即時同步 ✨
+  </div>
+
+  <h3>🗳️ 熱身投票 <span class="cnt" id="cntVotes">0 票</span></h3>
+  <div id="voteRecords"></div>
+
+  <h3>🎯 產品配對 <span class="cnt" id="cntMatches">0 次</span></h3>
+  <div class="rec-list" id="matchRecords"></div>
+
+  <h3>🧭 餐盤設計師 <span class="cnt" id="cntDecisions">0 次</span></h3>
+  <div class="rec-list" id="dtRecords"></div>
+
+  <div class="rec-actions">
+    <button onclick="exportCSV()">📥 下載 CSV</button>
+    <button onclick="copyJSON()">📋 複製 JSON</button>
+    <button onclick="exportText()">📄 下載報告</button>
+    <button onclick="newSession()">🆕 開新課堂</button>
+    <button class="danger" onclick="alert('Firestore 紀錄要手動到 Firebase Console 清除。\\n或開新課堂代碼即可。')">🗑️ 清空（請開新課堂）</button>
+  </div>
+
+  <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--card-border);font-size:.78rem;color:var(--ink-4);line-height:1.6">
+    紀錄存於 Firebase Firestore，永久保存可跨裝置。匯出 CSV 後可貼到 Excel / Google Sheets。
+  </div>
+</div>
+
+<div id="statusToast"></div>
+
+<!-- ============ 1. 封面 ============ -->
+<section class="slide active" data-slide="1" data-section="引起動機">
+  <div class="cover-grid"></div>
+  <div class="slide-inner cover">
+    <div class="cover-molecule">
+      <svg viewBox="0 0 280 280" width="240" height="240">
+        <defs>
+          <radialGradient id="atomGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#00d4ff" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="bondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00d4ff"/>
+            <stop offset="100%" stop-color="#ff006e"/>
+          </linearGradient>
+        </defs>
+        <g stroke="url(#bondGrad)" stroke-width="2" opacity="0.7">
+          <line x1="140" y1="40" x2="220" y2="100"/>
+          <line x1="220" y1="100" x2="220" y2="180"/>
+          <line x1="220" y1="180" x2="140" y2="240"/>
+          <line x1="140" y1="240" x2="60" y2="180"/>
+          <line x1="60" y1="180" x2="60" y2="100"/>
+          <line x1="60" y1="100" x2="140" y2="40"/>
+          <line x1="140" y1="40" x2="140" y2="140"/>
+          <line x1="220" y1="100" x2="140" y2="140"/>
+          <line x1="60" y1="180" x2="140" y2="140"/>
+        </g>
+        <circle cx="140" cy="40" r="14" fill="#00d4ff"/>
+        <circle cx="220" cy="100" r="12" fill="#ff006e"/>
+        <circle cx="220" cy="180" r="10" fill="#00d4ff"/>
+        <circle cx="140" cy="240" r="14" fill="#ff006e"/>
+        <circle cx="60" cy="180" r="10" fill="#00d4ff"/>
+        <circle cx="60" cy="100" r="12" fill="#ff006e"/>
+        <circle cx="140" cy="140" r="18" fill="url(#atomGrad)"/>
+        <circle cx="140" cy="140" r="8" fill="#fff"/>
+      </svg>
+    </div>
+    <h1>蛋白質的未來餐桌</h1>
+    <div class="sub">替代蛋白 × 速食大戰</div>
+    <div class="meta">
+      <span>高職彈性課程</span>
+      <span style="color:var(--accent)">·</span>
+      <span>60 分鐘</span>
+      <span style="color:var(--accent)">·</span>
+      <span>掃 QR 一起玩</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. 痛點 ============ -->
+<section class="slide" data-slide="2" data-section="引起動機">
+  <div class="slide-inner">
+    <div class="kicker">問題在哪裡</div>
+    <div class="big-q">
+      你每餐的<span class="underline">蛋白質</span>，吃夠了嗎？
+    </div>
+    <div class="stat-grid">
+      <div class="glass-card stat-card">
+        <div class="num">30–40<span style="font-size:.5em">克</span></div>
+        <div class="label">營養師建議每餐攝取量</div>
+        <div class="desc">大多數人都吃不到</div>
+      </div>
+      <div class="glass-card stat-card">
+        <div class="num">97<span style="font-size:.5em">億</span></div>
+        <div class="label">2050 年全球人口</div>
+        <div class="desc">傳統畜牧供不應求</div>
+      </div>
+      <div class="glass-card stat-card">
+        <div class="num">+48<span style="font-size:.5em">%</span></div>
+        <div class="label">植物蛋白年成長率</div>
+        <div class="desc">超商貨架快速上架</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. 投票即時看板 ============ -->
+<section class="slide" data-slide="3" data-section="引起動機">
+  <div class="slide-inner">
+    <div class="kicker">🎮 互動 1 ｜ 熱身投票</div>
+    <h2 class="slide-title">全班今天吃過 <span class="accent">哪一種蛋白</span>？</h2>
+    <p class="slide-subtitle">同學掃 QR Code 投票，畫面會即時更新。</p>
+    <div class="live-vote-grid" id="liveVoteGrid">
+      <div class="vote-box" data-opt="紅肉"><span class="vote-emoji">🥩</span><div class="vote-name">紅肉</div><div class="vote-count">0</div><div class="vote-pct">0%</div></div>
+      <div class="vote-box" data-opt="海鮮"><span class="vote-emoji">🐟</span><div class="vote-name">海鮮</div><div class="vote-count">0</div><div class="vote-pct">0%</div></div>
+      <div class="vote-box" data-opt="雞蛋"><span class="vote-emoji">🥚</span><div class="vote-name">雞蛋</div><div class="vote-count">0</div><div class="vote-pct">0%</div></div>
+      <div class="vote-box" data-opt="豆製品"><span class="vote-emoji">🫘</span><div class="vote-name">豆製品</div><div class="vote-count">0</div><div class="vote-pct">0%</div></div>
+      <div class="vote-box" data-opt="奶類"><span class="vote-emoji">🥛</span><div class="vote-name">奶類</div><div class="vote-count">0</div><div class="vote-pct">0%</div></div>
+    </div>
+    <div class="vote-instr">
+      <span class="icon">📱</span>
+      <span><strong>請拿出手機</strong>，按右上「學生掃碼」掃 QR Code，選一個你今天吃過的蛋白。<br>共 <span class="accent" id="voteTotal">0</span> 票 · 即時更新中</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. 兩股潮流 ============ -->
+<section class="slide" data-slide="4" data-section="引起動機">
+  <div class="slide-inner">
+    <div class="kicker">本課地圖</div>
+    <h2 class="slide-title" style="text-align:center">兩股潮流，正在改變我們吃蛋白的方式</h2>
+    <p class="slide-subtitle" style="text-align:center">一邊找新來源，一邊在現有產品上加碼。</p>
+    <div class="trend-grid">
+      <div class="glass-card trend-card">
+        <span class="icon">🌱</span>
+        <h3>潮流 1：替代蛋白</h3>
+        <p>植物 · 昆蟲 · 海洋，跳出傳統畜牧，找新的蛋白來源。</p>
+        <div class="arrow">▼ 接下來看 5 頁</div>
+      </div>
+      <div class="glass-card trend-card right">
+        <span class="icon">🍔</span>
+        <h3>潮流 2：速食蛋白大戰</h3>
+        <p>麥當勞、星巴克都加碼蛋白質，搶攻年輕健身族。</p>
+        <div class="arrow">▼ 接下來看 2 頁</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. 植物蛋白 ============ -->
+<section class="slide" data-slide="5" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">潮流 1 · 植物蛋白</div>
+    <div class="two-col">
+      <div>
+        <h2 class="slide-title">植物蛋白 <span class="accent">最強勢</span></h2>
+        <div class="big-stat">48<span style="font-size:0.6em">%</span></div>
+        <div class="big-stat-label">2015–2019 全球新品<br>年均複合成長率</div>
+        <p style="margin-top:10px">「植物蛋白」標籤的食品飲料新品爆炸性成長，從超市到便利商店都看得到。</p>
+      </div>
+      <div>
+        <div class="chart-wrap"><canvas id="growthChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. 豆類 ============ -->
+<section class="slide" data-slide="6" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">潮流 1 · 豆類大比拼</div>
+    <h2 class="slide-title" style="margin-bottom:20px">豆類，是植物蛋白的<span class="accent">主力選手</span></h2>
+    <div class="two-col-reverse">
+      <div>
+        <div class="chart-wrap" style="height:380px"><canvas id="beanChart"></canvas></div>
+      </div>
+      <div class="bean-list">
+        <div class="bean-item"><span class="bean-emoji">🟢</span><div class="bean-info"><div class="bean-name">豌豆</div><div class="bean-desc">最受歡迎的植物蛋白</div></div><div class="bean-pct">27%</div></div>
+        <div class="bean-item"><span class="bean-emoji">🟡</span><div class="bean-info"><div class="bean-name">鷹嘴豆</div><div class="bean-desc">中東常見豆類，可做豆泥</div></div><div class="bean-pct">10%</div></div>
+        <div class="bean-item"><span class="bean-emoji">🟤</span><div class="bean-info"><div class="bean-name">鷹嘴豆粉</div><div class="bean-desc">無麩質烘焙好原料</div></div><div class="bean-pct">6%</div></div>
+        <div class="bean-item"><span class="bean-emoji">🟢</span><div class="bean-info"><div class="bean-name">綠豆</div><div class="bean-desc">夏季常見的台式好朋友</div></div><div class="bean-pct">6%</div></div>
+        <div class="bean-item"><span class="bean-emoji">🟠</span><div class="bean-info"><div class="bean-name">扁豆</div><div class="bean-desc">高纖維、印度料理主角</div></div><div class="bean-pct">5%</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. 昆蟲蛋白 ============ -->
+<section class="slide" data-slide="7" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">潮流 1 · 昆蟲蛋白</div>
+    <div class="two-col">
+      <div><div class="detail-visual">🐛</div></div>
+      <div>
+        <h2 class="slide-title">昆蟲蛋白 <span class="accent">黃粉蟲</span></h2>
+        <p class="slide-subtitle">高蛋白 · 低碳排 · 飼養快</p>
+        <div class="detail-features">
+          <div class="feature"><span class="feature-icon">💪</span><div class="feature-text"><strong>蛋白質含量高</strong>媲美牛肉，氨基酸完整</div></div>
+          <div class="feature"><span class="feature-icon">🌍</span><div class="feature-text"><strong>環境友善</strong>占地少、用水少、碳排放低</div></div>
+          <div class="feature"><span class="feature-icon">🔁</span><div class="feature-text"><strong>循環經濟</strong>能轉化廚餘，把垃圾變蛋白</div></div>
+        </div>
+        <div class="case-tag">🇨🇭 案例：Essento 有機菠菜昆蟲球（瑞士）</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. 海洋蛋白 ============ -->
+<section class="slide" data-slide="8" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">潮流 1 · 海洋蛋白</div>
+    <div class="two-col-reverse">
+      <div><div class="detail-visual">🌿</div></div>
+      <div>
+        <h2 class="slide-title">海洋蛋白 <span class="accent">螺旋藻</span></h2>
+        <p class="slide-subtitle">蛋白含量 50–60% · 超級食物</p>
+        <div class="detail-features">
+          <div class="feature"><span class="feature-icon">📊</span><div class="feature-text"><strong>蛋白密度王者</strong>是雞蛋的 5 倍以上</div></div>
+          <div class="feature"><span class="feature-icon">🌟</span><div class="feature-text"><strong>超級食物</strong>富含維生素 B、鐵、葉綠素</div></div>
+          <div class="feature"><span class="feature-icon">🦐</span><div class="feature-text"><strong>其他來源</strong>海藻、海參、軟體動物</div></div>
+        </div>
+        <div class="case-tag">🇫🇷 案例：MadiaBio 螺旋藻運動營養粉（法國）</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. 配對遊戲：班級即時排行 ============ -->
+<section class="slide" data-slide="9" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">🎮 互動 2 ｜ 產品配對</div>
+    <h2 class="slide-title">同學用手機配對，<span class="accent">最快前 5 名</span></h2>
+    <p class="slide-subtitle">7 款全球產品 → 植物 / 昆蟲 / 海洋 三大類，看誰最快全對。</p>
+    <div class="match-leaderboard">
+      <div class="glass-card leaderboard">
+        <h3 style="font-size:1.15rem;margin-bottom:14px;color:var(--accent-3)">🏆 配對速度排行榜</h3>
+        <div id="leaderboardList"><div class="rec-empty">尚無紀錄，請同學掃 QR 開始挑戰</div></div>
+      </div>
+      <div class="glass-card match-stats-card">
+        <h3>📊 班級表現</h3>
+        <div class="match-stat-row"><span class="l">參與人次</span><span class="v" id="matchTotal">0</span></div>
+        <div class="match-stat-row"><span class="l">滿分人數</span><span class="v" id="matchPerfect">0</span></div>
+        <div class="match-stat-row"><span class="l">平均分數</span><span class="v" id="matchAvg">—</span></div>
+        <div class="match-stat-row"><span class="l">平均用時</span><span class="v" id="matchAvgTime">—</span></div>
+        <div style="margin-top:18px;padding:12px;background:rgba(0,212,255,0.06);border-radius:10px;font-size:.82rem;color:var(--ink-2);line-height:1.5">
+          💡 <strong>正解</strong>：植物 5、昆蟲 1、海洋 1
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. 速食大戰 ============ -->
+<section class="slide" data-slide="10" data-section="維持注意">
+  <div class="slide-inner fastfood-hero">
+    <div class="kicker" style="justify-content:center;display:inline-flex">潮流 2 · 美國速食業</div>
+    <div class="battle-badge">⚔️ 蛋白質大戰 開打</div>
+    <h2>速食店，<span class="accent-2">不只是漢堡了</span></h2>
+    <p>麥當勞、星巴克、SUBWAY、Dunkin' 都在自家菜單上加碼蛋白質，<br>把目標對準了愛健身、愛拍照、追求生活風格的年輕世代。</p>
+    <div class="protein-target">
+      <div class="num">30–40<span style="font-size:.5em">克</span></div>
+      <div class="text"><strong>營養師建議</strong>每餐蛋白質攝取量，速食業正幫你「衝這個數字」。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. 品牌大比拼 ============ -->
+<section class="slide" data-slide="11" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">潮流 2 · 品牌大比拼</div>
+    <h2 class="slide-title">誰的蛋白質 <span class="accent-2">最高</span>？</h2>
+    <div class="brand-grid">
+      <div class="glass-card brand-card">
+        <span class="brand-logo">🍔</span>
+        <div class="brand-name">麥當勞</div>
+        <div class="brand-protein">22<span style="font-size:.5em">克</span></div>
+        <div class="brand-unit">最高款</div>
+        <div class="brand-product">雙層牛肉吉事堡<br>滿福堡加蛋 17 克</div>
+      </div>
+      <div class="glass-card brand-card">
+        <span class="brand-logo">🥪</span>
+        <div class="brand-name">SUBWAY</div>
+        <div class="brand-protein">20<span style="font-size:.5em">克+</span></div>
+        <div class="brand-unit">熱量 500 大卡以下</div>
+        <div class="brand-product">全新蛋白質<br>口袋餅系列</div>
+      </div>
+      <div class="glass-card brand-card">
+        <span class="brand-logo">☕</span>
+        <div class="brand-name">星巴克</div>
+        <div class="brand-protein">36<span style="font-size:.5em">克</span></div>
+        <div class="brand-unit">全場王者</div>
+        <div class="brand-product">高蛋白<br>特調拿鐵</div>
+      </div>
+      <div class="glass-card brand-card">
+        <span class="brand-logo">🍩</span>
+        <div class="brand-name">Dunkin'</div>
+        <div class="brand-protein">15<span style="font-size:.5em">克</span></div>
+        <div class="brand-unit">客製化高蛋白奶</div>
+        <div class="brand-product">每杯中量飲品<br>都能加蛋白</div>
+      </div>
+    </div>
+    <div class="refresher-strip">
+      <span class="big">🌈</span>
+      <div>
+        <div class="title">繽紛特調飲 Refresher：行銷新武器</div>
+        <div class="desc">檸檬汁＋碳酸水＋客製化咖啡因，色彩繽紛適合 IG/TikTok，麥當勞跟著推。</div>
+      </div>
+      <div class="stat">
+        <div class="v">20 億美元</div>
+        <div class="l">星巴克特調飲年產值</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12. 認證標籤 ============ -->
+<section class="slide" data-slide="12" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">看標籤 · 選對食物</div>
+    <h2 class="slide-title">看懂 <span class="accent">4 個認證</span>，就能挑對</h2>
+    <div class="cert-grid">
+      <div class="glass-card cert-card"><div class="cert-icon-wrap">🥬</div><div class="cert-info"><h3>素食認證</h3><p>產品不含肉、魚等動物來源，分純素、奶蛋素等。</p></div></div>
+      <div class="glass-card cert-card"><div class="cert-icon-wrap">🌿</div><div class="cert-info"><h3>有機認證</h3><p>種植過程不用化學農藥、化學肥料，環境友善。</p></div></div>
+      <div class="glass-card cert-card"><div class="cert-icon-wrap">🧬</div><div class="cert-info"><h3>非基改</h3><p>原料沒有經過基因改造工程，維持作物原始基因。</p></div></div>
+      <div class="glass-card cert-card"><div class="cert-icon-wrap">🌾</div><div class="cert-info"><h3>無麩質</h3><p>不含小麥、大麥、黑麥等麩質，適合過敏體質。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13. 決策樹：班級分佈 ============ -->
+<section class="slide" data-slide="13" data-section="喚起行動">
+  <div class="slide-inner">
+    <div class="kicker">🎮 互動 3 ｜ 餐盤設計師</div>
+    <h2 class="slide-title">全班的 <span class="accent">蛋白派別</span> 分佈</h2>
+    <p class="slide-subtitle">同學手機回答 3 題，看看你跟誰一派。</p>
+    <div class="dt-summary">
+      <div class="glass-card dt-result-card" data-dt="植物派">
+        <span class="emoji">🌱</span>
+        <div class="title">植物派</div>
+        <div class="count" id="dtCntPlant">0</div>
+        <div class="pct" id="dtPctPlant">0%</div>
+      </div>
+      <div class="glass-card dt-result-card" data-dt="昆蟲派">
+        <span class="emoji">🐛</span>
+        <div class="title">昆蟲派</div>
+        <div class="count" id="dtCntInsect">0</div>
+        <div class="pct" id="dtPctInsect">0%</div>
+      </div>
+      <div class="glass-card dt-result-card" data-dt="海洋派">
+        <span class="emoji">🌊</span>
+        <div class="title">海洋派</div>
+        <div class="count" id="dtCntOcean">0</div>
+        <div class="pct" id="dtPctOcean">0%</div>
+      </div>
+    </div>
+    <div class="glass-card recent-decisions">
+      <h3>最近回答的同學</h3>
+      <div id="recentDecisions"><div class="rec-empty">尚無紀錄，請同學掃 QR 完成問卷</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14. 重點整理 ============ -->
+<section class="slide" data-slide="14" data-section="喚起行動">
+  <div class="slide-inner">
+    <div class="kicker">今天的重點</div>
+    <h2 class="slide-title">你帶走的 <span class="accent">6 件事</span></h2>
+    <div class="summary-grid">
+      <div class="glass-card summary-card"><div class="summary-num">01</div><div class="summary-title">每餐 30–40 克</div><div class="summary-desc">營養師建議的蛋白質攝取量，大多數人都吃不到。</div></div>
+      <div class="glass-card summary-card"><div class="summary-num">02</div><div class="summary-title">替代蛋白三大來源</div><div class="summary-desc">植物、昆蟲、海洋，跳出傳統畜牧框架。</div></div>
+      <div class="glass-card summary-card"><div class="summary-num">03</div><div class="summary-title">植物蛋白最強勢</div><div class="summary-desc">五年成長 48%，主力是豌豆、鷹嘴豆。</div></div>
+      <div class="glass-card summary-card"><div class="summary-num">04</div><div class="summary-title">螺旋藻含量最高</div><div class="summary-desc">蛋白質 50–60%，是雞蛋的 5 倍以上。</div></div>
+      <div class="glass-card summary-card"><div class="summary-num">05</div><div class="summary-title">速食店加碼蛋白</div><div class="summary-desc">星巴克 36 克、麥當勞 22 克、SUBWAY 20 克。</div></div>
+      <div class="glass-card summary-card"><div class="summary-num">06</div><div class="summary-title">4 大認證標籤</div><div class="summary-desc">素食、有機、非基改、無麩質，挑食物的好幫手。</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15. CTA ============ -->
+<section class="slide" data-slide="15" data-section="喚起行動">
+  <div class="cover-grid"></div>
+  <div class="slide-inner cta-page">
+    <div class="kicker" style="justify-content:center;display:inline-flex">下一步</div>
+    <h1>你的下一餐，<br>要不要試試 <span style="white-space:nowrap">新的蛋白？</span></h1>
+    <div class="cta-sub">從超商一杯燕麥奶、一個高蛋白吉事堡開始，<br>你也能參與這場餐桌革命。</div>
+    <div class="cta-actions">
+      <div class="cta-pill"><strong>🥛 試一杯</strong>燕麥奶或豆漿</div>
+      <div class="cta-pill"><strong>🫘 找一款</strong>豆類零食</div>
+      <div class="cta-pill"><strong>📊 老師</strong>記得匯出班級紀錄</div>
+    </div>
+    <div style="margin-top:46px;font-family:'JetBrains Mono', monospace;font-size:.8rem;color:var(--ink-4);letter-spacing:.3em">
+      THE END · 蛋白質的未來餐桌
+    </div>
+  </div>
+</section>
+
+<!-- =================== Firebase 模組 =================== -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js';
+import { getFirestore, collection, addDoc, onSnapshot, query, where, orderBy, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "",
+  authDomain: "my-teaching-tools-517a0.firebaseapp.com",
+  projectId: "my-teaching-tools-517a0",
+  storageBucket: "my-teaching-tools-517a0.firebasestorage.app",
+  messagingSenderId: "244288457011",
+  appId: "1:244288457011:web:4b3ff8a846a6c50b169646"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// session 管理
+const params = new URLSearchParams(location.search);
+function todaySession(){
+  const d = new Date();
+  return d.getFullYear()
+    + String(d.getMonth()+1).padStart(2,'0')
+    + String(d.getDate()).padStart(2,'0') + 'alt';
+}
+let SESSION = params.get('session') || localStorage.getItem('altprot_session') || todaySession();
+localStorage.setItem('altprot_session', SESSION);
+
+window.SESSION = SESSION;
+window.firestoreDB = db;
+window.firestoreAPI = { collection, addDoc, onSnapshot, query, where, orderBy, serverTimestamp };
+
+// 啟動同步
+window.dispatchEvent(new CustomEvent('firebase-ready'));
+</script>
+
+<!-- =================== 主邏輯 =================== -->
+<script>
+/* =================== 切頁系統 =================== */
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let cur = 0;
+const progress = document.getElementById('progress');
+const sectionTag = document.getElementById('section-tag');
+const pageInfo = document.getElementById('pageInfo');
+let chartsInited = { growth:false, bean:false };
+
+function go(n){
+  if(n < 0 || n >= total) return;
+  slides[cur].classList.remove('active');
+  cur = n;
+  slides[cur].classList.add('active');
+  progress.style.width = ((cur+1)/total*100) + '%';
+  sectionTag.textContent = '— ' + slides[cur].dataset.section + ' —';
+  pageInfo.textContent = String(cur+1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+  if(cur === 4 && !chartsInited.growth){ initGrowthChart(); chartsInited.growth = true; }
+  if(cur === 5 && !chartsInited.bean){ initBeanChart(); chartsInited.bean = true; }
+}
+window.go = go;
+
+document.addEventListener('keydown', e => {
+  if(document.activeElement && document.activeElement.tagName === 'INPUT') return;
+  if(document.getElementById('qrModal').classList.contains('show')){
+    if(e.key === 'Escape'){ hideQR(); }
+    return;
+  }
+  if(e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(cur+1); }
+  else if(e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(cur-1); }
+  else if(e.key === 'f' || e.key === 'F'){
+    if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+  else if(e.key === 'Home'){ go(0); }
+  else if(e.key === 'End'){ go(total-1); }
+  else if(e.key === 'r' || e.key === 'R'){ togglePanel(); }
+  else if(e.key === 'q' || e.key === 'Q'){ showQR(); }
+});
+
+document.addEventListener('click', e => {
+  if(e.target.closest('button, .vote-box, a, input, #recordPanel, #toolBar, #qrModal, .dt-result-card')) return;
+  const x = e.clientX;
+  if(x > window.innerWidth * 0.7) go(cur+1);
+  else if(x < window.innerWidth * 0.3) go(cur-1);
+});
+
+go(0);
+
+/* =================== Toast =================== */
+function toast(msg, type){
+  const t = document.getElementById('statusToast');
+  t.textContent = msg;
+  t.classList.toggle('error', type === 'error');
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+window.toast = toast;
+
+/* =================== QR Code =================== */
+function showQR(){
+  const sess = window.SESSION || (function(){
+    const d = new Date();
+    return d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'alt';
+  })();
+  const url = `${location.origin}/s/${sess}`;
+  document.getElementById('qrUrl').textContent = url;
+  document.getElementById('qrSession').textContent = sess;
+  const target = document.getElementById('qrTarget');
+  let html = '';
+  try{
+    if(typeof qrcode !== 'function') throw new Error('qrcode-generator not loaded');
+    const qr = qrcode(0, 'M');
+    qr.addData(url);
+    qr.make();
+    html = qr.createImgTag(8, 4);
+  } catch(e){
+    console.warn('Local QR failed, fallback to API:', e);
+    html = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(url)}&color=0a0e27&bgcolor=ffffff" alt="QR Code">`;
+  }
+  target.innerHTML = html;
+  document.getElementById('qrModal').classList.add('show');
+}
+function hideQR(){ document.getElementById('qrModal').classList.remove('show'); }
+window.showQR = showQR;
+window.hideQR = hideQR;
+
+/* =================== Session 控制 =================== */
+function updateSessionLabel(){
+  document.getElementById('sessionLabel').textContent = window.SESSION;
+  document.getElementById('panelSession').textContent = window.SESSION;
+}
+function newSession(){
+  const d = new Date();
+  const stamp = d.getFullYear()
+    + String(d.getMonth()+1).padStart(2,'0')
+    + String(d.getDate()).padStart(2,'0')
+    + '_' + String(d.getHours()).padStart(2,'0') + String(d.getMinutes()).padStart(2,'0');
+  const ns = prompt('輸入新課堂代碼（例：' + stamp + 'alt）', stamp + 'alt');
+  if(!ns) return;
+  window.SESSION = ns.trim();
+  localStorage.setItem('altprot_session', window.SESSION);
+  const url = new URL(location.href);
+  url.searchParams.set('session', window.SESSION);
+  history.replaceState({}, '', url);
+  updateSessionLabel();
+  // 重新訂閱
+  if(window.unsubscribers){ window.unsubscribers.forEach(u => u && u()); }
+  subscribeAll();
+  toast('已開新課堂：' + window.SESSION);
+}
+document.getElementById('sessionBtn').addEventListener('click', newSession);
+window.newSession = newSession;
+
+/* =================== Firebase 即時訂閱 =================== */
+let voteData = {};
+let matchData = [];
+let dtData = [];
+window.unsubscribers = [];
+
+function subscribeAll(){
+  if(!window.firestoreDB) return;
+  const { collection, query, where, onSnapshot } = window.firestoreAPI;
+  const db = window.firestoreDB;
+
+  // 投票
+  const qVotes = query(collection(db, 'altprot_votes'), where('session','==', window.SESSION));
+  const u1 = onSnapshot(qVotes, snap => {
+    voteData = { 紅肉:0, 海鮮:0, 雞蛋:0, 豆製品:0, 奶類:0 };
+    const entries = [];
+    snap.forEach(d => {
+      const x = d.data();
+      voteData[x.choice] = (voteData[x.choice] || 0) + 1;
+      entries.push({ ...x, ts: x.timestamp?.toDate?.() || new Date() });
+    });
+    renderVotes();
+    renderVotePanel(entries);
+    updateBadge();
+  }, err => { console.error('votes', err); toast('投票同步異常', 'error'); });
+
+  // 配對
+  const qMatches = query(collection(db, 'altprot_matches'), where('session','==', window.SESSION));
+  const u2 = onSnapshot(qMatches, snap => {
+    matchData = [];
+    snap.forEach(d => {
+      const x = d.data();
+      matchData.push({ ...x, ts: x.timestamp?.toDate?.() || new Date() });
+    });
+    renderMatches();
+    updateBadge();
+  }, err => { console.error('matches', err); });
+
+  // 決策
+  const qDt = query(collection(db, 'altprot_decisions'), where('session','==', window.SESSION));
+  const u3 = onSnapshot(qDt, snap => {
+    dtData = [];
+    snap.forEach(d => {
+      const x = d.data();
+      dtData.push({ ...x, ts: x.timestamp?.toDate?.() || new Date() });
+    });
+    renderDecisions();
+    updateBadge();
+  }, err => { console.error('decisions', err); });
+
+  window.unsubscribers = [u1, u2, u3];
+}
+
+window.addEventListener('firebase-ready', () => {
+  updateSessionLabel();
+  subscribeAll();
+});
+
+/* =================== 視覺渲染：投票 =================== */
+function renderVotes(){
+  const total = Object.values(voteData).reduce((a,b)=>a+b, 0);
+  document.querySelectorAll('.vote-box').forEach(box => {
+    const opt = box.dataset.opt;
+    const v = voteData[opt] || 0;
+    const pct = total > 0 ? (v/total*100) : 0;
+    box.querySelector('.vote-count').textContent = v;
+    box.querySelector('.vote-pct').textContent = pct.toFixed(0) + '%';
+    box.style.setProperty('--bar-height', pct+'%');
+    box.querySelector('::before');
+    // 用內聯 background-position 模擬填充
+    const ratio = total > 0 ? (v / Math.max(...Object.values(voteData))) : 0;
+    box.querySelector(':scope > *');
+  });
+  // 用偽元素填充：透過 style attribute 寫入
+  document.querySelectorAll('.vote-box').forEach(box => {
+    const opt = box.dataset.opt;
+    const v = voteData[opt] || 0;
+    const maxV = Math.max(...Object.values(voteData), 1);
+    const h = (v/maxV*100) + '%';
+    box.style.setProperty('--h', h);
+    // hack: 直接寫到 ::before via CSS variable
+  });
+  document.getElementById('voteTotal').textContent = total;
+}
+// 加 CSS rule for --h
+const style = document.createElement('style');
+style.textContent = '.vote-box::before { height: var(--h, 0%) !important; }';
+document.head.appendChild(style);
+
+function renderVotePanel(entries){
+  const html = ['紅肉','海鮮','雞蛋','豆製品','奶類'].map(k => {
+    const v = voteData[k] || 0;
+    return `<div class="rec-row"><span class="l">${k}</span><span class="v">${v} 票</span></div>`;
+  }).join('');
+  document.getElementById('voteRecords').innerHTML = html;
+  document.getElementById('cntVotes').textContent = entries.length + ' 票';
+}
+
+/* =================== 視覺渲染：配對 =================== */
+function renderMatches(){
+  const perfects = matchData.filter(m => m.score === 7).sort((a,b) => a.duration - b.duration);
+  const lb = perfects.slice(0, 5).map((m,i) => {
+    const cls = i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    return `<div class="lb-row ${cls}">
+      <div class="lb-rank">${i+1}</div>
+      <div class="lb-name">${escapeHtml(m.nickname || '匿名')}</div>
+      <div class="lb-time">${m.duration} 秒</div>
+    </div>`;
+  }).join('');
+  document.getElementById('leaderboardList').innerHTML = lb || '<div class="rec-empty">尚無滿分紀錄，繼續加油！</div>';
+  document.getElementById('matchTotal').textContent = matchData.length;
+  document.getElementById('matchPerfect').textContent = perfects.length;
+  if(matchData.length){
+    const avgS = matchData.reduce((a,m)=>a+m.score,0)/matchData.length;
+    const avgT = matchData.reduce((a,m)=>a+m.duration,0)/matchData.length;
+    document.getElementById('matchAvg').textContent = avgS.toFixed(1) + ' / 7';
+    document.getElementById('matchAvgTime').textContent = avgT.toFixed(0) + ' 秒';
+  }
+
+  // 紀錄面板
+  const html = matchData.slice().sort((a,b)=>b.ts-a.ts).slice(0,30).map(m =>
+    `<div class="rec-row"><span class="l">${escapeHtml(m.nickname||'匿名')}</span><span class="v">${m.score}/7 · ${m.duration}s</span></div>`
+  ).join('');
+  document.getElementById('matchRecords').innerHTML = html || '<div class="rec-empty">尚無紀錄</div>';
+  document.getElementById('cntMatches').textContent = matchData.length + ' 次';
+}
+
+/* =================== 視覺渲染：決策樹 =================== */
+function renderDecisions(){
+  const total = dtData.length;
+  const cnt = { 植物派:0, 昆蟲派:0, 海洋派:0 };
+  dtData.forEach(d => {
+    Object.keys(cnt).forEach(k => { if(d.result.includes(k)) cnt[k]++; });
+  });
+  const setNum = (id, v) => { document.getElementById(id).textContent = v; };
+  const setPct = (id, v) => { document.getElementById(id).textContent = (total>0?(v/total*100).toFixed(0):0) + '%'; };
+  setNum('dtCntPlant', cnt.植物派); setPct('dtPctPlant', cnt.植物派);
+  setNum('dtCntInsect', cnt.昆蟲派); setPct('dtPctInsect', cnt.昆蟲派);
+  setNum('dtCntOcean', cnt.海洋派); setPct('dtPctOcean', cnt.海洋派);
+
+  // 最近回答
+  const recent = dtData.slice().sort((a,b)=>b.ts-a.ts).slice(0,20);
+  const html = recent.map(d =>
+    `<span class="rd-item"><span class="name">${escapeHtml(d.nickname||'匿名')}</span><span class="result">${escapeHtml(d.result)}</span></span>`
+  ).join('');
+  document.getElementById('recentDecisions').innerHTML = html || '<div class="rec-empty">尚無紀錄</div>';
+
+  // 紀錄面板
+  const panelHtml = recent.slice(0,30).map(d =>
+    `<div class="rec-row"><span class="l">${escapeHtml(d.nickname||'匿名')}</span><span class="v">${escapeHtml(d.result)}</span></div>`
+  ).join('');
+  document.getElementById('dtRecords').innerHTML = panelHtml || '<div class="rec-empty">尚無紀錄</div>';
+  document.getElementById('cntDecisions').textContent = total + ' 次';
+}
+
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* =================== 紀錄面板 =================== */
+function togglePanel(){ document.getElementById('recordPanel').classList.toggle('open'); }
+window.togglePanel = togglePanel;
+
+function updateBadge(){
+  const total = Object.values(voteData).reduce((a,b)=>a+b,0) + matchData.length + dtData.length;
+  const b = document.getElementById('recBadge');
+  b.textContent = total;
+  b.classList.toggle('show', total > 0);
+}
+
+/* =================== 匯出 =================== */
+function exportCSV(){
+  let csv = '﻿類型,時間,暱稱,項目,結果\n';
+  Object.entries(voteData).forEach(([k,v]) => {
+    csv += `投票統計,${window.SESSION},,${k},${v}\n`;
+  });
+  matchData.slice().sort((a,b)=>a.ts-b.ts).forEach(m => {
+    csv += `配對遊戲,${m.ts.toISOString()},${m.nickname||''},得分,${m.score}/7 (${m.duration}秒)\n`;
+  });
+  dtData.slice().sort((a,b)=>a.ts-b.ts).forEach(d => {
+    csv += `餐盤設計師,${d.ts.toISOString()},${d.nickname||''},選擇,${d.path} → ${d.result}\n`;
+  });
+  download(csv, `班級紀錄_${window.SESSION}_${stamp()}.csv`, 'text/csv;charset=utf-8');
+}
+function copyJSON(){
+  const data = { session: window.SESSION, votes: voteData, matches: matchData, decisions: dtData, exportedAt: new Date().toISOString() };
+  const txt = JSON.stringify(data, null, 2);
+  navigator.clipboard.writeText(txt).then(() => toast('✅ JSON 已複製')).catch(() => prompt('請手動複製', txt));
+}
+function exportText(){
+  let txt = '=== 班級互動紀錄 ===\n';
+  txt += '課程：蛋白質的未來餐桌\n';
+  txt += '課堂代碼：' + window.SESSION + '\n';
+  txt += '匯出時間：' + new Date().toLocaleString('zh-TW') + '\n\n';
+  txt += '--- 熱身投票 ---\n';
+  const total = Object.values(voteData).reduce((a,b)=>a+b,0);
+  Object.entries(voteData).forEach(([k,v]) => {
+    const pct = total > 0 ? ((v/total)*100).toFixed(1) : 0;
+    txt += `  ${k}：${v} 票 (${pct}%)\n`;
+  });
+  txt += `  總投票數：${total}\n\n`;
+  txt += '--- 配對遊戲 ---\n';
+  if(matchData.length === 0) txt += '  尚無紀錄\n';
+  else matchData.slice().sort((a,b)=>a.ts-b.ts).forEach((m,i) => {
+    txt += `  ${i+1}. [${m.ts.toLocaleString('zh-TW')}] ${m.nickname||'匿名'} - ${m.score}/7 (${m.duration}秒)\n`;
+  });
+  txt += '\n--- 餐盤設計師 ---\n';
+  if(dtData.length === 0) txt += '  尚無紀錄\n';
+  else dtData.slice().sort((a,b)=>a.ts-b.ts).forEach((d,i) => {
+    txt += `  ${i+1}. [${d.ts.toLocaleString('zh-TW')}] ${d.nickname||'匿名'} - ${d.path} → ${d.result}\n`;
+  });
+  download(txt, `班級報告_${window.SESSION}_${stamp()}.txt`, 'text/plain;charset=utf-8');
+}
+function download(content, filename, mime){
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+function stamp(){ return new Date().toISOString().slice(0,16).replace(/[:T]/g,'-'); }
+window.exportCSV = exportCSV;
+window.copyJSON = copyJSON;
+window.exportText = exportText;
+
+/* =================== Chart.js =================== */
+Chart.defaults.color = '#b8c5e0';
+Chart.defaults.font.family = "'Noto Sans TC', system-ui";
+Chart.defaults.borderColor = 'rgba(184,197,224,0.08)';
+
+function initGrowthChart(){
+  const ctx = document.getElementById('growthChart');
+  if(!ctx) return;
+  new Chart(ctx, {
+    type:'line',
+    data:{
+      labels:['2015','2016','2017','2018','2019'],
+      datasets:[{
+        label:'植物蛋白新品數（指數）',
+        data:[100, 148, 219, 324, 480],
+        borderColor:'#00d4ff',
+        backgroundColor:'rgba(0,212,255,0.15)',
+        borderWidth:3, tension:0.35, pointRadius:6,
+        pointBackgroundColor:'#ff006e', pointBorderColor:'#fff', pointBorderWidth:2,
+        fill:true
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ labels:{ font:{size:13} } } },
+      scales:{
+        y:{ grid:{ color:'rgba(184,197,224,0.05)' } },
+        x:{ grid:{ color:'rgba(184,197,224,0.05)' } }
+      }
+    }
+  });
+}
+function initBeanChart(){
+  const ctx = document.getElementById('beanChart');
+  if(!ctx) return;
+  new Chart(ctx, {
+    type:'doughnut',
+    data:{
+      labels:['豌豆 27%','鷹嘴豆 10%','鷹嘴豆粉 6%','綠豆 6%','扁豆 5%','其他 46%'],
+      datasets:[{
+        data:[27,10,6,6,5,46],
+        backgroundColor:['#00d4ff','#ff006e','#ffb800','#00ff9d','#a855f7','#3a4570'],
+        borderColor:'#0a0e27', borderWidth:3
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ padding:14, font:{size:12} } } },
+      cutout:'62%'
+    }
+  });
+}
+
+// 初始畫面
+renderVotes();
+renderMatches();
+renderDecisions();
+</script>
+
+</body>
+</html>

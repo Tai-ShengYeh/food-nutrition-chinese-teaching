@@ -1,0 +1,689 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>替代蛋白課堂互動 ｜ 大學生端</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#f5f1e8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&family=Crimson+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: #f5f1e8;
+  --bg-2: #ede7d6;
+  --bg-3: #faf6ed;
+  --ink: #1a1714;
+  --ink-2: #4a3f35;
+  --ink-3: #7a6b5d;
+  --ink-4: #b8a890;
+  --accent: #8b1a1a;
+  --accent-2: #2d5a3d;
+  --accent-3: #b8860b;
+  --line: #d4c8b3;
+  --card: #fffdf7;
+  --card-border: #d4c8b3;
+  --shadow: 0 1px 3px rgba(74,63,53,0.08), 0 4px 12px rgba(74,63,53,0.04);
+}
+*{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+body{
+  font-family:'Noto Sans TC', system-ui, sans-serif;
+  background:var(--bg); color:var(--ink);
+  min-height:100vh; padding-bottom:60px;
+}
+.container{ max-width:540px; margin:0 auto; padding:0 14px; }
+
+/* 頂部 */
+.topbar{
+  position:sticky; top:0; z-index:10;
+  background:rgba(245,241,232,0.95);
+  backdrop-filter:blur(10px);
+  padding:14px 16px;
+  border-bottom:1px solid var(--card-border);
+}
+.brand{
+  font-family:'Noto Serif TC', serif;
+  font-size:1.05rem; font-weight:900;
+  color:var(--accent);
+  margin-bottom:4px;
+}
+.session-tag{
+  display:inline-block;
+  font-family:'JetBrains Mono', monospace;
+  font-size:.7rem; color:var(--ink-3);
+  background:var(--card);
+  border:1px solid var(--card-border);
+  padding:3px 9px; border-radius:4px;
+}
+
+/* 暱稱卡 */
+.nickname-card{
+  margin:14px 16px; padding:14px 16px;
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:6px;
+  display:flex; align-items:center; gap:10px;
+  box-shadow:var(--shadow);
+}
+.nickname-card label{ font-size:.85rem; color:var(--ink-2); white-space:nowrap; }
+.nickname-card input{
+  flex:1; background:transparent; border:none;
+  border-bottom:1px solid var(--ink-4);
+  color:var(--ink); font-family:inherit;
+  font-size:1rem; padding:6px 4px; outline:none;
+}
+.nickname-card input:focus{ border-bottom-color:var(--accent); }
+.nickname-card input::placeholder{ color:var(--ink-4); }
+.nickname-card .hint{
+  font-family:'Crimson Pro', serif; font-style:italic;
+  font-size:.72rem; color:var(--ink-3);
+}
+
+/* 區塊卡片 */
+.section-card{
+  margin:0 16px 16px;
+  padding:18px 16px 20px;
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:8px;
+  box-shadow:var(--shadow);
+}
+.section-card.locked{ opacity:.55; pointer-events:none; }
+.section-card h2{
+  font-family:'Noto Serif TC', serif;
+  font-size:1.15rem; font-weight:900; margin-bottom:4px;
+  display:flex; align-items:center; gap:8px;
+  color:var(--ink);
+}
+.section-card h2 .kicker{
+  font-family:'Crimson Pro', serif; font-style:italic;
+  font-size:.78rem; color:var(--accent);
+  letter-spacing:.05em; font-weight:400;
+}
+.section-card .sub{
+  font-size:.82rem; color:var(--ink-3);
+  margin-bottom:14px; line-height:1.55;
+}
+
+/* 投票按鈕 */
+.vote-row{
+  display:grid; grid-template-columns:1fr 1fr; gap:10px;
+}
+.vote-row .vote-btn{
+  background:var(--bg-3);
+  border:2px solid var(--card-border);
+  border-radius:6px; padding:14px 10px;
+  color:var(--ink); font-family:inherit;
+  cursor:pointer; transition:all .2s;
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  font-size:.92rem; font-weight:700;
+  text-align:center;
+}
+.vote-row .vote-btn .price{
+  font-family:'Crimson Pro', serif; color:var(--accent);
+  font-size:1.05rem; font-weight:700;
+}
+.vote-row .vote-btn.full{ grid-column: span 2; }
+.vote-row .vote-btn:active{ transform:scale(.97); }
+.vote-row .vote-btn.selected{
+  background:var(--accent); color:#fff; border-color:var(--accent);
+}
+.vote-row .vote-btn.selected .price{ color:#fff; }
+.vote-done{
+  margin-top:10px; padding:8px;
+  text-align:center; color:var(--accent-2);
+  background:rgba(45,90,61,0.08); border-radius:4px;
+  font-size:.85rem; font-weight:500;
+}
+
+/* 配對遊戲 */
+.match-status{
+  display:flex; justify-content:space-between;
+  font-family:'JetBrains Mono', monospace;
+  font-size:.82rem; color:var(--ink-2);
+  background:var(--bg-2); padding:8px 12px;
+  border-radius:4px; margin-bottom:10px;
+}
+.match-q{
+  font-family:'Noto Serif TC', serif; font-weight:700;
+  font-size:1.05rem; color:var(--ink);
+  text-align:center; padding:14px 0;
+}
+.match-q .word{
+  color:var(--accent); font-size:1.3rem;
+  display:block; margin-top:4px;
+}
+.match-options{
+  display:grid; grid-template-columns:1fr; gap:8px;
+}
+.match-opt{
+  background:var(--bg-3); border:2px solid var(--card-border);
+  border-radius:6px; padding:14px 16px;
+  text-align:left; cursor:pointer;
+  font-family:inherit; font-size:.92rem;
+  color:var(--ink); transition:all .2s;
+}
+.match-opt:active{ transform:scale(.98); }
+.match-opt.correct{
+  border-color:var(--accent-2); background:rgba(45,90,61,0.08);
+}
+.match-opt.wrong{
+  border-color:var(--accent); background:rgba(139,26,26,0.08);
+}
+.match-feedback{
+  text-align:center; padding:10px;
+  font-family:'Noto Serif TC', serif; font-weight:700;
+  font-size:1rem;
+}
+.match-feedback.correct{ color:var(--accent-2); }
+.match-feedback.wrong{ color:var(--accent); }
+.match-result{
+  text-align:center; padding:24px 0;
+}
+.match-result .score{
+  font-family:'Crimson Pro', serif; font-weight:700;
+  font-size:3rem; color:var(--accent);
+}
+.match-result .meta{
+  font-size:.92rem; color:var(--ink-3); margin-top:4px;
+}
+.match-start-btn, .match-retry-btn{
+  display:block; width:100%; margin-top:14px;
+  padding:13px; background:var(--accent); color:#fff;
+  border:none; border-radius:6px;
+  font-family:inherit; font-weight:700;
+  font-size:1rem; cursor:pointer;
+}
+.match-start-btn:active, .match-retry-btn:active{ background:var(--ink); }
+
+/* 決策樹 */
+.dt-question{
+  font-family:'Noto Serif TC', serif; font-weight:700;
+  font-size:1.1rem; color:var(--ink);
+  text-align:center; padding:14px 0;
+  line-height:1.5;
+}
+.dt-tag{
+  font-family:'JetBrains Mono', monospace; font-size:.72rem;
+  color:var(--accent); text-align:center;
+  letter-spacing:.1em; margin-bottom:6px;
+}
+.dt-choices{
+  display:grid; grid-template-columns:1fr; gap:10px;
+}
+.dt-choice-btn{
+  background:var(--bg-3); border:2px solid var(--card-border);
+  border-radius:6px; padding:16px 18px;
+  text-align:left; cursor:pointer;
+  font-family:inherit; transition:all .2s;
+  color:var(--ink);
+}
+.dt-choice-btn:active{ transform:scale(.98); }
+.dt-choice-btn .opt-label{
+  font-family:'Crimson Pro', serif; font-weight:700;
+  color:var(--accent); margin-right:8px;
+}
+.dt-choice-btn .opt-title{
+  font-family:'Noto Serif TC', serif; font-weight:700;
+  font-size:1rem;
+}
+.dt-choice-btn .opt-desc{
+  font-size:.82rem; color:var(--ink-3);
+  margin-top:6px; line-height:1.5;
+}
+.dt-result-card{
+  background:var(--bg-2); border:2px solid var(--accent);
+  border-radius:8px; padding:22px 18px; text-align:center;
+}
+.dt-result-card .result-title{
+  font-family:'Noto Serif TC', serif; font-weight:900;
+  font-size:1.6rem; color:var(--accent); margin-bottom:6px;
+}
+.dt-result-card .result-desc{
+  font-size:.92rem; color:var(--ink-2); line-height:1.6;
+}
+
+/* 完成卡 */
+.done-card{
+  margin:20px 16px; padding:18px;
+  background:var(--bg-2); border:1px solid var(--card-border);
+  border-radius:6px; text-align:center;
+}
+.done-card h3{
+  font-family:'Noto Serif TC', serif; color:var(--accent);
+  font-size:1.1rem; margin-bottom:6px;
+}
+.done-card p{ font-size:.85rem; color:var(--ink-2); }
+
+.toast{
+  position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+  background:var(--ink); color:#fff;
+  padding:10px 18px; border-radius:6px;
+  font-size:.88rem; box-shadow:0 6px 20px rgba(0,0,0,0.2);
+  z-index:1000; opacity:0; transition:opacity .3s;
+  pointer-events:none;
+}
+.toast.show{ opacity:1; }
+.toast.err{ background:var(--accent); }
+.toast.ok{ background:var(--accent-2); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">📖 食品營養華語文獻閱讀 ｜ 大學組</div>
+  <span class="session-tag">課堂代碼：<span id="sessionTag">—</span></span>
+</div>
+
+<div class="container">
+  <!-- 暱稱 -->
+  <div class="nickname-card">
+    <label>暱稱</label>
+    <input type="text" id="nickInput" placeholder="（選填，可匿名）" maxlength="20">
+    <span class="hint">不填會顯示「匿名」</span>
+  </div>
+
+  <!-- 站 1：投票 -->
+  <div class="section-card" id="sec1">
+    <h2>🗳️ 第 1 站 <span class="kicker">願付溢價投票</span></h2>
+    <p class="sub">假設一般便當 100 元，替代蛋白便當你願意多付多少？</p>
+    <div class="vote-row">
+      <button class="vote-btn" data-opt="不買">不買</button>
+      <button class="vote-btn" data-opt="+10%">+10%<span class="price">110元</span></button>
+      <button class="vote-btn" data-opt="+30%">+30%<span class="price">130元</span></button>
+      <button class="vote-btn" data-opt="+50%">+50%<span class="price">150元</span></button>
+      <button class="vote-btn full" data-opt="任何價">任何價都買</button>
+    </div>
+    <div class="vote-done" id="voteDone" style="display:none;">✓ 已投票，謝謝！</div>
+  </div>
+
+  <!-- 站 2：配對遊戲 -->
+  <div class="section-card" id="sec2">
+    <h2>🎯 第 2 站 <span class="kicker">詞彙配對 8 題</span></h2>
+    <p class="sub">把中文詞彙跟正確概念配對。時間越快、得分越高，排行榜上見！</p>
+    <div id="matchIntro">
+      <button class="match-start-btn" onclick="startMatch()">開始挑戰</button>
+    </div>
+    <div id="matchGame" style="display:none;">
+      <div class="match-status">
+        <span id="matchProgress">第 1 / 8 題</span>
+        <span id="matchTimer">00:00</span>
+      </div>
+      <div class="match-q">將下列詞彙配對到正確概念：<span class="word" id="matchWord"></span></div>
+      <div class="match-options" id="matchOptions"></div>
+      <div class="match-feedback" id="matchFeedback" style="display:none;"></div>
+    </div>
+    <div id="matchResult" style="display:none;">
+      <div class="match-result">
+        <div class="score" id="matchScore">0/8</div>
+        <div class="meta">用時 <span id="matchTime">0</span> 秒</div>
+      </div>
+      <button class="match-retry-btn" onclick="startMatch()">再玩一次</button>
+    </div>
+  </div>
+
+  <!-- 站 3：決策樹 -->
+  <div class="section-card" id="sec3">
+    <h2>🧭 第 3 站 <span class="kicker">政策決策樹</span></h2>
+    <p class="sub">3 題二選一，看你會推哪條政策路徑。沒有對錯，只看價值取向。</p>
+    <div id="dtIntro">
+      <button class="match-start-btn" onclick="startDt()">開始作答</button>
+    </div>
+    <div id="dtGame" style="display:none;">
+      <div class="dt-tag">第 <span id="dtStep">1</span> / 3 題</div>
+      <div class="dt-question" id="dtQuestion"></div>
+      <div class="dt-choices" id="dtChoices"></div>
+    </div>
+    <div id="dtResult" style="display:none;">
+      <div class="dt-result-card">
+        <div class="result-title" id="dtResultTitle"></div>
+        <div class="result-desc" id="dtResultDesc"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="done-card" id="doneCard" style="display:none;">
+    <h3>✓ 三站全部完成</h3>
+    <p>你的紀錄已即時上傳到老師畫面 🎉 ｜ 老師有引導後續討論</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "",
+  authDomain: "my-teaching-tools-517a0.firebaseapp.com",
+  projectId: "my-teaching-tools-517a0",
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* ===== Supabase 雙寫整合（2026-05-25 加） ===== */
+const SB_URL = 'https://qmldcjkllisvfgegkfsz.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbGRjamtsbGlzdmZnZWdrZnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMjM5ODYsImV4cCI6MjA4NjY5OTk4Nn0.Bfj0W7HN_n_vcjGe5502Chamk0YV-de8a0fxF4Nyczk';
+const COURSE_CODE = 'altprot-uni';
+
+function deriveStudentId(nickname, session) {
+  if (!nickname || !nickname.trim()) {
+    return 'AU-anon-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+  }
+  let h = 0;
+  const s = session + ':' + nickname.trim();
+  for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+  return 'AU-' + Math.abs(h).toString(36).toUpperCase().substring(0, 8);
+}
+
+async function sbWrite({ gameId, gameName, score, wrong, total, durationMs, meta, nickname, session }) {
+  const row = {
+    course_code:  COURSE_CODE,
+    session_id:   session,
+    student_id:   deriveStudentId(nickname, session),
+    student_name: (nickname || '').trim(),
+    game_id:      gameId,
+    game_name:    gameName,
+    score:        Number(score) || 0,
+    wrong:        Number(wrong) || 0,
+    total:        Number(total) || 0,
+    duration_ms:  Number(durationMs) || 0,
+    client_meta:  { ua: navigator.userAgent.substring(0, 80), ...(meta || {}) }
+  };
+  try {
+    const res = await fetch(SB_URL + '/rest/v1/interactions', {
+      method: 'POST',
+      headers: {
+        'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY,
+        'Content-Type': 'application/json', 'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(row)
+    });
+    if (!res.ok) console.warn('[Supabase]', res.status, await res.text());
+  } catch (e) { console.warn('[Supabase] write fail:', e); }
+}
+
+/* ===== Session 解析 ===== */
+function parseSession(){
+  const url = new URL(location.href);
+  let s = url.searchParams.get('session');
+  if(!s){
+    const m = location.pathname.match(/\/s\/(.+)$/);
+    if(m) s = decodeURIComponent(m[1]);
+  }
+  if(!s){
+    const d = new Date();
+    s = 'uni_' + d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0') + 'alt';
+  }
+  return s.slice(0, 40);
+}
+const SESSION = parseSession();
+document.getElementById('sessionTag').textContent = SESSION;
+
+/* ===== 暱稱記憶 ===== */
+const nickInput = document.getElementById('nickInput');
+nickInput.value = localStorage.getItem('uniNick') || '';
+nickInput.addEventListener('input', () => {
+  localStorage.setItem('uniNick', nickInput.value.trim().slice(0, 20));
+});
+function getNick(){ return nickInput.value.trim().slice(0, 20); }
+
+/* ===== Toast ===== */
+function toast(msg, kind){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (kind ? ' '+kind : '');
+  clearTimeout(window._toastT);
+  window._toastT = setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+/* ===== 完成檢查 ===== */
+function checkAllDone(){
+  const v = localStorage.getItem('uniVote_' + SESSION);
+  const m = localStorage.getItem('uniMatch_' + SESSION);
+  const d = localStorage.getItem('uniDt_' + SESSION);
+  if(v && m && d){
+    document.getElementById('doneCard').style.display = 'block';
+  }
+}
+
+/* ============= 站 1：投票 ============= */
+const votedKey = 'uniVote_' + SESSION;
+if(localStorage.getItem(votedKey)){
+  document.querySelectorAll('.vote-btn').forEach(b => {
+    if(b.dataset.opt === localStorage.getItem(votedKey)) b.classList.add('selected');
+    b.disabled = true;
+  });
+  document.getElementById('voteDone').style.display = 'block';
+}
+document.querySelectorAll('.vote-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    if(localStorage.getItem(votedKey)){
+      toast('你已經投過這場了，重新整理也不會重複', 'err'); return;
+    }
+    document.querySelectorAll('.vote-btn').forEach(b => b.disabled = true);
+    btn.classList.add('selected');
+    try{
+      await addDoc(collection(db, 'altprot_uni_votes'), {
+        session: SESSION,
+        choice: btn.dataset.opt,
+        nickname: getNick(),
+        timestamp: serverTimestamp(),
+      });
+      await sbWrite({
+        gameId: 'altprot_uni_vote', gameName: '替代蛋白投票',
+        score: 0, wrong: 0, total: 1, durationMs: 0,
+        meta: { choice: btn.dataset.opt },
+        nickname: getNick(), session: SESSION
+      });
+      localStorage.setItem(votedKey, btn.dataset.opt);
+      document.getElementById('voteDone').style.display = 'block';
+      toast('已送出投票 ✓', 'ok');
+      checkAllDone();
+    } catch(e){
+      console.error(e);
+      toast('上傳失敗，請檢查網路', 'err');
+      document.querySelectorAll('.vote-btn').forEach(b => b.disabled = false);
+      btn.classList.remove('selected');
+    }
+  });
+});
+
+/* ============= 站 2：配對遊戲 ============= */
+const MATCH_QS = [
+  { word: '估值崩盤', opts: ['Beyond Meat 股價跌 95%', '替代蛋白創新', '碳中和標籤', '消費者教育'], correct: 0 },
+  { word: 'LCA',     opts: ['遊說團體', '碳足跡量化', '蛋白質含量', '基因改造'], correct: 1 },
+  { word: '必需胺基酸', opts: ['7 種', '9 種', '12 種', '15 種'], correct: 1 },
+  { word: '戰略轉型', opts: ['全面退場', '機能蛋白飲新定位', '降低售價', '進攻歐洲市場'], correct: 1 },
+  { word: 'Carbon Neutral', opts: ['完全零碳排', '可購買碳權抵銷', '禁用化石燃料', '只計算交通碳排'], correct: 1 },
+  { word: '黃粉蟲', opts: ['不完整蛋白', '完整蛋白質', '低蛋白來源', '只能當動物飼料'], correct: 1 },
+  { word: '韌性', opts: ['Sustainability', 'Resilience', 'Resistance', 'Reliability'], correct: 1 },
+  { word: '溢價', opts: ['Discount', 'Subsidy', 'Willingness to Pay', 'Wholesale'], correct: 2 },
+];
+
+let matchState = null;
+window.startMatch = function(){
+  matchState = {
+    qIndex: 0,
+    score: 0,
+    startTime: Date.now(),
+    questions: MATCH_QS.slice().sort(() => Math.random() - 0.5).slice(0, 8),
+  };
+  document.getElementById('matchIntro').style.display = 'none';
+  document.getElementById('matchResult').style.display = 'none';
+  document.getElementById('matchGame').style.display = 'block';
+  document.getElementById('matchFeedback').style.display = 'none';
+  renderMatchQ();
+  matchTimerStart();
+};
+function matchTimerStart(){
+  clearInterval(window._matchT);
+  window._matchT = setInterval(() => {
+    if(!matchState) return;
+    const sec = Math.floor((Date.now() - matchState.startTime)/1000);
+    document.getElementById('matchTimer').textContent =
+      String(Math.floor(sec/60)).padStart(2,'0') + ':' + String(sec%60).padStart(2,'0');
+  }, 500);
+}
+function renderMatchQ(){
+  const q = matchState.questions[matchState.qIndex];
+  document.getElementById('matchProgress').textContent = `第 ${matchState.qIndex+1} / 8 題`;
+  document.getElementById('matchWord').textContent = q.word;
+  const opts = q.opts.map((o, i) =>
+    `<button class="match-opt" data-i="${i}" onclick="answerMatch(${i})">${o}</button>`
+  ).join('');
+  document.getElementById('matchOptions').innerHTML = opts;
+  document.getElementById('matchFeedback').style.display = 'none';
+}
+window.answerMatch = function(i){
+  const q = matchState.questions[matchState.qIndex];
+  const btns = document.querySelectorAll('.match-opt');
+  btns.forEach(b => b.style.pointerEvents = 'none');
+  if(i === q.correct){
+    matchState.score++;
+    btns[i].classList.add('correct');
+    document.getElementById('matchFeedback').textContent = '✓ 答對！';
+    document.getElementById('matchFeedback').className = 'match-feedback correct';
+  } else {
+    btns[i].classList.add('wrong');
+    btns[q.correct].classList.add('correct');
+    document.getElementById('matchFeedback').textContent = '✗ 答錯，正解：' + q.opts[q.correct];
+    document.getElementById('matchFeedback').className = 'match-feedback wrong';
+  }
+  document.getElementById('matchFeedback').style.display = 'block';
+  setTimeout(() => {
+    matchState.qIndex++;
+    if(matchState.qIndex >= 8) finishMatch();
+    else renderMatchQ();
+  }, 1200);
+};
+async function finishMatch(){
+  clearInterval(window._matchT);
+  const duration = Math.floor((Date.now() - matchState.startTime)/1000);
+  document.getElementById('matchGame').style.display = 'none';
+  document.getElementById('matchResult').style.display = 'block';
+  document.getElementById('matchScore').textContent = matchState.score + '/8';
+  document.getElementById('matchTime').textContent = duration;
+  try{
+    await addDoc(collection(db, 'altprot_uni_matches'), {
+      session: SESSION,
+      nickname: getNick(),
+      score: matchState.score,
+      duration,
+      timestamp: serverTimestamp(),
+    });
+    await sbWrite({
+      gameId: 'altprot_uni_match', gameName: '配對遊戲',
+      score: Math.round(matchState.score / 8 * 100),
+      wrong: 8 - matchState.score, total: 8,
+      durationMs: duration * 1000,
+      meta: { raw_score_over_8: matchState.score },
+      nickname: getNick(), session: SESSION
+    });
+    localStorage.setItem('uniMatch_' + SESSION, matchState.score + '/' + duration);
+    toast('成績已上傳 ✓', 'ok');
+    checkAllDone();
+  } catch(e){
+    console.error(e);
+    toast('成績上傳失敗', 'err');
+  }
+}
+
+/* ============= 站 3：政策決策樹 ============= */
+const DT_QS = [
+  {
+    q: '替代蛋白該由誰主導推廣？',
+    opts: [
+      { label: 'A', title: '政府用稅收與補貼引導', desc: '把外部成本內部化或扶植新技術' },
+      { label: 'B', title: '由市場與消費者選擇', desc: '讓供需與品牌競爭決定' },
+    ],
+  },
+  {
+    q: '面對植物肉用「肉」字爭議，你的立場？',
+    opts: [
+      { label: 'A', title: '應明文管制標示', desc: '消費者保護優先' },
+      { label: 'B', title: '由業者自律即可', desc: '消費者具判斷力，標示自由' },
+    ],
+  },
+  {
+    q: '產業升級的關鍵在？',
+    opts: [
+      { label: 'A', title: '集中資源攻一個面向', desc: '碳稅 / 補貼 / 標示 / 投資 之中擇一深耕' },
+      { label: 'B', title: '從教育與素養紮根', desc: '讓下一代有能力自己判斷' },
+    ],
+  },
+];
+
+// 八種路徑映射到六派別（path = 3 字 e.g. "AAB"）
+const DT_RESULTS = {
+  'AAA': { name: '碳稅派', desc: '你相信制度設計能引導好的食物選擇。建議追蹤：碳邊境調整機制(CBAM)、各國碳稅進展。' },
+  'AAB': { name: '標示派', desc: '你重視消費者知情權與規範力量。建議追蹤：FDA / EFSA / 食藥署 標示新規。' },
+  'ABA': { name: '補貼派', desc: '你支持公共資源加速創新。建議追蹤：新加坡 Future Foods Fund、Horizon Europe 案例。' },
+  'ABB': { name: '教育派', desc: '你認為先養出有素養的消費者，才有真正的市場。建議追蹤：飲食教育法、學校午餐改革。' },
+  'BAA': { name: '投資派', desc: '你看好市場機制配上資本帶動產業躍升。建議追蹤：a16z、Temasek 替代蛋白投資組合。' },
+  'BAB': { name: '標示派', desc: '即便偏自由市場，你仍認為標示是底線。建議追蹤：plant-based labeling 法案進度。' },
+  'BBA': { name: '自由市場派', desc: '你相信競爭會帶來最佳產品。建議追蹤：替代蛋白零售價變化、市場滲透率。' },
+  'BBB': { name: '教育派', desc: '不靠規範、不靠補貼，靠下一代的判斷力。建議追蹤：食農教育、媒體素養課程。' },
+};
+
+let dtState = null;
+window.startDt = function(){
+  dtState = { step: 0, path: '' };
+  document.getElementById('dtIntro').style.display = 'none';
+  document.getElementById('dtResult').style.display = 'none';
+  document.getElementById('dtGame').style.display = 'block';
+  renderDtQ();
+};
+function renderDtQ(){
+  const q = DT_QS[dtState.step];
+  document.getElementById('dtStep').textContent = dtState.step + 1;
+  document.getElementById('dtQuestion').textContent = q.q;
+  const html = q.opts.map(o =>
+    `<button class="dt-choice-btn" onclick="answerDt('${o.label}')">
+      <span class="opt-label">${o.label}.</span><span class="opt-title">${o.title}</span>
+      <div class="opt-desc">${o.desc}</div>
+    </button>`
+  ).join('');
+  document.getElementById('dtChoices').innerHTML = html;
+}
+window.answerDt = function(label){
+  dtState.path += label;
+  dtState.step++;
+  if(dtState.step >= 3) finishDt();
+  else renderDtQ();
+};
+async function finishDt(){
+  const result = DT_RESULTS[dtState.path] || { name: '混合派', desc: '你的選擇橫跨多種路徑。' };
+  document.getElementById('dtGame').style.display = 'none';
+  document.getElementById('dtResult').style.display = 'block';
+  document.getElementById('dtResultTitle').textContent = result.name;
+  document.getElementById('dtResultDesc').textContent = result.desc;
+  try{
+    await addDoc(collection(db, 'altprot_uni_decisions'), {
+      session: SESSION,
+      nickname: getNick(),
+      path: dtState.path,
+      result: result.name,
+      timestamp: serverTimestamp(),
+    });
+    await sbWrite({
+      gameId: 'altprot_uni_decision', gameName: '決策樹',
+      score: 0, wrong: 0, total: 1, durationMs: 0,
+      meta: { path: dtState.path, result: result.name },
+      nickname: getNick(), session: SESSION
+    });
+    localStorage.setItem('uniDt_' + SESSION, dtState.path + ':' + result.name);
+    toast('已上傳 ✓', 'ok');
+    checkAllDone();
+  } catch(e){
+    console.error(e);
+    toast('上傳失敗', 'err');
+  }
+}
+
+checkAllDone();
+</script>
+
+</body>
+</html>

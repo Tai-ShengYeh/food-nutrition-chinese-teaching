@@ -1,0 +1,618 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>蛋白質的未來餐桌 ｜ 學生端</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0a0e27">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0e27; --bg-2:#11163a; --bg-3:#1a2050;
+  --ink:#eef3ff; --ink-2:#b8c5e0; --ink-3:#7a8bb8; --ink-4:#4a5680;
+  --accent:#00d4ff; --accent-2:#ff006e;
+  --accent-3:#ffb800; --green:#00ff9d;
+  --card-bg: rgba(255,255,255,0.06);
+  --card-border: rgba(0,212,255,0.22);
+}
+*{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+body{
+  font-family:'Noto Sans TC', system-ui, sans-serif;
+  background:var(--bg); color:var(--ink);
+  min-height:100vh; padding-bottom:40px;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(0,212,255,0.12), transparent 50%),
+    radial-gradient(circle at 80% 100%, rgba(255,0,110,0.10), transparent 50%),
+    #0a0e27;
+}
+
+.container{ max-width:520px; margin:0 auto; padding:0 16px; }
+
+/* 頂部 */
+.topbar{
+  position:sticky; top:0; z-index:10;
+  background:rgba(10,14,39,0.85);
+  backdrop-filter:blur(14px);
+  padding:14px 16px;
+  border-bottom:1px solid var(--card-border);
+}
+.brand{
+  font-size:1.05rem; font-weight:900;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  margin-bottom:4px;
+}
+.session-tag{
+  display:inline-block;
+  font-family:'JetBrains Mono', monospace;
+  font-size:.7rem; color:var(--ink-3);
+  background:rgba(0,212,255,0.08);
+  border:1px solid var(--card-border);
+  padding:2px 8px; border-radius:50px;
+}
+
+/* 暱稱卡 */
+.nickname-card{
+  margin:14px 16px; padding:14px 16px;
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:14px;
+  display:flex; align-items:center; gap:10px;
+}
+.nickname-card label{ font-size:.85rem; color:var(--ink-2); white-space:nowrap; }
+.nickname-card input{
+  flex:1; background:transparent; border:none;
+  border-bottom:1px solid var(--ink-4);
+  color:var(--ink); font-family:inherit;
+  font-size:1rem; padding:6px 4px; outline:none;
+}
+.nickname-card input:focus{ border-bottom-color:var(--accent); }
+.nickname-card input::placeholder{ color:var(--ink-4); }
+.nickname-card .hint{ font-size:.7rem; color:var(--ink-4); }
+
+/* 區塊卡片 */
+.section-card{
+  margin:0 16px 16px;
+  padding:18px 16px 20px;
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:18px;
+}
+.section-card h2{
+  font-size:1.15rem; font-weight:900; margin-bottom:6px;
+  display:flex; align-items:center; gap:8px;
+}
+.section-card .sub{ font-size:.82rem; color:var(--ink-3); margin-bottom:14px; line-height:1.5; }
+
+/* 投票按鈕 */
+.vote-row{
+  display:grid; grid-template-columns:1fr 1fr; gap:10px;
+}
+.vote-row .vote-btn{
+  background:rgba(255,255,255,0.03);
+  border:2px solid var(--card-border);
+  border-radius:14px; padding:14px 10px;
+  color:var(--ink); font-family:inherit;
+  cursor:pointer; transition:all .2s;
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  font-size:.95rem; font-weight:700;
+}
+.vote-row .vote-btn .em{ font-size:1.8rem; }
+.vote-row .vote-btn:active{ transform:scale(.97); }
+.vote-row .vote-btn.selected{
+  border-color:var(--accent-2);
+  background:rgba(255,0,110,0.12);
+  box-shadow:0 0 24px rgba(255,0,110,0.25);
+}
+.vote-row .vote-btn.selected::after{
+  content:'✓ 已送出'; font-size:.7rem; color:var(--accent-2); margin-top:2px;
+}
+.vote-row.full{ grid-column:span 2; }
+.vote-btn.wide{ grid-column:span 2; }
+
+/* 配對 quiz */
+.quiz-q{
+  font-size:1.05rem; font-weight:700; margin-bottom:14px;
+  padding:12px 14px;
+  background:rgba(0,212,255,0.06);
+  border-left:3px solid var(--accent);
+  border-radius:0 10px 10px 0;
+}
+.quiz-q .num{
+  display:inline-block; min-width:28px; height:28px;
+  border-radius:50%; background:var(--accent); color:#0a0e27;
+  text-align:center; line-height:28px; margin-right:10px;
+  font-family:'JetBrains Mono', monospace; font-size:.85rem;
+}
+.quiz-choices{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:18px; }
+.quiz-choice{
+  padding:14px 6px; background:rgba(255,255,255,0.03);
+  border:2px solid var(--card-border); border-radius:12px;
+  color:var(--ink); font-family:inherit; font-size:.9rem;
+  cursor:pointer; transition:all .2s; font-weight:700;
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+}
+.quiz-choice .em{ font-size:1.6rem; }
+.quiz-choice:active{ transform:scale(.96); }
+.quiz-choice.right{
+  border-color:var(--green); background:rgba(0,255,157,0.12);
+  color:var(--green);
+}
+.quiz-choice.wrong{
+  border-color:var(--accent-2); background:rgba(255,0,110,0.12);
+  color:var(--accent-2);
+}
+.quiz-progress{
+  height:6px; background:rgba(255,255,255,0.05); border-radius:50px;
+  margin:14px 0 16px; overflow:hidden;
+}
+.quiz-progress-bar{
+  height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  width:0%; transition:width .4s;
+}
+.quiz-status{ display:flex; justify-content:space-between; font-size:.8rem; color:var(--ink-3); margin-bottom:8px; font-family:'JetBrains Mono', monospace; }
+
+/* 完成卡 */
+.done-card{
+  text-align:center; padding:24px;
+  background:linear-gradient(135deg, rgba(0,212,255,0.1), rgba(255,0,110,0.08));
+  border-color:var(--accent);
+  display:none;
+}
+.done-card.show{ display:block; }
+.done-card .em{ font-size:3rem; display:block; margin-bottom:8px; }
+.done-card h3{ font-size:1.3rem; margin-bottom:8px; }
+.done-card .v{
+  font-family:'JetBrains Mono', monospace;
+  font-size:1.6rem; font-weight:900;
+  color:var(--accent); margin:8px 0;
+}
+.done-card .desc{ font-size:.9rem; color:var(--ink-2); line-height:1.6; }
+.btn-secondary{
+  margin-top:14px; padding:10px 20px;
+  background:transparent; border:1px solid var(--accent);
+  color:var(--accent); border-radius:50px;
+  font-family:inherit; font-size:.9rem; cursor:pointer;
+}
+
+/* 決策題 */
+.dt-step-info{
+  text-align:center; font-family:'JetBrains Mono', monospace;
+  font-size:.78rem; color:var(--accent); letter-spacing:.18em;
+  margin-bottom:10px;
+}
+.dt-question{
+  text-align:center; font-size:1.15rem; font-weight:700;
+  margin-bottom:18px;
+}
+.dt-options{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.dt-option{
+  padding:18px 12px; text-align:center;
+  background:rgba(255,255,255,0.03);
+  border:2px solid var(--card-border);
+  border-radius:14px; cursor:pointer; transition:all .2s;
+  color:var(--ink); font-family:inherit;
+}
+.dt-option:active{ transform:scale(.97); }
+.dt-option .em{ font-size:2.2rem; display:block; margin-bottom:6px; }
+.dt-option .label{ font-weight:700; font-size:1rem; }
+.dt-option .hint{ font-size:.72rem; color:var(--ink-3); margin-top:4px; }
+.dt-option.selected{ border-color:var(--accent-2); background:rgba(255,0,110,0.12); }
+
+/* Toast */
+#toast{
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
+  z-index:100; padding:12px 22px;
+  background:rgba(0,255,157,0.18); border:1px solid var(--green);
+  color:var(--green); border-radius:50px;
+  font-size:.85rem; opacity:0; transition:all .3s;
+}
+#toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+#toast.error{ background:rgba(255,0,110,0.18); border-color:var(--accent-2); color:var(--accent-2); }
+
+.footer-hint{
+  text-align:center; font-size:.75rem; color:var(--ink-4);
+  margin-top:24px; padding:0 20px; line-height:1.6;
+}
+
+@media (min-width:600px){
+  .container{ max-width:560px; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container" style="padding:0">
+    <div class="brand">🥚 蛋白質的未來餐桌</div>
+    <div class="session-tag">課堂代碼：<span id="sessionTag">—</span></div>
+  </div>
+</div>
+
+<div class="nickname-card container">
+  <label>👤 我是</label>
+  <input id="nicknameInput" placeholder="輸入姓名或暱稱" maxlength="12" autocomplete="off">
+  <span class="hint">會記住</span>
+</div>
+
+<!-- 1. 投票 -->
+<div class="section-card container">
+  <h2>🗳️ 第 1 站 ｜ 熱身投票</h2>
+  <div class="sub">你今天吃過哪一種蛋白？選一個你最熟悉的。</div>
+  <div class="vote-row">
+    <button class="vote-btn" data-vote="紅肉"><span class="em">🥩</span>紅肉</button>
+    <button class="vote-btn" data-vote="海鮮"><span class="em">🐟</span>海鮮</button>
+    <button class="vote-btn" data-vote="雞蛋"><span class="em">🥚</span>雞蛋</button>
+    <button class="vote-btn" data-vote="豆製品"><span class="em">🫘</span>豆製品</button>
+    <button class="vote-btn wide" data-vote="奶類"><span class="em">🥛</span>奶類</button>
+  </div>
+</div>
+
+<!-- 2. 產品配對 quiz -->
+<div class="section-card container" id="quizSection">
+  <h2>🎯 第 2 站 ｜ 產品配對</h2>
+  <div class="sub">7 款全球熱門產品，判斷它們是哪一類蛋白？答對最多，最快完成的同學上排行榜。</div>
+
+  <div class="quiz-status">
+    <span>第 <span id="quizIdx">1</span> / 7 題</span>
+    <span>得分 <span id="quizScore">0</span> ｜ ⏱️ <span id="quizTimer">00:00</span></span>
+  </div>
+  <div class="quiz-progress"><div class="quiz-progress-bar" id="quizProgressBar"></div></div>
+
+  <div id="quizArea">
+    <div class="quiz-q"><span class="num" id="qNum">1</span><span id="qText">—</span></div>
+    <div class="quiz-choices">
+      <button class="quiz-choice" data-cat="plant"><span class="em">🌱</span>植物蛋白</button>
+      <button class="quiz-choice" data-cat="insect"><span class="em">🐛</span>昆蟲蛋白</button>
+      <button class="quiz-choice" data-cat="ocean"><span class="em">🌊</span>海洋蛋白</button>
+    </div>
+  </div>
+
+  <div class="done-card" id="quizDone">
+    <span class="em">🎉</span>
+    <h3>配對完成！</h3>
+    <div class="v"><span id="finalScore">0</span> / 7</div>
+    <div class="desc">用了 <strong id="finalTime">0</strong> 秒。<br>看看老師畫面上有沒有你的名字！</div>
+    <button class="btn-secondary" onclick="restartQuiz()">🔄 再玩一次</button>
+  </div>
+</div>
+
+<!-- 3. 餐盤設計師 -->
+<div class="section-card container" id="dtSection">
+  <h2>🧭 第 3 站 ｜ 餐盤設計師</h2>
+  <div class="sub">回答 3 題，看看你是哪一派的蛋白控。</div>
+
+  <div id="dtArea">
+    <div class="dt-step-info" id="dtStep">第 1 / 3 題</div>
+    <div class="dt-question" id="dtQuestion">—</div>
+    <div class="dt-options">
+      <button class="dt-option" data-val="A"><span class="em" id="dtIconA">💪</span><div class="label" id="dtLabelA">—</div><div class="hint" id="dtHintA">—</div></button>
+      <button class="dt-option" data-val="B"><span class="em" id="dtIconB">🌍</span><div class="label" id="dtLabelB">—</div><div class="hint" id="dtHintB">—</div></button>
+    </div>
+  </div>
+
+  <div class="done-card" id="dtDone">
+    <span class="em" id="dtEmoji">🌱</span>
+    <h3 id="dtTitle">你是 植物派！</h3>
+    <div class="desc" id="dtDesc">—</div>
+    <button class="btn-secondary" onclick="restartDT()">🔄 再玩一次</button>
+  </div>
+</div>
+
+<div class="footer-hint">
+  互動結果會傳到老師畫面 · 不會記錄手機號碼或個資
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js';
+import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "",
+  authDomain: "my-teaching-tools-517a0.firebaseapp.com",
+  projectId: "my-teaching-tools-517a0",
+  storageBucket: "my-teaching-tools-517a0.firebasestorage.app",
+  messagingSenderId: "244288457011",
+  appId: "1:244288457011:web:4b3ff8a846a6c50b169646"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* ===== Supabase 雙寫（2026-05-25 加） ===== */
+const SB_URL = 'https://qmldcjkllisvfgegkfsz.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbGRjamtsbGlzdmZnZWdrZnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMjM5ODYsImV4cCI6MjA4NjY5OTk4Nn0.Bfj0W7HN_n_vcjGe5502Chamk0YV-de8a0fxF4Nyczk';
+const COURSE_CODE = 'altprot-class';
+function deriveStudentId(nickname, session) {
+  if (!nickname || !nickname.trim()) {
+    return 'AC-anon-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+  }
+  let h = 0;
+  const s = session + ':' + nickname.trim();
+  for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+  return 'AC-' + Math.abs(h).toString(36).toUpperCase().substring(0, 8);
+}
+async function sbWrite({ gameId, gameName, score, wrong, total, durationMs, meta, nickname, session }) {
+  const row = {
+    course_code:  COURSE_CODE,
+    session_id:   session,
+    student_id:   deriveStudentId(nickname, session),
+    student_name: (nickname || '').trim(),
+    game_id:      gameId,
+    game_name:    gameName,
+    score:        Number(score) || 0,
+    wrong:        Number(wrong) || 0,
+    total:        Number(total) || 0,
+    duration_ms:  Number(durationMs) || 0,
+    client_meta:  { ua: navigator.userAgent.substring(0, 80), ...(meta || {}) }
+  };
+  try {
+    const res = await fetch(SB_URL + '/rest/v1/interactions', {
+      method: 'POST',
+      headers: {
+        'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY,
+        'Content-Type': 'application/json', 'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(row), keepalive: true
+    });
+    if (!res.ok) console.warn('[Supabase]', res.status, await res.text());
+  } catch (e) { console.warn('[Supabase] fail:', e); }
+}
+
+// session：從 URL 路徑 /s/{session} 或 query ?session=xxx 解析
+function parseSession(){
+  const m = location.pathname.match(/\/s\/([^/?#]+)/);
+  if(m) return decodeURIComponent(m[1]);
+  const q = new URLSearchParams(location.search).get('session');
+  if(q) return q;
+  const d = new Date();
+  return d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0') + 'alt';
+}
+const SESSION = parseSession();
+document.getElementById('sessionTag').textContent = SESSION;
+
+// 暱稱
+const NICK_KEY = 'altprot_student_nick';
+const nickInput = document.getElementById('nicknameInput');
+nickInput.value = localStorage.getItem(NICK_KEY) || '';
+nickInput.addEventListener('input', () => {
+  localStorage.setItem(NICK_KEY, nickInput.value.trim().slice(0,12));
+});
+function nickname(){ return (nickInput.value.trim().slice(0,12)) || '匿名'; }
+
+// Toast
+function toast(msg, type){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.toggle('error', type === 'error');
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* ========= 投票 ========= */
+const VOTE_KEY = 'altprot_voted_' + SESSION;
+function markVoted(opt){
+  document.querySelectorAll('.vote-btn').forEach(b => b.classList.toggle('selected', b.dataset.vote === opt));
+}
+const lastVote = localStorage.getItem(VOTE_KEY);
+if(lastVote) markVoted(lastVote);
+
+document.querySelectorAll('.vote-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const opt = btn.dataset.vote;
+    btn.disabled = true;
+    try{
+      await addDoc(collection(db, 'altprot_votes'), {
+        session: SESSION,
+        choice: opt,
+        nickname: nickname(),
+        timestamp: serverTimestamp()
+      });
+      await sbWrite({
+        gameId: 'altprot_vote', gameName: '替代蛋白投票',
+        score: 0, wrong: 0, total: 1, durationMs: 0,
+        meta: { choice: opt }, nickname: nickname(), session: SESSION
+      });
+      markVoted(opt);
+      localStorage.setItem(VOTE_KEY, opt);
+      toast('✅ 已送出：' + opt);
+    } catch(e){
+      console.error(e);
+      toast('送出失敗，請再試', 'error');
+    } finally{
+      btn.disabled = false;
+    }
+  });
+});
+
+/* ========= 產品配對 quiz ========= */
+const QUIZ = [
+  { name: 'Essento 菠菜昆蟲球（瑞士）', cat: 'insect', em: '🥟' },
+  { name: 'Pulsin 能量奶昔（英國）',     cat: 'plant',  em: '🥤' },
+  { name: 'M Classic 素雞塊（瑞士）',    cat: 'plant',  em: '🍗' },
+  { name: 'MadiaBio 螺旋藻粉（法國）',   cat: 'ocean',  em: '💚' },
+  { name: 'Kibo 鷹嘴豆脆片（美國）',     cat: 'plant',  em: '🥨' },
+  { name: 'Take Two 大麥奶（美國）',     cat: 'plant',  em: '🥛' },
+  { name: 'Activia 燕麥酸奶（澳洲）',    cat: 'plant',  em: '🥣' }
+];
+let qIdx = 0, qScore = 0, qStart = null, qTimerId = null;
+
+function renderQuiz(){
+  const q = QUIZ[qIdx];
+  document.getElementById('qNum').textContent = qIdx + 1;
+  document.getElementById('qText').textContent = q.em + ' ' + q.name;
+  document.getElementById('quizIdx').textContent = qIdx + 1;
+  document.getElementById('quizScore').textContent = qScore;
+  document.getElementById('quizProgressBar').style.width = ((qIdx)/QUIZ.length*100) + '%';
+  document.querySelectorAll('.quiz-choice').forEach(c => {
+    c.classList.remove('right','wrong'); c.disabled = false;
+  });
+}
+function startQuizTimer(){
+  if(qStart) return;
+  qStart = Date.now();
+  qTimerId = setInterval(() => {
+    const sec = Math.floor((Date.now()-qStart)/1000);
+    const m = String(Math.floor(sec/60)).padStart(2,'0');
+    const s = String(sec%60).padStart(2,'0');
+    document.getElementById('quizTimer').textContent = m + ':' + s;
+  }, 1000);
+}
+function stopQuizTimer(){
+  if(qTimerId){ clearInterval(qTimerId); qTimerId = null; }
+  return qStart ? Math.floor((Date.now()-qStart)/1000) : 0;
+}
+
+document.querySelectorAll('.quiz-choice').forEach(c => {
+  c.addEventListener('click', () => {
+    if(c.disabled) return;
+    startQuizTimer();
+    const correct = QUIZ[qIdx].cat;
+    const chosen = c.dataset.cat;
+    document.querySelectorAll('.quiz-choice').forEach(x => {
+      x.disabled = true;
+      if(x.dataset.cat === correct) x.classList.add('right');
+      else if(x === c && chosen !== correct) x.classList.add('wrong');
+    });
+    if(chosen === correct) qScore++;
+    document.getElementById('quizScore').textContent = qScore;
+    setTimeout(() => {
+      qIdx++;
+      if(qIdx >= QUIZ.length){
+        finishQuiz();
+      } else {
+        renderQuiz();
+      }
+    }, 900);
+  });
+});
+
+async function finishQuiz(){
+  const duration = stopQuizTimer();
+  document.getElementById('quizProgressBar').style.width = '100%';
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('finalScore').textContent = qScore;
+  document.getElementById('finalTime').textContent = duration;
+  document.getElementById('quizDone').classList.add('show');
+  try{
+    await addDoc(collection(db, 'altprot_matches'), {
+      session: SESSION,
+      nickname: nickname(),
+      score: qScore,
+      duration: duration,
+      timestamp: serverTimestamp()
+    });
+    await sbWrite({
+      gameId: 'altprot_match', gameName: '產品配對 Quiz',
+      score: Math.round(qScore / QUIZ.length * 100),
+      wrong: QUIZ.length - qScore, total: QUIZ.length,
+      durationMs: duration * 1000,
+      meta: { raw_score: qScore, raw_total: QUIZ.length },
+      nickname: nickname(), session: SESSION
+    });
+    toast('✅ 成績已送出');
+  } catch(e){
+    console.error(e); toast('送出失敗', 'error');
+  }
+}
+
+function restartQuiz(){
+  qIdx = 0; qScore = 0; qStart = null;
+  document.getElementById('quizArea').style.display = '';
+  document.getElementById('quizDone').classList.remove('show');
+  document.getElementById('quizTimer').textContent = '00:00';
+  renderQuiz();
+}
+window.restartQuiz = restartQuiz;
+renderQuiz();
+
+/* ========= 決策樹 ========= */
+const DT_QUESTIONS = [
+  { q: '你選食物時，最在意什麼？',
+    a: { label:'個人健康', icon:'💪', hint:'高蛋白、好吸收' },
+    b: { label:'地球環境', icon:'🌍', hint:'低碳排、永續' } },
+  { q: '你願意嘗試新口味嗎？',
+    a: { label:'非常願意', icon:'🚀', hint:'什麼都想試試' },
+    b: { label:'保守選擇', icon:'🛡️', hint:'熟悉的最好' } },
+  { q: '你常常運動嗎？',
+    a: { label:'幾乎每天', icon:'🏃', hint:'需要高蛋白' },
+    b: { label:'偶爾才動', icon:'🛋️', hint:'重視均衡' } }
+];
+const DT_RESULTS = {
+  'AAA': { emoji:'🐛', title:'你是 昆蟲派！', desc:'高蛋白、好吸收又環保。可試蟋蟀餅乾、黃粉蟲能量棒，或星巴克 36 克高蛋白拿鐵。' },
+  'AAB': { emoji:'🌊', title:'你是 海洋派！', desc:'喜歡嘗鮮、追求營養密度。推薦螺旋藻飲品、海藻零食。' },
+  'ABA': { emoji:'🌱', title:'你是 植物派（運動款）！', desc:'保守但重視體能。推薦豌豆蛋白奶昔、鷹嘴豆脆片，或麥當勞 22 克吉事堡。' },
+  'ABB': { emoji:'🌱', title:'你是 植物派（溫和款）！', desc:'喜歡熟悉口味又重均衡。燕麥奶、扁豆湯、豆漿都是好選擇。' },
+  'BAA': { emoji:'🐛', title:'你是 昆蟲派（環保款）！', desc:'敢嘗試又愛地球。昆蟲蛋白用水少、占地少、碳排低，是最佳選擇。' },
+  'BAB': { emoji:'🌊', title:'你是 海洋派！', desc:'重視永續又願意嘗鮮。螺旋藻、海藻是低碳代表。' },
+  'BBA': { emoji:'🌱', title:'你是 植物派（運動款）！', desc:'環保又重體能。植物蛋白成熟度高，從豌豆到大豆都能補充能量。' },
+  'BBB': { emoji:'🌱', title:'你是 植物派（生活款）！', desc:'踏實的選擇。燕麥奶、豆漿、堅果飲，最容易每天執行。' }
+};
+let dtIdx = 0, dtPath = '';
+
+function renderDT(){
+  const Q = DT_QUESTIONS[dtIdx];
+  document.getElementById('dtStep').textContent = '第 ' + (dtIdx+1) + ' / 3 題';
+  document.getElementById('dtQuestion').textContent = Q.q;
+  document.getElementById('dtIconA').textContent = Q.a.icon;
+  document.getElementById('dtLabelA').textContent = Q.a.label;
+  document.getElementById('dtHintA').textContent = Q.a.hint;
+  document.getElementById('dtIconB').textContent = Q.b.icon;
+  document.getElementById('dtLabelB').textContent = Q.b.label;
+  document.getElementById('dtHintB').textContent = Q.b.hint;
+  document.querySelectorAll('.dt-option').forEach(o => o.classList.remove('selected'));
+}
+document.querySelectorAll('.dt-option').forEach(o => {
+  o.addEventListener('click', () => {
+    o.classList.add('selected');
+    setTimeout(() => dtPick(o.dataset.val), 220);
+  });
+});
+async function dtPick(val){
+  dtPath += val;
+  dtIdx++;
+  if(dtIdx >= 3){
+    const r = DT_RESULTS[dtPath];
+    document.getElementById('dtEmoji').textContent = r.emoji;
+    document.getElementById('dtTitle').textContent = r.title;
+    document.getElementById('dtDesc').textContent = r.desc;
+    document.getElementById('dtArea').style.display = 'none';
+    document.getElementById('dtDone').classList.add('show');
+    try{
+      const resultName = r.title.replace('你是 ','').replace('！','').split('（')[0]; // 植物派 / 昆蟲派 / 海洋派
+      await addDoc(collection(db, 'altprot_decisions'), {
+        session: SESSION,
+        nickname: nickname(),
+        path: dtPath,
+        result: resultName,
+        timestamp: serverTimestamp()
+      });
+      await sbWrite({
+        gameId: 'altprot_decision', gameName: '飲食決策樹',
+        score: 0, wrong: 0, total: 1, durationMs: 0,
+        meta: { path: dtPath, result: resultName },
+        nickname: nickname(), session: SESSION
+      });
+      toast('✅ 結果已送出');
+    } catch(e){
+      console.error(e); toast('送出失敗', 'error');
+    }
+  } else {
+    renderDT();
+  }
+}
+function restartDT(){
+  dtIdx = 0; dtPath = '';
+  document.getElementById('dtArea').style.display = '';
+  document.getElementById('dtDone').classList.remove('show');
+  renderDT();
+}
+window.restartDT = restartDT;
+renderDT();
+</script>
+</body>
+</html>

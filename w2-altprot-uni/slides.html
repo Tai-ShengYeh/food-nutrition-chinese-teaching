@@ -1,0 +1,2222 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>蛋白質大戰 2026 ｜ 大學生版 ｜ 食品營養華語文獻閱讀</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&family=Crimson+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<style>
+html, body { font-size: 18px; }
+
+:root{
+  /* 學術風配色：束舊白 + 象牙黑 + 深紅 */
+  --bg: #f5f1e8;           /* 束舊白(parchment) */
+  --bg-2: #ede7d6;         /* 暖色奶油 */
+  --bg-3: #faf6ed;         /* 紙白 */
+  --ink: #1a1714;          /* 象牙黑 */
+  --ink-2: #4a3f35;        /* 棕墨 */
+  --ink-3: #7a6b5d;        /* 淡墨 */
+  --ink-4: #b8a890;        /* 舊紙紋 */
+  --accent: #8b1a1a;       /* 書脊深紅 */
+  --accent-2: #2d5a3d;     /* 苔綠 */
+  --accent-3: #b8860b;     /* 暗金 */
+  --line: #d4c8b3;         /* 紙紋線 */
+  --card: #fffdf7;
+  --card-border: #d4c8b3;
+  --shadow: 0 1px 3px rgba(74,63,53,0.08), 0 4px 12px rgba(74,63,53,0.04);
+
+  --t1: 55px; --t2: 34px; --t3: 21px; --t4: 13px;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+body{
+  font-family:'Noto Sans TC', system-ui, sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  overflow:hidden;
+  height:100vh; width:100vw;
+  position:relative;
+}
+body::before{
+  content:''; position:fixed; inset:0; z-index:0;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(139,26,26,0.04) 0%, transparent 35%),
+    radial-gradient(circle at 88% 82%, rgba(45,90,61,0.04) 0%, transparent 40%),
+    repeating-linear-gradient(0deg, transparent 0, transparent 28px, rgba(180,168,144,0.05) 28px, rgba(180,168,144,0.05) 29px);
+  pointer-events:none;
+}
+
+#progress{
+  position:fixed; top:0; left:0; height:3px;
+  background:linear-gradient(90deg, var(--accent), var(--accent-3));
+  z-index:1000; transition:width .45s ease; width:0;
+}
+#section-tag{
+  position:fixed; top:14px; left:28px; z-index:999;
+  font-family:'Crimson Pro', serif; font-style:italic;
+  font-size:clamp(0.85rem,1.1vw,1.05rem);
+  letter-spacing:.05em; color:var(--accent);
+}
+#pageInfo{
+  position:fixed; bottom:14px; right:28px; z-index:999;
+  font-family:'JetBrains Mono', monospace;
+  font-size:clamp(0.75rem,1vw,0.9rem); color:var(--ink-3);
+}
+#hint{
+  position:fixed; bottom:14px; left:28px; z-index:999;
+  font-family:'JetBrains Mono', monospace;
+  font-size:clamp(0.7rem,0.85vw,0.8rem); color:var(--ink-4);
+}
+
+/* 工具列(右上) */
+#toolBar{
+  position:fixed; top:10px; right:18px; z-index:1100;
+  display:flex; align-items:center; gap:8px;
+}
+.tool-btn{
+  height:38px; padding:0 14px; border-radius:4px;
+  border:1px solid var(--card-border);
+  background:var(--card);
+  color:var(--ink-2); cursor:pointer;
+  font-family:'Noto Sans TC', sans-serif; font-size:.82rem;
+  display:inline-flex; align-items:center; gap:6px;
+  transition:all .2s;
+  box-shadow:var(--shadow);
+}
+.tool-btn:hover{ background:var(--accent); color:#fff; border-color:var(--accent); }
+.tool-btn.qr{ border-color:var(--accent); color:var(--accent); }
+.tool-btn.qr:hover{ background:var(--accent); color:#fff; }
+.tool-btn.session{ font-family:'JetBrains Mono', monospace; font-size:.72rem; }
+.tool-btn .badge{
+  margin-left:6px; min-width:18px; height:18px; padding:0 4px;
+  border-radius:9px; background:var(--accent); color:#fff;
+  font-family:'JetBrains Mono', monospace; font-size:.62rem; font-weight:700;
+  display:none; align-items:center; justify-content:center;
+}
+.tool-btn .badge.show{ display:inline-flex; }
+#liveIndicator{
+  width:7px; height:7px; border-radius:50%;
+  background:var(--accent-2); margin-right:4px;
+  animation:pulse 1.6s infinite;
+}
+@keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.4;} }
+
+/* QR Modal */
+#qrModal{
+  position:fixed; inset:0; z-index:2000;
+  background:rgba(26,23,20,0.55);
+  display:none; align-items:center; justify-content:center;
+  backdrop-filter:blur(6px);
+}
+#qrModal.open{ display:flex; }
+#qrModal .qr-card{
+  background:var(--card); padding:34px 42px; border-radius:8px;
+  text-align:center; box-shadow:0 16px 60px rgba(0,0,0,0.3);
+  border:1px solid var(--card-border);
+  max-width:440px;
+}
+#qrModal h3{
+  font-family:'Noto Serif TC', serif;
+  font-size:1.4rem; color:var(--accent); margin-bottom:8px;
+}
+#qrModal p{ font-size:.95rem; color:var(--ink-2); margin-bottom:18px; line-height:1.6; }
+#qrModal .qr-box{
+  background:#fff; padding:18px; border-radius:4px; display:inline-block;
+  border:1px solid var(--card-border);
+}
+#qrModal .url{
+  margin-top:14px; font-family:'JetBrains Mono', monospace;
+  font-size:.8rem; color:var(--ink-3); word-break:break-all;
+}
+#qrModal .close-btn{
+  margin-top:14px; padding:8px 24px; border:1px solid var(--ink-3);
+  background:transparent; color:var(--ink-2); cursor:pointer; border-radius:4px;
+}
+#qrModal .close-btn:hover{ background:var(--ink); color:#fff; border-color:var(--ink); }
+
+/* 紀錄面板 */
+#recordPanel{
+  position:fixed; top:0; right:-440px; width:420px; height:100vh;
+  background:var(--card); z-index:1200;
+  box-shadow:-8px 0 32px rgba(0,0,0,0.12);
+  transition:right .35s ease;
+  padding:24px 22px; overflow-y:auto;
+  border-left:1px solid var(--card-border);
+}
+@media (max-width:640px){
+  #recordPanel{ width:88%; right:-100%; }
+  #recordPanel.open{ right:0; }
+}
+#recordPanel.open{ right:0; }
+#recordPanel h2{
+  font-family:'Noto Serif TC', serif;
+  font-size:1.15rem; color:var(--accent); margin-bottom:6px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+#recordPanel h2 .close{
+  cursor:pointer; color:var(--ink-3); font-size:1.4rem; padding:0 6px;
+}
+#recordPanel h2 .close:hover{ color:var(--accent); }
+#recordPanel .session-info{
+  font-family:'JetBrains Mono', monospace;
+  font-size:.72rem; color:var(--ink-3); margin-bottom:14px;
+  padding:6px 10px; background:var(--bg-2); border-radius:4px;
+}
+#recordPanel h3{
+  font-family:'Noto Serif TC', serif;
+  font-size:.95rem; color:var(--ink); margin:14px 0 6px;
+  display:flex; justify-content:space-between; align-items:baseline;
+  border-bottom:1px solid var(--line); padding-bottom:4px;
+}
+#recordPanel h3 .cnt{
+  font-family:'JetBrains Mono', monospace; font-size:.72rem;
+  color:var(--ink-3); font-weight:400;
+}
+.rec-row{
+  display:flex; justify-content:space-between;
+  padding:5px 0; font-size:.82rem;
+  border-bottom:1px dashed var(--line);
+}
+.rec-row .l{ color:var(--ink-2); }
+.rec-row .v{ font-family:'JetBrains Mono', monospace; color:var(--accent); }
+.rec-empty{ color:var(--ink-3); font-style:italic; font-size:.8rem; padding:6px 0; }
+.export-row{
+  margin-top:18px; display:grid;
+  grid-template-columns:1fr 1fr; gap:8px;
+}
+.export-row button{
+  padding:9px 12px; border:1px solid var(--accent); background:transparent;
+  color:var(--accent); cursor:pointer; border-radius:4px;
+  font-family:inherit; font-size:.78rem; font-weight:700;
+}
+.export-row button:hover{ background:var(--accent); color:#fff; }
+.export-row button.warn{ border-color:var(--accent-3); color:var(--accent-3); }
+.export-row button.warn:hover{ background:var(--accent-3); color:#fff; }
+
+/* Slide 容器 */
+.slide{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  padding:70px 90px 60px;
+  opacity:0; pointer-events:none;
+  transition:opacity .55s ease, transform .55s ease;
+  transform:translateY(12px);
+  overflow:hidden; z-index:1;
+}
+.slide.active{ opacity:1; pointer-events:auto; transform:translateY(0); }
+.slide-inner{ width:100%; max-width:1280px; }
+
+/* 頁面通用元件 */
+.kicker{
+  font-family:'Crimson Pro', serif; font-style:italic;
+  font-size:clamp(0.85rem,1.1vw,1rem);
+  color:var(--accent); letter-spacing:.04em;
+  margin-bottom:10px;
+  display:flex; align-items:center; gap:10px;
+}
+.kicker::before{
+  content:''; width:30px; height:1px; background:var(--accent);
+  display:inline-block;
+}
+.slide-title{
+  font-family:'Noto Serif TC', serif; font-weight:900;
+  font-size:clamp(1.6rem, 3.4vw, 2.8rem);
+  line-height:1.18; color:var(--ink);
+  margin-bottom:14px;
+}
+.slide-title .em{ color:var(--accent); }
+.subtitle{
+  font-size:clamp(0.95rem, 1.4vw, 1.15rem);
+  color:var(--ink-2); line-height:1.55;
+  max-width:920px; margin-bottom:20px;
+}
+.note{
+  font-family:'Crimson Pro', serif; font-style:italic;
+  font-size:clamp(0.8rem, 1.05vw, 0.95rem);
+  color:var(--ink-3);
+}
+
+/* 卡片 */
+.card{
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:6px; padding:20px 22px;
+  box-shadow:var(--shadow);
+  position:relative;
+}
+.card .card-num{
+  position:absolute; top:-12px; left:18px;
+  background:var(--accent); color:#fff;
+  font-family:'Crimson Pro', serif;
+  width:30px; height:30px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:1rem;
+}
+.card h3{
+  font-family:'Noto Serif TC', serif;
+  font-size:clamp(1rem,1.4vw,1.2rem);
+  margin-bottom:8px; color:var(--ink);
+}
+.card p{
+  font-size:clamp(0.85rem,1.1vw,1rem);
+  color:var(--ink-2); line-height:1.6;
+}
+
+.grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:center; }
+.grid-4{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+
+/* 數據卡 */
+.stat-card{
+  background:var(--card); border:1px solid var(--card-border);
+  border-left:4px solid var(--accent);
+  padding:24px 26px; border-radius:4px;
+  box-shadow:var(--shadow);
+}
+.stat-card .n{
+  font-family:'Crimson Pro', serif; font-weight:700;
+  font-size:clamp(2rem,4vw,3.4rem);
+  color:var(--accent); line-height:1;
+}
+.stat-card .l{
+  font-size:clamp(0.85rem,1.15vw,1.05rem);
+  color:var(--ink-2); margin-top:8px; font-weight:500;
+}
+.stat-card .src{
+  font-family:'Crimson Pro', serif; font-style:italic;
+  font-size:.78rem; color:var(--ink-3); margin-top:6px;
+}
+
+/* 投票按鈕(頁 3) */
+.vote-grid{
+  display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-top:18px;
+}
+.vote-box{
+  background:var(--card); border:2px solid var(--card-border);
+  border-radius:6px; padding:18px 12px;
+  text-align:center; position:relative; overflow:hidden;
+  min-height:120px;
+  display:flex; flex-direction:column; justify-content:space-between;
+  box-shadow:var(--shadow);
+}
+.vote-box::before{
+  content:''; position:absolute; bottom:0; left:0; right:0;
+  background:linear-gradient(to top, rgba(139,26,26,0.18), rgba(139,26,26,0.06));
+  transition:height .6s ease; height:0;
+}
+.vote-box > *{ position:relative; z-index:1; }
+.vote-box .vote-label{
+  font-family:'Noto Serif TC', serif; font-weight:700;
+  font-size:clamp(0.95rem, 1.3vw, 1.15rem); color:var(--ink);
+}
+.vote-box .vote-count{
+  font-family:'Crimson Pro', serif; font-weight:700;
+  font-size:clamp(1.6rem, 2.8vw, 2.2rem); color:var(--accent);
+}
+.vote-box .vote-pct{
+  font-family:'JetBrains Mono', monospace;
+  font-size:.82rem; color:var(--ink-3);
+}
+.vote-summary{
+  margin-top:16px; padding:12px 18px; background:var(--bg-2);
+  border-radius:4px; text-align:center;
+  font-family:'Crimson Pro', serif; color:var(--ink-2);
+  font-size:1rem;
+}
+.vote-summary b{ color:var(--accent); font-size:1.3rem; }
+
+/* 三柱概念 */
+.pillar-grid{
+  display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px;
+  position:relative; margin-top:14px;
+}
+.pillar{
+  background:var(--card); border:1px solid var(--card-border);
+  border-top:4px solid var(--accent); padding:24px 22px;
+  border-radius:4px; box-shadow:var(--shadow);
+  text-align:center;
+}
+.pillar:nth-child(2){ border-top-color:var(--accent-2); }
+.pillar:nth-child(3){ border-top-color:var(--accent-3); }
+.pillar .pillar-icon{ font-size:2.2rem; margin-bottom:8px; }
+.pillar h3{
+  font-family:'Noto Serif TC', serif;
+  font-size:1.15rem; margin-bottom:8px; color:var(--ink);
+}
+.pillar p{
+  font-size:.92rem; color:var(--ink-2); line-height:1.55;
+}
+
+/* 詞彙表 */
+.vocab-table{
+  width:100%; border-collapse:collapse;
+  background:var(--card); border-radius:4px; overflow:hidden;
+  box-shadow:var(--shadow);
+  font-size:clamp(0.78rem, 1.05vw, 0.95rem);
+}
+.vocab-table thead{
+  background:var(--accent); color:#fff;
+}
+.vocab-table th{
+  padding:10px 12px; text-align:left; font-weight:700;
+  font-family:'Noto Serif TC', serif;
+}
+.vocab-table td{
+  padding:8px 12px;
+  border-bottom:1px solid var(--line);
+  color:var(--ink-2);
+}
+.vocab-table tbody tr:hover td{ background:var(--bg-3); }
+.vocab-table .word{
+  font-family:'Noto Serif TC', serif; font-weight:700;
+  color:var(--ink); font-size:1.05em;
+}
+.vocab-table .pinyin{
+  font-family:'Crimson Pro', serif; font-style:italic; color:var(--accent);
+}
+.vocab-table .pos{
+  font-family:'JetBrains Mono', monospace; font-size:.78em;
+  color:var(--ink-3);
+}
+
+/* Chart 容器 */
+.chart-wrap{
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:6px; padding:20px; box-shadow:var(--shadow);
+  position:relative;
+}
+.chart-wrap h3{
+  font-family:'Noto Serif TC', serif;
+  font-size:1.1rem; margin-bottom:10px; color:var(--ink);
+}
+.chart-wrap .src{
+  font-family:'Crimson Pro', serif; font-style:italic;
+  font-size:.78rem; color:var(--ink-3); margin-top:6px;
+}
+.chart-canvas-wrap{ position:relative; height:380px; }
+.chart-canvas-wrap.small{ height:260px; }
+
+/* SWOT */
+.swot-grid{
+  display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px;
+  background:var(--ink-4); padding:1px; border-radius:4px;
+}
+.swot-cell{
+  background:var(--card); padding:18px 18px;
+  border-radius:2px; min-height:160px;
+  position:relative;
+}
+.swot-cell .swot-label{
+  position:absolute; top:8px; left:14px;
+  font-family:'Noto Serif TC', serif; font-weight:900;
+  font-size:1.2rem; opacity:.7;
+}
+.swot-cell.s{ border-top:3px solid var(--accent-2); }
+.swot-cell.s .swot-label{ color:var(--accent-2); }
+.swot-cell.w{ border-top:3px solid var(--accent); }
+.swot-cell.w .swot-label{ color:var(--accent); }
+.swot-cell.o{ border-top:3px solid var(--accent-3); }
+.swot-cell.o .swot-label{ color:var(--accent-3); }
+.swot-cell.t{ border-top:3px solid var(--ink-2); }
+.swot-cell.t .swot-label{ color:var(--ink-2); }
+.swot-cell ul{
+  list-style:none; padding-top:30px;
+  font-family:'Noto Serif TC', serif;
+  font-size:.92rem; color:var(--ink-3);
+}
+.swot-cell li{
+  padding:4px 0; border-bottom:1px dashed var(--line);
+  font-style:italic;
+}
+.swot-cell li::before{ content:'＿＿＿＿＿＿＿＿＿＿'; color:var(--ink-4); display:block; }
+
+/* Pro/Con 辯論 */
+.debate-grid{
+  display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:14px;
+}
+.debate-col{
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:4px; padding:20px; min-height:300px;
+  box-shadow:var(--shadow);
+}
+.debate-col.pro{ border-top:4px solid var(--accent-2); }
+.debate-col.con{ border-top:4px solid var(--accent); }
+.debate-col h3{
+  font-family:'Noto Serif TC', serif; font-size:1.1rem;
+  margin-bottom:10px;
+}
+.debate-col.pro h3{ color:var(--accent-2); }
+.debate-col.con h3{ color:var(--accent); }
+.debate-col ul{
+  list-style:none; font-size:.9rem; color:var(--ink-3);
+}
+.debate-col li{
+  padding:6px 0; border-bottom:1px dashed var(--line);
+  font-family:'Noto Serif TC', serif; font-style:italic;
+}
+.debate-col li::before{
+  content:''; display:block;
+  border-bottom:1px solid var(--ink-4);
+  margin:18px 0;
+}
+.debate-prompt{
+  margin-top:14px; padding:14px 20px; background:var(--bg-2);
+  border-radius:4px; text-align:center;
+}
+.debate-prompt .q{
+  font-family:'Noto Serif TC', serif; font-weight:700;
+  font-size:clamp(1.05rem, 1.5vw, 1.25rem); color:var(--ink);
+}
+.debate-prompt .meta{
+  font-family:'Crimson Pro', serif; font-style:italic;
+  color:var(--ink-3); margin-top:4px;
+}
+
+/* 決策樹頁(20) */
+.dt-container{ text-align:center; padding:14px 0; }
+.dt-question{
+  font-family:'Noto Serif TC', serif; font-weight:700;
+  font-size:clamp(1.2rem, 1.8vw, 1.5rem);
+  color:var(--ink); margin-bottom:14px;
+}
+.dt-step-tag{
+  font-family:'JetBrains Mono', monospace; font-size:.78rem;
+  color:var(--accent); letter-spacing:.1em;
+}
+.dt-choices{
+  display:grid; grid-template-columns:1fr 1fr; gap:16px;
+  max-width:720px; margin:14px auto;
+}
+.dt-choice{
+  background:var(--card); border:2px solid var(--card-border);
+  border-radius:6px; padding:18px 22px; cursor:pointer;
+  font-family:'Noto Serif TC', serif; font-weight:700;
+  font-size:1.05rem; color:var(--ink); text-align:left;
+  transition:all .2s; box-shadow:var(--shadow);
+}
+.dt-choice:hover{ border-color:var(--accent); background:var(--bg-3); transform:translateY(-2px); }
+.dt-choice .opt{ color:var(--accent); margin-right:8px; font-family:'Crimson Pro', serif; }
+.dt-choice .desc{
+  font-family:'Noto Sans TC', sans-serif; font-weight:400;
+  font-size:.85rem; color:var(--ink-3); margin-top:6px;
+}
+.dt-result{
+  margin-top:18px; padding:24px;
+  background:var(--card); border:2px solid var(--accent);
+  border-radius:6px; display:none; box-shadow:var(--shadow);
+}
+.dt-result.show{ display:block; }
+.dt-result .result-title{
+  font-family:'Noto Serif TC', serif; font-weight:900;
+  font-size:1.6rem; color:var(--accent); margin-bottom:8px;
+}
+.dt-result .result-desc{
+  font-size:1rem; color:var(--ink-2); line-height:1.65;
+}
+.dt-stats{
+  display:grid; grid-template-columns:repeat(6,1fr); gap:10px; margin-top:18px;
+}
+.dt-stat-card{
+  background:var(--card); border:1px solid var(--card-border);
+  padding:12px 6px; border-radius:4px; text-align:center;
+}
+.dt-stat-card .n{
+  font-family:'Crimson Pro', serif; font-weight:700;
+  font-size:1.6rem; color:var(--accent);
+}
+.dt-stat-card .l{ font-size:.78rem; color:var(--ink-3); }
+
+/* 配對遊戲(頁 11) — 老師端只顯示排行榜 */
+.leaderboard{
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:6px; padding:20px 22px;
+  box-shadow:var(--shadow);
+}
+.leaderboard h3{
+  font-family:'Noto Serif TC', serif;
+  font-size:1.15rem; margin-bottom:12px;
+  color:var(--ink); border-bottom:1px solid var(--line); padding-bottom:6px;
+}
+.lb-row{
+  display:grid; grid-template-columns:48px 1fr auto auto;
+  gap:12px; padding:8px 0; align-items:center;
+  border-bottom:1px dashed var(--line);
+  font-size:.92rem;
+}
+.lb-rank{
+  font-family:'Crimson Pro', serif; font-weight:700;
+  font-size:1.2rem; color:var(--ink-3); text-align:center;
+}
+.lb-rank.gold{ color:#b8860b; }
+.lb-rank.silver{ color:#808080; }
+.lb-rank.bronze{ color:#a0522d; }
+.lb-name{ color:var(--ink); font-weight:500; }
+.lb-score{ font-family:'JetBrains Mono', monospace; color:var(--accent); font-weight:700; }
+.lb-time{ font-family:'JetBrains Mono', monospace; color:var(--ink-3); font-size:.85rem; }
+
+.match-stats{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:16px;
+}
+.match-stat{
+  background:var(--card); border:1px solid var(--card-border);
+  padding:14px; border-radius:4px; text-align:center;
+}
+.match-stat .n{
+  font-family:'Crimson Pro', serif; font-weight:700;
+  font-size:1.6rem; color:var(--accent);
+}
+.match-stat .l{ font-size:.78rem; color:var(--ink-3); margin-top:4px; }
+
+/* Edcafe QR 卡 */
+.edcafe-grid{
+  display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:14px;
+}
+.edcafe-card{
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:6px; padding:22px 24px;
+  box-shadow:var(--shadow);
+  display:grid; grid-template-columns:1fr 160px; gap:16px; align-items:center;
+}
+.edcafe-card.reading{ border-top:4px solid var(--accent-2); }
+.edcafe-card.assignment{ border-top:4px solid var(--accent); }
+.edcafe-card h3{
+  font-family:'Noto Serif TC', serif; font-size:1.15rem;
+  color:var(--ink); margin-bottom:6px;
+}
+.edcafe-card .badge-row{
+  font-family:'JetBrains Mono', monospace; font-size:.72rem;
+  color:var(--accent); margin-bottom:8px;
+}
+.edcafe-card p{
+  font-size:.88rem; color:var(--ink-2); line-height:1.55;
+}
+.edcafe-card .deadline{
+  margin-top:8px; padding:4px 10px;
+  background:var(--bg-2); border-radius:3px;
+  font-size:.78rem; color:var(--ink-2);
+  display:inline-block;
+}
+.edcafe-qr{
+  background:#fff; padding:8px;
+  border:1px solid var(--card-border); border-radius:4px;
+  text-align:center;
+}
+.edcafe-qr img, .edcafe-qr canvas{ width:100%; height:auto; }
+.edcafe-qr .url{
+  font-family:'JetBrains Mono', monospace; font-size:.62rem;
+  color:var(--ink-3); margin-top:4px; word-break:break-all;
+}
+
+/* ESG 標籤格 */
+.esg-grid{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:14px;
+}
+.esg-card{
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:4px; padding:18px 16px; box-shadow:var(--shadow);
+  border-top:3px solid var(--accent-2);
+}
+.esg-card .esg-name{
+  font-family:'Noto Serif TC', serif; font-weight:700;
+  font-size:1.05rem; color:var(--ink); margin-bottom:4px;
+}
+.esg-card .esg-en{
+  font-family:'Crimson Pro', serif; font-style:italic;
+  font-size:.82rem; color:var(--accent); margin-bottom:8px;
+}
+.esg-card .esg-issue{
+  font-size:.82rem; color:var(--ink-2); line-height:1.55;
+}
+.esg-card .esg-issue b{ color:var(--accent); }
+
+/* 政策對比表 */
+.policy-table{
+  width:100%; border-collapse:collapse; margin-top:14px;
+  background:var(--card); box-shadow:var(--shadow);
+  font-size:clamp(0.78rem, 1.05vw, 0.95rem);
+}
+.policy-table thead{
+  background:var(--ink); color:#fff;
+}
+.policy-table th{
+  padding:10px 12px; text-align:left; font-weight:700;
+  font-family:'Noto Serif TC', serif;
+}
+.policy-table th:first-child{ background:var(--accent); }
+.policy-table td{
+  padding:10px 12px; border-bottom:1px solid var(--line);
+  color:var(--ink-2); vertical-align:top;
+}
+.policy-table tbody tr:hover td{ background:var(--bg-3); }
+.policy-table .country{ font-weight:700; color:var(--accent); font-family:'Noto Serif TC', serif; }
+
+/* Z 字對比 (頁 6) */
+.compare-row{
+  display:grid; grid-template-columns:1fr 60px 1fr; gap:20px;
+  align-items:center; margin-top:14px;
+}
+.compare-side{
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:6px; padding:22px 24px; box-shadow:var(--shadow);
+}
+.compare-side.old{ border-left:4px solid var(--ink-3); }
+.compare-side.new{ border-left:4px solid var(--accent); }
+.compare-side .label{
+  font-family:'Crimson Pro', serif; font-style:italic;
+  font-size:.82rem; margin-bottom:4px;
+}
+.compare-side.old .label{ color:var(--ink-3); }
+.compare-side.new .label{ color:var(--accent); }
+.compare-side .headline{
+  font-family:'Noto Serif TC', serif; font-weight:700;
+  font-size:1.25rem; color:var(--ink); margin-bottom:6px;
+}
+.compare-side ul{
+  list-style:none; font-size:.88rem; color:var(--ink-2);
+}
+.compare-side li{ padding:3px 0; line-height:1.55; }
+.compare-side li::before{ content:'– '; color:var(--accent); }
+.compare-arrow{
+  text-align:center; font-size:2rem; color:var(--accent);
+  font-family:serif;
+}
+
+/* 5 點重點(頁 12) */
+.bullets-5{
+  display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-top:14px;
+}
+.bullet-card{
+  background:var(--card); border:1px solid var(--card-border);
+  border-top:3px solid var(--accent);
+  border-radius:4px; padding:18px 16px; box-shadow:var(--shadow);
+  position:relative;
+}
+.bullet-card .bn{
+  font-family:'Crimson Pro', serif; font-weight:700;
+  font-size:2.2rem; color:var(--accent); line-height:1;
+  margin-bottom:6px;
+}
+.bullet-card .bt{
+  font-family:'Noto Serif TC', serif; font-weight:700;
+  font-size:1rem; color:var(--ink); margin-bottom:4px;
+}
+.bullet-card .bd{ font-size:.82rem; color:var(--ink-3); line-height:1.5; }
+
+/* 寫作任務(頁 22) */
+.writing-grid{
+  display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:14px;
+}
+.writing-structure{
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:4px; padding:20px; box-shadow:var(--shadow);
+}
+.writing-structure h3{
+  font-family:'Noto Serif TC', serif;
+  font-size:1.05rem; color:var(--accent); margin-bottom:10px;
+}
+.writing-structure ol{
+  list-style:none; counter-reset:step;
+}
+.writing-structure li{
+  counter-increment:step;
+  padding:10px 0; padding-left:38px; position:relative;
+  border-bottom:1px dashed var(--line);
+  font-size:.9rem; color:var(--ink-2); line-height:1.55;
+}
+.writing-structure li::before{
+  content:counter(step);
+  position:absolute; left:0; top:8px;
+  width:26px; height:26px; border-radius:50%;
+  background:var(--accent); color:#fff;
+  font-family:'Crimson Pro', serif; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  font-size:.85rem;
+}
+.writing-structure li b{ color:var(--ink); }
+.writing-rubric{
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:4px; padding:20px; box-shadow:var(--shadow);
+}
+.writing-rubric h3{
+  font-family:'Noto Serif TC', serif;
+  font-size:1.05rem; color:var(--accent); margin-bottom:10px;
+}
+.rubric-row{
+  display:grid; grid-template-columns:1fr auto;
+  padding:8px 0; border-bottom:1px dashed var(--line);
+  font-size:.88rem;
+}
+.rubric-row .l{ color:var(--ink-2); }
+.rubric-row .v{
+  font-family:'JetBrains Mono', monospace;
+  color:var(--accent); font-weight:700;
+}
+
+/* 3 案例(頁 24) */
+.case-grid{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:14px;
+}
+.case-card{
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:6px; padding:24px 22px; box-shadow:var(--shadow);
+  border-top:4px solid var(--accent);
+  display:flex; flex-direction:column;
+}
+.case-card:nth-child(2){ border-top-color:var(--accent-2); }
+.case-card:nth-child(3){ border-top-color:var(--accent-3); }
+.case-card .icon-line{
+  font-family:'Crimson Pro', serif; font-style:italic;
+  font-size:.85rem; color:var(--ink-3);
+}
+.case-card h3{
+  font-family:'Noto Serif TC', serif; font-weight:900;
+  font-size:1.5rem; color:var(--ink); margin:6px 0 8px;
+}
+.case-card p{
+  font-size:.88rem; color:var(--ink-2); line-height:1.6;
+  margin-bottom:8px;
+}
+.case-card .keyword{
+  font-family:'JetBrains Mono', monospace; font-size:.72rem;
+  color:var(--accent); margin-top:auto;
+}
+
+/* CTA (頁 25) */
+.cta-grid{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:14px;
+}
+.cta-step{
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:6px; padding:24px 22px; box-shadow:var(--shadow);
+  text-align:center;
+}
+.cta-step .step-n{
+  font-family:'Crimson Pro', serif; font-weight:700;
+  font-size:2.4rem; color:var(--accent); line-height:1;
+}
+.cta-step .step-t{
+  font-family:'Noto Serif TC', serif; font-weight:700;
+  font-size:1.1rem; color:var(--ink); margin:6px 0 8px;
+}
+.cta-step .step-d{ font-size:.88rem; color:var(--ink-2); line-height:1.55; }
+
+/* 完課儀表板(頁 26) */
+.dashboard{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:14px;
+}
+.dash-card{
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:4px; padding:20px 18px; box-shadow:var(--shadow);
+  text-align:center;
+}
+.dash-card .n{
+  font-family:'Crimson Pro', serif; font-weight:700;
+  font-size:2.4rem; color:var(--accent); line-height:1;
+}
+.dash-card .l{ font-size:.82rem; color:var(--ink-2); margin-top:6px; }
+.dash-card .src{
+  font-family:'JetBrains Mono', monospace; font-size:.62rem;
+  color:var(--ink-3); margin-top:4px;
+}
+
+/* Section 跨頁標頭 */
+.section-cover{
+  text-align:center; padding:30px 0;
+}
+.section-cover .sect-num{
+  font-family:'Crimson Pro', serif; font-style:italic;
+  font-size:clamp(1rem,1.4vw,1.2rem);
+  color:var(--accent); letter-spacing:.2em;
+}
+.section-cover .sect-name{
+  font-family:'Noto Serif TC', serif; font-weight:900;
+  font-size:clamp(2.5rem,5vw,4rem);
+  color:var(--ink); line-height:1.15;
+  margin:14px 0;
+}
+.section-cover .sect-subtitle{
+  font-size:clamp(1rem,1.4vw,1.2rem);
+  color:var(--ink-2); max-width:680px; margin:0 auto 14px;
+}
+.section-cover hr{
+  border:none; border-top:1px solid var(--ink-3);
+  width:80px; margin:14px auto;
+}
+
+/* 滿版頁面背景圖佔位 */
+.bg-art{
+  position:absolute; inset:0; z-index:0;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(139,26,26,0.10), transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(184,134,11,0.08), transparent 55%),
+    repeating-linear-gradient(45deg, transparent 0, transparent 60px, rgba(45,90,61,0.03) 60px, rgba(45,90,61,0.03) 61px);
+}
+
+/* SVG 分子圖（封面用） */
+.cover-svg{
+  position:absolute; right:-80px; bottom:-80px; z-index:0;
+  opacity:.18; width:560px; height:560px;
+}
+
+/* 滿版章節分隔（沒 AI 圖時用） */
+.full-quote{
+  font-family:'Noto Serif TC', serif; font-weight:900;
+  font-size:clamp(1.6rem,3vw,2.4rem);
+  color:var(--ink); line-height:1.35; max-width:900px;
+  margin:0 auto; text-align:center;
+}
+.full-quote .quote-mark{
+  font-family:'Crimson Pro', serif; color:var(--accent);
+  font-size:1.4em; line-height:1;
+}
+.full-cite{
+  font-family:'Crimson Pro', serif; font-style:italic;
+  font-size:1rem; color:var(--ink-3); text-align:center;
+  margin-top:16px;
+}
+
+/* 滾動內容（如政策表頁很長時）*/
+.scroll-y{ overflow-y:auto; max-height:75vh; padding-right:8px; }
+.scroll-y::-webkit-scrollbar{ width:6px; }
+.scroll-y::-webkit-scrollbar-thumb{ background:var(--ink-4); border-radius:3px; }
+
+/* 響應 */
+@media (max-width:900px){
+  .slide{ padding:60px 28px 50px; }
+  .grid-3, .grid-4, .pillar-grid, .vote-grid, .edcafe-grid, .esg-grid, .compare-row,
+  .case-grid, .cta-grid, .dashboard, .bullets-5, .dt-stats, .match-stats{
+    grid-template-columns:1fr 1fr;
+  }
+  .vote-grid{ grid-template-columns:repeat(3,1fr); }
+}
+
+@media print{
+  .slide{ position:relative !important; opacity:1 !important; page-break-after:always; }
+  #toolBar, #recordPanel, #qrModal, #progress, #section-tag, #pageInfo, #hint{ display:none !important; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="section-tag">— Section 1 ｜ 動機 —</div>
+<div id="pageInfo">1 / 26</div>
+<div id="hint">← → 切頁 ｜ F 全螢幕 ｜ Q QR Code ｜ R 紀錄面板</div>
+
+<div id="toolBar">
+  <button class="tool-btn session" id="sessionBtn" onclick="changeSession()">
+    <span id="liveIndicator"></span><span id="sessionLabel">uni_——</span>
+  </button>
+  <button class="tool-btn qr" onclick="toggleQR()">📱 QR</button>
+  <button class="tool-btn" onclick="togglePanel()">
+    📊 紀錄<span class="badge" id="recBadge">0</span>
+  </button>
+</div>
+
+<!-- QR Code Modal -->
+<div id="qrModal" onclick="if(event.target.id==='qrModal')toggleQR()">
+  <div class="qr-card">
+    <h3>學生掃碼入場</h3>
+    <p>請掃 QR Code，用手機進入互動站</p>
+    <div class="qr-box" id="qrBox"></div>
+    <div class="url" id="qrUrl"></div>
+    <button class="close-btn" onclick="toggleQR()">關閉 (Q)</button>
+  </div>
+</div>
+
+<!-- Record Panel -->
+<div id="recordPanel">
+  <h2>📊 班級即時紀錄 <span class="close" onclick="togglePanel()">×</span></h2>
+  <div class="session-info">課堂代碼：<span id="sessionLabel2">uni_——</span></div>
+
+  <h3>🗳️ 願付溢價投票 <span class="cnt" id="cntVotes">0 票</span></h3>
+  <div id="voteRecords"><div class="rec-empty">尚無紀錄</div></div>
+
+  <h3>🎯 詞彙配對 <span class="cnt" id="cntMatches">0 次</span></h3>
+  <div id="matchRecords"><div class="rec-empty">尚無紀錄</div></div>
+
+  <h3>🧭 政策決策樹 <span class="cnt" id="cntDecisions">0 次</span></h3>
+  <div id="dtRecords"><div class="rec-empty">尚無紀錄</div></div>
+
+  <div class="export-row">
+    <button onclick="exportCSV()">📥 下載 CSV</button>
+    <button onclick="copyJSON()">📋 複製 JSON</button>
+    <button onclick="exportReport()">📄 下載報告</button>
+    <button class="warn" onclick="newSession()">🆕 開新課堂</button>
+  </div>
+</div>
+
+<!-- ========== SECTION 1：動機 + 注意（第一節 120 分鐘） ========== -->
+
+<section class="slide active" data-slide="1" data-section="Section 1 ｜ 動機">
+  <div class="bg-art"></div>
+  <div class="slide-inner">
+    <div class="kicker">FOOD ＆ NUTRITION ｜ ACADEMIC READING</div>
+    <h1 class="slide-title">蛋白質大戰 <span class="em">2026</span><br>大學生視角下的<span class="em">產業洗牌</span></h1>
+    <p class="subtitle">不只是「我們吃什麼」，更是「誰將被替代、誰來決策、誰能論述」。<br>本週兩節課，我們從食品科學、商業策略、政策論述三個層面，剖析替代蛋白如何重組全球食物系統。</p>
+    <p class="note">食品營養華語文獻閱讀 ｜ 大學組 ｜ 本週 2 節 × 120 分鐘 ｜ 含 Edcafe 課中＋課後任務</p>
+  </div>
+</section>
+
+<section class="slide" data-slide="2" data-section="Section 1 ｜ 動機">
+  <div class="slide-inner">
+    <div class="kicker">PAIN POINT</div>
+    <h2 class="slide-title">2030 年的便當盒，<span class="em">會少了誰？</span></h2>
+    <p class="subtitle">當植物肉熱潮退燒、發酵蛋白急速崛起，「替代蛋白」這個十年前的願景，正進入第二輪洗牌。三個你應該知道的數字：</p>
+    <div class="grid-3" style="margin-top:24px;">
+      <div class="stat-card">
+        <div class="n">−95%</div>
+        <div class="l">Beyond Meat 股價跌幅</div>
+        <div class="src">2019 IPO 高點 → 2026 Q1</div>
+      </div>
+      <div class="stat-card" style="border-left-color:var(--accent-3);">
+        <div class="n" style="color:var(--accent-3);">−7%</div>
+        <div class="l">美國植物肉零售年衰退</div>
+        <div class="src">SPINS 2025 年報</div>
+      </div>
+      <div class="stat-card" style="border-left-color:var(--accent-2);">
+        <div class="n" style="color:var(--accent-2);">+180%</div>
+        <div class="l">發酵蛋白募資成長</div>
+        <div class="src">GFI 2024 → 2025</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide="3" data-section="Section 1 ｜ 動機">
+  <div class="slide-inner">
+    <div class="kicker">🎮 即時互動 ｜ MINI GAME #1</div>
+    <h2 class="slide-title">你願為一份替代蛋白便當<br><span class="em">多付多少錢？</span></h2>
+    <p class="subtitle">假設一般便當 100 元，替代蛋白版本你願意付：</p>
+    <div class="vote-grid">
+      <div class="vote-box" data-opt="不買"><div class="vote-label">不買</div><div class="vote-count">0</div><div class="vote-pct">0%</div></div>
+      <div class="vote-box" data-opt="+10%"><div class="vote-label">+10%<br>110 元</div><div class="vote-count">0</div><div class="vote-pct">0%</div></div>
+      <div class="vote-box" data-opt="+30%"><div class="vote-label">+30%<br>130 元</div><div class="vote-count">0</div><div class="vote-pct">0%</div></div>
+      <div class="vote-box" data-opt="+50%"><div class="vote-label">+50%<br>150 元</div><div class="vote-count">0</div><div class="vote-pct">0%</div></div>
+      <div class="vote-box" data-opt="任何價"><div class="vote-label">任何價</div><div class="vote-count">0</div><div class="vote-pct">0%</div></div>
+    </div>
+    <div class="vote-summary">共 <b id="voteTotal">0</b> 票 ｜ 按 <b>Q</b> 顯示 QR Code 給學生掃碼投票</div>
+  </div>
+</section>
+
+<section class="slide" data-slide="4" data-section="Section 1 ｜ 動機">
+  <div class="slide-inner">
+    <div class="kicker">CORE THESIS</div>
+    <h2 class="slide-title">三股力量在<span class="em">相互拉扯</span></h2>
+    <p class="subtitle">理解替代蛋白，不能只看技術或市場，要同時看三方利害關係人的動機與限制：</p>
+    <div class="pillar-grid">
+      <div class="pillar">
+        <div class="pillar-icon">🍽️</div>
+        <h3>消費端</h3>
+        <p>健康訴求 vs 口味偏好<br>道德感 vs 價格敏感<br><b>關鍵問</b>：誰買單？</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🏭</div>
+        <h3>產業端</h3>
+        <p>創新利潤 vs 規模化困難<br>新創 vs 既有食品巨頭<br><b>關鍵問</b>：誰賺錢？</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">⚖️</div>
+        <h3>政策端</h3>
+        <p>碳減排目標 vs 農業遊說<br>標示規範 vs 創新空間<br><b>關鍵問</b>：誰來規範？</p>
+      </div>
+    </div>
+    <p class="note" style="margin-top:18px; text-align:center;">本課程的三條軸線：科學深度 ｜ 商業策略 ｜ 政策論述</p>
+  </div>
+</section>
+
+<section class="slide" data-slide="5" data-section="Section 1 ｜ 注意">
+  <div class="slide-inner">
+    <div class="kicker">CASE STUDY #1 ｜ INDUSTRY</div>
+    <h2 class="slide-title">Beyond Meat <span class="em">5 年雲霄飛車</span></h2>
+    <p class="subtitle">一家被譽為「替代蛋白旗艦」的公司，如何從股神巴菲特拒投、IPO 暴漲、到 2025 年瀕臨退市？</p>
+    <div class="chart-wrap" style="margin-top:14px;">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:8px;">
+        <h3 style="margin:0;">Beyond Meat 股價 vs 年營收（2019–2025）</h3>
+        <span class="src" style="margin:0;">Source: BM 10-K ｜ 股價為當年最高點</span>
+      </div>
+      <div class="chart-canvas-wrap" style="height:320px;"><canvas id="chartBM"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide="6" data-section="Section 1 ｜ 注意">
+  <div class="slide-inner">
+    <div class="kicker">CASE STUDY #2 ｜ PIVOT</div>
+    <h2 class="slide-title">從「肉的替代品」<br>到 <span class="em">機能蛋白飲</span></h2>
+    <p class="subtitle">Beyond Meat 2026 年宣布戰略轉型 — 為什麼放棄主戰場？這個決定告訴我們什麼？</p>
+    <div class="compare-row">
+      <div class="compare-side old">
+        <div class="label">2019–2024 ｜ 舊定位</div>
+        <div class="headline">「比真肉更像肉」</div>
+        <ul>
+          <li>目標客群：肉食者「換口味」</li>
+          <li>通路：超市冷凍櫃、Burger King、麥當勞試點</li>
+          <li>關鍵詞：仿真度、汁感、煎香</li>
+          <li>困境：價格貴 2–3 倍、銷量無法 scale</li>
+        </ul>
+      </div>
+      <div class="compare-arrow">→</div>
+      <div class="compare-side new">
+        <div class="label">2026 ｜ 新定位</div>
+        <div class="headline">「機能蛋白飲」</div>
+        <ul>
+          <li>目標客群：健身族、銀髮高蛋白需求</li>
+          <li>通路：藥妝店、運動營養品專櫃</li>
+          <li>關鍵詞：高蛋白、低脂、即飲、好吸收</li>
+          <li>啟示：放棄打「真肉」、改打「健康訴求」</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note" style="margin-top:14px;">📰 延伸閱讀：「Beyond Meat 改賣氣泡蛋白飲」 — 食力 foodNEXT, 2026 年 5 月</p>
+  </div>
+</section>
+
+<section class="slide" data-slide="7" data-section="Section 1 ｜ 注意">
+  <div class="slide-inner">
+    <div class="kicker">ESG ｜ THE LABEL JUNGLE</div>
+    <h2 class="slide-title">ESG 標籤的<span class="em">灰色地帶</span></h2>
+    <p class="subtitle">每個標籤看起來都很「好」，但背後驗證強度、適用範圍、商業誘因都不同：</p>
+    <div class="esg-grid">
+      <div class="esg-card">
+        <div class="esg-name">碳中和</div>
+        <div class="esg-en">Carbon Neutral</div>
+        <div class="esg-issue">爭議：可<b>購買碳權</b>「抵銷」實際排放，<br>未必真正減排</div>
+      </div>
+      <div class="esg-card" style="border-top-color:var(--accent-3);">
+        <div class="esg-name">B 型企業</div>
+        <div class="esg-en">B Corp Certified</div>
+        <div class="esg-issue">優勢：含社會與治理面，<br>但<b>每 3 年</b>才重新驗證</div>
+      </div>
+      <div class="esg-card" style="border-top-color:var(--accent);">
+        <div class="esg-name">非基改</div>
+        <div class="esg-en">Non-GMO Project</div>
+        <div class="esg-issue">注意：非基改 ≠ 健康，<br><b>不等於</b>有機或低農藥</div>
+      </div>
+      <div class="esg-card" style="border-top-color:var(--ink-2);">
+        <div class="esg-name">純素認證</div>
+        <div class="esg-en">Certified Vegan</div>
+        <div class="esg-issue">明確：無動物成分。<br>但<b>不涵蓋</b>環境與勞工面</div>
+      </div>
+    </div>
+    <p class="note" style="margin-top:18px;">💡 思考題：作為消費者，看到 4 個標籤同時出現，你會更信還是更不信？</p>
+  </div>
+</section>
+
+<section class="slide" data-slide="8" data-section="Section 1 ｜ 注意">
+  <div class="slide-inner">
+    <div class="kicker">📖 VOCABULARY ｜ 本週關鍵 12 詞</div>
+    <h2 class="slide-title">華語<span class="em">關鍵詞表</span></h2>
+    <div class="scroll-y" style="max-height:60vh; margin-top:14px;">
+      <table class="vocab-table">
+        <thead>
+          <tr><th>詞彙</th><th>拼音</th><th>詞性</th><th>例句</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="word">永續</td><td class="pinyin">yǒngxù</td><td class="pos">adj.</td><td>消費者越來越重視<b>永續</b>飲食。</td></tr>
+          <tr><td class="word">衝擊</td><td class="pinyin">chōngjī</td><td class="pos">n./v.</td><td>替代蛋白對傳統畜牧業造成<b>衝擊</b>。</td></tr>
+          <tr><td class="word">洗牌</td><td class="pinyin">xǐpái</td><td class="pos">v.</td><td>整個產業正在重新<b>洗牌</b>。</td></tr>
+          <tr><td class="word">轉型</td><td class="pinyin">zhuǎnxíng</td><td class="pos">v./n.</td><td>Beyond Meat 宣布戰略<b>轉型</b>。</td></tr>
+          <tr><td class="word">估值</td><td class="pinyin">gūzhí</td><td class="pos">n.</td><td>公司<b>估值</b>大幅縮水。</td></tr>
+          <tr><td class="word">溢價</td><td class="pinyin">yìjià</td><td class="pos">n.</td><td>消費者願付的<b>溢價</b>是多少？</td></tr>
+          <tr><td class="word">認證</td><td class="pinyin">rènzhèng</td><td class="pos">n./v.</td><td>有機<b>認證</b>需要每年驗證。</td></tr>
+          <tr><td class="word">論述</td><td class="pinyin">lùnshù</td><td class="pos">n./v.</td><td>本文的<b>論述</b>邏輯清晰。</td></tr>
+          <tr><td class="word">補貼</td><td class="pinyin">bǔtiē</td><td class="pos">n./v.</td><td>政府是否該<b>補貼</b>替代蛋白？</td></tr>
+          <tr><td class="word">遊說</td><td class="pinyin">yóushuō</td><td class="pos">v.</td><td>畜牧業者向國會<b>遊說</b>反對政策。</td></tr>
+          <tr><td class="word">標示</td><td class="pinyin">biāoshì</td><td class="pos">n./v.</td><td>植物肉是否可<b>標示</b>為「肉」？</td></tr>
+          <tr><td class="word">韌性</td><td class="pinyin">rènxìng</td><td class="pos">n.</td><td>食物系統的<b>韌性</b>面臨挑戰。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide="9" data-section="Section 1 ｜ 注意">
+  <div class="slide-inner">
+    <div class="kicker">SCIENCE #1 ｜ AMINO ACID</div>
+    <h2 class="slide-title">必需胺基酸<span class="em">圖譜</span></h2>
+    <p class="subtitle">「完整蛋白質」指的是含 9 種必需胺基酸的食物。不同來源在這 9 種上的分佈差距很大：</p>
+    <div class="grid-2" style="grid-template-columns:1.4fr 1fr;">
+      <div class="chart-wrap">
+        <div style="display:flex; justify-content:space-between; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:8px;">
+          <h3 style="margin:0;">9 種必需胺基酸雷達圖</h3>
+          <span class="src" style="margin:0;">Source: USDA FoodData Central</span>
+        </div>
+        <div class="chart-canvas-wrap"><canvas id="chartAA"></canvas></div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:14px;">
+          <h3 style="color:var(--accent);">牛肉</h3>
+          <p>9 種全有，<b>賴胺酸</b>特別高，常作為「完整」基準。</p>
+        </div>
+        <div class="card" style="margin-bottom:14px;">
+          <h3 style="color:var(--accent-2);">大豆</h3>
+          <p>植物性中少數 9 種全含，但<b>甲硫胺酸</b>較低。</p>
+        </div>
+        <div class="card" style="margin-bottom:14px;">
+          <h3 style="color:var(--accent-3);">螺旋藻</h3>
+          <p>高蛋白(60%+)，但<b>單一藻種</b>飲食難維持。</p>
+        </div>
+        <div class="card">
+          <h3 style="color:var(--ink-2);">黃粉蟲</h3>
+          <p>9 種俱全，<b>必需脂肪酸</b>比例佳，未來潛力高。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide="10" data-section="Section 1 ｜ 注意">
+  <div class="slide-inner">
+    <div class="kicker">SCIENCE #2 ｜ LCA CARBON FOOTPRINT</div>
+    <h2 class="slide-title">LCA 碳足跡 ｜ <span class="em">每公斤 CO₂e</span></h2>
+    <p class="subtitle">生命週期評估 (Life Cycle Assessment) 量化從生產到餐桌的全部排放 ｜ 1 公斤蛋白質的差距可達 <b>37 倍</b></p>
+    <div class="chart-wrap" style="margin-top:10px;">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:8px;">
+        <h3 style="margin:0;">1 kg 蛋白質的 CO₂e 排放比較（kg CO₂e）</h3>
+        <span class="src" style="margin:0;">Source: Poore &amp; Nemecek (Science, 2018) ｜ 培養肉為 GFI 2023 估值</span>
+      </div>
+      <div class="chart-canvas-wrap" style="height:300px;"><canvas id="chartLCA"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide="11" data-section="Section 1 ｜ 注意">
+  <div class="slide-inner">
+    <div class="kicker">🎮 即時互動 ｜ MINI GAME #2</div>
+    <h2 class="slide-title">詞彙配對 <span class="em">8 題</span></h2>
+    <p class="subtitle">學生在手機上把<b>中文詞彙</b>跟<b>正確概念</b>配對 — 例如「估值崩盤」配「Beyond Meat 2024」。配對速度與正確率即時上排行榜：</p>
+    <div class="grid-2" style="grid-template-columns:1.4fr 1fr; margin-top:14px;">
+      <div class="leaderboard">
+        <h3>🏆 配對速度排行（滿分前 5）</h3>
+        <div id="leaderboardList"><div class="rec-empty">尚無滿分紀錄，繼續加油！</div></div>
+        <div class="match-stats">
+          <div class="match-stat"><div class="n" id="matchTotal">0</div><div class="l">總參與</div></div>
+          <div class="match-stat"><div class="n" id="matchPerfect">0</div><div class="l">滿分人數</div></div>
+          <div class="match-stat"><div class="n" id="matchAvg">-</div><div class="l">平均得分</div></div>
+          <div class="match-stat"><div class="n" id="matchAvgTime">-</div><div class="l">平均秒數</div></div>
+        </div>
+      </div>
+      <div class="card" style="background:var(--bg-2);">
+        <h3 style="color:var(--accent);">📚 配對清單預告</h3>
+        <p style="font-size:.88rem; line-height:1.65;">
+          1. 估值崩盤 ↔ Beyond Meat<br>
+          2. LCA ↔ 碳足跡量化<br>
+          3. 必需胺基酸 ↔ 9 種<br>
+          4. 戰略轉型 ↔ 機能蛋白飲<br>
+          5. Carbon Neutral ↔ 可購買抵銷<br>
+          6. 黃粉蟲 ↔ 完整蛋白質<br>
+          7. 韌性 ↔ Resilience<br>
+          8. 溢價 ↔ Willingness to Pay
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide="12" data-section="Section 1 ｜ 注意">
+  <div class="slide-inner">
+    <div class="kicker">SECTION 1 RECAP ｜ 第一堂 5 件事</div>
+    <h2 class="slide-title">今天的<span class="em">關鍵收束</span></h2>
+    <div class="bullets-5">
+      <div class="bullet-card">
+        <div class="bn">1</div>
+        <div class="bt">產業洗牌</div>
+        <div class="bd">植物肉退燒、發酵蛋白崛起，第二輪重組正在進行</div>
+      </div>
+      <div class="bullet-card">
+        <div class="bn">2</div>
+        <div class="bt">三股力量</div>
+        <div class="bd">消費 / 產業 / 政策同時拉扯，沒有單一答案</div>
+      </div>
+      <div class="bullet-card">
+        <div class="bn">3</div>
+        <div class="bt">戰略轉型</div>
+        <div class="bd">Beyond Meat 從「仿肉」改打「機能蛋白飲」</div>
+      </div>
+      <div class="bullet-card">
+        <div class="bn">4</div>
+        <div class="bt">科學量化</div>
+        <div class="bd">胺基酸圖譜 + LCA 是評估替代蛋白的兩把尺</div>
+      </div>
+      <div class="bullet-card">
+        <div class="bn">5</div>
+        <div class="bt">標籤陷阱</div>
+        <div class="bd">ESG 4 大標籤各有強弱，不能照單全收</div>
+      </div>
+    </div>
+    <p class="note" style="text-align:center; margin-top:24px;">📌 下一頁：中場 10 分鐘 ｜ 第二節 3 大活動預告（SWOT / 辯論 / 決策樹）</p>
+  </div>
+</section>
+
+<section class="slide" data-slide="13" data-section="Section 1 → 中場">
+  <div class="slide-inner">
+    <div class="kicker">⏸️ INTERMISSION ｜ 中場 10 分鐘</div>
+    <h2 class="slide-title">喘口氣<br>第二節我們<span class="em">動手吵架</span></h2>
+    <p class="subtitle">第一節我們把產業現況、科學量化、商業策略整理過一輪。<br>休息 10 分鐘後第二節進入「政策論辯 + 寫作論證」三大活動：</p>
+    <div class="pillar-grid">
+      <div class="pillar">
+        <div class="pillar-icon">🧠</div>
+        <h3>SWOT 分析</h3>
+        <p>植物發酵蛋白 4 格 SWOT，分組討論 + 上台分享</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🎤</div>
+        <h3>正反辯論</h3>
+        <p>「肉」字爭議，奇偶座位分正反方</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🧭</div>
+        <h3>政策決策樹</h3>
+        <p>3 題分入 6 派別，看你會推哪條路徑</p>
+      </div>
+    </div>
+    <p class="note" style="text-align:center; margin-top:18px;">📲 Edcafe 任務（閱讀測驗 + 摘要 + 政策建議書）會在第二節結尾統一發出，截止本週末或下次上課前</p>
+  </div>
+</section>
+
+<!-- ========== SECTION 2：注意 + 行動（第二節 120 分鐘） ========== -->
+
+<section class="slide" data-slide="14" data-section="Section 2 ｜ 動機">
+  <div class="bg-art"></div>
+  <div class="slide-inner">
+    <div class="section-cover">
+      <div class="sect-num">— SECTION 2 ｜ 第二節 —</div>
+      <hr>
+      <div class="sect-name">從<span style="color:var(--accent);">理解</span><br>到<span style="color:var(--accent);">論述</span></div>
+      <hr>
+      <div class="sect-subtitle">上節我們認識了產業現況與科學量化。<br>本節聚焦：政策推演 ｜ 批判思考 ｜ 寫作論證</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide="15" data-section="Section 2 ｜ 動機">
+  <style>
+    .recap-card{ cursor:pointer; transition:all .25s; user-select:none; }
+    .recap-card:hover{ background:var(--bg-3); transform:translateY(-2px); box-shadow:0 4px 14px rgba(74,63,53,0.15); }
+    .recap-answer{
+      font-family:'JetBrains Mono', monospace;
+      color:var(--accent-2);
+      font-size:.85rem;
+      margin-top:12px;
+      padding:8px 12px;
+      background:rgba(45,90,61,0.08);
+      border-left:3px solid var(--accent-2);
+      border-radius:3px;
+      display:none;
+    }
+    .recap-answer.show{ display:block; animation:fadeIn .4s ease; }
+    @keyframes fadeIn{ from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:translateY(0);} }
+    .recap-mask{
+      font-family:'Crimson Pro', serif; font-style:italic;
+      font-size:.82rem; color:var(--ink-4);
+      margin-top:12px; text-align:center;
+      padding:6px; border:1px dashed var(--ink-4); border-radius:3px;
+    }
+    .recap-mask.hide{ display:none; }
+    .reveal-all-btn{
+      margin:18px auto 0; display:block;
+      padding:10px 24px; background:var(--accent); color:#fff;
+      border:none; border-radius:4px; cursor:pointer;
+      font-family:inherit; font-weight:700; font-size:.95rem;
+    }
+    .reveal-all-btn:hover{ background:var(--ink); }
+    .reveal-all-btn.done{ background:var(--ink-3); cursor:default; }
+  </style>
+  <div class="slide-inner">
+    <div class="kicker">QUICK RECAP ｜ 上節 5 分鐘搶答</div>
+    <h2 class="slide-title">熱身：<span class="em">3 個快問</span><br>看上節你記住多少</h2>
+    <p class="subtitle">老師口頭出題、學生舉手搶答 ｜ 答對的同學等下分組時當組長 ｜ <b>點卡片或按 A 揭曉答案</b></p>
+    <div class="grid-3" style="margin-top:14px;">
+      <div class="card recap-card" onclick="revealRecap(1)">
+        <div class="card-num">Q1</div>
+        <h3>Beyond Meat 股價從高點跌了多少？</h3>
+        <p style="color:var(--ink-3); font-size:.85rem; margin-top:8px;"><i>提示：上節第 2 頁的數據卡</i></p>
+        <p class="recap-mask" id="recapM1">👆 點此揭曉</p>
+        <p class="recap-answer" id="recapA1">✓ −95%（2019 IPO 高點 → 2026 Q1）</p>
+      </div>
+      <div class="card recap-card" onclick="revealRecap(2)">
+        <div class="card-num">Q2</div>
+        <h3>LCA 是哪三個英文字的縮寫？</h3>
+        <p style="color:var(--ink-3); font-size:.85rem; margin-top:8px;"><i>提示：上節第 10 頁碳足跡頁</i></p>
+        <p class="recap-mask" id="recapM2">👆 點此揭曉</p>
+        <p class="recap-answer" id="recapA2">✓ Life Cycle Assessment 生命週期評估</p>
+      </div>
+      <div class="card recap-card" onclick="revealRecap(3)">
+        <div class="card-num">Q3</div>
+        <h3>Carbon Neutral 標籤的最大爭議？</h3>
+        <p style="color:var(--ink-3); font-size:.85rem; margin-top:8px;"><i>提示：上節第 7 頁 ESG 4 卡格</i></p>
+        <p class="recap-mask" id="recapM3">👆 點此揭曉</p>
+        <p class="recap-answer" id="recapA3">✓ 可購買碳權「抵銷」實際排放，未必真減排</p>
+      </div>
+    </div>
+    <button class="reveal-all-btn" id="revealAllBtn" onclick="revealAllRecap()">📢 全部揭曉答案（或按 A）</button>
+    <p class="note" style="text-align:center; margin-top:14px;">💡 接下來進入第二節主菜：政策對比 → SWOT → 辯論 → 決策樹 → 寫作</p>
+  </div>
+</section>
+
+<section class="slide" data-slide="16" data-section="Section 2 ｜ 注意">
+  <div class="slide-inner">
+    <div class="kicker">POLICY #1 ｜ 國際比較</div>
+    <h2 class="slide-title">四國替代蛋白<span class="em">政策對照</span></h2>
+    <p class="subtitle">同樣是「替代蛋白」，各國法規路徑差異極大。這張表會貫穿後面的辯論：</p>
+    <table class="policy-table">
+      <thead>
+        <tr><th>國家/地區</th><th>補貼力道</th><th>標示規範</th><th>培養肉許可</th><th>產業遊說</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="country">🇺🇸 美國</td>
+          <td>聯邦無，個別州補助</td>
+          <td>2018 起「肉」字限定畜產（部分州）</td>
+          <td>2023 USDA 核准雞肉</td>
+          <td><b>畜牧業強</b>，反植物肉標示遊說</td>
+        </tr>
+        <tr>
+          <td class="country">🇪🇺 歐盟</td>
+          <td>Horizon Europe 研發補助</td>
+          <td>2020 提案禁「肉」字遭否決</td>
+          <td>EFSA 評估中，2025 義大利禁</td>
+          <td>農業 lobby 與消費權益對峙</td>
+        </tr>
+        <tr>
+          <td class="country">🇸🇬 新加坡</td>
+          <td>9000 萬美元 Future Foods Fund</td>
+          <td>明確標「Cultivated」</td>
+          <td><b>2020 全球首核准</b>培養雞肉</td>
+          <td>無傳統畜牧業，政府主導</td>
+        </tr>
+        <tr>
+          <td class="country">🇹🇼 台灣</td>
+          <td>未有專項補貼</td>
+          <td>食藥署 2024 草案，禁「肉」字</td>
+          <td><b>尚未開放</b>培養肉上市</td>
+          <td>畜牧業遊說反植物肉標示</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="slide" data-slide="17" data-section="Section 2 ｜ 注意">
+  <div class="slide-inner">
+    <div class="kicker">POLICY #2 ｜ 三條路徑</div>
+    <h2 class="slide-title">碳稅 vs 補貼 vs 不介入：<br>哪一條<span class="em">對社會最好？</span></h2>
+    <p class="subtitle">這三條政策路徑反映了不同的價值觀。沒有絕對對錯，但每條都會產生不同的贏家與輸家：</p>
+    <div class="pillar-grid">
+      <div class="pillar">
+        <div class="pillar-icon">💸</div>
+        <h3 style="color:var(--accent);">碳稅派</h3>
+        <p style="text-align:left;"><b>邏輯</b>：把碳排成本內部化<br><b>受益</b>：低碳產品（含替代蛋白）<br><b>受損</b>：傳統畜牧業、低收入家庭<br><b>難處</b>：政治阻力大</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🎁</div>
+        <h3 style="color:var(--accent-2);">補貼派</h3>
+        <p style="text-align:left;"><b>邏輯</b>：用公帑加速新技術<br><b>受益</b>：替代蛋白新創<br><b>受損</b>：納稅人、其他產業<br><b>難處</b>：選贏家、效率爭議</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🤝</div>
+        <h3 style="color:var(--accent-3);">不介入派</h3>
+        <p style="text-align:left;"><b>邏輯</b>：市場自由決定<br><b>受益</b>：消費者選擇權、現存業者<br><b>受損</b>：環境外部成本未內部化<br><b>難處</b>：氣候目標達不到</p>
+      </div>
+    </div>
+    <p class="note" style="text-align:center; margin-top:18px;">🤔 下一頁開始：用 SWOT + 正反辯論深入這些拉扯</p>
+  </div>
+</section>
+
+<section class="slide" data-slide="18" data-section="Section 2 ｜ 行動">
+  <div class="slide-inner">
+    <div class="kicker">🧠 CRITICAL THINKING ｜ 小組 8 分鐘</div>
+    <h2 class="slide-title">SWOT 分析：<br><span class="em">植物發酵蛋白</span></h2>
+    <p class="subtitle">分 4 組，每組負責 SWOT 一格。用上節讀到的資料 + 課堂內容填入 3–4 點，5 分鐘討論 + 3 分鐘上台。</p>
+    <div class="swot-grid">
+      <div class="swot-cell s">
+        <div class="swot-label">S ｜ Strengths</div>
+        <ul><li></li><li></li><li></li><li></li></ul>
+      </div>
+      <div class="swot-cell w">
+        <div class="swot-label">W ｜ Weaknesses</div>
+        <ul><li></li><li></li><li></li><li></li></ul>
+      </div>
+      <div class="swot-cell o">
+        <div class="swot-label">O ｜ Opportunities</div>
+        <ul><li></li><li></li><li></li><li></li></ul>
+      </div>
+      <div class="swot-cell t">
+        <div class="swot-label">T ｜ Threats</div>
+        <ul><li></li><li></li><li></li><li></li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide="19" data-section="Section 2 ｜ 行動">
+  <div class="slide-inner">
+    <div class="kicker">🎤 DEBATE ｜ 正反辯論 10 分鐘</div>
+    <h2 class="slide-title">命題：<span class="em">政府應禁止</span><br>植物肉使用「肉」字行銷</h2>
+    <div class="debate-prompt">
+      <div class="q">「肉」這個字到底屬於誰？</div>
+      <div class="meta">分組：奇數座位正方 ｜ 偶數座位反方 ｜ 每方 5 分鐘陳述 + 3 分鐘質詢</div>
+    </div>
+    <div class="debate-grid">
+      <div class="debate-col pro">
+        <h3>✓ 正方論點（應禁止）</h3>
+        <ul>
+          <li>保護消費者不被誤導</li>
+          <li>維護傳統產業權益</li>
+          <li>食品標示應精確</li>
+          <li>避免文化詞彙被劫持</li>
+        </ul>
+      </div>
+      <div class="debate-col con">
+        <h3>✗ 反方論點（不應禁止）</h3>
+        <ul>
+          <li>「肉」是描述性詞彙不是專利</li>
+          <li>禁字會阻礙創新與訊息傳達</li>
+          <li>消費者具判斷力</li>
+          <li>市場應有自由選擇權</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide="20" data-section="Section 2 ｜ 行動">
+  <div class="slide-inner">
+    <div class="kicker">🎮 即時互動 ｜ MINI GAME #3</div>
+    <h2 class="slide-title">政策決策樹：<br>你會推哪一條<span class="em">路徑</span>？</h2>
+    <p class="subtitle">學生在手機上回答 <b>3 題二選一</b>，自動分入 6 種政策派別。畫面即時顯示班級分佈：</p>
+    <div class="dt-stats" style="margin-top:14px;">
+      <div class="dt-stat-card"><div class="n" id="dtCntCarbon">0</div><div class="l">碳稅派</div></div>
+      <div class="dt-stat-card"><div class="n" id="dtCntSubsidy">0</div><div class="l">補貼派</div></div>
+      <div class="dt-stat-card"><div class="n" id="dtCntLabel">0</div><div class="l">標示派</div></div>
+      <div class="dt-stat-card"><div class="n" id="dtCntFree">0</div><div class="l">自由市場派</div></div>
+      <div class="dt-stat-card"><div class="n" id="dtCntInvest">0</div><div class="l">投資派</div></div>
+      <div class="dt-stat-card"><div class="n" id="dtCntEdu">0</div><div class="l">教育派</div></div>
+    </div>
+    <div style="margin-top:18px;">
+      <h3 style="font-family:'Noto Serif TC',serif; font-size:1rem; color:var(--ink); margin-bottom:8px;">📋 最近答題</h3>
+      <div id="recentDecisions" style="display:flex; flex-wrap:wrap; gap:6px;">
+        <div class="rec-empty">等學生掃 QR Code 開始作答…</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide="21" data-section="Section 2 ｜ 行動">
+  <div class="slide-inner">
+    <div class="kicker">CLASS RESULT ｜ 派別分佈圓餅</div>
+    <h2 class="slide-title">你們班<span class="em">的選擇</span></h2>
+    <p class="subtitle">把上一頁的決策樹結果視覺化。哪個派別占多數？跨組討論為什麼？</p>
+    <div class="chart-wrap" style="margin-top:14px;">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:8px;">
+        <h3 style="margin:0;">班級政策派別即時分佈</h3>
+        <span class="src" style="margin:0;">Source: altprot_uni_decisions（本堂 Firestore）</span>
+      </div>
+      <div class="chart-canvas-wrap" style="height:320px;"><canvas id="chartDt"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide="22" data-section="Section 2 ｜ 行動">
+  <div class="slide-inner">
+    <div class="kicker">✍️ WRITING TASK ｜ 政策建議書</div>
+    <h2 class="slide-title">課後寫作：<br>政策建議書 <span class="em">300 字</span></h2>
+    <p class="subtitle">用學術論述格式寫 300 字（不含標點），向<b>食藥署</b>提出你的政策建議：</p>
+    <div class="writing-grid">
+      <div class="writing-structure">
+        <h3>📐 四段結構</h3>
+        <ol>
+          <li><b>背景</b>（50 字）：用一個數據引出問題。<br><i>例：根據 GFI 2025…</i></li>
+          <li><b>論點</b>（80 字）：你建議哪條政策路徑？為什麼？<br><i>例：本文建議採行 X 政策…</i></li>
+          <li><b>證據</b>（120 字）：用課堂或文獻 2 個證據支持論點。<br><i>例：新加坡 2020…；歐盟 2025…</i></li>
+          <li><b>結論</b>（50 字）：可能的副作用 + 為何仍值得做。<br><i>例：雖然會引起…，但…</i></li>
+        </ol>
+      </div>
+      <div class="writing-rubric">
+        <h3>📊 評分標準（總 100 分）</h3>
+        <div class="rubric-row"><span class="l">內容理解（是否扣住政策議題）</span><span class="v">20</span></div>
+        <div class="rubric-row"><span class="l">科學概念（LCA / 胺基酸 / 標籤）</span><span class="v">20</span></div>
+        <div class="rubric-row"><span class="l">結構組織（四段邏輯）</span><span class="v">20</span></div>
+        <div class="rubric-row"><span class="l">語言表達（華語精確度）</span><span class="v">20</span></div>
+        <div class="rubric-row"><span class="l">思辨應用（副作用評估）</span><span class="v">20</span></div>
+        <div class="rubric-row" style="border-top:2px solid var(--accent); margin-top:8px; padding-top:10px;">
+          <span class="l"><b>合計</b></span><span class="v">100</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide="23" data-section="Section 2 ｜ 行動">
+  <div class="slide-inner">
+    <div class="kicker">📲 EDCAFE ｜ 課後三件事</div>
+    <h2 class="slide-title">本週末 / 下次上課前<span class="em">三件事</span></h2>
+    <p class="subtitle">掃對應 QR 進 Edcafe。Reading Activity 系統即時給分，兩份 Writing 由 AI 預批改 + 老師複審。</p>
+    <div class="edcafe-grid" style="grid-template-columns:1fr 1fr 1fr; gap:14px;">
+      <div class="edcafe-card reading" style="grid-template-columns:1fr; text-align:center;">
+        <div>
+          <div class="badge-row">EDCAFE ｜ READING</div>
+          <h3>📖 閱讀測驗</h3>
+          <p style="font-size:.82rem;">foodNEXT 原文 8 + 2 題 ｜ 即時看正誤</p>
+          <span class="deadline">⏰ 截止：本週日 23:59</span>
+        </div>
+        <div class="edcafe-qr">
+          <div id="qrEdcafeReading" data-url="https://app.edcafe.ai/reading/6a09efb4ac7176b84f09ac2b"></div>
+          <div class="url" id="urlEdcafeReading">edcafe.ai/reading/6a09…ac2b</div>
+        </div>
+      </div>
+      <div class="edcafe-card assignment" style="grid-template-columns:1fr; text-align:center; border-top-color:var(--accent-3);">
+        <div>
+          <div class="badge-row" style="color:var(--accent-3);">EDCAFE ｜ ASSIGNMENT</div>
+          <h3>✍️ 讀後摘要（150 字）</h3>
+          <p style="font-size:.82rem;">「Beyond Meat 轉型給其他食品新創的啟示」</p>
+          <span class="deadline">⏰ 截止：本週日 23:59</span>
+        </div>
+        <div class="edcafe-qr">
+          <div id="qrEdcafeAssign" data-url="https://app.edcafe.ai/assignment-grader/6a09f2006b6d69f53531cd4f"></div>
+          <div class="url" id="urlEdcafeAssign">edcafe.ai/assignment-grader/6a09…cd4f</div>
+        </div>
+      </div>
+      <div class="edcafe-card assignment" style="grid-template-columns:1fr; text-align:center;">
+        <div>
+          <div class="badge-row">EDCAFE ｜ ASSIGNMENT</div>
+          <h3>📝 政策建議書（300 字）</h3>
+          <p style="font-size:.82rem;">四段結構 ｜ 5 維評分各 0–20 分</p>
+          <span class="deadline">⏰ 截止：下次上課前 24h</span>
+        </div>
+        <div class="edcafe-qr">
+          <div id="qrEdcafeFinal" data-url="https://app.edcafe.ai/assignment-grader/6a09f3e0ac7176b84f09babc"></div>
+          <div class="url" id="urlEdcafeFinal">edcafe.ai/assignment-grader/6a09…babc</div>
+        </div>
+      </div>
+    </div>
+    <p class="note" style="text-align:center; margin-top:14px;">⭐ 政策建議書表現優異的 3 篇會在下次研習課堂朗讀 ｜ 三份任務都完成才算修畢本單元</p>
+  </div>
+</section>
+
+<section class="slide" data-slide="24" data-section="Section 2 ｜ 行動">
+  <div class="slide-inner">
+    <div class="kicker">EXTENSION ｜ 替代不只蛋白</div>
+    <h2 class="slide-title">替代蛋白只是<span class="em">縮影</span></h2>
+    <p class="subtitle">同樣的「替代＋論述」框架，可應用到下個五年的其他食品創新議題：</p>
+    <div class="case-grid">
+      <div class="case-card">
+        <div class="icon-line">CASE A</div>
+        <h3>替代糖</h3>
+        <p>從 Aspartame 爭議到 Allulose 新貴，<b>糖稅</b>與標示如何影響消費？</p>
+        <div class="keyword">關鍵詞：sweetener / 糖稅 / 升糖指數</div>
+      </div>
+      <div class="case-card">
+        <div class="icon-line">CASE B</div>
+        <h3>替代脂肪</h3>
+        <p>3D 列印植物脂肪、發酵製造可可脂，能否讓巧克力<b>不再砍熱帶雨林</b>？</p>
+        <div class="keyword">關鍵詞：palm oil free / 發酵脂質</div>
+      </div>
+      <div class="case-card">
+        <div class="icon-line">CASE C</div>
+        <h3>替代咖啡因</h3>
+        <p>無豆咖啡(Atomo)、實驗室復刻香氣分子，<b>咖啡價格暴漲</b>的解方？</p>
+        <div class="keyword">關鍵詞：beanless coffee / 氣候耐受作物</div>
+      </div>
+    </div>
+    <p class="note" style="text-align:center; margin-top:18px;">💡 期末報告選題提示：以上 3 個之一，套今天的 SOIL 框架做 10 分鐘論述</p>
+  </div>
+</section>
+
+<section class="slide" data-slide="25" data-section="Section 2 ｜ 行動">
+  <div class="slide-inner">
+    <div class="kicker">CTA ｜ 帶回家的三件事</div>
+    <h2 class="slide-title">下一餐 + <span class="em">下一個論述</span></h2>
+    <div class="cta-grid">
+      <div class="cta-step">
+        <div class="step-n">01</div>
+        <div class="step-t">這週試一次</div>
+        <div class="step-d">不必全素，挑一餐換成豆製品或發酵蛋白，記錄你的感受</div>
+      </div>
+      <div class="cta-step">
+        <div class="step-n">02</div>
+        <div class="step-t">完成政策建議書</div>
+        <div class="step-d">用今天教的四段結構，在 Edcafe 交一份 300 字論述</div>
+      </div>
+      <div class="cta-step">
+        <div class="step-n">03</div>
+        <div class="step-t">追蹤一條線</div>
+        <div class="step-d">替代糖 / 替代脂肪 / 替代咖啡因，選一條當你期末報告主題</div>
+      </div>
+    </div>
+    <p class="note" style="text-align:center; margin-top:24px; font-size:1rem;">
+      <span style="font-family:'Crimson Pro',serif; font-style:italic; color:var(--accent);">"We don't have to replace meat; we need to make every protein source accountable."</span>
+    </p>
+  </div>
+</section>
+
+<section class="slide" data-slide="26" data-section="完課儀表板">
+  <div class="slide-inner">
+    <div class="kicker">📊 CLASS DASHBOARD ｜ 本週統計</div>
+    <h2 class="slide-title">兩節課，你們<span class="em">留下了什麼</span></h2>
+    <div class="dashboard">
+      <div class="dash-card">
+        <div class="n" id="dashVotes">0</div>
+        <div class="l">願付溢價投票</div>
+        <div class="src">altprot_uni_votes</div>
+      </div>
+      <div class="dash-card">
+        <div class="n" id="dashMatches">0</div>
+        <div class="l">配對遊戲參與</div>
+        <div class="src">altprot_uni_matches</div>
+      </div>
+      <div class="dash-card">
+        <div class="n" id="dashDecisions">0</div>
+        <div class="l">政策決策樹</div>
+        <div class="src">altprot_uni_decisions</div>
+      </div>
+      <div class="dash-card">
+        <div class="n" id="dashStudents">0</div>
+        <div class="l">活躍學生暱稱數</div>
+        <div class="src">unique nicknames</div>
+      </div>
+    </div>
+    <p class="note" style="text-align:center; margin-top:22px;">
+      按 <b>R</b> 開紀錄面板下載完整 CSV ｜ 按 <b>F</b> 退出全螢幕 ｜ <span class="em">謝謝你們認真的兩節課</span>
+    </p>
+    <p class="note" style="text-align:center; margin-top:14px;">
+      <span style="font-family:'Crimson Pro',serif; font-style:italic;">食品營養華語文獻閱讀 ｜ 大學組 ｜ 2026 春</span>
+    </p>
+  </div>
+</section>
+
+<!-- ========== JS：切頁 + Firebase + Chart.js + QR + 紀錄面板 ========== -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+import { getFirestore, collection, query, where, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "",
+  authDomain: "my-teaching-tools-517a0.firebaseapp.com",
+  projectId: "my-teaching-tools-517a0",
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+window.firestoreDB = db;
+window.firestoreAPI = { collection, query, where, onSnapshot };
+window.dispatchEvent(new CustomEvent('firebase-ready'));
+</script>
+
+<script>
+/* =================== 切頁邏輯 =================== */
+const slides = document.querySelectorAll('.slide');
+const totalPages = slides.length;
+let currentPage = 0;
+
+function go(n){
+  currentPage = Math.max(0, Math.min(totalPages-1, n));
+  slides.forEach((s, i) => s.classList.toggle('active', i === currentPage));
+  document.getElementById('progress').style.width = ((currentPage+1)/totalPages*100) + '%';
+  document.getElementById('pageInfo').textContent = (currentPage+1) + ' / ' + totalPages;
+  const sec = slides[currentPage].dataset.section || '';
+  document.getElementById('section-tag').textContent = '— ' + sec + ' —';
+  // 切到頁 15 時重置快問答案
+  if(currentPage === 14 && typeof window.resetRecap === 'function') window.resetRecap();
+  // lazy render charts
+  lazyRender(currentPage+1);
+}
+function next(){ go(currentPage+1); }
+function prev(){ go(currentPage-1); }
+
+document.addEventListener('keydown', e => {
+  if(e.target.tagName === 'INPUT') return;
+  if(e.key === 'ArrowRight' || e.key === ' '){ e.preventDefault(); next(); }
+  else if(e.key === 'ArrowLeft'){ prev(); }
+  else if(e.key === 'f' || e.key === 'F'){ toggleFs(); }
+  else if(e.key === 'q' || e.key === 'Q'){ toggleQR(); }
+  else if(e.key === 'r' || e.key === 'R'){ togglePanel(); }
+  else if(e.key === 'a' || e.key === 'A'){ if(currentPage === 14) revealAllRecap(); }
+  else if(e.key === 'Home'){ go(0); }
+  else if(e.key === 'End'){ go(totalPages-1); }
+});
+
+/* =================== 頁 15 快問搶答揭曉邏輯 =================== */
+window.revealRecap = function(n){
+  const a = document.getElementById('recapA' + n);
+  const m = document.getElementById('recapM' + n);
+  if(a) a.classList.add('show');
+  if(m) m.classList.add('hide');
+};
+window.revealAllRecap = function(){
+  for(let i=1; i<=3; i++) window.revealRecap(i);
+  const btn = document.getElementById('revealAllBtn');
+  if(btn){ btn.textContent = '✓ 已全部揭曉'; btn.classList.add('done'); btn.disabled = true; }
+};
+function resetRecap(){
+  for(let i=1; i<=3; i++){
+    const a = document.getElementById('recapA' + i);
+    const m = document.getElementById('recapM' + i);
+    if(a) a.classList.remove('show');
+    if(m) m.classList.remove('hide');
+  }
+  const btn = document.getElementById('revealAllBtn');
+  if(btn){ btn.textContent = '📢 全部揭曉答案（或按 A）'; btn.classList.remove('done'); btn.disabled = false; }
+}
+window.resetRecap = resetRecap;
+
+document.addEventListener('click', e => {
+  if(e.target.closest('button, .vote-box, a, input, #recordPanel, #toolBar, #qrModal, .dt-choice, .edcafe-card, .recap-card, table, .swot-cell, canvas')) return;
+  const x = e.clientX, w = window.innerWidth;
+  if(x > w*0.7) next();
+  else if(x < w*0.3) prev();
+});
+
+function toggleFs(){
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+  else document.exitFullscreen?.();
+}
+window.toggleFs = toggleFs;
+
+/* =================== Session 管理 =================== */
+function todaySession(){
+  const d = new Date();
+  return 'uni_' + d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0') + 'alt';
+}
+function loadSession(){
+  const url = new URL(location.href);
+  return url.searchParams.get('session') || localStorage.getItem('altUniSession') || todaySession();
+}
+window.SESSION = loadSession();
+localStorage.setItem('altUniSession', window.SESSION);
+
+function updateSessionLabel(){
+  document.getElementById('sessionLabel').textContent = window.SESSION;
+  document.getElementById('sessionLabel2').textContent = window.SESSION;
+  renderQR();
+}
+window.changeSession = function(){
+  const s = prompt('輸入新課堂代碼（如 uni_20260520alt）：', window.SESSION);
+  if(s && s.trim()){
+    window.SESSION = s.trim().slice(0, 40);
+    localStorage.setItem('altUniSession', window.SESSION);
+    updateSessionLabel();
+    location.reload();
+  }
+};
+window.newSession = function(){
+  const d = new Date();
+  const ts = String(d.getHours()).padStart(2,'0') + String(d.getMinutes()).padStart(2,'0');
+  const s = 'uni_' + d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0') + '_' + ts + 'alt';
+  window.SESSION = s;
+  localStorage.setItem('altUniSession', s);
+  updateSessionLabel();
+  location.reload();
+};
+
+/* =================== QR Code =================== */
+function renderQR(){
+  const url = location.origin + '/student_uni.html?session=' + encodeURIComponent(window.SESSION);
+  document.getElementById('qrUrl').textContent = url;
+  const qr = qrcode(0, 'M');
+  qr.addData(url);
+  qr.make();
+  document.getElementById('qrBox').innerHTML = qr.createImgTag(7, 4);
+}
+window.toggleQR = function(){
+  document.getElementById('qrModal').classList.toggle('open');
+};
+
+function renderEdcafeQR(elId, url){
+  const el = document.getElementById(elId);
+  if(!el) return;
+  if(!url || url.startsWith('REPLACE')){
+    el.innerHTML = '<div style="padding:40px 20px; color:#999; font-size:.78rem;">[待設定]</div>';
+    return;
+  }
+  const qr = qrcode(0, 'M');
+  qr.addData(url);
+  qr.make();
+  el.innerHTML = qr.createImgTag(4, 2);
+}
+function initEdcafeQRs(){
+  ['qrEdcafeReading', 'qrEdcafeAssign', 'qrEdcafeFinal'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) renderEdcafeQR(id, el.dataset.url);
+  });
+}
+
+/* =================== Firebase 訂閱 =================== */
+let voteData = { '不買':0, '+10%':0, '+30%':0, '+50%':0, '任何價':0 };
+let matchData = [];
+let dtData = [];
+window.unsubscribers = [];
+
+function subscribeAll(){
+  if(!window.firestoreDB) return;
+  const { collection, query, where, onSnapshot } = window.firestoreAPI;
+  const db = window.firestoreDB;
+
+  // 投票
+  const qVotes = query(collection(db, 'altprot_uni_votes'), where('session','==', window.SESSION));
+  const u1 = onSnapshot(qVotes, snap => {
+    voteData = { '不買':0, '+10%':0, '+30%':0, '+50%':0, '任何價':0 };
+    const entries = [];
+    snap.forEach(d => {
+      const x = d.data();
+      voteData[x.choice] = (voteData[x.choice] || 0) + 1;
+      entries.push({ ...x, ts: x.timestamp?.toDate?.() || new Date() });
+    });
+    renderVotes();
+    renderVotePanel(entries);
+    updateBadge();
+    updateDashboard();
+  }, err => { console.error('votes', err); });
+
+  // 配對
+  const qMatches = query(collection(db, 'altprot_uni_matches'), where('session','==', window.SESSION));
+  const u2 = onSnapshot(qMatches, snap => {
+    matchData = [];
+    snap.forEach(d => {
+      const x = d.data();
+      matchData.push({ ...x, ts: x.timestamp?.toDate?.() || new Date() });
+    });
+    renderMatches();
+    updateBadge();
+    updateDashboard();
+  }, err => { console.error('matches', err); });
+
+  // 決策
+  const qDt = query(collection(db, 'altprot_uni_decisions'), where('session','==', window.SESSION));
+  const u3 = onSnapshot(qDt, snap => {
+    dtData = [];
+    snap.forEach(d => {
+      const x = d.data();
+      dtData.push({ ...x, ts: x.timestamp?.toDate?.() || new Date() });
+    });
+    renderDecisions();
+    updateBadge();
+    updateDashboard();
+  }, err => { console.error('decisions', err); });
+
+  window.unsubscribers = [u1, u2, u3];
+}
+
+window.addEventListener('firebase-ready', () => {
+  updateSessionLabel();
+  initEdcafeQRs();
+  subscribeAll();
+});
+
+/* =================== 渲染：投票 =================== */
+function renderVotes(){
+  const total = Object.values(voteData).reduce((a,b)=>a+b, 0);
+  const maxV = Math.max(...Object.values(voteData), 1);
+  document.querySelectorAll('.vote-box').forEach(box => {
+    const opt = box.dataset.opt;
+    const v = voteData[opt] || 0;
+    const pct = total > 0 ? (v/total*100) : 0;
+    box.querySelector('.vote-count').textContent = v;
+    box.querySelector('.vote-pct').textContent = pct.toFixed(0) + '%';
+    const h = (v/maxV*100) + '%';
+    box.style.setProperty('--h', h);
+  });
+  document.getElementById('voteTotal').textContent = total;
+}
+const styleEl = document.createElement('style');
+styleEl.textContent = '.vote-box::before { height: var(--h, 0%) !important; }';
+document.head.appendChild(styleEl);
+
+function renderVotePanel(entries){
+  const html = ['不買','+10%','+30%','+50%','任何價'].map(k => {
+    const v = voteData[k] || 0;
+    return `<div class="rec-row"><span class="l">${k}</span><span class="v">${v} 票</span></div>`;
+  }).join('');
+  document.getElementById('voteRecords').innerHTML = html;
+  document.getElementById('cntVotes').textContent = entries.length + ' 票';
+}
+
+/* =================== 渲染：配對 =================== */
+function renderMatches(){
+  const perfects = matchData.filter(m => m.score === 8).sort((a,b) => a.duration - b.duration);
+  const lb = perfects.slice(0, 5).map((m,i) => {
+    const cls = i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    return `<div class="lb-row">
+      <div class="lb-rank ${cls}">${i+1}</div>
+      <div class="lb-name">${escapeHtml(m.nickname || '匿名')}</div>
+      <div class="lb-score">${m.score}/8</div>
+      <div class="lb-time">${m.duration} 秒</div>
+    </div>`;
+  }).join('');
+  document.getElementById('leaderboardList').innerHTML = lb || '<div class="rec-empty">尚無滿分紀錄，繼續加油！</div>';
+  document.getElementById('matchTotal').textContent = matchData.length;
+  document.getElementById('matchPerfect').textContent = perfects.length;
+  if(matchData.length){
+    const avgS = matchData.reduce((a,m)=>a+m.score,0)/matchData.length;
+    const avgT = matchData.reduce((a,m)=>a+m.duration,0)/matchData.length;
+    document.getElementById('matchAvg').textContent = avgS.toFixed(1) + '/8';
+    document.getElementById('matchAvgTime').textContent = avgT.toFixed(0) + 's';
+  }
+
+  const html = matchData.slice().sort((a,b)=>b.ts-a.ts).slice(0,30).map(m =>
+    `<div class="rec-row"><span class="l">${escapeHtml(m.nickname||'匿名')}</span><span class="v">${m.score}/8 · ${m.duration}s</span></div>`
+  ).join('');
+  document.getElementById('matchRecords').innerHTML = html || '<div class="rec-empty">尚無紀錄</div>';
+  document.getElementById('cntMatches').textContent = matchData.length + ' 次';
+}
+
+/* =================== 渲染：決策樹 =================== */
+function renderDecisions(){
+  const total = dtData.length;
+  const sects = { '碳稅派':0, '補貼派':0, '標示派':0, '自由市場派':0, '投資派':0, '教育派':0 };
+  dtData.forEach(d => Object.keys(sects).forEach(k => { if(d.result?.includes(k)) sects[k]++; }));
+  document.getElementById('dtCntCarbon').textContent = sects['碳稅派'];
+  document.getElementById('dtCntSubsidy').textContent = sects['補貼派'];
+  document.getElementById('dtCntLabel').textContent = sects['標示派'];
+  document.getElementById('dtCntFree').textContent = sects['自由市場派'];
+  document.getElementById('dtCntInvest').textContent = sects['投資派'];
+  document.getElementById('dtCntEdu').textContent = sects['教育派'];
+
+  const recent = dtData.slice().sort((a,b)=>b.ts-a.ts).slice(0,20);
+  const html = recent.map(d =>
+    `<span style="background:var(--bg-2); padding:6px 12px; border-radius:14px; font-size:.85rem;">
+      <b style="color:var(--ink);">${escapeHtml(d.nickname||'匿名')}</b>
+      <span style="color:var(--accent); margin-left:6px;">${escapeHtml(d.result)}</span>
+    </span>`
+  ).join('');
+  document.getElementById('recentDecisions').innerHTML = html || '<div class="rec-empty">等學生掃 QR Code 開始作答…</div>';
+
+  const panelHtml = recent.slice(0,30).map(d =>
+    `<div class="rec-row"><span class="l">${escapeHtml(d.nickname||'匿名')}</span><span class="v">${escapeHtml(d.result)}</span></div>`
+  ).join('');
+  document.getElementById('dtRecords').innerHTML = panelHtml || '<div class="rec-empty">尚無紀錄</div>';
+  document.getElementById('cntDecisions').textContent = total + ' 次';
+
+  if(currentPage+1 === 21) renderDtChart();
+}
+
+function updateDashboard(){
+  const totalVotes = Object.values(voteData).reduce((a,b)=>a+b, 0);
+  document.getElementById('dashVotes').textContent = totalVotes;
+  document.getElementById('dashMatches').textContent = matchData.length;
+  document.getElementById('dashDecisions').textContent = dtData.length;
+  const nicks = new Set([
+    ...matchData.map(m => m.nickname).filter(Boolean),
+    ...dtData.map(d => d.nickname).filter(Boolean),
+  ]);
+  document.getElementById('dashStudents').textContent = nicks.size;
+}
+
+function escapeHtml(s){
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* =================== 紀錄面板 =================== */
+function togglePanel(){ document.getElementById('recordPanel').classList.toggle('open'); }
+window.togglePanel = togglePanel;
+function updateBadge(){
+  const total = Object.values(voteData).reduce((a,b)=>a+b,0) + matchData.length + dtData.length;
+  const b = document.getElementById('recBadge');
+  b.textContent = total;
+  b.classList.toggle('show', total > 0);
+}
+
+/* =================== 匯出 =================== */
+function stamp(){ const d=new Date(); return d.toISOString().slice(0,16).replace(/[:T]/g,'-'); }
+function download(content, name, mime){
+  const blob = new Blob([content], { type: mime });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name; a.click();
+}
+window.exportCSV = function(){
+  let csv = '﻿類型,時間,暱稱,項目,結果\n';
+  Object.entries(voteData).forEach(([k,v]) => {
+    csv += `投票統計,${window.SESSION},,${k},${v}\n`;
+  });
+  matchData.slice().sort((a,b)=>a.ts-b.ts).forEach(m => {
+    csv += `配對遊戲,${m.ts.toISOString()},${m.nickname||''},得分,${m.score}/8 (${m.duration}秒)\n`;
+  });
+  dtData.slice().sort((a,b)=>a.ts-b.ts).forEach(d => {
+    csv += `政策決策樹,${d.ts.toISOString()},${d.nickname||''},選擇,${d.path} → ${d.result}\n`;
+  });
+  download(csv, `大學版_班級紀錄_${window.SESSION}_${stamp()}.csv`, 'text/csv;charset=utf-8');
+};
+window.copyJSON = function(){
+  const data = { session: window.SESSION, votes: voteData, matches: matchData, decisions: dtData, exportedAt: new Date().toISOString() };
+  navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+  alert('已複製 JSON 到剪貼簿！');
+};
+window.exportReport = function(){
+  const totalV = Object.values(voteData).reduce((a,b)=>a+b,0);
+  let r = `大學版替代蛋白課堂紀錄\nSession: ${window.SESSION}\n匯出時間: ${new Date().toLocaleString('zh-TW')}\n\n`;
+  r += `═══ 願付溢價投票（共 ${totalV} 票）═══\n`;
+  Object.entries(voteData).forEach(([k,v]) => {
+    const pct = totalV ? (v/totalV*100).toFixed(1) : 0;
+    r += `  ${k}: ${v} 票 (${pct}%)\n`;
+  });
+  r += `\n═══ 詞彙配對（共 ${matchData.length} 次）═══\n`;
+  if(matchData.length){
+    const avgS = (matchData.reduce((a,m)=>a+m.score,0)/matchData.length).toFixed(2);
+    const avgT = (matchData.reduce((a,m)=>a+m.duration,0)/matchData.length).toFixed(0);
+    const perfect = matchData.filter(m=>m.score===8).length;
+    r += `  平均得分: ${avgS}/8\n  平均用時: ${avgT}秒\n  滿分人數: ${perfect}\n`;
+  }
+  r += `\n═══ 政策決策樹（共 ${dtData.length} 次）═══\n`;
+  const sects = {};
+  dtData.forEach(d => sects[d.result] = (sects[d.result]||0)+1);
+  Object.entries(sects).forEach(([k,v]) => {
+    const pct = dtData.length ? (v/dtData.length*100).toFixed(1) : 0;
+    r += `  ${k}: ${v} 人 (${pct}%)\n`;
+  });
+  download(r, `大學版_班級報告_${window.SESSION}_${stamp()}.txt`, 'text/plain;charset=utf-8');
+};
+
+/* =================== Chart.js Lazy Render =================== */
+const charts = {};
+
+function lazyRender(pageNo){
+  if(pageNo === 5 && !charts.bm) renderBMChart();
+  if(pageNo === 9 && !charts.aa) renderAAChart();
+  if(pageNo === 10 && !charts.lca) renderLCAChart();
+  if(pageNo === 15 && !charts.edcafe) renderEdcafeChart();
+  if(pageNo === 21) renderDtChart();
+}
+
+function renderBMChart(){
+  const ctx = document.getElementById('chartBM');
+  if(!ctx) return;
+  charts.bm = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['2019', '2020', '2021', '2022', '2023', '2024', '2025'],
+      datasets: [
+        {
+          label: '股價最高點 (USD)',
+          data: [240, 195, 184, 75, 18, 8, 4],
+          borderColor: '#8b1a1a',
+          backgroundColor: 'rgba(139,26,26,0.10)',
+          tension: 0.3, yAxisID: 'y'
+        },
+        {
+          label: '年營收 (M USD)',
+          data: [298, 407, 465, 419, 343, 297, 268],
+          borderColor: '#2d5a3d',
+          backgroundColor: 'rgba(45,90,61,0.10)',
+          tension: 0.3, yAxisID: 'y1'
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom' } },
+      scales: {
+        y: { type: 'linear', position: 'left', title: { display: true, text: '股價 (USD)' } },
+        y1: { type: 'linear', position: 'right', title: { display: true, text: '年營收 (M USD)' }, grid: { drawOnChartArea: false } }
+      }
+    }
+  });
+}
+
+function renderAAChart(){
+  const ctx = document.getElementById('chartAA');
+  if(!ctx) return;
+  charts.aa = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['離胺酸\nLys', '甲硫胺酸\nMet', '色胺酸\nTrp', '蘇胺酸\nThr', '纈胺酸\nVal', '亮胺酸\nLeu', '異亮胺酸\nIle', '苯丙胺酸\nPhe', '組胺酸\nHis'],
+      datasets: [
+        { label: '牛肉', data: [9.1, 2.8, 1.2, 4.5, 5.6, 8.4, 4.9, 4.2, 3.7], borderColor: '#8b1a1a', backgroundColor: 'rgba(139,26,26,0.15)' },
+        { label: '大豆', data: [6.4, 1.3, 1.4, 3.9, 4.9, 7.8, 4.6, 5.0, 2.6], borderColor: '#2d5a3d', backgroundColor: 'rgba(45,90,61,0.15)' },
+        { label: '螺旋藻', data: [4.6, 2.2, 0.9, 4.7, 5.6, 8.7, 5.7, 4.4, 1.9], borderColor: '#b8860b', backgroundColor: 'rgba(184,134,11,0.15)' },
+        { label: '黃粉蟲', data: [6.0, 1.5, 1.0, 4.0, 6.5, 7.5, 4.8, 4.3, 3.0], borderColor: '#4a3f35', backgroundColor: 'rgba(74,63,53,0.15)' }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom' } },
+      scales: { r: { beginAtZero: true, max: 10, ticks: { stepSize: 2 } } }
+    }
+  });
+}
+
+function renderLCAChart(){
+  const ctx = document.getElementById('chartLCA');
+  if(!ctx) return;
+  charts.lca = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['牛肉', '羊肉', '豬肉', '雞肉', '雞蛋', '培養肉(預估)', '昆蟲', '豆製品', '螺旋藻'],
+      datasets: [{
+        label: 'kg CO₂e / kg 蛋白質',
+        data: [295, 187, 76, 35, 21, 17, 14, 8, 6],
+        backgroundColor: [
+          '#8b1a1a','#8b1a1a','#a04545','#c08585',
+          '#b8a890','#b8860b','#7a9b85','#2d5a3d','#1f4a30'
+        ]
+      }]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { x: { title: { display: true, text: 'kg CO₂e per kg 蛋白質' } } }
+    }
+  });
+}
+
+function renderEdcafeChart(){
+  const ctx = document.getElementById('chartEdcafe');
+  if(!ctx) return;
+  charts.edcafe = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8'],
+      datasets: [{
+        label: '答對率 (%)',
+        data: [88, 72, 65, 91, 58, 79, 83, 70],
+        backgroundColor: ctx => {
+          const v = ctx.parsed?.y || 0;
+          return v < 65 ? '#8b1a1a' : v < 80 ? '#b8860b' : '#2d5a3d';
+        }
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { y: { max: 100, title: { display: true, text: '答對率 (%)' } } }
+    }
+  });
+}
+
+function renderDtChart(){
+  const ctx = document.getElementById('chartDt');
+  if(!ctx) return;
+  const sects = { '碳稅派':0, '補貼派':0, '標示派':0, '自由市場派':0, '投資派':0, '教育派':0 };
+  dtData.forEach(d => Object.keys(sects).forEach(k => { if(d.result?.includes(k)) sects[k]++; }));
+  const data = Object.values(sects);
+  if(charts.dt){
+    charts.dt.data.datasets[0].data = data;
+    charts.dt.update();
+    return;
+  }
+  charts.dt = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(sects),
+      datasets: [{
+        data,
+        backgroundColor: ['#8b1a1a','#2d5a3d','#b8860b','#4a3f35','#7a9b85','#c08585']
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'right' } }
+    }
+  });
+}
+
+/* =================== 啟動 =================== */
+go(0);
+</script>
+</body>
+</html>

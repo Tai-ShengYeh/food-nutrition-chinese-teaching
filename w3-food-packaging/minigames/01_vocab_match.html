@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game 1 · 詞義配對</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Noto Sans TC',-apple-system,sans-serif;
+  background:#FFFBF0; color:#2D1A0F; min-height:100vh;
+  padding:18px; line-height:1.5;
+}
+.wrap{max-width:920px; margin:0 auto;}
+header{text-align:center; margin-bottom:18px;}
+header h1{font-size:1.6rem; color:#E63946; margin-bottom:6px;}
+header p{font-size:.95rem; color:#5A3D2E;}
+.score-bar{
+  display:flex; justify-content:space-between; align-items:center;
+  background:#fff; padding:12px 18px; border-radius:12px;
+  margin-bottom:14px; box-shadow:0 2px 8px rgba(0,0,0,.05);
+  font-weight:700;
+}
+.score{color:#2A9D8F; font-family:monospace;}
+.board{
+  display:grid; grid-template-columns:1fr 1.4fr; gap:16px;
+}
+.col h3{
+  font-size:1rem; color:#5A3D2E; margin-bottom:10px;
+  padding-bottom:6px; border-bottom:2px solid #F4A300;
+}
+.item{
+  background:#fff; border:2px solid #E5D9C7; border-radius:10px;
+  padding:14px 16px; margin-bottom:10px; cursor:pointer;
+  font-size:1rem; min-height:60px;
+  display:flex; align-items:center; justify-content:space-between;
+  transition:all .2s;
+}
+.item:hover{ border-color:#F4A300; }
+.item.selected{ border-color:#E63946; background:#FFF4D6; }
+.item.matched{
+  background:#E8F4F2; border-color:#2A9D8F; color:#2A9D8F;
+  cursor:default; opacity:.6;
+}
+.item.matched::after{ content:'✓'; font-size:1.4rem; color:#2A9D8F; }
+.item.wrong{ animation:shake .4s; border-color:#E63946; }
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-8px)}
+  75%{transform:translateX(8px)}
+}
+.zh{ font-weight:700; font-size:1.25rem;}
+.pinyin{ display:block; color:#8B6F5E; font-family:monospace;
+         font-size:.78rem; margin-top:2px; }
+.def{ font-size:.95rem; line-height:1.5; color:#2D1A0F; }
+.feedback{
+  margin-top:14px; padding:14px; border-radius:10px;
+  background:#fff; display:none; text-align:center;
+}
+.feedback.show{ display:block; }
+.feedback.success{ background:#E8F4F2; color:#2A9D8F; }
+.feedback.fail{ background:#FFE5E7; color:#E63946; }
+.btn{
+  display:inline-block; padding:12px 28px; background:#E63946;
+  color:#fff; border:none; border-radius:24px; font-weight:700;
+  cursor:pointer; font-size:1rem; margin-top:14px;
+}
+.btn:hover{ background:#c12d3a; }
+.complete{
+  background:#fff; padding:24px; border-radius:14px;
+  text-align:center; margin-top:18px; display:none;
+  box-shadow:0 4px 16px rgba(0,0,0,.08);
+}
+.complete.show{ display:block; }
+.complete h2{ color:#2A9D8F; margin-bottom:10px; }
+.qr-section{ text-align:center; margin-top:18px; }
+.qr-section img{
+  width:120px; height:120px; background:#fff;
+  padding:6px; border-radius:8px;
+}
+.qr-section p{ font-size:.8rem; color:#8B6F5E; margin-top:6px; }
+@media(max-width:600px){
+  .board{ grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🎮 Game 1 · 詞義配對</h1>
+    <p>點左邊的詞 → 再點右邊的解釋，把它們配對起來。</p>
+  </header>
+
+  <div class="score-bar">
+    <div>進度 <span class="score" id="progress">0 / 8</span></div>
+    <div>錯誤 <span class="score" id="errors" style="color:#E63946;">0</span></div>
+  </div>
+
+  <div class="board">
+    <div class="col">
+      <h3>📚 詞</h3>
+      <div id="left-col"></div>
+    </div>
+    <div class="col">
+      <h3>💡 意思</h3>
+      <div id="right-col"></div>
+    </div>
+  </div>
+
+  <div id="feedback" class="feedback"></div>
+
+  <div id="complete" class="complete">
+    <h2>🎉 完成！</h2>
+    <p>得分：<b id="final-score" style="color:#2A9D8F;">100</b> / 100</p>
+    <p style="margin-top:8px; color:#5A3D2E;">回投影片繼續上課 →</p>
+    <button class="btn" onclick="reset()">🔄 再玩一次</button>
+  </div>
+
+  <div class="qr-section">
+    <img id="qr-img" alt="QR">
+    <p>掃描分享給同學</p>
+  </div>
+
+  <div id="cloud-badge" style="text-align:center; margin-top:10px;
+       font-family:monospace; font-size:.78rem; color:#8B6F5E;"></div>
+</div>
+
+<script src="firebase-config.js"></script>
+<script src="supabase-config.js"></script>
+<script src="tracker.js"></script>
+<script>
+const startTime = Date.now();
+const pairs = [
+  {zh:'包裝', py:'bāo zhuāng', def:'裝食物或東西的盒子、紙、袋子，用來保護裡面的東西。'},
+  {zh:'塑膠', py:'sù jiāo', def:'人工做出來的材料，常用來做杯子、袋子、瓶子。'},
+  {zh:'淋膜', py:'lín mó', def:'包在紙上面一層薄薄的東西，可以讓紙防油、防水。'},
+  {zh:'永續', py:'yǒng xù', def:'對地球好，可以一直做下去、不會傷害環境的做法。'},
+  {zh:'減塑', py:'jiǎn sù', def:'少用塑膠的意思。'},
+  {zh:'研發', py:'yán fā', def:'研究和開發新的產品或新的方法。'},
+  {zh:'回收', py:'huí shōu', def:'把用過的東西收集起來，做成新的東西再用。'},
+  {zh:'供應鏈', py:'gōng yìng liàn', def:'從原料、生產到送到客人手上的整個過程。'}
+];
+
+let leftSel = null, rightSel = null, matched = 0, errors = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function render(){
+  const left = document.getElementById('left-col');
+  const right = document.getElementById('right-col');
+  left.innerHTML = ''; right.innerHTML = '';
+
+  shuffle(pairs).forEach(p => {
+    const el = document.createElement('div');
+    el.className = 'item';
+    el.dataset.zh = p.zh;
+    el.innerHTML = `<span><span class="zh">${p.zh}</span><span class="pinyin">${p.py}</span></span>`;
+    el.onclick = () => selectLeft(el);
+    left.appendChild(el);
+  });
+
+  shuffle(pairs).forEach(p => {
+    const el = document.createElement('div');
+    el.className = 'item';
+    el.dataset.zh = p.zh;
+    el.innerHTML = `<span class="def">${p.def}</span>`;
+    el.onclick = () => selectRight(el);
+    right.appendChild(el);
+  });
+}
+
+function selectLeft(el){
+  if(el.classList.contains('matched')) return;
+  document.querySelectorAll('#left-col .item.selected')
+    .forEach(x=>x.classList.remove('selected'));
+  el.classList.add('selected');
+  leftSel = el;
+  check();
+}
+function selectRight(el){
+  if(el.classList.contains('matched')) return;
+  document.querySelectorAll('#right-col .item.selected')
+    .forEach(x=>x.classList.remove('selected'));
+  el.classList.add('selected');
+  rightSel = el;
+  check();
+}
+
+function check(){
+  if(!leftSel || !rightSel) return;
+  const fb = document.getElementById('feedback');
+  if(leftSel.dataset.zh === rightSel.dataset.zh){
+    leftSel.classList.add('matched');
+    rightSel.classList.add('matched');
+    leftSel.classList.remove('selected');
+    rightSel.classList.remove('selected');
+    matched++;
+    fb.className = 'feedback show success';
+    fb.textContent = '✓ 配對成功！';
+    setTimeout(()=>fb.classList.remove('show'), 1200);
+    document.getElementById('progress').textContent = matched + ' / 8';
+    if(matched === 8){
+      const score = Math.max(0, 100 - errors*10);
+      document.getElementById('final-score').textContent = score;
+      document.getElementById('complete').classList.add('show');
+      FPTracker.recordResult({
+        gameId: '01_vocab_match',
+        gameName: '詞義配對',
+        score, wrong: errors, total: 8,
+        durationMs: Date.now() - startTime
+      });
+    }
+  } else {
+    errors++;
+    document.getElementById('errors').textContent = errors;
+    leftSel.classList.add('wrong');
+    rightSel.classList.add('wrong');
+    fb.className = 'feedback show fail';
+    fb.textContent = '✗ 再想想看！';
+    setTimeout(()=>{
+      leftSel.classList.remove('wrong','selected');
+      rightSel.classList.remove('wrong','selected');
+      leftSel = rightSel = null;
+      fb.classList.remove('show');
+    }, 800);
+    return;
+  }
+  leftSel = rightSel = null;
+}
+
+function reset(){
+  matched = 0; errors = 0; leftSel = rightSel = null;
+  document.getElementById('progress').textContent = '0 / 8';
+  document.getElementById('errors').textContent = '0';
+  document.getElementById('complete').classList.remove('show');
+  render();
+}
+
+render();
+document.getElementById('qr-img').src =
+  'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data='
+  + encodeURIComponent(window.location.href);
+FPTracker.renderIdentityBadge(document.getElementById('cloud-badge'));
+</script>
+</body>
+</html>

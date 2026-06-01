@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>食品包裝綠色革命 · 5 個小遊戲</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Noto Sans TC','Be Vietnam Pro',-apple-system,sans-serif;
+  background:#FFFBF0; color:#2D1A0F; min-height:100vh;
+  padding:24px 18px; line-height:1.6;
+}
+.wrap{max-width:920px; margin:0 auto;}
+header{text-align:center; margin-bottom:24px;}
+header h1{font-size:1.9rem; color:#E63946; margin-bottom:6px;}
+header p{font-size:1rem; color:#5A3D2E;}
+.vn{ color:#DA251D; font-style:italic; }
+.games{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:18px; margin-top:18px;
+}
+.game-card{
+  background:#fff; border-radius:16px; padding:20px;
+  box-shadow:0 4px 14px rgba(0,0,0,.06);
+  border-top:5px solid #E63946;
+  transition:transform .2s;
+}
+.game-card:hover{ transform:translateY(-4px); }
+.game-card:nth-child(2){ border-color:#F4A300; }
+.game-card:nth-child(3){ border-color:#2A9D8F; }
+.game-card:nth-child(4){ border-color:#7B68EE; }
+.game-card:nth-child(5){ border-color:#DA251D; }
+.g-tag{
+  display:inline-block; padding:3px 10px; background:#FFF4D6;
+  color:#5A3D2E; font-family:monospace; font-size:.78rem;
+  border-radius:10px; margin-bottom:8px;
+}
+.g-num{
+  font-family:monospace; font-size:.85rem; color:#8B6F5E;
+  letter-spacing:.1em;
+}
+.g-title{
+  font-size:1.2rem; font-weight:700; color:#2D1A0F;
+  margin:6px 0;
+}
+.g-desc{
+  font-size:.9rem; color:#5A3D2E; min-height:46px;
+  margin-bottom:12px;
+}
+.g-foot{ display:flex; align-items:center; gap:12px; }
+.g-link{
+  flex:1; padding:10px 14px; background:#E63946;
+  color:#fff; border-radius:20px; text-align:center;
+  text-decoration:none; font-weight:700; font-size:.95rem;
+}
+.g-link:hover{ background:#c12d3a; }
+.g-qr{
+  width:60px; height:60px; background:#fff;
+  padding:4px; border-radius:6px;
+}
+.back{ text-align:center; margin-top:24px; }
+.back a{ color:#8B6F5E; font-size:.9rem; text-decoration:none;}
+.back a:hover{ color:#E63946; }
+.intro{
+  background:#fff; padding:18px 22px; border-radius:14px;
+  border-left:5px solid #F4A300;
+  font-size:.95rem; color:#5A3D2E; line-height:1.7;
+}
+.session-bar{
+  background:#fff; padding:14px 20px; border-radius:14px;
+  border-left:5px solid #2A9D8F; margin-top:14px;
+  display:flex; flex-wrap:wrap; align-items:center; gap:12px;
+  font-size:.92rem;
+}
+.session-bar input{
+  flex:1; min-width:160px; padding:8px 12px; border:1px solid #C7B5A6;
+  border-radius:8px; font-family:monospace;
+}
+.session-bar button{
+  padding:8px 16px; background:#2A9D8F; color:#fff; border:none;
+  border-radius:8px; font-weight:700; cursor:pointer;
+}
+.session-bar button:hover{ background:#21807a; }
+.session-bar .info{
+  font-family:monospace; color:#5A3D2E; font-size:.85rem;
+}
+.session-bar .badge{
+  display:inline-block; padding:3px 10px; background:#FFF4D6;
+  border-radius:10px; font-size:.78rem; color:#5A3D2E;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🎮 食品包裝綠色革命</h1>
+    <p>5 個小遊戲 · 配合 2 小時華語閱讀寫作課使用</p>
+  </header>
+
+  <div class="intro">
+    📚 <b>使用方式</b>：每個遊戲對應投影片中一個段落。老師按到 📱 頁時，
+    學生用手機掃 QR code 進入；或直接點下面的「▶ 開始」連結。
+    所有遊戲皆可單人玩，5–8 分鐘。
+  </div>
+
+  <div class="session-bar" style="flex-direction:column; align-items:stretch; gap:14px;">
+    <!-- 學生身份 -->
+    <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+      <span class="badge" style="background:#FFE5E7; color:#E63946;">👤 你的姓名 / 學號</span>
+      <input id="name-input" placeholder="例：阮文明 / B12345" style="flex:1; min-width:180px;">
+      <button onclick="saveName()" style="background:#E63946;">儲存身分</button>
+    </div>
+    <!-- 班級 session -->
+    <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+      <span class="badge">🏷 班級 Session</span>
+      <input id="session-input" placeholder="例：20260525_3A">
+      <button onclick="saveSession()">儲存班級</button>
+    </div>
+    <!-- 狀態 -->
+    <div class="info" id="cloud-status" style="text-align:center; padding-top:6px;
+         border-top:1px dashed #E5D9C7;">—</div>
+  </div>
+
+  <div class="games">
+    <div class="game-card">
+      <span class="g-tag">10 分鐘</span>
+      <div class="g-num">GAME 01 · MATCH</div>
+      <div class="g-title">詞義配對</div>
+      <div class="g-desc">8 個關鍵詞 ↔ 中文解釋配對，建立讀文章前的詞彙基礎。</div>
+      <div class="g-foot">
+        <a href="01_vocab_match.html" class="g-link">▶ 開始</a>
+        <img class="g-qr" data-game="01_vocab_match.html" alt="QR">
+      </div>
+    </div>
+
+    <div class="game-card">
+      <span class="g-tag">8 分鐘</span>
+      <div class="g-num">GAME 02 · SORT</div>
+      <div class="g-title">句子配段落</div>
+      <div class="g-desc">把 8 個句子分到 5R / 技術 / 結構 / 數據 4 個段落主題。</div>
+      <div class="g-foot">
+        <a href="02_paragraph_match.html" class="g-link">▶ 開始</a>
+        <img class="g-qr" data-game="02_paragraph_match.html" alt="QR">
+      </div>
+    </div>
+
+    <div class="game-card">
+      <span class="g-tag">6 分鐘</span>
+      <div class="g-num">GAME 03 · QUIZ</div>
+      <div class="g-title">是非題</div>
+      <div class="g-desc">6 題是非題，檢查你對文章的理解，每題附詳解。</div>
+      <div class="g-foot">
+        <a href="03_true_false.html" class="g-link">▶ 開始</a>
+        <img class="g-qr" data-game="03_true_false.html" alt="QR">
+      </div>
+    </div>
+
+    <div class="game-card">
+      <span class="g-tag">5 分鐘</span>
+      <div class="g-num">GAME 04 · ORDER</div>
+      <div class="g-title">流程排序</div>
+      <div class="g-desc">把麥當勞新包裝開發的 6 個步驟排成正確順序。</div>
+      <div class="g-foot">
+        <a href="04_process_order.html" class="g-link">▶ 開始</a>
+        <img class="g-qr" data-game="04_process_order.html" alt="QR">
+      </div>
+    </div>
+
+    <div class="game-card">
+      <span class="g-tag">10 分鐘 · 寫作前</span>
+      <div class="g-num">GAME 05 · DECIDE</div>
+      <div class="g-title">情境決策</div>
+      <div class="g-desc">3 個情境題，幫你想清楚 Edcafe 200 字作文要寫什麼。</div>
+      <div class="g-foot">
+        <a href="05_decision_quiz.html" class="g-link">▶ 開始</a>
+        <img class="g-qr" data-game="05_decision_quiz.html" alt="QR">
+      </div>
+    </div>
+  </div>
+
+  <div class="back">
+    <a href="../food_packaging_deck.html">← 回到投影片</a>　·
+    <a href="teacher_dashboard.html">📊 老師 dashboard</a>
+  </div>
+</div>
+
+<!-- 入口頁不自動彈窗（這頁本身就有輸入框） -->
+<script>window.FP_NO_AUTO_PROMPT = true;</script>
+<script src="firebase-config.js"></script>
+<script src="supabase-config.js"></script>
+<script src="tracker.js"></script>
+<script>
+const base = window.location.href.replace(/\/[^/]*$/, '/');
+document.querySelectorAll('.g-qr').forEach(img => {
+  img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data='
+          + encodeURIComponent(base + img.dataset.game);
+});
+
+document.getElementById('name-input').value = FPTracker.getStudentName();
+document.getElementById('session-input').value = FPTracker.getSessionId();
+refreshStatus();
+
+function refreshStatus() {
+  FPTracker.renderIdentityBadge(document.getElementById('cloud-status'));
+}
+
+function saveName() {
+  const v = document.getElementById('name-input').value.trim();
+  if (!v) return alert('請輸入姓名或學號');
+  FPTracker.setStudentName(v);
+  refreshStatus();
+  alert('✅ 已儲存：' + v + '\n之後玩遊戲都會用這個身分。');
+}
+
+function saveSession() {
+  const v = document.getElementById('session-input').value.trim();
+  if (!v) return alert('請輸入 session（例：20260525_3A）');
+  FPTracker.setSessionId(v);
+  refreshStatus();
+  alert('✅ 已儲存：' + v + '\n之後所有遊戲都會用這個 session。');
+}
+</script>
+</body>
+</html>

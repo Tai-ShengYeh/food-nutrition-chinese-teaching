@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>食品包裝的綠色革命｜華文文獻閱讀與寫作</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&family=Be+Vietnam+Pro:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+html, body { font-size: 18px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root{
+  --bg:#FFFBF0; --bg-2:#FFF4D6;
+  --ink:#2D1A0F; --ink-2:#5A3D2E; --ink-3:#8B6F5E; --ink-4:#C7B5A6;
+  --accent:#E63946;       /* 麥當勞紅 */
+  --accent-2:#2A9D8F;     /* 永續綠 */
+  --gold:#F4A300;         /* 金黃 */
+  --vn:#DA251D;           /* 越南紅（標記越南文對照用） */
+  --t1:55px; --t2:34px; --t3:21px; --t4:13px;
+  --s1:80px; --s2:48px; --s3:24px; --s4:12px;
+}
+body{
+  font-family:'Noto Sans TC','Be Vietnam Pro',sans-serif;
+  background:var(--bg); color:var(--ink);
+  overflow:hidden; width:100vw; height:100vh; position:relative;
+}
+.slide{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  padding:60px 80px;
+  opacity:0; pointer-events:none;
+  transition:opacity .55s ease, transform .55s ease;
+  transform:translateY(16px);
+  overflow:hidden;
+}
+.slide.active{ opacity:1; pointer-events:auto; transform:translateY(0); }
+.slide-inner{ width:100%; max-width:1280px; }
+.kicker{
+  font-family:'JetBrains Mono',monospace;
+  font-size:clamp(.75rem,1.05vw,.95rem);
+  letter-spacing:.18em; color:var(--accent);
+  text-transform:uppercase; margin-bottom:14px; font-weight:700;
+}
+.slide-title{
+  font-size:clamp(1.7rem,3.6vw,3rem);
+  font-weight:900; line-height:1.15; color:var(--ink);
+  margin-bottom:18px; letter-spacing:-.01em;
+}
+.sub{ font-size:clamp(1rem,1.5vw,1.25rem); color:var(--ink-2); line-height:1.6; }
+p, li{ font-size:clamp(.95rem,1.35vw,1.15rem); line-height:1.7; color:var(--ink-2); }
+
+/* 進度條 + 章節標籤 + 頁碼 */
+#progress{
+  position:fixed; top:0; left:0; height:4px;
+  background:linear-gradient(90deg,var(--accent),var(--gold),var(--accent-2));
+  width:0; z-index:100; transition:width .5s ease;
+}
+#section-tag{
+  position:fixed; top:18px; left:24px; z-index:99;
+  font-family:'JetBrains Mono',monospace; font-size:.8rem;
+  color:var(--ink-3); letter-spacing:.15em;
+}
+#pageInfo{
+  position:fixed; bottom:18px; right:28px; z-index:99;
+  font-family:'JetBrains Mono',monospace; font-size:.9rem;
+  color:var(--ink-3);
+}
+#hint{
+  position:fixed; bottom:18px; left:24px; z-index:99;
+  font-family:'JetBrains Mono',monospace; font-size:.75rem;
+  color:var(--ink-4);
+}
+
+/* 越南文標記 */
+.vn{ color:var(--vn); font-family:'Be Vietnam Pro',sans-serif;
+     font-style:italic; font-size:.88em; }
+.pinyin{ color:var(--ink-3); font-family:'JetBrains Mono',monospace;
+         font-size:.8em; display:block; }
+
+/* === 封面 === */
+.cover{
+  text-align:center;
+  background:radial-gradient(circle at 30% 30%,rgba(244,163,0,.18),transparent 50%),
+             radial-gradient(circle at 70% 70%,rgba(42,157,143,.15),transparent 50%);
+}
+.cover .cover-mark{
+  display:inline-block; padding:8px 18px;
+  background:var(--accent); color:#fff; font-weight:700;
+  font-family:'JetBrains Mono',monospace; font-size:.85rem;
+  letter-spacing:.15em; border-radius:24px; margin-bottom:24px;
+}
+.cover h1{
+  font-size:clamp(2.4rem,5.5vw,4.5rem);
+  font-weight:900; line-height:1.1; color:var(--ink);
+  margin-bottom:18px;
+}
+.cover .cover-sub{
+  font-size:clamp(1.1rem,1.8vw,1.4rem); color:var(--ink-2);
+  margin-bottom:32px;
+}
+.cover .cover-meta{
+  display:inline-flex; gap:18px; flex-wrap:wrap; justify-content:center;
+  font-family:'JetBrains Mono',monospace; color:var(--ink-3);
+  font-size:.95rem;
+}
+.cover .cover-meta span{
+  padding:6px 14px; border:1px solid var(--ink-4); border-radius:16px;
+  background:rgba(255,255,255,.5);
+}
+
+/* === 通用卡片 === */
+.card{
+  background:#fff; border:1px solid #F0E5D2; border-radius:18px;
+  padding:22px 24px; box-shadow:0 4px 16px rgba(45,26,15,.06);
+}
+.grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:center; }
+.grid-4{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+
+/* === 詞彙卡 === */
+.vocab-card{
+  background:#fff; border-left:5px solid var(--accent-2);
+  border-radius:12px; padding:18px 20px;
+  box-shadow:0 3px 12px rgba(45,26,15,.05);
+}
+.vocab-card .hanzi{
+  font-size:clamp(1.5rem,2.4vw,2rem); font-weight:900; color:var(--ink);
+  line-height:1.2;
+}
+.vocab-card .pinyin{ display:block; margin-top:4px; }
+.vocab-card .vn-line{
+  margin-top:8px; padding-top:8px; border-top:1px dashed #E5D9C7;
+  font-size:.95rem; color:var(--ink-2);
+}
+
+/* === 5R 框架 === */
+.r-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+.r-card{
+  background:#fff; border-radius:16px; padding:18px 16px;
+  text-align:center; border-top:4px solid;
+  box-shadow:0 3px 10px rgba(45,26,15,.05);
+}
+.r-card.r1{ border-color:var(--accent); }
+.r-card.r2{ border-color:var(--gold); }
+.r-card.r3{ border-color:var(--accent-2); }
+.r-card.r4{ border-color:#7B68EE; }
+.r-card .r-letter{
+  font-family:'JetBrains Mono',monospace; font-size:2.4rem;
+  font-weight:900; line-height:1; margin-bottom:6px;
+}
+.r-card.r1 .r-letter{ color:var(--accent); }
+.r-card.r2 .r-letter{ color:var(--gold); }
+.r-card.r3 .r-letter{ color:var(--accent-2); }
+.r-card.r4 .r-letter{ color:#7B68EE; }
+.r-card .r-en{
+  font-family:'JetBrains Mono',monospace; font-size:.78rem;
+  color:var(--ink-3); letter-spacing:.1em; margin-bottom:8px;
+}
+.r-card .r-zh{
+  font-size:1.05rem; font-weight:700; color:var(--ink); margin-bottom:6px;
+}
+.r-card .r-desc{ font-size:.85rem; color:var(--ink-2); line-height:1.5; }
+
+/* === Z 字技術頁 === */
+.tech-block{ display:grid; grid-template-columns:1fr 1.2fr; gap:36px; align-items:center; }
+.tech-visual{
+  aspect-ratio:1/1; border-radius:24px;
+  background:linear-gradient(135deg,#FFF4D6,#FFE4B8);
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+}
+.tech-visual svg{ width:80%; height:80%; }
+
+/* === 對比表 === */
+.compare-table{ width:100%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden;
+  box-shadow:0 3px 12px rgba(45,26,15,.05); }
+.compare-table th{
+  background:var(--accent); color:#fff; padding:14px 18px; text-align:left;
+  font-size:1rem; font-weight:700;
+}
+.compare-table td{
+  padding:12px 18px; border-bottom:1px solid #F0E5D2;
+  font-size:.95rem; color:var(--ink-2); line-height:1.6;
+}
+.compare-table tr:last-child td{ border-bottom:none; }
+.compare-table td:first-child{ font-weight:700; color:var(--ink); width:30%; }
+
+/* === Chart 容器 === */
+.chart-wrap{
+  background:#fff; border-radius:18px; padding:24px;
+  box-shadow:0 4px 16px rgba(45,26,15,.06);
+  height:55vh; position:relative;
+}
+
+/* === 大問句 === */
+.big-q{
+  text-align:center; padding:40px 20px;
+}
+.big-q .q-icon{ font-size:3.5rem; margin-bottom:18px; }
+.big-q .q-text{
+  font-size:clamp(1.6rem,3vw,2.4rem);
+  font-weight:700; color:var(--ink); line-height:1.4;
+  max-width:900px; margin:0 auto 18px;
+}
+.big-q .q-sub{
+  font-size:clamp(.95rem,1.4vw,1.15rem); color:var(--ink-2);
+}
+
+/* === 遊戲橋接頁 === */
+.game-bridge{
+  text-align:center;
+  background:linear-gradient(135deg,rgba(230,57,70,.08),rgba(244,163,0,.08));
+  border-radius:24px; padding:40px 20px;
+}
+.game-bridge .g-icon{ font-size:4.5rem; margin-bottom:18px; }
+.game-bridge .g-tag{
+  display:inline-block; padding:6px 16px; background:var(--accent);
+  color:#fff; border-radius:20px; font-family:'JetBrains Mono',monospace;
+  font-size:.85rem; letter-spacing:.1em; margin-bottom:18px;
+}
+.game-bridge h2{
+  font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:900;
+  color:var(--ink); margin-bottom:14px;
+}
+.game-bridge .g-desc{
+  font-size:clamp(1rem,1.5vw,1.2rem); color:var(--ink-2);
+  margin-bottom:24px; line-height:1.6;
+}
+.game-bridge .g-url{
+  display:inline-block; padding:14px 28px; background:var(--ink);
+  color:#fff; border-radius:30px; font-weight:700; text-decoration:none;
+  font-family:'JetBrains Mono',monospace; font-size:1rem;
+  box-shadow:0 4px 16px rgba(0,0,0,.18); margin-bottom:18px;
+}
+.game-bridge .g-url:hover{ background:var(--accent); }
+.game-bridge .g-qr{
+  display:block; margin:0 auto; width:140px; height:140px;
+  background:#fff; padding:8px; border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,.1);
+}
+
+/* === 寫作鷹架 === */
+.write-frame{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.write-block{
+  background:#fff; border-radius:14px; padding:18px 22px;
+  border-top:4px solid var(--accent-2);
+  box-shadow:0 3px 10px rgba(45,26,15,.05);
+}
+.write-block h3{
+  font-size:1.1rem; color:var(--ink); margin-bottom:10px;
+  display:flex; align-items:center; gap:8px;
+}
+.write-block .num{
+  background:var(--accent-2); color:#fff; width:28px; height:28px;
+  border-radius:50%; display:inline-flex; align-items:center;
+  justify-content:center; font-family:'JetBrains Mono',monospace;
+  font-weight:700; font-size:.9rem;
+}
+.write-block p{ font-size:.92rem; line-height:1.6; }
+.write-block .example{
+  margin-top:10px; padding:10px 14px; background:#FFF4D6;
+  border-radius:8px; font-size:.88rem; color:var(--ink);
+  border-left:3px solid var(--gold);
+}
+
+/* === Edcafe 卡 === */
+.edcafe-grid{ display:grid; grid-template-columns:1.2fr 1fr; gap:28px; }
+.edcafe-detail{
+  background:#fff; border-radius:14px; padding:20px 24px;
+  border-left:5px solid var(--accent);
+  box-shadow:0 3px 12px rgba(45,26,15,.06);
+}
+.edcafe-detail h3{ color:var(--accent); margin-bottom:10px; font-size:1.15rem; }
+.edcafe-detail ul{ list-style:none; padding:0; }
+.edcafe-detail ul li{
+  padding:6px 0; padding-left:22px; position:relative; font-size:.95rem;
+}
+.edcafe-detail ul li::before{
+  content:'▸'; position:absolute; left:0; color:var(--accent); font-weight:700;
+}
+.rubric-mini{
+  background:#fff; border-radius:14px; padding:18px 20px;
+  border-left:5px solid var(--accent-2);
+  box-shadow:0 3px 12px rgba(45,26,15,.06);
+}
+.rubric-mini h3{ color:var(--accent-2); margin-bottom:10px; font-size:1.1rem; }
+.rubric-mini table{ width:100%; border-collapse:collapse; }
+.rubric-mini td{ padding:6px 8px; font-size:.88rem; border-bottom:1px solid #F0E5D2; }
+.rubric-mini td:last-child{
+  text-align:right; font-family:'JetBrains Mono',monospace;
+  font-weight:700; color:var(--accent);
+}
+
+/* === CTA === */
+.cta{
+  text-align:center;
+  background:linear-gradient(135deg,rgba(42,157,143,.1),rgba(244,163,0,.1));
+  border-radius:24px; padding:40px;
+}
+.cta h2{
+  font-size:clamp(1.8rem,3.5vw,2.6rem); color:var(--ink);
+  margin-bottom:18px; font-weight:900;
+}
+.cta .cta-list{
+  display:inline-block; text-align:left; margin:20px 0;
+}
+.cta .cta-list li{
+  padding:8px 0 8px 32px; position:relative; font-size:1rem;
+}
+.cta .cta-list li::before{
+  content:'✓'; position:absolute; left:0; color:var(--accent-2);
+  font-weight:900; font-size:1.3rem;
+}
+
+/* === 回顧 === */
+.recap-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.recap-item{
+  background:#fff; border-radius:12px; padding:16px 18px;
+  border-top:4px solid var(--accent-2);
+  box-shadow:0 3px 10px rgba(45,26,15,.05);
+}
+.recap-item .recap-num{
+  font-family:'JetBrains Mono',monospace; font-size:1.5rem;
+  color:var(--accent-2); font-weight:900;
+}
+.recap-item .recap-text{
+  font-size:.95rem; color:var(--ink-2); margin-top:6px; line-height:1.5;
+}
+
+/* === 課程地圖 === */
+.roadmap{
+  display:grid; grid-template-columns:repeat(6,1fr); gap:10px;
+  margin-top:18px;
+}
+.rm-block{
+  background:#fff; border-radius:10px; padding:12px 10px;
+  text-align:center; border-top:3px solid var(--accent);
+  box-shadow:0 2px 8px rgba(45,26,15,.05);
+}
+.rm-block:nth-child(2){ border-color:var(--gold); }
+.rm-block:nth-child(3){ border-color:var(--accent-2); }
+.rm-block:nth-child(4){ border-color:#7B68EE; }
+.rm-block:nth-child(5){ border-color:var(--accent); }
+.rm-block:nth-child(6){ border-color:var(--gold); }
+.rm-block .rm-time{
+  font-family:'JetBrains Mono',monospace; font-size:.75rem;
+  color:var(--ink-3); margin-bottom:4px;
+}
+.rm-block .rm-title{
+  font-size:.95rem; font-weight:700; color:var(--ink); line-height:1.3;
+}
+.rm-block .rm-game{
+  display:inline-block; margin-top:4px; font-size:.7rem;
+  padding:2px 8px; background:var(--accent); color:#fff;
+  border-radius:8px; font-family:'JetBrains Mono',monospace;
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="section-tag">— 引起動機 —</div>
+<div id="pageInfo">1 / 20</div>
+<div id="hint">← → 切換　F 全螢幕</div>
+
+<!-- ============ Slide 1: 封面 ============ -->
+<section class="slide active" data-slide="1" data-section="引起動機">
+  <div class="slide-inner cover">
+    <span class="cover-mark">FOODNEXT × 華文文獻閱讀與寫作</span>
+    <h1>紙包裝裡的<br><span style="color:var(--accent)">綠色革命</span></h1>
+    <p class="cover-sub">
+      從一張漢堡紙看食品產業的<b>永續轉型</b>
+    </p>
+    <div class="cover-meta">
+      <span>📰 食力 foodNEXT</span>
+      <span>🎓 華文文獻閱讀與寫作</span>
+      <span>⏱ 2 小時</span>
+      <span>📚 A2–B1</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 2: 課程地圖 ============ -->
+<section class="slide" data-slide="2" data-section="引起動機">
+  <div class="slide-inner">
+    <div class="kicker">Lesson Roadmap</div>
+    <h1 class="slide-title">今天的兩小時</h1>
+    <p class="sub">六個段落，五個小遊戲，一份作文</p>
+    <div class="roadmap">
+      <div class="rm-block">
+        <div class="rm-time">0–15 min</div>
+        <div class="rm-title">暖身 + 詞彙</div>
+        <div class="rm-game">G1</div>
+      </div>
+      <div class="rm-block">
+        <div class="rm-time">15–35 min</div>
+        <div class="rm-title">文章精讀</div>
+        <div class="rm-game">G2</div>
+      </div>
+      <div class="rm-block">
+        <div class="rm-time">35–55 min</div>
+        <div class="rm-title">技術深掘</div>
+        <div class="rm-game">G3</div>
+      </div>
+      <div class="rm-block">
+        <div class="rm-time">— 下課 10 min —</div>
+        <div class="rm-title" style="color:var(--ink-3)">休息一下</div>
+      </div>
+      <div class="rm-block">
+        <div class="rm-time">65–85 min</div>
+        <div class="rm-title">圖表與對比</div>
+        <div class="rm-game">G4</div>
+      </div>
+      <div class="rm-block">
+        <div class="rm-time">85–120 min</div>
+        <div class="rm-title">反思 + 寫作</div>
+        <div class="rm-game">G5</div>
+      </div>
+    </div>
+    <p style="margin-top:24px; font-size:.95rem; color:var(--ink-3);">
+      <b>學習目標</b>：讀懂一篇食品科技報導 / 用 8 個關鍵詞造句 / 寫一篇 200 字短文。
+    </p>
+  </div>
+</section>
+
+<!-- ============ Slide 3: 暖身大問句 ============ -->
+<section class="slide" data-slide="3" data-section="引起動機">
+  <div class="slide-inner">
+    <div class="kicker">Warm-up Question</div>
+    <div class="big-q">
+      <div class="q-icon">🍔🥤</div>
+      <div class="q-text">
+        昨天，<br>你用了幾個一次性的包裝？
+      </div>
+      <p class="q-sub">
+        想一想：早餐、午餐、晚餐、買飲料 …… 加起來有幾個？
+      </p>
+      <div style="margin-top:30px; display:flex; justify-content:center; gap:18px; flex-wrap:wrap;">
+        <div class="card" style="padding:14px 22px;">🥡 外帶餐盒</div>
+        <div class="card" style="padding:14px 22px;">☕ 飲料杯</div>
+        <div class="card" style="padding:14px 22px;">🥢 免洗筷</div>
+        <div class="card" style="padding:14px 22px;">🛍 塑膠袋</div>
+      </div>
+      <p style="margin-top:24px; font-size:1rem; color:var(--ink-2);">
+        💬 跟旁邊的同學說一說 → 全班分享
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 4: 核心詞彙預備 ============ -->
+<section class="slide" data-slide="4" data-section="引起動機">
+  <div class="slide-inner">
+    <div class="kicker">Pre-reading Vocabulary</div>
+    <h1 class="slide-title">8 個關鍵詞</h1>
+    <p class="sub" style="margin-bottom:18px;">先學詞，再讀文章會更輕鬆</p>
+    <div class="grid-4" style="grid-template-columns:repeat(4,1fr);">
+      <div class="vocab-card">
+        <div class="hanzi">包裝</div>
+        <span class="pinyin">bāo zhuāng</span>
+        <div class="vn-line">裝食物的盒子、紙、袋子。</div>
+      </div>
+      <div class="vocab-card">
+        <div class="hanzi">塑膠</div>
+        <span class="pinyin">sù jiāo</span>
+        <div class="vn-line">人工材料，做杯子、袋子用。</div>
+      </div>
+      <div class="vocab-card">
+        <div class="hanzi">淋膜</div>
+        <span class="pinyin">lín mó</span>
+        <div class="vn-line">紙上面一層薄薄的塑膠。</div>
+      </div>
+      <div class="vocab-card">
+        <div class="hanzi">永續</div>
+        <span class="pinyin">yǒng xù</span>
+        <div class="vn-line">對地球好、可以長久做下去。</div>
+      </div>
+      <div class="vocab-card">
+        <div class="hanzi">減塑</div>
+        <span class="pinyin">jiǎn sù</span>
+        <div class="vn-line">少用塑膠。</div>
+      </div>
+      <div class="vocab-card">
+        <div class="hanzi">研發</div>
+        <span class="pinyin">yán fā</span>
+        <div class="vn-line">研究和開發新東西。</div>
+      </div>
+      <div class="vocab-card">
+        <div class="hanzi">回收</div>
+        <span class="pinyin">huí shōu</span>
+        <div class="vn-line">把用過的東西收起來再用。</div>
+      </div>
+      <div class="vocab-card">
+        <div class="hanzi">供應鏈</div>
+        <span class="pinyin">gōng yìng liàn</span>
+        <div class="vn-line">從原料到送到客人的整個過程。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 5: 文章背景 ============ -->
+<section class="slide" data-slide="5" data-section="引起動機">
+  <div class="slide-inner">
+    <div class="kicker">Article Background</div>
+    <h1 class="slide-title">這篇文章在說什麼？</h1>
+    <div class="grid-2" style="margin-top:24px;">
+      <div>
+        <div class="card" style="background:linear-gradient(135deg,#FFF4D6,#FFE4B8); border:none; padding:30px;">
+          <p style="font-size:1.4rem; color:var(--ink); line-height:1.5; font-weight:700;">
+            台灣麥當勞花了<br>
+            <span style="font-size:2.2rem; color:var(--accent);">3 年</span>，<br>
+            把<b>塑膠</b>從紙包裝拿掉。
+          </p>
+          <p style="margin-top:18px; font-size:1rem; color:var(--ink-2);">
+            每年少用 <b style="color:var(--accent-2);">86 噸</b> 塑膠。
+          </p>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3 style="color:var(--accent); margin-bottom:12px;">📰 文章資訊</h3>
+          <ul style="list-style:none; padding:0;">
+            <li style="padding:6px 0;"><b>來源</b>：食力 foodNEXT</li>
+            <li style="padding:6px 0;"><b>作者</b>：林玉婷</li>
+            <li style="padding:6px 0;"><b>日期</b>：2026 / 04 / 08</li>
+            <li style="padding:6px 0;"><b>主題</b>：永續、包裝、減塑</li>
+            <li style="padding:6px 0;"><b>類型</b>：科普報導</li>
+          </ul>
+          <p style="margin-top:12px; padding-top:12px; border-top:1px dashed #E5D9C7; font-size:.9rem; color:var(--ink-3);">
+            <b>閱讀策略：</b>第一次讀，先抓<b style="color:var(--accent);">人、事、時、地、物</b>。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 6: 📱 Game 1 ============ -->
+<section class="slide" data-slide="6" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="game-bridge">
+      <div class="g-icon">📱</div>
+      <span class="g-tag">GAME 1 · 詞義配對</span>
+      <h2>詞 ↔ 意思</h2>
+      <p class="g-desc">
+        把剛剛學的 8 個關鍵詞，跟正確的中文解釋配對起來。
+      </p>
+      <a href="minigames/01_vocab_match.html" class="g-url" target="_blank">
+        ▶ 開啟遊戲
+      </a>
+      <img class="g-qr" alt="QR" id="qr1">
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 7: 5R 框架 ============ -->
+<section class="slide" data-slide="7" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">麥當勞的減塑策略</div>
+    <h1 class="slide-title">5R 框架</h1>
+    <p class="sub" style="margin-bottom:18px;">這四個 R，麥當勞同時在做。</p>
+    <div class="r-grid">
+      <div class="r-card r1">
+        <div class="r-letter">R</div>
+        <div class="r-en">RESPONSIBLE SOURCING</div>
+        <div class="r-zh">負責任採購</div>
+        <div class="r-desc">原料來源要安全、要環保。</div>
+      </div>
+      <div class="r-card r2">
+        <div class="r-letter">R</div>
+        <div class="r-en">REPLACE</div>
+        <div class="r-zh">材質轉換</div>
+        <div class="r-desc">把塑膠換成可分解的材料。</div>
+      </div>
+      <div class="r-card r3">
+        <div class="r-letter">R</div>
+        <div class="r-en">REDUCE / REUSE</div>
+        <div class="r-zh">減量／重複用</div>
+        <div class="r-desc">能少用就少用，能用幾次就用幾次。</div>
+      </div>
+      <div class="r-card r4">
+        <div class="r-letter">R</div>
+        <div class="r-en">RECYCLE</div>
+        <div class="r-zh">強化回收</div>
+        <div class="r-desc">用過的包裝可以變成新材料。</div>
+      </div>
+    </div>
+    <p style="margin-top:18px; font-size:.95rem; color:var(--ink-3); text-align:center;">
+      💡 今天的文章主要在講第 <b style="color:var(--accent);">2 個 R：Replace（材質轉換）</b>。
+    </p>
+  </div>
+</section>
+
+<!-- ============ Slide 8: 技術 1 ============ -->
+<section class="slide" data-slide="8" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">技術 1 · Replace</div>
+    <h1 class="slide-title">天然澱粉<br>塗在紙上</h1>
+    <div class="tech-block" style="margin-top:18px;">
+      <div class="tech-visual">
+        <svg viewBox="0 0 200 200">
+          <!-- 紙 -->
+          <rect x="40" y="50" width="120" height="100" rx="6" fill="#fff" stroke="#E63946" stroke-width="3"/>
+          <!-- 玉米/澱粉 -->
+          <ellipse cx="100" cy="40" rx="22" ry="12" fill="#F4A300"/>
+          <text x="100" y="44" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">澱粉</text>
+          <!-- 箭頭 -->
+          <path d="M100 56 L100 70" stroke="#2A9D8F" stroke-width="3" marker-end="url(#arr)"/>
+          <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M0 0 L8 4 L0 8 z" fill="#2A9D8F"/>
+          </marker></defs>
+          <!-- 塗層線條 -->
+          <line x1="50" y1="100" x2="150" y2="100" stroke="#2A9D8F" stroke-width="2" stroke-dasharray="4 3"/>
+          <text x="100" y="130" text-anchor="middle" font-size="13" fill="#2D1A0F" font-weight="700">紙 + 澱粉塗層</text>
+          <text x="100" y="170" text-anchor="middle" font-size="11" fill="#E63946" font-weight="700">✓ 防油 ✓ 防水</text>
+        </svg>
+      </div>
+      <div>
+        <h3 style="font-size:1.5rem; color:var(--accent); margin-bottom:14px;">把玉米澱粉塗在紙上</h3>
+        <p style="margin-bottom:14px;">
+          <b>傳統做法：</b>紙上面要包<b style="color:var(--accent);">塑膠淋膜</b>，
+          才能防油、防水。<br>
+          <b>新做法：</b>用<b style="color:var(--accent-2);">天然澱粉</b>取代塑膠。
+        </p>
+        <div style="background:#FFF4D6; border-left:3px solid var(--gold); padding:12px 16px; border-radius:8px; margin-top:14px;">
+          <p style="margin:0; font-size:.95rem;">
+            <b>適用產品：</b>漢堡紙、薯條盒、蘋果派盒
+          </p>
+        </div>
+        <p style="margin-top:14px; font-size:.9rem; color:var(--ink-3);">
+          🔑 關鍵詞：澱粉 <span class="pinyin">diàn fěn</span> ── 從植物（玉米、馬鈴薯）來的天然成分。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 9: 技術 2 ============ -->
+<section class="slide" data-slide="9" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">技術 2 · Replace</div>
+    <h1 class="slide-title">矽基材質<br>讓蒸氣跑掉</h1>
+    <div class="tech-block" style="grid-template-columns:1.2fr 1fr;">
+      <div>
+        <h3 style="font-size:1.5rem; color:var(--accent); margin-bottom:14px;">為什麼麥香魚要不一樣？</h3>
+        <p style="margin-bottom:14px;">
+          麥香魚的麵包是<b style="color:var(--accent-2);">蒸的</b>，會有水氣。
+          如果用塑膠包，水氣會跑不掉，麵包就會<b style="color:var(--accent);">濕黏</b>。
+        </p>
+        <p style="margin-bottom:14px;">
+          所以麥當勞用<b style="color:var(--accent-2);">矽基材質</b>
+          （sī jī cái zhí）取代塑膠 ——
+          它讓水氣可以慢慢跑出來。
+        </p>
+        <div style="background:#FFF4D6; border-left:3px solid var(--gold); padding:12px 16px; border-radius:8px;">
+          <p style="margin:0; font-size:.95rem;">
+            <b>適用產品：</b>麥香魚、蒸製麵包系列
+          </p>
+        </div>
+        <p style="margin-top:14px; font-size:.9rem; color:var(--ink-3);">
+          🔑 矽基 <span class="pinyin">sī jī</span> ── 一種透氣的人工材料，可以讓水氣通過。
+        </p>
+      </div>
+      <div class="tech-visual" style="background:linear-gradient(135deg,#E8F4F2,#B8DBD3);">
+        <svg viewBox="0 0 200 200">
+          <!-- 漢堡 -->
+          <rect x="50" y="80" width="100" height="50" rx="8" fill="#F4A300" stroke="#2D1A0F" stroke-width="2"/>
+          <text x="100" y="112" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">麥香魚</text>
+          <!-- 包裝紙 -->
+          <path d="M30 70 L170 70 L170 140 L30 140 Z" fill="none" stroke="#2A9D8F" stroke-width="3" stroke-dasharray="6 4"/>
+          <!-- 水氣箭頭 -->
+          <text x="50" y="60" font-size="20">💨</text>
+          <text x="100" y="55" font-size="20">💨</text>
+          <text x="140" y="60" font-size="20">💨</text>
+          <path d="M55 70 L55 55" stroke="#2A9D8F" stroke-width="2"/>
+          <path d="M105 70 L105 50" stroke="#2A9D8F" stroke-width="2"/>
+          <path d="M145 70 L145 55" stroke="#2A9D8F" stroke-width="2"/>
+          <text x="100" y="170" text-anchor="middle" font-size="12" fill="#2D1A0F" font-weight="700">水氣慢慢跑出來</text>
+          <text x="100" y="185" text-anchor="middle" font-size="10" fill="#E63946">不會濕黏</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 10: 結構創新 ============ -->
+<section class="slide" data-slide="10" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">結構創新 · Reduce</div>
+    <h1 class="slide-title">大麥克的<br>「腰帶」包裝</h1>
+    <div class="grid-2" style="margin-top:18px;">
+      <div class="tech-visual" style="background:linear-gradient(135deg,#FFE4B8,#FFC78A); aspect-ratio:1.3/1;">
+        <svg viewBox="0 0 240 180">
+          <!-- 漢堡層 -->
+          <ellipse cx="120" cy="60" rx="60" ry="14" fill="#F4A300" stroke="#2D1A0F" stroke-width="2"/>
+          <rect x="65" y="68" width="110" height="14" fill="#4A2E1C"/>
+          <rect x="60" y="82" width="120" height="10" fill="#7FB069"/>
+          <rect x="65" y="92" width="110" height="14" fill="#4A2E1C"/>
+          <ellipse cx="120" cy="115" rx="60" ry="14" fill="#F4A300" stroke="#2D1A0F" stroke-width="2"/>
+          <!-- 腰帶 -->
+          <rect x="50" y="75" width="140" height="40" fill="none" stroke="#E63946" stroke-width="4" rx="4"/>
+          <text x="120" y="100" text-anchor="middle" font-size="11" font-weight="700" fill="#E63946">紙腰帶</text>
+          <!-- 標籤 -->
+          <text x="120" y="155" text-anchor="middle" font-size="14" font-weight="700" fill="#2D1A0F">中間綁一條紙</text>
+          <text x="120" y="172" text-anchor="middle" font-size="11" fill="#5A3D2E">單手就能吃</text>
+        </svg>
+      </div>
+      <div>
+        <h3 style="font-size:1.4rem; color:var(--accent); margin-bottom:14px;">舊設計 vs 新設計</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div style="background:#fff; border-radius:10px; padding:14px; border-top:3px solid var(--ink-3);">
+            <p style="font-size:.8rem; color:var(--ink-3); font-family:monospace; margin-bottom:6px;">BEFORE</p>
+            <p style="font-weight:700; color:var(--ink);">整個盒子包起來</p>
+            <p style="font-size:.85rem; color:var(--ink-2); margin-top:6px;">用很多紙，要兩隻手打開</p>
+          </div>
+          <div style="background:#fff; border-radius:10px; padding:14px; border-top:3px solid var(--accent);">
+            <p style="font-size:.8rem; color:var(--accent); font-family:monospace; margin-bottom:6px;">AFTER</p>
+            <p style="font-weight:700; color:var(--ink);">中間綁一條腰帶</p>
+            <p style="font-size:.85rem; color:var(--ink-2); margin-top:6px;">省紙、好拿、單手吃</p>
+          </div>
+        </div>
+        <div style="margin-top:18px; padding:12px 16px; background:rgba(42,157,143,.1); border-radius:8px;">
+          <p style="margin:0; font-size:.95rem; color:var(--ink);">
+            🌱 <b>同時做到三件事：</b>減量 + 便利 + 美觀
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 11: 📱 Game 2 ============ -->
+<section class="slide" data-slide="11" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="game-bridge">
+      <div class="g-icon">📱</div>
+      <span class="g-tag">GAME 2 · 段落理解</span>
+      <h2>句子配段落</h2>
+      <p class="g-desc">
+        把 8 個句子拖到對的主題盒：<br>5R 框架 / 無塑技術 / 包裝結構 / 減塑成效。
+      </p>
+      <a href="minigames/02_paragraph_match.html" class="g-url" target="_blank">
+        ▶ 開啟遊戲
+      </a>
+      <img class="g-qr" alt="QR" id="qr2">
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 12: 數據圖表 ============ -->
+<section class="slide" data-slide="12" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">Data · 減塑成效</div>
+    <h1 class="slide-title">一年少用 86 噸</h1>
+    <p class="sub" style="margin-bottom:14px;">86 噸塑膠 = 大約 <b style="color:var(--accent);">2.4 隻成年藍鯨</b> 的重量</p>
+    <div class="chart-wrap" style="height:48vh;">
+      <canvas id="chart-reduce"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 13: 對比表 ============ -->
+<section class="slide" data-slide="13" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">Compare · 舊 vs 新</div>
+    <h1 class="slide-title">兩種包裝的差別</h1>
+    <table class="compare-table" style="margin-top:18px;">
+      <thead>
+        <tr>
+          <th style="width:25%;">比較項目</th>
+          <th>舊包裝（塑膠淋膜）</th>
+          <th>新包裝（無塑）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>材質</td>
+          <td>紙 + 塑膠淋膜</td>
+          <td>紙 + 天然澱粉 / 矽基</td>
+        </tr>
+        <tr>
+          <td>防油防水</td>
+          <td>✓ 很好</td>
+          <td>✓ 一樣好</td>
+        </tr>
+        <tr>
+          <td>可以回收嗎？</td>
+          <td>✗ 不容易（要分開）</td>
+          <td>✓ 整張紙都能回收</td>
+        </tr>
+        <tr>
+          <td>對環境的影響</td>
+          <td>會留下塑膠垃圾</td>
+          <td>可以分解</td>
+        </tr>
+        <tr>
+          <td>消費者的感覺</td>
+          <td>習慣了</td>
+          <td>幾乎沒感覺差別</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:14px; font-size:.9rem; color:var(--ink-3); text-align:center;">
+      💡 寫作時可以用「<b>不只 …，還</b>」的句型來比較。
+    </p>
+  </div>
+</section>
+
+<!-- ============ Slide 14: 📱 Game 3 ============ -->
+<section class="slide" data-slide="14" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="game-bridge">
+      <div class="g-icon">📱</div>
+      <span class="g-tag">GAME 3 · 是非題</span>
+      <h2>讀懂了嗎？</h2>
+      <p class="g-desc">
+        6 題是非題，檢查你對文章的理解。<br>
+        每題答完都有詳細解說。
+      </p>
+      <a href="minigames/03_true_false.html" class="g-url" target="_blank">
+        ▶ 開啟遊戲
+      </a>
+      <img class="g-qr" alt="QR" id="qr3">
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 15: 反思問句 ============ -->
+<section class="slide" data-slide="15" data-section="喚起行動">
+  <div class="slide-inner">
+    <div class="kicker">Reflect · 想一想</div>
+    <h1 class="slide-title">三個讓你思考的問題</h1>
+    <div class="grid-3" style="margin-top:24px;">
+      <div class="card" style="border-top:4px solid var(--accent); padding:24px;">
+        <div style="font-size:2rem; margin-bottom:10px;">💰</div>
+        <h3 style="color:var(--accent); margin-bottom:10px;">問題 1</h3>
+        <p style="font-size:1rem; color:var(--ink);">
+          如果新包裝<b>多 0.5 元</b>成本，<br>麥當勞會把這個錢轉給消費者嗎？
+        </p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--gold); padding:24px;">
+        <div style="font-size:2rem; margin-bottom:10px;">🇻🇳</div>
+        <h3 style="color:var(--gold); margin-bottom:10px;">問題 2</h3>
+        <p style="font-size:1rem; color:var(--ink);">
+          越南的速食店<br>會做同樣的事嗎？<br>為什麼？
+        </p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--accent-2); padding:24px;">
+        <div style="font-size:2rem; margin-bottom:10px;">🤔</div>
+        <h3 style="color:var(--accent-2); margin-bottom:10px;">問題 3</h3>
+        <p style="font-size:1rem; color:var(--ink);">
+          做為消費者，<br>你願意為「環保」<br>多付多少錢？
+        </p>
+      </div>
+    </div>
+    <p style="margin-top:24px; text-align:center; font-size:1rem; color:var(--ink-2);">
+      👯 兩人一組，每題討論 1 分鐘，再分享給全班。
+    </p>
+  </div>
+</section>
+
+<!-- ============ Slide 16: 📱 Game 4 ============ -->
+<section class="slide" data-slide="16" data-section="喚起行動">
+  <div class="slide-inner">
+    <div class="game-bridge">
+      <div class="g-icon">📱</div>
+      <span class="g-tag">GAME 4 · 流程排序</span>
+      <h2>新包裝的<br>開發流程</h2>
+      <p class="g-desc">
+        把 6 個步驟排出正確順序：從「設定目標」到「全台上線」。
+      </p>
+      <a href="minigames/04_process_order.html" class="g-url" target="_blank">
+        ▶ 開啟遊戲
+      </a>
+      <img class="g-qr" alt="QR" id="qr4">
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 17: 寫作鷹架 ============ -->
+<section class="slide" data-slide="17" data-section="喚起行動">
+  <div class="slide-inner">
+    <div class="kicker">Writing Scaffold</div>
+    <h1 class="slide-title">200 字短文，這樣寫</h1>
+    <div class="write-frame" style="margin-top:18px;">
+      <div class="write-block">
+        <h3><span class="num">1</span> 起 — 介紹主題</h3>
+        <p>用一句話告訴讀者，這篇要寫什麼。</p>
+        <div class="example">
+          範例：「最近，台灣麥當勞做了一件很有意思的事 —— 把紙杯裡的塑膠拿掉了。」
+        </div>
+      </div>
+      <div class="write-block">
+        <h3><span class="num">2</span> 承 — 說明事實</h3>
+        <p>用 1–2 個具體的<b>數字</b>或<b>例子</b>支持。</p>
+        <div class="example">
+          範例：「他們花了三年，每年少用 86 噸塑膠。」
+        </div>
+      </div>
+      <div class="write-block">
+        <h3><span class="num">3</span> 轉 — 提出看法</h3>
+        <p>用「我覺得 / 我認為」開始你的觀點。</p>
+        <div class="example">
+          範例：「我覺得這件事不只對環境好，對品牌形象也好。」
+        </div>
+      </div>
+      <div class="write-block">
+        <h3><span class="num">4</span> 合 — 連結越南</h3>
+        <p>把這個議題拉回<b>越南</b>的情境。</p>
+        <div class="example">
+          範例：「越南也有很多速食店，希望以後也能看到類似的改變。」
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 18: Edcafe 作業介紹 ============ -->
+<section class="slide" data-slide="18" data-section="喚起行動">
+  <div class="slide-inner">
+    <div class="kicker">Edcafe Assignment</div>
+    <h1 class="slide-title">今天的作業</h1>
+    <div class="edcafe-grid" style="margin-top:18px;">
+      <div class="edcafe-detail">
+        <h3>📝 寫作任務</h3>
+        <ul>
+          <li><b>題目</b>：如果越南的速食店也想減塑，你會建議什麼？</li>
+          <li><b>字數</b>：200 ± 20 字</li>
+          <li><b>必用詞</b>：包裝、塑膠、永續、減塑（至少 3 個）</li>
+          <li><b>結構</b>：起承轉合，4 段</li>
+          <li><b>截止</b>：下週同一時間（7 天）</li>
+          <li><b>提交</b>：Edcafe 平台</li>
+        </ul>
+      </div>
+      <div class="rubric-mini">
+        <h3>📊 評分量表（總分 100）</h3>
+        <table>
+          <tr><td>內容理解</td><td>20</td></tr>
+          <tr><td>科學概念</td><td>20</td></tr>
+          <tr><td>結構組織</td><td>20</td></tr>
+          <tr><td>語言表達</td><td>20</td></tr>
+          <tr><td>思辨應用</td><td>20</td></tr>
+        </table>
+        <p style="margin-top:12px; font-size:.85rem; color:var(--ink-3);">
+          ⚡ Edcafe AI 會立刻給你分數與回饋。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 19: 📱 Game 5 ============ -->
+<section class="slide" data-slide="19" data-section="喚起行動">
+  <div class="slide-inner">
+    <div class="game-bridge">
+      <div class="g-icon">📱</div>
+      <span class="g-tag">GAME 5 · 寫作前 brainstorm</span>
+      <h2>情境決策</h2>
+      <p class="g-desc">
+        3 個情境題，幫你想清楚作文要寫什麼。<br>
+        每題答完都有寫作鷹架提示。
+      </p>
+      <a href="minigames/05_decision_quiz.html" class="g-url" target="_blank">
+        ▶ 開啟遊戲
+      </a>
+      <img class="g-qr" alt="QR" id="qr5">
+    </div>
+  </div>
+</section>
+
+<!-- ============ Slide 20: 回顧 + CTA ============ -->
+<section class="slide" data-slide="20" data-section="喚起行動">
+  <div class="slide-inner">
+    <div class="kicker">Wrap-up</div>
+    <h1 class="slide-title">今天你學到了什麼？</h1>
+    <div class="recap-grid" style="margin-top:18px;">
+      <div class="recap-item"><div class="recap-num">1</div>
+        <div class="recap-text">8 個食品包裝的中文關鍵詞</div></div>
+      <div class="recap-item"><div class="recap-num">2</div>
+        <div class="recap-text">5R 永續框架（特別是 Replace）</div></div>
+      <div class="recap-item"><div class="recap-num">3</div>
+        <div class="recap-text">兩種無塑技術：澱粉、矽基</div></div>
+      <div class="recap-item"><div class="recap-num">4</div>
+        <div class="recap-text">讀懂科普報導的閱讀策略</div></div>
+      <div class="recap-item"><div class="recap-num">5</div>
+        <div class="recap-text">起承轉合的 200 字短文結構</div></div>
+      <div class="recap-item"><div class="recap-num">6</div>
+        <div class="recap-text">用所學連結越南的能力</div></div>
+    </div>
+    <div class="cta" style="margin-top:24px;">
+      <h2>下一步</h2>
+      <ul class="cta-list">
+        <li>到 <b>Edcafe</b> 完成 200 字寫作作業</li>
+        <li>觀察越南便利店 / 速食店的<b>包裝</b></li>
+        <li>下週帶一個包裝物到課堂分享</li>
+      </ul>
+      <p style="margin-top:10px; font-size:.95rem; color:var(--ink-3);">
+        🌱 謝謝大家，下週見！
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function show(idx){
+  if(idx < 0 || idx >= total) return;
+  slides[current].classList.remove('active');
+  current = idx;
+  slides[current].classList.add('active');
+  document.getElementById('pageInfo').textContent = `${idx+1} / ${total}`;
+  document.getElementById('progress').style.width = ((idx+1)/total*100)+'%';
+  document.getElementById('section-tag').textContent =
+    '— ' + slides[current].dataset.section + ' —';
+  if(idx === 11) renderChart();  // slide 12 (0-indexed 11)
+}
+
+document.addEventListener('keydown', e => {
+  if(e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') show(current+1);
+  else if(e.key === 'ArrowLeft' || e.key === 'PageUp') show(current-1);
+  else if(e.key === 'Home') show(0);
+  else if(e.key === 'End') show(total-1);
+  else if(e.key === 'f' || e.key === 'F'){
+    if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+});
+
+document.addEventListener('click', e => {
+  if(e.target.closest('a, button, .g-url, canvas')) return;
+  const x = e.clientX / window.innerWidth;
+  if(x > 0.7) show(current+1);
+  else if(x < 0.3) show(current-1);
+});
+
+// 進度條初始化
+document.getElementById('progress').style.width = (1/total*100)+'%';
+
+// QR code 動態載入
+const base = window.location.href.replace(/\/[^/]*$/, '/');
+[1,2,3,4,5].forEach(n => {
+  const img = document.getElementById('qr'+n);
+  if(!img) return;
+  const file = ['01_vocab_match.html','02_paragraph_match.html',
+                '03_true_false.html','04_process_order.html',
+                '05_decision_quiz.html'][n-1];
+  img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=140x140&data='
+          + encodeURIComponent(base + 'minigames/' + file);
+});
+
+// Chart.js — 減塑成效
+let chartRendered = false;
+function renderChart(){
+  if(chartRendered) return;
+  chartRendered = true;
+  const ctx = document.getElementById('chart-reduce');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['第 1 年（試驗）','第 2 年（部分導入）','第 3 年（全面）','第 4 年（穩定）'],
+      datasets: [{
+        label: '年度減塑量（噸）',
+        data: [12, 38, 72, 86],
+        backgroundColor: ['#FFE4B8','#F4A300','#2A9D8F','#E63946'],
+        borderRadius: 8
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        title: { display: true, text: '台灣麥當勞無塑包裝專案 年度減塑量',
+                 font:{size:16, family:'Noto Sans TC', weight:'700'}, color:'#2D1A0F' }
+      },
+      scales: {
+        y: { beginAtZero: true, title:{display:true, text:'公噸 (Tonne)'}, ticks:{color:'#5A3D2E'}},
+        x: { ticks:{color:'#5A3D2E'}}
+      }
+    }
+  });
+}
+</script>
+</body>
+</html>

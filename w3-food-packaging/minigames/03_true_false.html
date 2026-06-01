@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game 3 · 是非題</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Noto Sans TC','Be Vietnam Pro',-apple-system,sans-serif;
+  background:#FFFBF0; color:#2D1A0F; min-height:100vh;
+  padding:18px; line-height:1.6;
+}
+.wrap{max-width:720px; margin:0 auto;}
+header{text-align:center; margin-bottom:18px;}
+header h1{font-size:1.6rem; color:#E63946; margin-bottom:6px;}
+header p{font-size:.95rem; color:#5A3D2E;}
+.vn{ color:#DA251D; font-style:italic; }
+.progress-bar{
+  background:#fff; padding:12px 18px; border-radius:12px;
+  margin-bottom:14px; box-shadow:0 2px 8px rgba(0,0,0,.05);
+  display:flex; justify-content:space-between; align-items:center;
+  font-weight:700;
+}
+.progress-fill{
+  height:6px; background:#F0E5D2; border-radius:3px;
+  flex:1; margin:0 14px; overflow:hidden;
+}
+.progress-fill > div{
+  height:100%; background:linear-gradient(90deg,#F4A300,#2A9D8F);
+  width:0; transition:width .3s;
+}
+.q-card{
+  background:#fff; padding:24px; border-radius:14px;
+  box-shadow:0 4px 16px rgba(0,0,0,.06);
+  margin-bottom:18px;
+}
+.q-num{
+  font-family:monospace; font-size:.85rem; color:#8B6F5E;
+  letter-spacing:.15em; margin-bottom:10px;
+}
+.q-text{
+  font-size:1.2rem; line-height:1.6; color:#2D1A0F;
+  margin-bottom:18px; font-weight:500;
+}
+.btns{ display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+.btn-tf{
+  padding:18px; border:3px solid #E5D9C7; border-radius:12px;
+  background:#fff; cursor:pointer; font-size:1.2rem; font-weight:700;
+  transition:all .2s;
+}
+.btn-tf:hover{ border-color:#F4A300; transform:translateY(-2px); }
+.btn-tf.true{ color:#2A9D8F; }
+.btn-tf.false{ color:#E63946; }
+.btn-tf.selected.correct{ background:#E8F4F2; border-color:#2A9D8F; }
+.btn-tf.selected.wrong{ background:#FFE5E7; border-color:#E63946; }
+.btn-tf:disabled{ cursor:not-allowed; }
+.explain{
+  margin-top:14px; padding:14px; border-radius:10px;
+  background:#FFF4D6; font-size:.95rem; color:#2D1A0F;
+  border-left:4px solid #F4A300; display:none;
+}
+.explain.show{ display:block; }
+.explain b{ color:#E63946; }
+.complete{
+  background:#fff; padding:30px; border-radius:14px;
+  text-align:center; display:none;
+  box-shadow:0 4px 16px rgba(0,0,0,.08);
+}
+.complete.show{ display:block; }
+.complete h2{ color:#2A9D8F; margin-bottom:10px; font-size:1.8rem; }
+.complete .score-big{
+  font-size:3rem; color:#E63946; font-family:monospace; margin:10px 0;
+}
+.btn{
+  display:inline-block; padding:12px 28px; background:#E63946;
+  color:#fff; border:none; border-radius:24px; font-weight:700;
+  cursor:pointer; font-size:1rem; margin-top:14px;
+}
+.qr-section{ text-align:center; margin-top:18px; }
+.qr-section img{ width:120px; height:120px; padding:6px;
+  background:#fff; border-radius:8px;}
+.qr-section p{ font-size:.8rem; color:#8B6F5E; margin-top:6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🎮 Game 3 · 是非題</h1>
+    <p>讀完文章後，判斷句子是「對」還是「錯」，每題有詳細解說。</p>
+  </header>
+
+  <div class="progress-bar">
+    <span id="q-progress">1 / 6</span>
+    <div class="progress-fill"><div id="pf"></div></div>
+    <span id="score-show">0 分</span>
+  </div>
+
+  <div id="q-zone"></div>
+
+  <div id="complete" class="complete">
+    <h2>🎉 完成測驗！</h2>
+    <div class="score-big" id="final-score">100</div>
+    <p>滿分 100 · 答對 <b id="num-correct">6</b> / 6 題</p>
+    <p style="margin-top:8px; color:#5A3D2E;" id="feedback-msg"></p>
+    <button class="btn" onclick="reset()">🔄 再玩一次</button>
+  </div>
+
+  <div class="qr-section">
+    <img id="qr-img" alt="QR">
+    <p>掃描分享</p>
+  </div>
+
+  <div id="cloud-badge" style="text-align:center; margin-top:10px;
+       font-family:monospace; font-size:.78rem; color:#8B6F5E;"></div>
+</div>
+
+<script src="firebase-config.js"></script>
+<script src="supabase-config.js"></script>
+<script src="tracker.js"></script>
+<script>
+const startTime = Date.now();
+const questions = [
+  {
+    text:'麥當勞從 2025 年起，全面導入無塑膠淋膜包裝紙。',
+    answer:true,
+    explain:'<b>對</b>。文章第一段就提到「自 2025 年起全面導入」。'
+  },
+  {
+    text:'這個專案只花了不到 1 年就完成。',
+    answer:false,
+    explain:'<b>錯</b>。專案<b>耗時近 3 年</b>，包括材料研發、供應鏈協作與門市流程調整。'
+  },
+  {
+    text:'天然澱粉塗佈技術可以讓紙包裝防油、防水。',
+    answer:true,
+    explain:'<b>對</b>。這是新包裝的核心技術之一，取代了傳統塑膠淋膜。'
+  },
+  {
+    text:'麥香魚和漢堡用的是<b>同一種</b>無塑材料。',
+    answer:false,
+    explain:'<b>錯</b>。麥香魚因為麵包是<b>蒸的</b>會有水氣，所以用<b>矽基材質</b>；漢堡類用<b>天然澱粉塗佈</b>。'
+  },
+  {
+    text:'每年大約少用 86 噸塑膠，這是一個很大的減量。',
+    answer:true,
+    explain:'<b>對</b>。86 噸大約是 2.4 隻成年藍鯨的重量，相當可觀。'
+  },
+  {
+    text:'大部分消費者覺得新包裝跟舊包裝有<b>很大</b>的差別。',
+    answer:false,
+    explain:'<b>錯</b>。文章說「多數顧客對內層塑膠淋膜移除<b>無感知</b>」 —— 也就是大家幾乎沒感覺到差異。'
+  }
+];
+
+let cur = 0, score = 0, correctCount = 0;
+
+function show(idx){
+  if(idx >= questions.length){ finish(); return; }
+  const q = questions[idx];
+  document.getElementById('q-progress').textContent = (idx+1) + ' / 6';
+  document.getElementById('pf').style.width = ((idx)/questions.length*100) + '%';
+  const zone = document.getElementById('q-zone');
+  zone.innerHTML = `
+    <div class="q-card">
+      <div class="q-num">第 ${idx+1} 題</div>
+      <div class="q-text">${q.text}</div>
+      <div class="btns">
+        <button class="btn-tf true" id="btn-t">⭕ 對 / Đúng</button>
+        <button class="btn-tf false" id="btn-f">❌ 錯 / Sai</button>
+      </div>
+      <div class="explain" id="explain">${q.explain}</div>
+    </div>
+  `;
+  document.getElementById('btn-t').onclick = () => answer(true);
+  document.getElementById('btn-f').onclick = () => answer(false);
+}
+
+function answer(choice){
+  const q = questions[cur];
+  const isRight = choice === q.answer;
+  const btnT = document.getElementById('btn-t');
+  const btnF = document.getElementById('btn-f');
+  btnT.disabled = btnF.disabled = true;
+  const chosen = choice ? btnT : btnF;
+  const correct = q.answer ? btnT : btnF;
+  if(isRight){
+    chosen.classList.add('selected','correct');
+    correctCount++;
+  } else {
+    chosen.classList.add('selected','wrong');
+    correct.classList.add('selected','correct');
+  }
+  score = Math.round(correctCount / questions.length * 100);
+  document.getElementById('score-show').textContent = score + ' 分';
+  document.getElementById('explain').classList.add('show');
+  setTimeout(() => { cur++; show(cur); }, 2200);
+}
+
+function finish(){
+  document.getElementById('q-zone').style.display = 'none';
+  document.getElementById('pf').style.width = '100%';
+  document.getElementById('final-score').textContent = score;
+  document.getElementById('num-correct').textContent = correctCount;
+  let msg = '';
+  if(score === 100) msg = '完美！Xuất sắc! 🎯';
+  else if(score >= 80) msg = '很棒！Rất tốt! 👍';
+  else if(score >= 60) msg = '及格了！Đậu rồi! 加油 💪';
+  else msg = '再讀一次文章吧 📖';
+  document.getElementById('feedback-msg').textContent = msg;
+  document.getElementById('complete').classList.add('show');
+  FPTracker.recordResult({
+    gameId: '03_true_false',
+    gameName: '是非題',
+    score, wrong: questions.length - correctCount, total: questions.length,
+    durationMs: Date.now() - startTime
+  });
+}
+
+function reset(){
+  cur = 0; score = 0; correctCount = 0;
+  document.getElementById('score-show').textContent = '0 分';
+  document.getElementById('q-zone').style.display = 'block';
+  document.getElementById('complete').classList.remove('show');
+  show(0);
+}
+
+show(0);
+document.getElementById('qr-img').src =
+  'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data='
+  + encodeURIComponent(window.location.href);
+FPTracker.renderIdentityBadge(document.getElementById('cloud-badge'));
+</script>
+</body>
+</html>

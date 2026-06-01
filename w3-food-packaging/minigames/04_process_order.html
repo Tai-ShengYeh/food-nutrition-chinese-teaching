@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game 4 · 流程排序</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Noto Sans TC','Be Vietnam Pro',-apple-system,sans-serif;
+  background:#FFFBF0; color:#2D1A0F; min-height:100vh;
+  padding:18px; line-height:1.5;
+}
+.wrap{max-width:760px; margin:0 auto;}
+header{text-align:center; margin-bottom:14px;}
+header h1{font-size:1.6rem; color:#E63946; margin-bottom:6px;}
+header p{font-size:.95rem; color:#5A3D2E;}
+.vn{ color:#DA251D; font-style:italic; }
+.note{
+  background:#FFF4D6; padding:10px 14px; border-radius:10px;
+  border-left:4px solid #F4A300; font-size:.9rem;
+  margin-bottom:14px; color:#5A3D2E;
+}
+.step-list{ list-style:none; padding:0; }
+.step{
+  background:#fff; border:2px solid #E5D9C7; border-radius:12px;
+  padding:14px 16px; margin-bottom:8px; cursor:move;
+  font-size:1rem; display:flex; align-items:center; gap:12px;
+  box-shadow:0 2px 6px rgba(0,0,0,.04);
+  transition:transform .2s;
+}
+.step:hover{ border-color:#F4A300; }
+.step.dragging{ opacity:.4; }
+.step.over{ border-color:#2A9D8F; transform:scale(1.02); }
+.step .num{
+  background:#E63946; color:#fff; width:32px; height:32px;
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-family:monospace; font-weight:700; flex-shrink:0;
+}
+.step.correct{ background:#E8F4F2; border-color:#2A9D8F; }
+.step.correct .num{ background:#2A9D8F; }
+.step.wrong{ background:#FFE5E7; border-color:#E63946; }
+.handle{ color:#C7B5A6; font-size:1.4rem; cursor:grab; }
+.controls{ text-align:center; margin-top:18px; }
+.btn{
+  display:inline-block; padding:12px 28px; background:#E63946;
+  color:#fff; border:none; border-radius:24px; font-weight:700;
+  cursor:pointer; font-size:1rem; margin:4px;
+}
+.btn.green{ background:#2A9D8F; }
+.btn:hover{ opacity:.85; }
+.complete{
+  background:#fff; padding:24px; border-radius:14px;
+  text-align:center; margin-top:18px; display:none;
+  box-shadow:0 4px 16px rgba(0,0,0,.08);
+}
+.complete.show{ display:block; }
+.complete h2{ color:#2A9D8F; margin-bottom:10px; }
+.complete .score-big{
+  font-size:2.4rem; color:#E63946; font-family:monospace; margin:10px 0;
+}
+.qr-section{ text-align:center; margin-top:18px; }
+.qr-section img{ width:120px; height:120px; padding:6px;
+  background:#fff; border-radius:8px;}
+.qr-section p{ font-size:.8rem; color:#8B6F5E; margin-top:6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🎮 Game 4 · 流程排序</h1>
+    <p>把麥當勞新包裝開發的 6 個步驟，排成正確順序。</p>
+  </header>
+
+  <div class="note">
+    💡 <b>提示</b>：從「想到要做」到「全台灣上市」中間發生了什麼？拖動每個步驟調整順序。
+  </div>
+
+  <ul id="list" class="step-list"></ul>
+
+  <div class="controls">
+    <button class="btn green" onclick="checkOrder()">✓ 檢查順序</button>
+    <button class="btn" onclick="shuffle()">🔄 重排</button>
+  </div>
+
+  <div id="complete" class="complete">
+    <h2 id="ctitle">🎉 順序正確！</h2>
+    <div class="score-big" id="final-score">100</div>
+    <p id="cmsg">花了 3 年，台灣麥當勞完成了從想法到落地的全部流程。</p>
+  </div>
+
+  <div class="qr-section">
+    <img id="qr-img" alt="QR">
+    <p>掃描分享</p>
+  </div>
+
+  <div id="cloud-badge" style="text-align:center; margin-top:10px;
+       font-family:monospace; font-size:.78rem; color:#8B6F5E;"></div>
+</div>
+
+<script src="firebase-config.js"></script>
+<script src="supabase-config.js"></script>
+<script src="tracker.js"></script>
+<script>
+const startTime = Date.now();
+const steps = [
+  {order:1, text:'設定目標：減少塑膠淋膜'},
+  {order:2, text:'材料研發：澱粉塗佈、矽基測試'},
+  {order:3, text:'供應商進門市，觀察員工操作'},
+  {order:4, text:'試印、試包、耐久度測試'},
+  {order:5, text:'門市小規模試營運'},
+  {order:6, text:'全台灣分店正式上線'}
+];
+
+let current = [];
+
+function shuffle(){
+  current = steps.slice();
+  for(let i=current.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [current[i],current[j]] = [current[j],current[i]];
+  }
+  render();
+  document.getElementById('complete').classList.remove('show');
+}
+
+function render(){
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+  current.forEach((s, idx) => {
+    const li = document.createElement('li');
+    li.className = 'step';
+    li.draggable = true;
+    li.dataset.order = s.order;
+    li.innerHTML = `
+      <span class="num">${idx+1}</span>
+      <span style="flex:1;">${s.text}</span>
+      <span class="handle">⋮⋮</span>
+    `;
+    li.ondragstart = e => {
+      e.dataTransfer.setData('text/plain', idx);
+      li.classList.add('dragging');
+    };
+    li.ondragend = () => li.classList.remove('dragging');
+    li.ondragover = e => { e.preventDefault(); li.classList.add('over'); };
+    li.ondragleave = () => li.classList.remove('over');
+    li.ondrop = e => {
+      e.preventDefault();
+      li.classList.remove('over');
+      const from = parseInt(e.dataTransfer.getData('text/plain'));
+      const [moved] = current.splice(from, 1);
+      current.splice(idx, 0, moved);
+      render();
+    };
+    list.appendChild(li);
+  });
+}
+
+function checkOrder(){
+  let correct = 0;
+  document.querySelectorAll('.step').forEach((el, idx) => {
+    el.classList.remove('correct','wrong');
+    if(parseInt(el.dataset.order) === idx+1){
+      el.classList.add('correct');
+      correct++;
+    } else {
+      el.classList.add('wrong');
+    }
+  });
+  const score = Math.round(correct/6*100);
+  document.getElementById('final-score').textContent = score;
+  if(correct === 6){
+    document.getElementById('ctitle').textContent = '🎉 順序正確！';
+    document.getElementById('cmsg').textContent =
+      '花了 3 年，台灣麥當勞完成了從想法到落地的全部流程。';
+  } else {
+    document.getElementById('ctitle').textContent = '🤔 有 ' + correct + ' 個位置對了';
+    document.getElementById('cmsg').textContent = '紅色的順序錯了，再試試看！';
+  }
+  document.getElementById('complete').classList.add('show');
+  FPTracker.recordResult({
+    gameId: '04_process_order',
+    gameName: '流程排序',
+    score, wrong: 6 - correct, total: 6,
+    durationMs: Date.now() - startTime
+  });
+}
+
+shuffle();
+document.getElementById('qr-img').src =
+  'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data='
+  + encodeURIComponent(window.location.href);
+FPTracker.renderIdentityBadge(document.getElementById('cloud-badge'));
+</script>
+</body>
+</html>

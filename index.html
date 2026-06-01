@@ -3,208 +3,258 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>食品營養華語文獻閱讀｜互動教學工具</title>
+<title>食品營養華語文獻閱讀｜互動教學工具 W10–W15</title>
 <style>
-:root{--accent:#6d28d9;--bg:#f5f3ff;--card:#fff;--border:#ddd6fe;--glp:#0891b2;--glp-bg:#ecfeff;--glp-border:#a5f3fc}
+:root{
+  --accent:#6d28d9;--bg:#f5f3ff;--card:#fff;--border:#ddd6fe;
+  --w10:#0891b2;--w11:#059669;--w12:#7c3aed;
+  --w13:#2563eb;--w14:#dc2626;--w15:#7c3aed;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1e293b;line-height:1.6}
-.hero{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:48px 24px;text-align:center}
-.hero h1{font-size:1.8rem;font-weight:900;margin-bottom:8px}
+.hero{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:48px 24px 40px;text-align:center}
+.hero h1{font-size:1.8rem;font-weight:900;margin-bottom:6px}
 .hero p{opacity:.85;font-size:1rem}
-.page{max-width:900px;margin:0 auto;padding:32px 16px 60px}
-h2{font-size:1.1rem;font-weight:700;margin:28px 0 14px;color:var(--accent)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;
-  text-decoration:none;color:inherit;display:block;transition:.2s;border-top:4px solid var(--accent)}
-.card:hover{box-shadow:0 8px 24px #7c3aed22;transform:translateY(-2px)}
-.card .tag{font-size:.72rem;font-weight:700;background:var(--bg);color:var(--accent);
-  padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:10px}
-.card h3{font-size:.95rem;font-weight:700;margin-bottom:6px}
-.card p{font-size:.82rem;color:#64748b}
-.note{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 16px;
-  font-size:.82rem;color:#64748b;margin-top:24px;border-left:4px solid #f59e0b}
-footer{text-align:center;font-size:.78rem;color:#94a3b8;margin-top:40px}
+.hero-meta{font-size:.82rem;opacity:.65;margin-top:6px}
+.page{max-width:960px;margin:0 auto;padding:28px 16px 60px}
+
+/* week section */
+.week-section{margin-bottom:32px}
+.week-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.week-badge{font-size:.72rem;font-weight:800;padding:4px 12px;border-radius:20px;
+  color:#fff;white-space:nowrap;flex-shrink:0}
+.week-title{font-size:1.05rem;font-weight:700;color:#1e293b}
+.week-sub{font-size:.8rem;color:#94a3b8;margin-left:2px}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;
+  text-decoration:none;color:inherit;display:block;transition:.18s;border-top:3px solid var(--accent)}
+.card:hover{box-shadow:0 6px 20px #0001;transform:translateY(-2px)}
+.tag{font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:16px;
+  display:inline-block;margin-bottom:8px;background:#f1f5f9;color:#475569}
+.card h3{font-size:.9rem;font-weight:700;margin-bottom:5px;line-height:1.4}
+.card p{font-size:.78rem;color:#64748b;line-height:1.5}
+.card .ext{font-size:.72rem;color:#94a3b8;margin-top:6px}
+
+/* reports */
+.report-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:16px}
+
+/* note */
+.note{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:13px 16px;
+  font-size:.8rem;color:#64748b;margin-top:20px;border-left:3px solid #f59e0b;line-height:1.6}
+
+/* divider */
+.divider{border:none;border-top:1px solid #e2e8f0;margin:28px 0}
+
+/* section label */
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:#94a3b8;margin-bottom:12px}
+
+footer{text-align:center;font-size:.75rem;color:#94a3b8;margin-top:36px;padding-bottom:20px}
 </style>
 </head>
 <body>
+
 <div class="hero">
   <h1>食品營養華語文獻閱讀</h1>
-  <p>Food Nutrition Academic Chinese Reading｜A2–B1 Interactive Teaching Tools</p>
-  <p style="font-size:.85rem;opacity:.7;margin-top:8px">Spring 2026 ｜ Tai-Sheng Yeh</p>
+  <p>Food Nutrition Academic Chinese Reading｜A2–B1 Interactive Teaching Materials</p>
+  <p class="hero-meta">Spring 2026 ｜ 越南四技班 ｜ Tai-Sheng Yeh ｜ 期中考後 W10–W15</p>
 </div>
+
 <div class="page">
 
-  <h2>📊 班級成果報告（脫敏版）</h2>
+<!-- ── W10 ── -->
+<div class="week-section">
+  <div class="week-header">
+    <span class="week-badge" style="background:var(--w10)">W10</span>
+    <span class="week-title">功能性啤酒</span>
+    <span class="week-sub">Functional Beer · 4/27</span>
+  </div>
   <div class="grid">
-    <a class="card" href="reports/w1-w4-interaction-report.html">
-      <span class="tag">教師版</span>
-      <h3>四週互動紀錄報告</h3>
-      <p>W1–W4 遊戲成績、出席率、投票分析。學生姓名已匿名化。</p>
+    <a class="card" href="w10-functional-beer/index.html" style="border-top-color:var(--w10)">
+      <span class="tag">教學投影片</span>
+      <h3>功能性啤酒的科學</h3>
+      <p>益生質寡醣、酵素轉糖基化、益生菌存活、市場前景。</p>
     </a>
-    <a class="card" href="reports/w1-w4-student-results.html">
-      <span class="tag">學生版</span>
-      <h3>四週學習成果總覽</h3>
-      <p>學習旅程、班級成就徽章、跨週出席記錄。設計給學生看。</p>
+    <a class="card" href="https://functional-beer-0427-2026.netlify.app/" target="_blank" style="border-top-color:var(--w10)">
+      <span class="tag">🌐 Netlify</span>
+      <h3>Netlify 部署版</h3>
+      <p>原始 Netlify 連結，課堂實際使用版本。</p>
+      <div class="ext">functional-beer-0427-2026.netlify.app ↗</div>
     </a>
   </div>
+</div>
 
-  <h2>🌱 替代蛋白｜互動課程</h2>
-  <p style="font-size:.82rem;color:#64748b;margin:-8px 0 12px">Firebase Firestore 即時資料（GitHub Pages 版 Firebase 寫入 disabled，Supabase 為主後端）</p>
+<!-- ── W11 ── -->
+<div class="week-section">
+  <div class="week-header">
+    <span class="week-badge" style="background:var(--w11)">W11</span>
+    <span class="week-title">AI 餐飲剩食革命</span>
+    <span class="week-sub">AI Food Waste · 5/4</span>
+  </div>
   <div class="grid">
-    <a class="card" href="w2-altprot-uni/slides.html">
-      <span class="tag">W2 ｜ 5/18 越南班</span>
-      <h3>替代蛋白（越南大學班）教師投影片</h3>
+    <a class="card" href="w11-ai-food-waste/index.html" style="border-top-color:var(--w11)">
+      <span class="tag">教學投影片</span>
+      <h3>AI 盤點五星級飯店剩食</h3>
+      <p>AI 食安新聞閱讀、剩食規模量化、全球視角、課文討論題。</p>
+    </a>
+  </div>
+</div>
+
+<!-- ── W12 ── -->
+<div class="week-section">
+  <div class="week-header">
+    <span class="week-badge" style="background:var(--w12)">W12</span>
+    <span class="week-title">瘦瘦針影響全球食品業</span>
+    <span class="week-sub">GLP-1 · 5/11</span>
+  </div>
+  <div class="grid">
+    <a class="card" href="https://tai-shengyeh.github.io/glp1-chinese-class/" target="_blank" style="border-top-color:var(--w12)">
+      <span class="tag">🌐 GitHub Pages</span>
+      <h3>GLP-1 互動遊戲入口</h3>
+      <p>4 個遊戲：詞彙配對、數據判讀、產業分類、句型填空。Firebase 後端。</p>
+      <div class="ext">glp1-chinese-class ↗</div>
+    </a>
+    <a class="card" href="https://tai-shengyeh.github.io/glp1-chinese-class/game-01-vocab-match.html" target="_blank" style="border-top-color:var(--w12)">
+      <span class="tag">遊戲 1</span><h3>GLP-1 詞彙配對</h3><p>9 個核心詞彙 Matching Pairs。</p>
+    </a>
+    <a class="card" href="https://tai-shengyeh.github.io/glp1-chinese-class/game-02-data-mcq.html" target="_blank" style="border-top-color:var(--w12)">
+      <span class="tag">遊戲 2</span><h3>三大數據判讀</h3><p>市場數據選擇題理解練習。</p>
+    </a>
+    <a class="card" href="https://tai-shengyeh.github.io/glp1-chinese-class/game-03-industry-sort.html" target="_blank" style="border-top-color:var(--w12)">
+      <span class="tag">遊戲 3</span><h3>受惠 vs 受壓產業</h3><p>產業受 GLP-1 影響方向分類。</p>
+    </a>
+    <a class="card" href="https://tai-shengyeh.github.io/glp1-chinese-class/game-04-pattern-fill.html" target="_blank" style="border-top-color:var(--w12)">
+      <span class="tag">遊戲 4</span><h3>句型填空</h3><p>學術句型填空練習。</p>
+    </a>
+  </div>
+</div>
+
+<!-- ── W13 ── -->
+<div class="week-section">
+  <div class="week-header">
+    <span class="week-badge" style="background:var(--w13)">W13</span>
+    <span class="week-title">替代蛋白</span>
+    <span class="week-sub">Alternative Protein · 5/18</span>
+  </div>
+  <div class="grid">
+    <a class="card" href="w2-altprot-uni/slides.html" style="border-top-color:var(--w13)">
+      <span class="tag">教師投影片</span>
+      <h3>替代蛋白（越南班）教師版</h3>
       <p>政策決策樹、願付溢價投票、即時成績看板。</p>
     </a>
-    <a class="card" href="w2-altprot-uni/student_uni.html">
-      <span class="tag">學生頁</span>
-      <h3>替代蛋白・學生遊戲入口</h3>
-      <p>詞彙配對、決策樹遊戲、即時投票。</p>
+    <a class="card" href="w2-altprot-uni/student_uni.html" style="border-top-color:var(--w13)">
+      <span class="tag">學生遊戲</span>
+      <h3>替代蛋白 學生互動頁</h3>
+      <p>詞彙配對、決策樹、即時投票。Supabase + Firebase 後端。</p>
     </a>
-    <a class="card" href="w1-altprot-class/slides.html" style="border-top-color:#f59e0b">
-      <span class="tag" style="background:#fef3c7;color:#92400e">W1 ｜ 5/13 高職班</span>
-      <h3>替代蛋白（高職普通班）教師投影片</h3>
-      <p>同主題、不同班級版本，可作跨班比較素材。</p>
+  </div>
+</div>
+
+<!-- ── W14 ── -->
+<div class="week-section">
+  <div class="week-header">
+    <span class="week-badge" style="background:var(--w14)">W14</span>
+    <span class="week-title">麥當勞無塑包裝</span>
+    <span class="week-sub">McDonald's No-Plastic · 5/25</span>
+  </div>
+  <div class="grid">
+    <a class="card" href="w-mcd-packaging/mcd_no_plastic_deck.html" style="border-top-color:var(--w14)">
+      <span class="tag">教師投影片</span>
+      <h3>麥當勞無塑包裝挑戰</h3>
+      <p>5R 減塑策略、包裝材料比較、可降解材料科學。</p>
     </a>
-    <a class="card" href="w1-altprot-class/student.html" style="border-top-color:#f59e0b">
-      <span class="tag" style="background:#fef3c7;color:#92400e">學生頁</span>
-      <h3>替代蛋白・高職班學生遊戲</h3>
+    <a class="card" href="w-mcd-packaging/minigames/index.html" style="border-top-color:var(--w14)">
+      <span class="tag">遊戲入口</span>
+      <h3>5 個互動遊戲</h3>
+      <p>5R 配對、包裝測驗、詞彙閃卡、流程排序、決策測驗。</p>
+    </a>
+    <a class="card" href="w3-food-packaging/food_packaging_deck.html" style="border-top-color:var(--w14)">
+      <span class="tag">延伸教材</span>
+      <h3>食品包裝綠色革命 投影片</h3>
+      <p>供應鏈碳排放、循環經濟、生物可分解包裝。Supabase 後端。</p>
+    </a>
+    <a class="card" href="w3-food-packaging/minigames/index.html" style="border-top-color:var(--w14)">
+      <span class="tag">延伸遊戲</span>
+      <h3>食品包裝 5 個遊戲</h3>
+      <p>詞彙配對、段落配對、是非題、流程排序、決策測驗。</p>
+    </a>
+  </div>
+</div>
+
+<!-- ── W15 ── -->
+<div class="week-section">
+  <div class="week-header">
+    <span class="week-badge" style="background:var(--w15)">W15</span>
+    <span class="week-title">無可可巧克力的未來</span>
+    <span class="week-sub">Cocoa-Free Chocolate · 6/1</span>
+  </div>
+  <div class="grid">
+    <a class="card" href="slides/w4-cocoa-free-chocolate.html" style="border-top-color:var(--w15)">
+      <span class="tag">教師投影片</span>
+      <h3>無可可巧克力 互動投影片</h3>
+      <p>詞彙配對、是非判斷、段落填空、句子重組、即時投票。Supabase 後端。</p>
+    </a>
+    <a class="card" href="reports/w1-w4-student-results.html" style="border-top-color:var(--w15)">
+      <span class="tag">學生版報告</span>
+      <h3>三週學習成果總覽</h3>
+      <p>W13–W15 班級成就徽章、跨週出席、遊戲成績（姓名已匿名）。</p>
+    </a>
+    <a class="card" href="reports/w1-w4-interaction-report.html" style="border-top-color:var(--w15)">
+      <span class="tag">教師版報告</span>
+      <h3>三週互動紀錄報告</h3>
+      <p>詳細遊戲成績、投票分析、教學建議（姓名已匿名）。</p>
+    </a>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 高職班參考 -->
+<div class="week-section">
+  <div class="week-header">
+    <span class="week-badge" style="background:#92400e">參考</span>
+    <span class="week-title">替代蛋白（高職普通班）</span>
+    <span class="week-sub">比較組 · 5/13</span>
+  </div>
+  <div class="grid">
+    <a class="card" href="w1-altprot-class/slides.html" style="border-top-color:#92400e">
+      <span class="tag" style="background:#fef3c7;color:#92400e">教師投影片</span>
+      <h3>替代蛋白 高職班版</h3>
+      <p>同主題不同班級版本，可作越南班跨班比較素材。</p>
+    </a>
+    <a class="card" href="w1-altprot-class/student.html" style="border-top-color:#92400e">
+      <span class="tag" style="background:#fef3c7;color:#92400e">學生遊戲</span>
+      <h3>替代蛋白 高職班學生頁</h3>
       <p>詞彙配對、飲食決策樹、產品配對。</p>
     </a>
   </div>
+</div>
 
-  <h2>🎮 互動教學投影片與遊戲</h2>
-  <div class="grid">
-    <a class="card" href="slides/w4-cocoa-free-chocolate.html">
-      <span class="tag">W4 ｜ 6/1</span>
-      <h3>無可可巧克力的未來</h3>
-      <p>含詞彙配對、是非判斷、段落填空、句子重組、即時投票。Supabase 後端。</p>
-    </a>
-    <a class="card" href="w3-food-packaging/food_packaging_deck.html">
-      <span class="tag">W3 ｜ 5/25</span>
-      <h3>食品包裝綠色革命｜教師投影片</h3>
-      <p>含即時投票、遊戲 QR Code 入口。Supabase + Firebase 雙後端。</p>
-    </a>
-    <a class="card" href="w3-food-packaging/minigames/index.html">
-      <span class="tag">W3 遊戲</span>
-      <h3>食品包裝 5 個互動遊戲</h3>
-      <p>詞彙配對、段落配對、是非題、流程排序、決策測驗。掃碼即玩。</p>
-    </a>
-    <a class="card" href="w3-food-packaging/minigames/01_vocab_match.html">
-      <span class="tag">遊戲 1</span>
-      <h3>詞彙配對</h3>
-      <p>食品包裝核心詞彙 Matching Pairs 練習。</p>
-    </a>
-    <a class="card" href="w3-food-packaging/minigames/02_paragraph_match.html">
-      <span class="tag">遊戲 2</span>
-      <h3>段落配對</h3>
-      <p>句子與段落主旨對應理解練習。</p>
-    </a>
-    <a class="card" href="w3-food-packaging/minigames/04_process_order.html">
-      <span class="tag">遊戲 3</span>
-      <h3>流程排序</h3>
-      <p>包裝材料生命週期流程拖放排序。</p>
-    </a>
-  </div>
+<hr class="divider">
 
-  <div class="note">
-    🔒 <strong>個資說明</strong>：所有班級報告中的學生姓名已替換為代碼（S-VN-01 等），
-    原始資料存於 Supabase，不含於本 repo。
-  </div>
+<div class="note">
+  🔒 <strong>個資說明</strong>：所有班級報告中的學生姓名已替換為代碼（S-VN-01 等），原始互動資料存於 Supabase / Firebase，不含於本 repo。Firebase API key 在 GitHub 版本中已清空（課堂環境使用本機完整版本）。
+</div>
 
-  <h2>🍟 麥當勞無塑包裝挑戰</h2>
-  <p style="font-size:.82rem;color:#64748b;margin:-8px 0 12px">Firebase + Supabase 雙後端｜5 個互動遊戲</p>
-  <div class="grid">
-    <a class="card" href="w-mcd-packaging/mcd_no_plastic_deck.html" style="border-top-color:#E63946">
-      <span class="tag" style="background:#fde8e8;color:#9b1c1c">教師投影片</span>
-      <h3>麥當勞無塑包裝挑戰｜教學投影片</h3>
-      <p>5R 減塑策略、包裝材料比較、可降解材料科學。Supabase 即時互動。</p>
-    </a>
-    <a class="card" href="w-mcd-packaging/minigames/index.html" style="border-top-color:#E63946">
-      <span class="tag" style="background:#fde8e8;color:#9b1c1c">遊戲入口</span>
-      <h3>5 個互動遊戲 QR Code 入口</h3>
-      <p>5R 配對、包裝測驗、詞彙閃卡、流程排序、決策測驗。</p>
-    </a>
-    <a class="card" href="w-mcd-packaging/minigames/01_5r_match.html" style="border-top-color:#E63946">
-      <span class="tag" style="background:#fde8e8;color:#9b1c1c">遊戲 1</span>
-      <h3>5R 策略配對</h3>
-      <p>Refuse / Reduce / Reuse / Recycle / Rot 配對練習。</p>
-    </a>
-    <a class="card" href="w-mcd-packaging/minigames/02_packaging_quiz.html" style="border-top-color:#E63946">
-      <span class="tag" style="background:#fde8e8;color:#9b1c1c">遊戲 2</span>
-      <h3>包裝材料測驗</h3>
-      <p>麥當勞包裝材料與環境影響選擇題。</p>
-    </a>
-    <a class="card" href="w-mcd-packaging/minigames/04_process_order.html" style="border-top-color:#E63946">
-      <span class="tag" style="background:#fde8e8;color:#9b1c1c">遊戲 4</span>
-      <h3>流程排序</h3>
-      <p>生物可分解包裝的生命週期流程拖放排序。</p>
-    </a>
-  </div>
-
-  <h2 style="color:var(--glp)">💊 GLP-1 課程互動遊戲</h2>
-  <p style="font-size:.82rem;color:#64748b;margin:-8px 0 12px">
-    主題：瘦瘦針如何重塑食品市場｜Firebase 即時資料｜Spring 2026
-  </p>
-  <div class="grid">
-    <a class="card" href="https://tai-shengyeh.github.io/glp1-chinese-class/" target="_blank"
-       style="border-top-color:var(--glp);background:var(--glp-bg);border-color:var(--glp-border)">
-      <span class="tag" style="background:#cffafe;color:#0e7490">GLP-1 主頁</span>
-      <h3>4 個遊戲 QR Code 入口</h3>
-      <p>詞彙配對、數據判讀、產業分類、句型填空。掃碼即玩。</p>
-    </a>
-    <a class="card" href="https://tai-shengyeh.github.io/glp1-chinese-class/game-01-vocab-match.html" target="_blank"
-       style="border-top-color:var(--glp)">
-      <span class="tag" style="background:#cffafe;color:#0e7490">遊戲 1</span>
-      <h3>9 詞配對</h3>
-      <p>GLP-1 核心詞彙配對練習，對應投影片 Slide 5。</p>
-    </a>
-    <a class="card" href="https://tai-shengyeh.github.io/glp1-chinese-class/game-02-data-mcq.html" target="_blank"
-       style="border-top-color:var(--glp)">
-      <span class="tag" style="background:#cffafe;color:#0e7490">遊戲 2</span>
-      <h3>三大數據判讀</h3>
-      <p>選擇題理解市場數據，對應 Slide 13。</p>
-    </a>
-    <a class="card" href="https://tai-shengyeh.github.io/glp1-chinese-class/game-03-industry-sort.html" target="_blank"
-       style="border-top-color:var(--glp)">
-      <span class="tag" style="background:#cffafe;color:#0e7490">遊戲 3</span>
-      <h3>受惠 vs 受壓產業分類</h3>
-      <p>拖放排序，判斷各產業受 GLP-1 影響方向，Slide 14。</p>
-    </a>
-    <a class="card" href="https://tai-shengyeh.github.io/glp1-chinese-class/game-04-pattern-fill.html" target="_blank"
-       style="border-top-color:var(--glp)">
-      <span class="tag" style="background:#cffafe;color:#0e7490">遊戲 4</span>
-      <h3>句型填空</h3>
-      <p>學術句型練習，對應 Slide 15–16。</p>
-    </a>
-  </div>
-
-  <div class="note">
-    🔒 <strong>個資說明</strong>：班級報告中的學生姓名已替換為代碼（S-VN-01 等），
-    原始互動資料存於 Supabase／Firebase，不含於本 repo。
-  </div>
-
-  <h2>📚 教學設計說明</h2>
-  <p style="font-size:.88rem;color:#475569;line-height:1.8">
-    本課程為食品營養學術華語閱讀，對象為 A2–B1 越南大學生。<br>
-    期中考前使用傳統 PPT；期中考後改為 HTML 互動工具＋即時資料收集（Firebase → Supabase）。<br>
-    教學實踐研究比較兩種方式對詞彙學習與課堂參與的影響。
-  </p>
-
-  <h2>🗂️ 相關 Repo</h2>
+<div style="margin-top:20px">
+  <div class="section-label">相關 Repo</div>
   <div class="grid">
     <a class="card" href="https://github.com/Tai-ShengYeh/food-nutrition-chinese-teaching" target="_blank">
       <span class="tag">本 Repo</span>
       <h3>food-nutrition-chinese-teaching</h3>
-      <p>W1–W4 替代蛋白／包裝／可可 互動報告與投影片</p>
+      <p>本 Portfolio 的 GitHub 原始碼</p>
     </a>
     <a class="card" href="https://github.com/Tai-ShengYeh/glp1-chinese-class" target="_blank">
-      <span class="tag">姊妹 Repo</span>
+      <span class="tag">GLP-1 Repo</span>
       <h3>glp1-chinese-class</h3>
-      <p>GLP-1 瘦瘦針課程 4 個遊戲，Firebase 版本</p>
+      <p>W12 GLP-1 課程獨立 repo，Firebase 後端</p>
     </a>
   </div>
 </div>
-<footer>Powered by GitHub Pages ｜ Data: Supabase & Firebase ｜ 2026 ｜ Tai-Sheng Yeh</footer>
+
+</div><!-- end .page -->
+<footer>GitHub Pages ｜ Firebase & Supabase Backends ｜ Spring 2026 ｜ Tai-Sheng Yeh</footer>
 </body>
 </html>

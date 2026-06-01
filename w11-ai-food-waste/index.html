@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>華語文閱讀與寫作教學 — AI 時代的食安新聞</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@600;700&display=swap');
+
+:root {
+  --bg:   #0D1B2A;
+  --card: #1A3050;
+  --card2:#102038;
+  --pri:  #00C6FF;
+  --gold: #FFD700;
+  --acc:  #FF4D8D;
+  --grn:  #00E676;
+  --vio:  #A78BFA;
+  --txt:  #ECEEF2;
+  --muted:#7A91B0;
+  --bdr:  rgba(0,198,255,.22);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Noto Sans TC','Microsoft JhengHei',sans-serif;
+  background:var(--bg);color:var(--txt);
+  height:100vh;overflow:hidden;user-select:none;
+}
+
+/* progress */
+#prog{position:fixed;top:0;left:0;height:4px;background:var(--pri);transition:width .35s ease;z-index:200;}
+
+/* deck */
+#deck{width:100vw;height:100vh;position:relative;}
+.slide{
+  position:absolute;inset:0;
+  padding:48px 68px 68px;
+  opacity:0;pointer-events:none;
+  transition:opacity .38s ease, transform .38s ease;
+  transform:translateX(30px);
+}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.slide.out   {opacity:0;transform:translateX(-30px);}
+
+/* nav */
+#nav{
+  position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:18px;z-index:200;
+}
+.nb{
+  width:42px;height:42px;border-radius:50%;
+  border:2px solid var(--bdr);background:rgba(26,48,80,.85);
+  color:var(--pri);font-size:17px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;backdrop-filter:blur(8px);
+}
+.nb:hover{background:var(--pri);color:var(--bg);border-color:var(--pri);}
+#ctr{font-size:13px;color:var(--muted);min-width:52px;text-align:center;}
+
+/* type */
+.badge{
+  display:inline-block;font-size:12px;font-weight:700;letter-spacing:.1em;
+  padding:4px 12px;border-radius:4px;
+  background:rgba(0,198,255,.13);color:var(--pri);
+  border:1px solid rgba(0,198,255,.28);margin-bottom:18px;
+}
+.slide-title{
+  font-family:'Noto Serif TC',serif;
+  font-size:clamp(34px,4.2vw,54px);font-weight:700;line-height:1.25;
+  margin-bottom:10px;
+}
+.subtitle{font-size:clamp(16px,1.7vw,21px);color:var(--muted);margin-bottom:28px;}
+.rule{width:46px;height:3px;background:var(--pri);margin-bottom:28px;}
+
+/* cards */
+.card{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:22px 26px;}
+.ct{font-size:14px;font-weight:700;color:var(--pri);letter-spacing:.05em;margin-bottom:10px;}
+
+/* grid */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+/* list */
+ul{list-style:none;}
+.dl li{padding-left:18px;position:relative;margin-bottom:7px;font-size:clamp(14px,1.45vw,18px);line-height:1.7;}
+.dl li::before{content:'▸';color:var(--pri);position:absolute;left:0;}
+
+/* highlights */
+.hp{color:var(--pri);font-weight:700;}
+.hg{color:var(--gold);font-weight:700;}
+.ha{color:var(--acc);font-weight:700;}
+.hv{color:var(--grn);font-weight:700;}
+
+/* quote */
+.q{
+  border-left:4px solid var(--pri);padding:10px 18px;
+  background:rgba(0,198,255,.06);border-radius:0 8px 8px 0;
+  font-style:italic;color:#B0C2DA;line-height:1.8;
+}
+
+/* table */
+table{width:100%;border-collapse:collapse;font-size:clamp(13px,1.3vw,16px);}
+th{background:rgba(0,198,255,.13);color:var(--pri);padding:9px 13px;text-align:left;font-weight:700;border-bottom:1px solid var(--bdr);}
+td{padding:9px 13px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:top;}
+tr:hover td{background:rgba(255,255,255,.025);}
+
+/* step */
+.step{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;}
+.snum{width:34px;height:34px;border-radius:50%;background:var(--pri);color:var(--bg);font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+
+/* kw tag */
+.kw{display:inline-block;padding:3px 9px;border-radius:4px;font-size:13px;font-weight:600;margin:3px;}
+
+/* struct */
+.srow{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
+.slabel{min-width:90px;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.04em;}
+.sbar{height:26px;border-radius:4px;display:flex;align-items:center;padding:0 10px;font-size:13px;font-weight:600;color:var(--bg);}
+
+/* footer */
+.ft{position:absolute;bottom:20px;left:68px;right:68px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:rgba(122,145,176,.55);}
+.fd{width:4px;height:4px;border-radius:50%;background:var(--pri);}
+
+/* tag pill */
+.tag{display:inline-block;padding:5px 15px;border:1px solid rgba(0,198,255,.35);border-radius:20px;font-size:13px;color:var(--pri);margin-right:8px;margin-bottom:6px;}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+<div id="deck"></div>
+<div id="nav">
+  <button class="nb" id="prev">&#8592;</button>
+  <span id="ctr">1 / 17</span>
+  <button class="nb" id="next">&#8594;</button>
+</div>
+
+<script>
+/* ── helpers ── */
+const h = String.raw;
+
+/* ── slides array ── */
+const SLIDES = [];
+
+/* 01 封面 */
+SLIDES.push({ html: h`
+<div style="position:absolute;inset:0;background:radial-gradient(ellipse at 65% 35%,#0A3060,transparent 55%),linear-gradient(140deg,#0D1B2A,#071525);">
+  <div style="position:absolute;right:80px;top:50%;transform:translateY(-50%);font-size:240px;font-weight:900;color:rgba(0,198,255,.04);font-family:'Noto Serif TC',serif;line-height:1;">讀</div>
+</div>
+<div style="position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:center;">
+  <div style="margin-bottom:22px;">
+    <span class="tag">華語文教學</span><span class="tag">閱讀與寫作</span><span class="tag">90 分鐘</span>
+  </div>
+  <div style="font-family:'Noto Serif TC',serif;font-size:clamp(44px,5.6vw,72px);font-weight:700;line-height:1.22;margin-bottom:14px;">
+    讀懂，才能<br><span class="hp">寫得出</span>
+  </div>
+  <div style="font-size:clamp(18px,2vw,25px);color:var(--muted);margin-bottom:36px;">
+    以 AI 食安新聞為文本的閱讀理解與寫作工作坊
+  </div>
+  <div style="display:flex;gap:36px;">
+    <div><div style="font-size:11px;color:var(--muted);letter-spacing:.1em;margin-bottom:3px;">素材來源</div><div style="font-size:15px;">食力 foodNEXT · 食事求實的知識頻道</div></div>
+    <div><div style="font-size:11px;color:var(--muted);letter-spacing:.1em;margin-bottom:3px;">文章數量</div><div style="font-size:15px;">2 篇 · 2024 &amp; 2026</div></div>
+  </div>
+</div>
+<div class="ft"><span>食力 foodNEXT</span><div class="fd"></div><span>華語文閱讀與寫作教學</span></div>
+` });
+
+/* 02 問題引入 */
+SLIDES.push({ html: h`
+<div class="badge">引起動機</div>
+<div class="slide-title">你能「讀懂」這段話嗎？</div>
+<div class="rule"></div>
+<div class="q" style="font-size:clamp(15px,1.6vw,19px);margin-bottom:26px;line-height:1.95;">
+  「全球餐飲與住宿業每年因食物浪費損失超過<span class="hg">千億美元</span>（相當於新台幣逾3兆元），碳排放更占全球的<span class="hg">8%</span>。不過，人工智慧（AI）正<span class="hp">悄悄走進廚房</span>，協助減少浪費，激發菜單創意。」
+  <div style="font-size:12px;color:var(--muted);margin-top:10px;">— 食力 foodNEXT《垃圾桶上多雙眼睛》2026/04/13</div>
+</div>
+<div class="g3" style="margin-bottom:22px;">
+  <div class="card">
+    <div class="ct">❓ 誰是主語？</div>
+    <p style="font-size:15px;color:var(--muted);line-height:1.65;">這段話的主體是什麼？寫的是誰的行動或處境？</p>
+  </div>
+  <div class="card">
+    <div class="ct">📊 數字說什麼？</div>
+    <p style="font-size:15px;color:var(--muted);line-height:1.65;">「千億美元」和「8%」分別在論證什麼？缺了它們，你還相信嗎？</p>
+  </div>
+  <div class="card">
+    <div class="ct">🔀 轉折在哪？</div>
+    <p style="font-size:15px;color:var(--muted);line-height:1.65;">「不過」前後的意思有什麼邏輯關係？去掉它行嗎？</p>
+  </div>
+</div>
+<div style="padding:14px 20px;background:rgba(255,77,141,.08);border:1px solid rgba(255,77,141,.22);border-radius:8px;font-size:16px;">
+  <span class="ha">讀得懂</span> 不只是認識每個字，而是看見 <span class="hp">結構</span>、抓住 <span class="hg">數據</span>、理解 <span class="hv">邏輯</span>。
+</div>
+<div class="ft"><span>引起動機</span><div class="fd"></div><span>1 / 17</span></div>
+` });
+
+/* 03 學習目標 */
+SLIDES.push({ html: h`
+<div class="badge">學習地圖</div>
+<div class="slide-title">今天學三件事</div>
+<div class="rule"></div>
+<div style="display:flex;flex-direction:column;gap:22px;max-width:800px;margin-top:6px;">
+  <div class="step">
+    <div class="snum" style="background:var(--pri);">1</div>
+    <div>
+      <div style="font-size:20px;font-weight:700;margin-bottom:4px;">讀懂 — 解剖新聞的結構與邏輯</div>
+      <div style="font-size:15px;color:var(--muted);line-height:1.65;">辨識標題、導言、論點、數據、結語的位置，理解每段文字的功能</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum" style="background:var(--gold);color:#0D1B2A;">2</div>
+    <div>
+      <div style="font-size:20px;font-weight:700;margin-bottom:4px;">分析 — 找論證、數據、連接詞</div>
+      <div style="font-size:15px;color:var(--muted);line-height:1.65;">比較兩篇文章的視角、語氣與論證方式，鍛鍊批判性閱讀能力</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum" style="background:var(--acc);">3</div>
+    <div>
+      <div style="font-size:20px;font-weight:700;margin-bottom:4px;">仿寫 — 按框架寫一段食安短文</div>
+      <div style="font-size:15px;color:var(--muted);line-height:1.65;">套用「問題 → 技術 → 數據 → 意義」框架，產出 100 字自創報導</div>
+    </div>
+  </div>
+</div>
+<div style="margin-top:30px;padding:14px 22px;border-left:4px solid var(--gold);background:rgba(255,215,0,.05);border-radius:0 8px 8px 0;font-size:16px;">
+  <span class="hg">核心觀念：</span>閱讀與寫作是同一件事的兩面——讀懂了別人怎麼寫，你才能學著那樣寫。
+</div>
+<div class="ft"><span>90 分鐘工作坊</span><div class="fd"></div><span>2 / 17</span></div>
+` });
+
+/* 04 素材介紹 */
+SLIDES.push({ html: h`
+<div class="badge">素材導覽</div>
+<div class="slide-title">今天的兩篇文本</div>
+<div class="rule"></div>
+<div class="g2" style="height:calc(100% - 210px);">
+  <div class="card" style="display:flex;flex-direction:column;border-color:rgba(0,198,255,.4);">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+      <div style="width:36px;height:36px;border-radius:50%;background:var(--pri);display:flex;align-items:center;justify-content:center;color:var(--bg);font-weight:900;">A</div>
+      <div><div style="font-size:11px;color:var(--muted);">文章一 · 2024/02/24 · 食力 新聞／產業</div><div style="font-size:13px;font-weight:700;color:var(--pri);">企業案例型</div></div>
+    </div>
+    <div style="font-size:17px;font-weight:700;line-height:1.55;margin-bottom:14px;">丟什麼、丟多少都知道！<br>晶華導入AI技術協助廚餘減量</div>
+    <ul class="dl" style="flex:1;">
+      <li>視角：<span class="hp">單一企業</span>（台灣晶華酒店）導入新科技</li>
+      <li>核心數據：人均廚餘 <span class="hg">0.22 → 0.18 公克</span></li>
+      <li>論點：AI 如何具體<span class="hv">改善廚餘問題</span></li>
+      <li>語氣：介紹性、報告性</li>
+    </ul>
+    <div style="margin-top:14px;padding:8px 12px;background:rgba(0,198,255,.07);border-radius:6px;font-size:13px;color:var(--muted);">技術核心：英國 Winnow AI 廚餘系統</div>
+  </div>
+  <div class="card" style="display:flex;flex-direction:column;border-color:rgba(255,215,0,.35);">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+      <div style="width:36px;height:36px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--bg);font-weight:900;">B</div>
+      <div><div style="font-size:11px;color:var(--muted);">文章二 · 2026/04/13 · 食力 科學傳播</div><div style="font-size:13px;font-weight:700;color:var(--gold);">趨勢分析型</div></div>
+    </div>
+    <div style="font-size:17px;font-weight:700;line-height:1.55;margin-bottom:14px;">垃圾桶上多雙眼睛<br>AI幫忙盤點五星級飯店剩食</div>
+    <ul class="dl" style="flex:1;">
+      <li>視角：<span class="hg">全球趨勢</span>（90+ 國）與多案例</li>
+      <li>核心數據：損失 <span class="hg">千億美元</span>、碳排 <span class="hg">8%</span></li>
+      <li>論點：AI 如何<span class="hp">改變廚師思考</span>食材的方式</li>
+      <li>語氣：分析性、啟發性</li>
+    </ul>
+    <div style="margin-top:14px;padding:8px 12px;background:rgba(255,215,0,.06);border-radius:6px;font-size:13px;color:var(--muted);">延伸：零廢棄哲學與高端餐飲</div>
+  </div>
+</div>
+<div class="ft"><span>foodNEXT.net</span><div class="fd"></div><span>3 / 17</span></div>
+` });
+
+/* 05 新聞稿結構 */
+SLIDES.push({ html: h`
+<div class="badge">閱讀策略</div>
+<div class="slide-title">食安新聞的七層「骨架」</div>
+<div class="rule"></div>
+<div style="display:flex;gap:28px;height:calc(100% - 190px);">
+  <div style="flex:1;display:flex;flex-direction:column;gap:7px;justify-content:center;">
+    ${[
+      ['① 標題','95%','var(--pri)','var(--bg)','吸引注意 · 包含關鍵詞或懸念'],
+      ['② 導言','85%','#00A8D8','var(--bg)','30秒說清楚誰、做了什麼、為何重要'],
+      ['③ 背景','75%','var(--card)','var(--txt)','問題有多嚴重？規模多大？'],
+      ['④ 技術說明','80%','var(--card)','var(--txt)','解決方案如何運作？'],
+      ['⑤ 數據證據','70%','rgba(255,215,0,.18)','var(--gold)','數字讓讀者相信結論'],
+      ['⑥ 引語','65%','var(--card)','var(--txt)','專家或當事人第一手話語'],
+      ['⑦ 展望行動','60%','rgba(0,230,118,.15)','var(--grn)','下一步是什麼？'],
+    ].map(([label, w, bg, color, tip]) => `
+      <div class="srow">
+        <div class="slabel">${label}</div>
+        <div class="sbar" style="background:${bg};color:${color};width:${w};border:${bg.includes('card') ? '1px solid var(--bdr)' : 'none'};">${tip}</div>
+      </div>
+    `).join('')}
+  </div>
+  <div style="width:300px;display:flex;flex-direction:column;gap:12px;justify-content:center;">
+    <div class="card" style="border-color:rgba(0,198,255,.4);">
+      <div class="ct">文章A 導言</div>
+      <div class="q" style="font-size:13px;line-height:1.75;">晶華酒店引進AI廚餘系統，在員工丟棄食物時，系統記錄重量、辨識品項，並<span class="hp">顯示丟棄成本</span>。</div>
+    </div>
+    <div class="card" style="border-color:rgba(255,215,0,.35);">
+      <div class="ct" style="color:var(--gold);">文章B 導言</div>
+      <div class="q" style="font-size:13px;line-height:1.75;">全球餐飲業每年因食物浪費損失<span class="hg">逾千億美元</span>，並產生約8%碳排。隨著AI導入，廚房開始出現<span class="hp">轉變</span>。</div>
+    </div>
+    <div style="padding:11px;background:rgba(255,77,141,.07);border-radius:8px;border:1px solid rgba(255,77,141,.2);">
+      <div style="font-size:13px;font-weight:700;color:var(--acc);margin-bottom:4px;">讀導言的技巧</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.6;">問自己：誰、做了什麼、結果如何、為什麼重要？能全答中就是好導言。</div>
+    </div>
+  </div>
+</div>
+<div class="ft"><span>閱讀策略</span><div class="fd"></div><span>4 / 17</span></div>
+` });
+
+/* 06 文章A解剖 */
+SLIDES.push({ html: h`
+<div class="badge">精讀練習 · 文章 A</div>
+<div class="slide-title">晶華AI廚餘——一段一任務</div>
+<div class="rule"></div>
+<div class="g2" style="height:calc(100% - 190px);gap:14px;">
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card" style="border-left:3px solid var(--pri);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div class="ct" style="margin:0;">① 標題策略</div>
+        <span style="font-size:11px;color:var(--pri);background:rgba(0,198,255,.1);padding:2px 7px;border-radius:3px;">懸念 + 解答</span>
+      </div>
+      <div style="font-size:15px;line-height:1.65;">「<span class="hp">丟什麼、丟多少都知道</span>！」製造懸念<br>「晶華導入AI技術」緊接給出解答</div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--gold);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div class="ct" style="margin:0;color:var(--gold);">② 背景定位</div>
+        <span style="font-size:11px;color:var(--gold);background:rgba(255,215,0,.08);padding:2px 7px;border-radius:3px;">設定脈絡</span>
+      </div>
+      <div style="font-size:15px;line-height:1.65;">企業永續目標 → 2024永續餐桌計畫 → 導入AI廚餘系統為首要行動</div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--vio);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div class="ct" style="margin:0;color:var(--vio);">③ 技術說明</div>
+        <span style="font-size:11px;color:var(--vio);background:rgba(167,139,250,.1);padding:2px 7px;border-radius:3px;">解釋機制</span>
+      </div>
+      <div style="font-size:15px;line-height:1.65;">磅秤記重量 → 掃描辨識品項 → 螢幕顯示成本 → 每日數據報告</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card" style="border-left:3px solid var(--grn);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div class="ct" style="margin:0;color:var(--grn);">④ 量化目標</div>
+        <span style="font-size:11px;color:var(--grn);background:rgba(0,230,118,.08);padding:2px 7px;border-radius:3px;">數字說服</span>
+      </div>
+      <div style="font-size:15px;line-height:1.65;">人均廚餘 <span class="hg">0.22</span> → <span class="hg">0.18</span> 公克<br>3個月達成廚餘減量 <span class="hg">15%</span></div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--acc);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div class="ct" style="margin:0;color:var(--acc);">⑤ 延伸行動</div>
+        <span style="font-size:11px;color:var(--acc);background:rgba(255,77,141,.08);padding:2px 7px;border-radius:3px;">擴大意義</span>
+      </div>
+      <div style="font-size:15px;line-height:1.65;">香草花園：種植 10+ 種食用香草<br>主廚靈活入饌 → 充分利用食材</div>
+    </div>
+    <div style="padding:13px;background:rgba(0,230,118,.05);border:1px solid rgba(0,230,118,.2);border-radius:8px;">
+      <div style="font-size:13px;font-weight:700;color:var(--grn);margin-bottom:5px;">📌 閱讀練習</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.65;">找出文章中哪一句話是「轉折」？Winnow 系統在哪個段落出現？它如何連接「問題」和「解法」？</div>
+    </div>
+  </div>
+</div>
+<div class="ft"><span>文章A分析</span><div class="fd"></div><span>5 / 17</span></div>
+` });
+
+/* 07 導言技巧 */
+SLIDES.push({ html: h`
+<div class="badge">技能重點</div>
+<div class="slide-title">導言的四個問題</div>
+<div class="rule"></div>
+<div style="font-size:17px;color:var(--muted);margin-bottom:22px;">一段好導言要在 <span class="hp">30 秒內</span> 回答讀者最想知道的四件事</div>
+<div class="g2" style="gap:14px;margin-bottom:20px;">
+  ${[
+    ['👤','WHO 誰','主體是誰？企業、組織、還是一個現象？','「晶華酒店」「全球餐飲業」'],
+    ['⚡','WHAT 做了什麼','核心行動是什麼？用一個強動詞表達','「引進」「導入」「悄悄走進」'],
+    ['📊','HOW MUCH 成效','有數字最好，沒有就用比例或趨勢詞','「減量15%」「損失千億美元」'],
+    ['💡','SO WHAT 意義','這件事為什麼值得讀？影響誰？','「促使廚師重新思考食材價值」'],
+  ].map(([icon, title, desc, ex]) => `
+    <div class="card" style="display:flex;align-items:center;gap:14px;">
+      <div style="font-size:34px;line-height:1;">${icon}</div>
+      <div>
+        <div style="font-size:13px;color:var(--pri);font-weight:700;margin-bottom:4px;">${title}</div>
+        <div style="font-size:15px;line-height:1.6;margin-bottom:4px;">${desc}</div>
+        <div style="font-size:12px;color:var(--gold);">例：${ex}</div>
+      </div>
+    </div>
+  `).join('')}
+</div>
+<div style="padding:15px 22px;background:rgba(0,198,255,.05);border:1px solid var(--bdr);border-radius:8px;">
+  <div style="font-size:14px;font-weight:700;color:var(--pri);margin-bottom:8px;">仿寫練習：補完這段導言</div>
+  <div style="font-size:15px;color:#8DA4C0;line-height:1.85;font-style:italic;">
+    「<span style="background:rgba(0,198,255,.15);padding:1px 7px;border-radius:3px;color:var(--pri);font-style:normal;">__（WHO）</span> 於 2024 年在台北 <span style="background:rgba(255,215,0,.1);padding:1px 7px;border-radius:3px;color:var(--gold);font-style:normal;">__（WHERE）</span> 導入 AI 廚餘管理系統，<span style="background:rgba(255,215,0,.1);padding:1px 7px;border-radius:3px;color:var(--gold);font-style:normal;">__（HOW MUCH）</span>，讓 <span style="background:rgba(255,77,141,.1);padding:1px 7px;border-radius:3px;color:var(--acc);font-style:normal;">__（SO WHAT）</span>。」
+  </div>
+</div>
+<div class="ft"><span>導言結構</span><div class="fd"></div><span>6 / 17</span></div>
+` });
+
+/* 08 論證鏈 */
+SLIDES.push({ html: h`
+<div class="badge">邏輯分析</div>
+<div class="slide-title">論證鏈：問題 → 技術 → 數據 → 行動</div>
+<div class="rule"></div>
+<div style="display:flex;align-items:stretch;gap:0;margin-bottom:24px;">
+  ${[['🗑️','問題','食物浪費','rgba(255,77,141,.12)','var(--acc)'],['🤖','技術','Winnow AI','rgba(0,198,255,.12)','var(--pri)'],['📈','數據','減量成果','rgba(255,215,0,.1)','var(--gold)'],['🌿','行動','廚藝創新','rgba(0,230,118,.1)','var(--grn)']].map(([icon,title,sub,bg,color], i) => `
+    <div style="flex:1;text-align:center;display:flex;align-items:center;gap:0;">
+      <div style="flex:1;background:${bg};border:2px solid ${color};border-radius:12px;padding:14px 6px;margin:0 3px;">
+        <div style="font-size:30px;margin-bottom:7px;">${icon}</div>
+        <div style="font-size:16px;font-weight:700;color:${color};">${title}</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px;">${sub}</div>
+      </div>
+      ${i < 3 ? '<div style="font-size:22px;color:var(--muted);margin:0 -2px;z-index:1;">→</div>' : ''}
+    </div>
+  `).join('')}
+</div>
+<div class="g2" style="gap:16px;margin-bottom:16px;">
+  <div>
+    <div style="font-size:15px;font-weight:700;color:var(--pri);margin-bottom:9px;">文章A 的論證鏈</div>
+    <div class="q" style="font-size:14px;line-height:1.85;">
+      <span class="ha">廚餘難控管</span> → 引進英國 Winnow 系統 →
+      磅秤+攝影機辨識種類與重量 →
+      <span class="hg">3個月減量15%</span> →
+      主廚開創香草入饌新菜色
+    </div>
+  </div>
+  <div>
+    <div style="font-size:15px;font-weight:700;color:var(--gold);margin-bottom:9px;">文章B 的論證鏈</div>
+    <div class="q" style="font-size:14px;line-height:1.85;">
+      <span class="ha">全球千億美元損失</span> → AI走進廚房 →
+      1000種食材辨識、多國飯店採用 →
+      <span class="hg">剩食減半或六成</span> →
+      零廢棄哲學改變廚師思維
+    </div>
+  </div>
+</div>
+<div style="padding:13px 18px;background:rgba(255,215,0,.05);border-radius:8px;border:1px solid rgba(255,215,0,.2);font-size:15px;">
+  <span class="hg">思考題：</span>如果沒有「數據」這一環，讀者還會相信結論嗎？試著把數字從文章中刪掉，看看說服力有什麼變化。
+</div>
+<div class="ft"><span>論證結構</span><div class="fd"></div><span>7 / 17</span></div>
+` });
+
+/* 09 文章B解剖 */
+SLIDES.push({ html: h`
+<div class="badge">精讀練習 · 文章 B</div>
+<div class="slide-title">AI盤點剩食——全球視角的展開</div>
+<div class="rule"></div>
+<div class="g2" style="height:calc(100% - 190px);gap:14px;">
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card" style="border-left:3px solid var(--gold);">
+      <div class="ct" style="color:var(--gold);">① 標題是個比喻</div>
+      <div style="font-size:15px;line-height:1.7;">「<span class="hg">垃圾桶上多雙眼睛</span>」<br>→ 把AI攝影機比喻成眼睛<br>→ 讓抽象科技變得<span class="hp">親近且有畫面感</span></div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--vio);">
+      <div class="ct" style="color:var(--vio);">② 問題先放大</div>
+      <div style="font-size:15px;line-height:1.7;">千億美元 → 換算3兆台幣 → 碳排8%<br><span class="hp">策略：先說大問題，再說解法</span><br>讓讀者「感受到必要性」</div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--pri);">
+      <div class="ct">③ 三層案例遞進</div>
+      <div style="font-size:15px;line-height:1.7;">四季酒店（減半）→ 紅康乃馨（6成）→ 休士頓四季（70%邊角料入菜）<br><span style="font-size:13px;color:var(--muted);">每個案例都在強化同一個論點</span></div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="card" style="border-left:3px solid var(--grn);">
+      <div class="ct" style="color:var(--grn);">④ 引語的情感力量</div>
+      <div style="font-size:15px;line-height:1.7;">
+        <div class="q" style="font-size:13px;margin-bottom:7px;">「丟棄食物，其實是種<span class="hg">想像力匱乏</span>。」</div>
+        <div class="q" style="font-size:13px;">「這讓我們對浪費<span class="hp">更有感</span>…」</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:7px;">讓「人」說話，比統計數字更有情感</div>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--acc);">
+      <div class="ct" style="color:var(--acc);">⑤ 概念從廢棄到創意</div>
+      <div style="font-size:15px;line-height:1.7;">剩可頌→麵包布丁、洋蔥皮→醬汁<br>鳳梨皮→茶、胡蘿蔔葉→青醬<br><span class="ha">零廢棄是想像力的展現</span></div>
+    </div>
+    <div style="padding:12px;background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.2);border-radius:8px;">
+      <div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:4px;">📌 思考題</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.6;">文章B為什麼從哥斯大黎加四季酒店開始，而不是台灣案例？這個選擇傳達了什麼訊息？</div>
+    </div>
+  </div>
+</div>
+<div class="ft"><span>文章B分析</span><div class="fd"></div><span>8 / 17</span></div>
+` });
+
+/* 10 兩篇比較 */
+SLIDES.push({ html: h`
+<div class="badge">比較閱讀</div>
+<div class="slide-title">兩篇文章的異與同</div>
+<div class="rule"></div>
+<div style="overflow-x:auto;margin-bottom:18px;">
+  <table>
+    <thead>
+      <tr>
+        <th style="width:18%;">比較面向</th>
+        <th style="color:var(--pri);">📘 文章A · 晶華導入AI廚餘</th>
+        <th style="color:var(--gold);">📙 文章B · AI盤點五星級剩食</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="font-weight:700;color:var(--muted);">視角</td><td>單一企業（台灣晶華）</td><td>全球趨勢（90+ 國）</td></tr>
+      <tr><td style="font-weight:700;color:var(--muted);">問題框架</td><td>我們如何用AI減少廚餘？</td><td>AI如何改變餐廳的浪費文化？</td></tr>
+      <tr><td style="font-weight:700;color:var(--muted);">數據類型</td><td><span class="hp">精確小數字</span>（0.22→0.18公克）</td><td><span class="hg">大尺度統計</span>（千億美元、8%碳排）</td></tr>
+      <tr><td style="font-weight:700;color:var(--muted);">引語</td><td>無直接引語（企業報告式）</td><td>多位廚師第一人稱話語</td></tr>
+      <tr><td style="font-weight:700;color:var(--muted);">結語走向</td><td>城市農夫活動（延伸行動）</td><td>零廢棄哲學（價值觀轉變）</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="g2" style="gap:14px;">
+  <div style="padding:14px 18px;background:rgba(0,198,255,.06);border-radius:8px;border:1px solid var(--bdr);">
+    <div style="font-size:14px;font-weight:700;color:var(--pri);margin-bottom:8px;">兩篇的共同點</div>
+    <ul class="dl">
+      <li>都使用 <span class="hp">Winnow 系統</span>作為核心技術案例</li>
+      <li>都強調 AI 能<span class="hp">辨識食材種類與重量</span></li>
+      <li>都呈現<span class="hp">量化成效</span>（廢棄比例降低）</li>
+    </ul>
+  </div>
+  <div style="padding:14px 18px;background:rgba(255,215,0,.05);border-radius:8px;border:1px solid rgba(255,215,0,.2);">
+    <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:8px;">從比較中學寫作</div>
+    <ul class="dl">
+      <li>同一技術，<span class="hg">視角不同</span>，讀起來完全不同</li>
+      <li>大數字給震撼，小數字給<span class="hg">可信度</span></li>
+      <li>引語讓文章有「<span class="hg">人味</span>」，不只是數字報告</li>
+    </ul>
+  </div>
+</div>
+<div class="ft"><span>比較分析</span><div class="fd"></div><span>9 / 17</span></div>
+` });
+
+/* 11 數據引用技巧 + Chart */
+SLIDES.push({
+  html: h`
+<div class="badge">寫作技能</div>
+<div class="slide-title">讓數字說話的三種方法</div>
+<div class="rule"></div>
+<div style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:22px;height:calc(100% - 185px);">
+  <div style="display:flex;flex-direction:column;gap:13px;">
+    <div class="card" style="border-left:3px solid var(--pri);">
+      <div class="ct">① 直接陳述 — 建立規模感</div>
+      <div class="q" style="font-size:14px;line-height:1.75;margin-bottom:7px;">「損失超過 <span class="hg">千億美元</span>（相當於新台幣逾3兆元）」</div>
+      <div style="font-size:13px;color:var(--muted);">技巧：大數字 + 換算成讀者熟悉的單位</div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--gold);">
+      <div class="ct" style="color:var(--gold);">② 前後對比 — 呈現變化</div>
+      <div class="q" style="font-size:14px;line-height:1.75;margin-bottom:7px;">「從人均 <span class="hg">0.22 公克</span> 降至 <span class="hg">0.18 公克</span>」</div>
+      <div style="font-size:13px;color:var(--muted);">技巧：Before / After 結構，讓改變「可見」</div>
+    </div>
+    <div class="card" style="border-left:3px solid var(--grn);">
+      <div class="ct" style="color:var(--grn);">③ 比例呈現 — 加強說服</div>
+      <div class="q" style="font-size:14px;line-height:1.75;margin-bottom:7px;">「減少高達 <span class="hv">7成</span> 以上」「食物浪費<span class="hv">減半</span>」</div>
+      <div style="font-size:13px;color:var(--muted);">技巧：百分比／倍數比絕對值更有衝擊力</div>
+    </div>
+    <div style="padding:11px 15px;background:rgba(255,77,141,.06);border:1px solid rgba(255,77,141,.2);border-radius:8px;">
+      <span style="font-size:13px;font-weight:700;color:var(--acc);">寫作陷阱：</span><span style="font-size:13px;color:var(--muted);">不要只列數字，要說明它<span class="ha">代表什麼意義</span>，以及它為什麼讓讀者驚訝或信服。</span>
+    </div>
+  </div>
+  <div>
+    <div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:10px;letter-spacing:.05em;">各案例廚餘減少比例</div>
+    <div style="position:relative;height:220px;">
+      <canvas id="waste-chart"></canvas>
+    </div>
+    <div style="margin-top:12px;font-size:12px;color:rgba(122,145,176,.6);line-height:1.6;">
+      資料來源：晶華目標 15%；四季哥國 50%；<br>紅康乃馨飯店 A/B 約60%；全球平均推估
+    </div>
+  </div>
+</div>
+<div class="ft"><span>數據寫作</span><div class="fd"></div><span>10 / 17</span></div>
+`,
+  onMount: function() {
+    const ctx = document.getElementById('waste-chart');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['晶華\n目標', '四季\n哥國', '紅康乃馨\nA館', '紅康乃馨\nB館', '全球\n均值'],
+        datasets: [{
+          data: [15, 50, 62, 58, 42],
+          backgroundColor: ['rgba(0,198,255,.7)','rgba(255,215,0,.75)','rgba(0,230,118,.7)','rgba(0,230,118,.55)','rgba(167,139,250,.7)'],
+          borderColor:      ['#00C6FF','#FFD700','#00E676','#00E676','#A78BFA'],
+          borderWidth: 2, borderRadius: 6,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: {
+            beginAtZero: true, max: 80,
+            ticks: { color: '#7A91B0', font:{size:11}, callback: v => v+'%' },
+            grid: { color: 'rgba(255,255,255,.06)' }
+          },
+          x: { ticks: { color: '#7A91B0', font:{size:10} }, grid: { display:false } }
+        }
+      }
+    });
+  }
+});
+
+/* 12 連接詞 */
+SLIDES.push({ html: h`
+<div class="badge">語言工具箱</div>
+<div class="slide-title">連接詞——文章的「膠水」</div>
+<div class="rule"></div>
+<div class="g2" style="gap:14px;margin-bottom:18px;">
+  ${[
+    ['順接類（連續推進）','var(--pri)','rgba(0,198,255,.12)','rgba(0,198,255,.25)',['此外','同時','另外','並且','更','也'],
+     '「系統每天都會發送報告…<span class="hp">此外</span>，系統還可以集合多個站點進行聯合統計。」'],
+    ['轉折類（改變方向）','var(--acc)','rgba(255,77,141,.1)','rgba(255,77,141,.25)',['但','不過','然而','儘管','反而','直到'],
+     '「深受其擾，<span class="ha">直到</span> 2022年引進Winnow，8個月後食物浪費<span class="ha">減半</span>。」'],
+    ['因果類（解釋關係）','var(--gold)','rgba(255,215,0,.08)','rgba(255,215,0,.25)',['因此','進而','藉此','從而','以此','促使'],
+     '「透過主廚會議<span class="hg">進行</span>菜色調整，<span class="hg">藉此</span>減少不必要的食材浪費。」'],
+    ['引語類（呈現觀點）','var(--grn)','rgba(0,230,118,.08)','rgba(0,230,118,.25)',['表示','說','指出','強調','直言','認為'],
+     '「吳偉正<span class="hv">表示</span>，永續飲食除了是理念更是行動。」'],
+  ].map(([title, color, bg, bdr, words, ex]) => `
+    <div>
+      <div style="font-size:14px;font-weight:700;color:${color};margin-bottom:8px;">${title}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;">
+        ${words.map(w => `<span class="kw" style="background:${bg};color:${color};border:1px solid ${bdr};">${w}</span>`).join('')}
+      </div>
+      <div class="q" style="font-size:13px;">${ex}</div>
+    </div>
+  `).join('')}
+</div>
+<div style="padding:12px 18px;background:rgba(0,198,255,.04);border-radius:8px;border:1px solid var(--bdr);font-size:14px;color:var(--muted);">
+  <span class="hp">練習：</span>找出文章A中的 3 個轉折詞和 2 個因果詞，說明它們在句子中的功能，並嘗試換詞後讀讀看語氣有何差異。
+</div>
+<div class="ft"><span>連接詞語庫</span><div class="fd"></div><span>11 / 17</span></div>
+` });
+
+/* 13 科普化技巧 */
+SLIDES.push({ html: h`
+<div class="badge">寫作技能</div>
+<div class="slide-title">把技術語言變成「人話」</div>
+<div class="rule"></div>
+<div style="font-size:16px;color:var(--muted);margin-bottom:18px;">食安新聞的挑戰：讀者懂食物，但不一定懂技術。好的科普寫作把兩者連接起來。</div>
+<div style="display:flex;flex-direction:column;gap:14px;margin-bottom:18px;">
+  ${[
+    {
+      before:'系統通過影像辨識演算法對廢棄食物進行品類分類及重量數據採集。',
+      after: 'AI 會「認識」每種被丟掉的食物，並記下它有多重。',
+      tip:   '比喻化：把「演算法」換成「認識」，讓機器像人一樣行動',
+      color: 'var(--pri)'
+    },
+    {
+      before:'廚師丟棄食物時，磅秤記錄重量，掃描機從照片數據庫中辨識廚餘品項，螢幕顯示成本。',
+      after: '垃圾桶多了雙「眼睛」，每次丟東西都看得清清楚楚。',
+      tip:   '擬人化：「雙眼睛」比「掃描機＋攝影機」更有畫面感',
+      color: 'var(--gold)'
+    },
+    {
+      before:'透過即時監測與數據化管理，系統可針對食材使用效率進行精準優化。',
+      after: '主廚一看數據就知道哪種食材最常被丟掉，能早一步調整菜色。',
+      tip:   '具體化：說「主廚能做什麼」比說「系統能做什麼」更有溫度',
+      color: 'var(--grn)'
+    }
+  ].map(({before, after, tip, color}) => `
+    <div class="card" style="display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;">
+      <div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:700;letter-spacing:.05em;">技術語言</div>
+        <div style="font-size:14px;color:#8DA4C0;line-height:1.7;font-style:italic;">${before}</div>
+      </div>
+      <div style="font-size:22px;color:${color};">→</div>
+      <div>
+        <div style="font-size:12px;color:${color};margin-bottom:5px;font-weight:700;letter-spacing:.05em;">科普語言</div>
+        <div style="font-size:15px;color:var(--txt);line-height:1.7;font-weight:500;">${after}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:5px;background:rgba(255,255,255,.04);padding:3px 8px;border-radius:4px;">💡 ${tip}</div>
+      </div>
+    </div>
+  `).join('')}
+</div>
+<div class="ft"><span>科普寫作</span><div class="fd"></div><span>12 / 17</span></div>
+` });
+
+/* 14 仿寫框架 */
+SLIDES.push({ html: h`
+<div class="badge">寫作實作</div>
+<div class="slide-title">仿寫框架：一段話的公式</div>
+<div class="rule"></div>
+<div style="margin-bottom:20px;padding:16px 22px;background:rgba(0,198,255,.06);border:2px dashed rgba(0,198,255,.3);border-radius:12px;">
+  <div style="font-size:13px;font-weight:700;color:var(--pri);margin-bottom:10px;letter-spacing:.05em;">四格公式</div>
+  <div style="font-size:clamp(15px,1.7vw,19px);line-height:2.1;color:var(--txt);">
+    <span style="background:rgba(0,198,255,.15);padding:2px 8px;border-radius:4px;color:var(--pri);">[主體]</span> 在
+    <span style="background:rgba(255,215,0,.12);padding:2px 8px;border-radius:4px;color:var(--gold);">[時間/地點]</span> 導入
+    <span style="background:rgba(167,139,250,.12);padding:2px 8px;border-radius:4px;color:var(--vio);">[技術/方法]</span>，
+    <span style="background:rgba(255,215,0,.12);padding:2px 8px;border-radius:4px;color:var(--gold);">[時間後]</span> 達成
+    <span style="background:rgba(0,230,118,.1);padding:2px 8px;border-radius:4px;color:var(--grn);">[數字成效]</span>，
+    讓 <span style="background:rgba(255,77,141,.1);padding:2px 8px;border-radius:4px;color:var(--acc);">[對象]</span> 能夠
+    <span style="background:rgba(255,77,141,.1);padding:2px 8px;border-radius:4px;color:var(--acc);">[意義]</span>。
+  </div>
+</div>
+<div class="g2" style="gap:16px;margin-bottom:16px;">
+  <div>
+    <div style="font-size:14px;font-weight:700;color:var(--muted);margin-bottom:8px;">原文範例</div>
+    <div class="q" style="font-size:14px;line-height:1.85;">「<span class="hp">哥斯大黎加四季酒店</span>過去深受其擾，直到 <span class="hg">2022年</span>引進 AI 系統「<span class="hg">Winnow</span>」，<span class="hg">8個月</span>後，成功讓食物浪費<span class="hv">減半</span>。」</div>
+  </div>
+  <div>
+    <div style="font-size:14px;font-weight:700;color:var(--muted);margin-bottom:8px;">套公式拆解</div>
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      ${[['主體','var(--pri)','哥斯大黎加四季酒店'],['時間','var(--gold)','2022 年'],['技術','var(--vio)','Winnow AI 廚餘管理系統'],['時間後','var(--gold)','8 個月後'],['成效','var(--grn)','食物浪費減半'],['意義','var(--acc)','廚師重新思考食材價值']].map(([k,c,v]) => `
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span style="font-size:12px;min-width:48px;color:${c};font-weight:700;">${k}</span>
+          <span style="font-size:14px;color:var(--txt);">${v}</span>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+</div>
+<div style="padding:13px 20px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.25);border-radius:8px;">
+  <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:5px;">你的仿寫題目</div>
+  <div style="font-size:15px;color:var(--txt);line-height:1.7;">以「<span class="hg">你的學校</span>」為主體，想像食堂導入 AI 剩食管理系統。套用公式寫出 <span class="hp">100字</span> 報導段落（含假設性數據）。</div>
+</div>
+<div class="ft"><span>仿寫框架</span><div class="fd"></div><span>13 / 17</span></div>
+` });
+
+/* 15 寫作任務 */
+SLIDES.push({ html: h`
+<div style="position:absolute;inset:0;background:linear-gradient(140deg,#0A2540,#051525);">
+  <div style="position:absolute;top:0;right:0;width:380px;height:380px;background:radial-gradient(circle,rgba(0,198,255,.08),transparent);border-radius:50%;"></div>
+</div>
+<div style="position:relative;z-index:1;height:100%;display:flex;flex-direction:column;padding:48px 68px 68px;">
+  <div class="badge">喚起行動</div>
+  <div class="slide-title">今日寫作任務</div>
+  <div class="rule"></div>
+  <div class="g2" style="gap:20px;flex:1;">
+    <div>
+      <div style="font-size:16px;font-weight:700;margin-bottom:13px;">📝 任務說明</div>
+      <div style="padding:14px;background:rgba(0,198,255,.07);border-radius:10px;border:1px solid var(--bdr);margin-bottom:13px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:5px;">題目</div>
+        <div style="font-size:17px;line-height:1.7;">「如果你就讀的學校食堂導入 AI 廚餘管理系統……」</div>
+      </div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:10px;">段落架構（四句話）</div>
+      <div style="display:flex;flex-direction:column;gap:9px;">
+        ${[['1','開頭','設定問題現象（1句）','學校食堂每天…'],['2','說明','技術如何解決（2-3句）','導入AI系統後…'],['3','數據','預期成效（1句）','初估可減少 ___%…'],['4','意義','對師生或環境影響（1句）','這不只是減少浪費…']].map(([n,t,d,ex]) => `
+          <div style="display:flex;gap:11px;align-items:flex-start;">
+            <div style="width:24px;height:24px;border-radius:50%;background:var(--pri);color:var(--bg);font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">${n}</div>
+            <div>
+              <span style="font-size:14px;font-weight:700;color:var(--pri);">${t}　</span><span style="font-size:13px;color:var(--muted);">${d}</span>
+              <div style="font-size:12px;color:rgba(122,145,176,.55);font-style:italic;">${ex}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <div>
+      <div style="font-size:16px;font-weight:700;margin-bottom:13px;">✅ 評分標準</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        ${[['結構完整','四段架構清晰','var(--pri)',25],['數字運用','至少1個假設性數據','var(--gold)',25],['連接詞','正確使用轉折或因果詞','var(--grn)',25],['科普語言','技術術語有適當轉化','var(--acc)',25]].map(([t,d,c,pt]) => `
+          <div class="card" style="display:flex;align-items:center;gap:12px;padding:11px 15px;">
+            <div style="width:36px;height:36px;border-radius:8px;background:${c}22;border:1px solid ${c}44;display:flex;align-items:center;justify-content:center;color:${c};font-size:18px;font-weight:900;flex-shrink:0;">${pt}</div>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:${c};">${t}</div>
+              <div style="font-size:13px;color:var(--muted);">${d}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="margin-top:13px;text-align:center;font-size:15px;">
+        <span class="hg">字數：</span><span style="font-size:19px;font-weight:700;color:var(--pri);">100–150字</span>
+        <span style="margin:0 10px;color:var(--muted);">·</span>
+        <span class="hg">時間：</span><span style="font-size:19px;font-weight:700;color:var(--pri);">15分鐘</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ft" style="z-index:2;"><span>寫作任務</span><div class="fd"></div><span>14 / 17</span></div>
+` });
+
+/* 16 同儕互評 */
+SLIDES.push({ html: h`
+<div class="badge">互動環節</div>
+<div class="slide-title">同儕互評——讀別人的文章</div>
+<div class="rule"></div>
+<div class="g2" style="gap:20px;margin-bottom:18px;">
+  <div>
+    <div style="font-size:15px;font-weight:700;margin-bottom:12px;">互評步驟（5分鐘）</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      ${[
+        ['找','用螢光筆標出對方文章中的連接詞（至少4個）','var(--pri)'],
+        ['問','找出「數字在哪？」它有沒有讓你更相信結論？','var(--gold)'],
+        ['評','對方的技術說明清楚嗎？有沒有用「人話」？','var(--acc)'],
+        ['給','提供一個具體的修改建議（不只說「很好」）','var(--grn)'],
+      ].map(([n,d,c]) => `
+        <div style="display:flex;gap:12px;align-items:center;">
+          <div style="width:30px;height:30px;border-radius:8px;background:${c}22;border:1px solid ${c}55;display:flex;align-items:center;justify-content:center;color:${c};font-weight:900;font-size:13px;flex-shrink:0;">${n}</div>
+          <div style="font-size:15px;line-height:1.55;">${d}</div>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+  <div>
+    <div style="font-size:15px;font-weight:700;margin-bottom:12px;">好的互評長什麼樣？</div>
+    <div class="card" style="margin-bottom:12px;border-color:rgba(255,77,141,.3);">
+      <div class="ct" style="color:var(--acc);">❌ 不夠具體</div>
+      <div class="q" style="font-size:14px;line-height:1.7;">「文章寫得不錯，但可以改得更好。」</div>
+    </div>
+    <div class="card" style="border-color:rgba(0,230,118,.3);">
+      <div class="ct" style="color:var(--grn);">✅ 具體有效</div>
+      <div class="q" style="font-size:14px;line-height:1.75;">「第二句的『此外』連接有點突兀，改成『在此同時』會更自然。數字部分如果補上比較基準（現在是多少），讀者會更有感。」</div>
+    </div>
+  </div>
+</div>
+<div style="padding:13px 20px;background:rgba(0,198,255,.05);border:1px solid var(--bdr);border-radius:8px;text-align:center;font-size:16px;">
+  互評不是挑毛病，是幫對方找到<span class="hp">可以更好</span>的地方——這也是你讀別人文章最快的學習方式。
+</div>
+<div class="ft"><span>同儕互評</span><div class="fd"></div><span>15 / 17</span></div>
+` });
+
+/* 17 結語 */
+SLIDES.push({ html: h`
+<div style="position:absolute;inset:0;background:linear-gradient(140deg,#051828,#0A1F38,#0D2A50);">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 28% 55%,rgba(0,198,255,.1),transparent 55%);"></div>
+  <div style="position:absolute;right:0;bottom:0;width:500px;height:500px;background:radial-gradient(circle,rgba(255,215,0,.055),transparent);border-radius:50%;"></div>
+</div>
+<div style="position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:center;padding:48px 68px;">
+  <div class="badge">帶走一句話</div>
+  <div style="font-family:'Noto Serif TC',serif;font-size:clamp(40px,5vw,64px);font-weight:700;line-height:1.28;margin-bottom:34px;">
+    讀得懂，<br>才能<span class="hp">寫得出</span>。
+  </div>
+  <div style="display:flex;gap:22px;margin-bottom:36px;">
+    ${[
+      ['🔍','結構先行','看懂文章骨架，再讀細節，就不會迷失在文字海中。','var(--pri)'],
+      ['📊','數字為證','好的食安文章用數字說話，讀者才能判斷可不可信。','var(--gold)'],
+      ['🗣️','語言轉化','把技術變成人話，是科普寫作最重要的一把鑰匙。','var(--grn)'],
+    ].map(([icon,title,desc,c]) => `
+      <div style="flex:1;padding:18px;background:rgba(255,255,255,.04);border:1px solid ${c}33;border-radius:12px;">
+        <div style="font-size:26px;margin-bottom:9px;">${icon}</div>
+        <div style="font-size:16px;font-weight:700;color:${c};margin-bottom:7px;">${title}</div>
+        <div style="font-size:14px;color:var(--muted);line-height:1.7;">${desc}</div>
+      </div>
+    `).join('')}
+  </div>
+  <div style="font-size:13px;color:rgba(122,145,176,.65);line-height:1.9;">
+    素材來源：食力 foodNEXT &nbsp;·&nbsp;
+    <span style="color:var(--pri);">《丟什麼、丟多少都知道！》</span> 2024/02/24 &nbsp;·&nbsp;
+    <span style="color:var(--gold);">《垃圾桶上多雙眼睛》</span> 2026/04/13
+  </div>
+</div>
+<div class="ft" style="z-index:2;"><span>華語文閱讀與寫作教學</span><div class="fd"></div><span>17 / 17</span></div>
+` });
+
+/* ── Engine ── */
+const deck    = document.getElementById('deck');
+const prog    = document.getElementById('prog');
+const ctr     = document.getElementById('ctr');
+const TOTAL   = SLIDES.length;
+let   current = 0;
+let   chartInstances = [];
+
+function render() {
+  chartInstances.forEach(c => { try { c.destroy(); } catch(e){} });
+  chartInstances = [];
+  deck.innerHTML = '';
+
+  SLIDES.forEach((s, i) => {
+    const el = document.createElement('div');
+    el.className = 'slide' + (i === current ? ' active' : (i < current ? ' out' : ''));
+    el.innerHTML = s.html;
+    deck.appendChild(el);
+  });
+
+  const active = SLIDES[current];
+  if (active && active.onMount) {
+    requestAnimationFrame(() => {
+      const inst = active.onMount();
+      if (inst) chartInstances.push(inst);
+    });
+  }
+
+  prog.style.width = ((current + 1) / TOTAL * 100) + '%';
+  ctr.textContent  = (current + 1) + ' / ' + TOTAL;
+}
+
+function go(dir) {
+  current = Math.max(0, Math.min(TOTAL - 1, current + dir));
+  render();
+}
+
+document.getElementById('prev').onclick = () => go(-1);
+document.getElementById('next').onclick = () => go(1);
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(1); }
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                    { e.preventDefault(); go(-1); }
+});
+
+render();
+</script>
+</body>
+</html>

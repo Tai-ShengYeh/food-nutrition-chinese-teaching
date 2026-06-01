@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>詞彙配對｜W11 AI 餐飲剩食革命</title>
+<style>
+:root{--g:#059669;--g2:#10b981;--gd:#022c22;
+  --bg:#0a0d12;--surf:#13171f;--surf2:#1d2230;
+  --text:#e2e8f0;--text2:#94a3b8;--border:#1e2a3a;--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;
+  min-height:100vh;padding:24px 16px 60px}
+.page{max-width:900px;margin:0 auto}
+.header{text-align:center;margin-bottom:28px}
+h1{font-size:1.6rem;font-weight:800;color:var(--g2)}
+.subtitle{color:var(--text2);font-size:.88rem;margin-top:6px}
+.score-bar{background:var(--surf);border:1px solid var(--border);border-radius:30px;
+  padding:8px 20px;display:inline-flex;align-items:center;gap:10px;
+  font-size:.85rem;margin-bottom:20px;text-align:center}
+.score-val{font-size:1.2rem;font-weight:800;color:var(--g2)}
+.board{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.col-head{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text2);margin-bottom:10px}
+.card{background:var(--surf);border:2px solid var(--border);border-radius:var(--radius);
+  padding:14px 16px;cursor:pointer;transition:.2s;font-size:.88rem;line-height:1.5;
+  user-select:none;margin-bottom:10px}
+.card:hover{border-color:var(--g);color:var(--g2)}
+.card.selected{border-color:var(--g2);background:var(--gd);color:var(--g2)}
+.card.matched{border-color:var(--g);background:var(--gd);color:var(--g2);
+  cursor:default;opacity:.85}
+.card.wrong{border-color:#ef4444;background:#450a0a;animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.result-msg{text-align:center;font-size:1.05rem;font-weight:700;color:var(--g2);
+  display:none;margin:12px 0;padding:16px;background:var(--surf);
+  border:1px solid var(--g);border-radius:var(--radius)}
+.btn{display:block;margin:12px auto 0;background:var(--g);color:#fff;
+  border:none;border-radius:8px;padding:10px 28px;font-size:.9rem;font-weight:700;cursor:pointer}
+.back{display:block;text-align:center;margin-top:14px;
+  font-size:.82rem;color:var(--text2);text-decoration:none}
+.back:hover{color:var(--g2)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <h1>🔤 詞彙配對</h1>
+    <div class="subtitle">W11 AI 餐飲剩食革命｜將左欄關鍵詞彙與右欄解釋配對</div>
+  </div>
+  <div style="text-align:center">
+    <div class="score-bar">
+      配對進度 <span class="score-val" id="sv">0</span> / <span id="tp">0</span>
+      ｜嘗試 <span id="att">0</span> 次
+    </div>
+  </div>
+  <div class="board">
+    <div><div class="col-head">關鍵詞彙</div><div id="lc"></div></div>
+    <div><div class="col-head">解釋 / 數據</div><div id="rc"></div></div>
+  </div>
+  <div class="result-msg" id="rm"></div>
+  <button class="btn" id="rb" style="display:none" onclick="init()">🔄 再玩一次</button>
+  <a class="back" href="../slides.html">← 回投影片</a>
+</div>
+<script>
+const PAIRS=[
+  {term:'剩食（食物浪費）',def:'全球餐飲業每年損失超過 $100B USD，佔全球碳排 8%'},
+  {term:'漏斗效應 Leakage Funnel',def:'食材採購到實際上菜，5–15% 食材在中途流失'},
+  {term:'影像辨識 Image Recognition',def:'攝影機辨識丟棄物種類，涵蓋 1,000+ 種食材'},
+  {term:'Throw & Go 工作流',def:'廚師直接丟棄→磅秤秤重→攝影機掃描→AI 3秒分析'},
+  {term:'ROI 投資回報率',def:'導入 AI 剩食系統最高可達 12× 的投資回報'},
+  {term:'零廢棄 Zero Waste',def:'廚師利用邊角料研發新菜色，食材邊角料利用率達 70%'},
+  {term:'ESG',def:'Environment Social Governance，AI剩食數據支援永續報告合規'},
+  {term:'CSRD',def:'企業永續發展報告指令，AI 提供可審計的減碳追蹤數據'},
+];
+const SB_URL='https://qmldcjkllisvfgegkfsz.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbGRjamtsbGlzdmZnZWdrZnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMjM5ODYsImV4cCI6MjA4NjY5OTk4Nn0.Bfj0W7HN_n_vcjGe5502Chamk0YV-de8a0fxF4Nyczk';
+const COURSE='w11-ai-food-waste';
+const SESSION=COURSE+'-'+new Date().toISOString().slice(0,10);
+let sel=null,matched=0,att=0,t0=Date.now();
+function shuffle(a){return[...a].sort(()=>Math.random()-.5)}
+function init(){
+  sel=null;matched=0;att=0;t0=Date.now();
+  document.getElementById('sv').textContent='0';
+  document.getElementById('att').textContent='0';
+  document.getElementById('tp').textContent=PAIRS.length;
+  document.getElementById('rm').style.display='none';
+  document.getElementById('rb').style.display='none';
+  const lc=document.getElementById('lc'),rc=document.getElementById('rc');
+  lc.innerHTML='';rc.innerHTML='';
+  shuffle(PAIRS).forEach(p=>{
+    const d=card(PAIRS.indexOf(p),'left',p.term);lc.appendChild(d);});
+  shuffle(PAIRS).forEach(p=>{
+    const d=card(PAIRS.indexOf(p),'right',p.def);rc.appendChild(d);});
+}
+function card(id,side,txt){
+  const d=document.createElement('div');
+  d.className='card';d.dataset.id=id;d.dataset.side=side;d.textContent=txt;
+  d.onclick=()=>click(d);return d;
+}
+function click(c){
+  if(c.classList.contains('matched'))return;
+  if(!sel){sel=c;c.classList.add('selected');return;}
+  if(sel===c){sel.classList.remove('selected');sel=null;return;}
+  att++;document.getElementById('att').textContent=att;
+  if(sel.dataset.id===c.dataset.id&&sel.dataset.side!==c.dataset.side){
+    [sel,c].forEach(x=>{x.classList.remove('selected');x.classList.add('matched');x.onclick=null;});
+    matched++;document.getElementById('sv').textContent=matched;
+    if(matched===PAIRS.length)end();
+  } else {
+    [sel,c].forEach(x=>{x.classList.add('wrong');setTimeout(()=>x.classList.remove('wrong'),350);});
+    sel.classList.remove('selected');
+  }
+  sel=null;
+}
+async function end(){
+  const score=Math.max(0,Math.round(PAIRS.length/Math.max(att,PAIRS.length)*100));
+  const rm=document.getElementById('rm');
+  rm.style.display='block';
+  rm.textContent=`🎉 全部配對完成！嘗試 ${att} 次，耗時 ${Math.round((Date.now()-t0)/1000)} 秒，得分 ${score}`;
+  document.getElementById('rb').style.display='block';
+  try{await fetch(`${SB_URL}/rest/v1/interactions`,{method:'POST',
+    headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
+    body:JSON.stringify({course_code:COURSE,session_id:SESSION,student_id:'anon-'+Math.random().toString(36).slice(2,8),
+      game_id:'01-vocab-match',game_name:'詞彙配對',score,total:100,duration_ms:Date.now()-t0,client_meta:{attempts:att}})
+  });}catch(e){}
+}
+init();
+</script>
+</body>
+</html>

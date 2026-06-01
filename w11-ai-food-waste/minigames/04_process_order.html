@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>流程排序｜W11 AI 餐飲剩食革命</title>
+<style>
+:root{--g:#059669;--g2:#10b981;--gd:#022c22;--gold:#f0b429;
+  --bg:#0a0d12;--surf:#13171f;--surf2:#1d2230;
+  --text:#e2e8f0;--text2:#94a3b8;--border:#1e2a3a;--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;
+  min-height:100vh;padding:24px 16px 60px}
+.page{max-width:720px;margin:0 auto;text-align:center}
+h1{font-size:1.6rem;font-weight:800;color:var(--g2);margin-bottom:6px}
+.sub{color:var(--text2);font-size:.88rem;margin-bottom:8px}
+.mode-tabs{display:flex;gap:10px;justify-content:center;margin-bottom:24px;flex-wrap:wrap}
+.tab-btn{background:var(--surf2);border:1px solid var(--border);border-radius:8px;
+  padding:7px 16px;font-size:.82rem;font-weight:600;cursor:pointer;color:var(--text2);transition:.15s}
+.tab-btn.active{border-color:var(--g2);color:var(--g2);background:var(--gd)}
+.sort-list{list-style:none;width:100%}
+.sort-item{background:var(--surf);border:2px solid var(--border);border-radius:var(--radius);
+  padding:16px 20px;margin-bottom:10px;cursor:grab;display:flex;gap:14px;align-items:center;
+  text-align:left;user-select:none;transition:.15s}
+.sort-item:hover{border-color:var(--g);color:var(--g2)}
+.sort-item.dragging{opacity:.4;cursor:grabbing}
+.sort-item.over{border-color:var(--gold);background:rgba(240,180,41,.05)}
+.sort-item.correct{border-color:var(--g);background:var(--gd);cursor:default}
+.sort-item.wrong{border-color:#ef4444;background:#450a0a}
+.item-num{font-size:1.4rem;font-weight:900;color:var(--text3);width:36px;
+  height:36px;border-radius:50%;background:var(--surf2);display:flex;
+  align-items:center;justify-content:center;flex-shrink:0}
+.sort-item.correct .item-num{background:var(--g);color:#fff}
+.sort-item.wrong .item-num{background:#ef4444;color:#fff}
+.item-content{flex:1}
+.item-title{font-size:.95rem;font-weight:700}
+.item-desc{font-size:.78rem;color:var(--text2);margin-top:3px}
+.handle{font-size:1.2rem;color:var(--text3);cursor:grab;flex-shrink:0}
+.check-btn{background:var(--g);color:#fff;border:none;border-radius:8px;
+  padding:10px 32px;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:8px}
+.result{padding:14px;background:var(--surf);border:1px solid var(--g);
+  border-radius:var(--radius);margin-top:14px;display:none;font-weight:700;color:var(--g2)}
+.restart-btn{margin-top:10px;background:var(--g);color:#fff;border:none;
+  border-radius:8px;padding:8px 24px;font-size:.85rem;font-weight:700;cursor:pointer}
+.back{display:block;margin-top:14px;font-size:.82rem;color:var(--text2);text-decoration:none}
+.back:hover{color:var(--g2)}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>🔄 流程排序</h1>
+  <div class="sub">W11 AI 餐飲剩食革命｜拖曳排列正確順序</div>
+  <div class="mode-tabs">
+    <button class="tab-btn active" onclick="loadMode(0)">⚙️ Throw &amp; Go 4 步驟</button>
+    <button class="tab-btn" onclick="loadMode(1)">♻️ 零廢棄迴圈 4 步驟</button>
+  </div>
+  <ul class="sort-list" id="sl"></ul>
+  <button class="check-btn" onclick="check()">確認順序</button>
+  <div class="result" id="res"></div>
+  <div style="text-align:center">
+    <button class="restart-btn" id="rb" style="display:none" onclick="reload()">🔄 再排一次</button>
+  </div>
+  <a class="back" href="../slides.html">← 回投影片</a>
+</div>
+<script>
+const MODES=[
+  {title:'Throw & Go 零干擾工作流',items:[
+    {title:'① 丟棄',desc:'廚師如同往常將廚餘丟入桶內，無需改變任何現有動作與流程',icon:'🗑️'},
+    {title:'② 秤重',desc:'底部智慧磅秤瞬間感測精確重量變化',icon:'⚖️'},
+    {title:'③ 掃描',desc:'頂部動態感應攝影機同步捕捉高解析度影像',icon:'📷'},
+    {title:'④ 分析',desc:'AI 系統在 3 秒內自動分類、計算成本並上傳雲端',icon:'🤖'},
+  ]},
+  {title:'從數據到餐桌的「零廢棄」迴圈',items:[
+    {title:'① AI 深度洞察',desc:'辨識浪費熱點與精算財務損失，找出哪道菜最常被丟棄',icon:'🧠'},
+    {title:'② 精準採購',desc:'依據真實消耗數據調整進貨量，杜絕過度採購',icon:'🛒'},
+    {title:'③ 智慧備料與優化',desc:'減少生產過剩，精確控制份量，降低廚房廢料',icon:'🍳'},
+    {title:'④ 零廢棄創意菜單',desc:'廚師利用邊角料研發新菜色，極小化最終廚餘',icon:'🌟'},
+  ]},
+];
+const SB_URL='https://qmldcjkllisvfgegkfsz.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbGRjamtsbGlzdmZnZWdrZnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMjM5ODYsImV4cCI6MjA4NjY5OTk4Nn0.Bfj0W7HN_n_vcjGe5502Chamk0YV-de8a0fxF4Nyczk';
+const COURSE='w11-ai-food-waste';const SESSION=COURSE+'-'+new Date().toISOString().slice(0,10);
+let mode=0,t0=Date.now(),dragSrc=null;
+
+function loadMode(m){
+  mode=m;t0=Date.now();
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===m));
+  document.getElementById('res').style.display='none';
+  document.getElementById('rb').style.display='none';
+  const items=[...MODES[m].items].sort(()=>Math.random()-.5);
+  const sl=document.getElementById('sl');sl.innerHTML='';
+  items.forEach((it,i)=>{
+    const li=document.createElement('li');
+    li.className='sort-item';li.draggable=true;li.dataset.orig=MODES[m].items.indexOf(it);
+    li.innerHTML=`<span class="handle">⠿</span>
+      <div class="item-num">${i+1}</div>
+      <div class="item-content">
+        <div class="item-title">${it.icon} ${it.title.replace(/^[①②③④] /,'')}</div>
+        <div class="item-desc">${it.desc}</div>
+      </div>`;
+    li.addEventListener('dragstart',e=>{dragSrc=li;li.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
+    li.addEventListener('dragend',()=>{li.classList.remove('dragging');updateNums();});
+    li.addEventListener('dragover',e=>{e.preventDefault();li.classList.add('over');});
+    li.addEventListener('dragleave',()=>li.classList.remove('over'));
+    li.addEventListener('drop',e=>{
+      e.preventDefault();li.classList.remove('over');
+      if(dragSrc&&dragSrc!==li){sl.insertBefore(dragSrc,li);}
+      updateNums();
+    });
+    sl.appendChild(li);
+  });
+}
+function updateNums(){
+  document.querySelectorAll('#sl .item-num').forEach((n,i)=>n.textContent=i+1);
+}
+function reload(){loadMode(mode);}
+async function check(){
+  const items=[...document.querySelectorAll('#sl .sort-item')];
+  let ok=0;
+  items.forEach((li,i)=>{
+    li.classList.remove('correct','wrong');
+    if(parseInt(li.dataset.orig)===i){ok++;li.classList.add('correct');}
+    else li.classList.add('wrong');
+    li.querySelector('.item-num').textContent=i+1;
+  });
+  const tot=items.length;const score=Math.round(ok/tot*100);
+  const r=document.getElementById('res');r.style.display='block';
+  r.innerHTML=ok===tot?`🎉 順序完全正確！得分 ${score} 分`
+    :`📊 ${ok}/${tot} 位置正確（得分 ${score} 分）<br>
+    <span style="font-size:.8rem;color:var(--text2)">紅色 = 順序錯誤，點擊「再排一次」重試。</span>`;
+  document.getElementById('rb').style.display='inline-block';
+  try{await fetch(`${SB_URL}/rest/v1/interactions`,{method:'POST',
+    headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
+    body:JSON.stringify({course_code:COURSE,session_id:SESSION,student_id:'anon-'+Math.random().toString(36).slice(2,8),
+      game_id:'04-process-order',game_name:'流程排序',score,total:100,
+      duration_ms:Date.now()-t0,client_meta:{mode:MODES[mode].title}})
+  });}catch(e){}
+}
+loadMode(0);
+</script>
+</body>
+</html>

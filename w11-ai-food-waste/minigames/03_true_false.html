@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>是非判斷｜W11 AI 餐飲剩食革命</title>
+<style>
+:root{--g:#059669;--g2:#10b981;--red:#ef4444;
+  --bg:#0a0d12;--surf:#13171f;--surf2:#1d2230;
+  --text:#e2e8f0;--text2:#94a3b8;--border:#1e2a3a;--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;
+  min-height:100vh;padding:24px 16px 60px}
+.page{max-width:700px;margin:0 auto;text-align:center}
+h1{font-size:1.6rem;font-weight:800;color:var(--g2);margin-bottom:6px}
+.sub{color:var(--text2);font-size:.88rem;margin-bottom:24px}
+.prog-wrap{background:var(--surf2);border-radius:4px;height:6px;margin-bottom:20px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--g),#34d399);transition:width .3s}
+.q-counter{font-size:.8rem;color:var(--text2);margin-bottom:12px}
+.q-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);
+  padding:30px 24px;margin-bottom:18px;min-height:130px;
+  display:flex;align-items:center;justify-content:center}
+.q-text{font-size:1rem;line-height:1.7;font-weight:500}
+.btn-row{display:flex;gap:14px;justify-content:center;margin-bottom:14px}
+.tf-btn{flex:1;max-width:180px;padding:13px 0;border:2px solid;border-radius:10px;
+  font-size:1.1rem;font-weight:800;cursor:pointer;transition:.2s;background:var(--surf2)}
+.tf-btn.t{border-color:var(--g2);color:var(--g2)}
+.tf-btn.f{border-color:var(--red);color:var(--red)}
+.tf-btn:hover{opacity:.8;transform:translateY(-2px)}
+.feedback{padding:13px 18px;border-radius:10px;font-size:.88rem;font-weight:600;
+  line-height:1.6;margin-bottom:14px;display:none}
+.feedback.ok{background:var(--gd,#022c22);border:1px solid var(--g);color:var(--g2)}
+.feedback.ng{background:#450a0a;border:1px solid var(--red);color:#fca5a5}
+.next-btn{background:var(--g);color:#fff;border:none;border-radius:8px;
+  padding:9px 30px;font-size:.9rem;font-weight:700;cursor:pointer;display:none}
+.score-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;display:none}
+.score-big{font-size:3rem;font-weight:900;color:var(--g2)}
+.restart-btn{margin-top:14px;background:var(--g);color:#fff;border:none;
+  border-radius:8px;padding:9px 26px;font-size:.88rem;font-weight:700;cursor:pointer}
+.back{display:block;margin-top:14px;font-size:.82rem;color:var(--text2);text-decoration:none}
+.back:hover{color:var(--g2)}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>✅ 是非判斷</h1>
+  <div class="sub">W11 AI 餐飲剩食革命｜根據文章與投影片判斷是否正確</div>
+  <div class="prog-wrap"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+  <div class="q-counter" id="qc">第 1 題，共 10 題</div>
+  <div class="q-card"><div class="q-text" id="qt"></div></div>
+  <div class="btn-row">
+    <button class="tf-btn t" onclick="ans(true)">⭕ 正確</button>
+    <button class="tf-btn f" onclick="ans(false)">✕ 錯誤</button>
+  </div>
+  <div class="feedback" id="fb"></div>
+  <button class="next-btn" id="nb" onclick="next()">下一題 →</button>
+  <div class="score-card" id="sc">
+    <div style="font-size:.95rem;color:var(--text2);margin-bottom:6px">最終得分</div>
+    <div class="score-big" id="sn"></div>
+    <div style="font-size:.85rem;color:var(--text2);margin-top:6px" id="sd"></div>
+    <button class="restart-btn" onclick="init()">🔄 再玩一次</button>
+    <a class="back" href="../slides.html">← 回投影片</a>
+  </div>
+</div>
+<script>
+const QS=[
+  {q:'全球餐飲與住宿業每年食物浪費損失超過千億美元（$100B USD）。',a:true,
+    e:'正確。文章明確指出全球損失超過 $100B USD，相當於新台幣逾 3 兆元。'},
+  {q:'食物浪費約佔全球溫室氣體排放量的 15%。',a:false,
+    e:'錯誤。正確數字是 8%，不是 15%。食物浪費是主要碳排來源之一，但佔比為 8%。'},
+  {q:'Throw & Go 系統讓廚師必須改變丟棄食材的動作方式，才能讓 AI 正確追蹤。',a:false,
+    e:'錯誤。「零干擾」是 Throw & Go 的核心價值。廚師如同往常直接丟棄，不需要改變任何動作。'},
+  {q:'AI 食物辨識系統的食材辨識庫涵蓋超過 1,000 種食材。',a:true,
+    e:'正確。投影片與文章均指出辨識庫涵蓋 1,000+ 種食材，可辨識並估算每種食材的成本。'},
+  {q:'哥斯大黎加四季酒店導入 AI 系統後，花了約 2 年才讓食物浪費減半。',a:false,
+    e:'錯誤。文章指出僅需 8 個月即成功讓食物浪費減半，展現 AI 系統的快速效益。'},
+  {q:'Marriott 萬豪酒店導入 Winnow 系統 6 個月後，食物浪費減少 67%。',a:true,
+    e:'正確。文章與投影片均指出 Marriott 導入 Winnow 系統僅 6 個月，達成 67% 浪費減少。'},
+  {q:'Hilton 希爾頓透過 AI 系統精準測量，節省了約 $65,000 USD。',a:true,
+    e:'正確。投影片指出 Hilton 透過精準測量大幅降低自助餐與後場備料耗損，節省 $65,000 USD。'},
+  {q:'「剩食 = 設計缺陷」這個觀念指的是廚師操作失誤導致浪費。',a:false,
+    e:'錯誤。「剩食 = 菜單的設計缺陷」是說浪費反映的是菜單設計問題（份量、食材搭配），而非廚師失誤，需要從菜單層面解決。'},
+  {q:'導入 AI 剩食管理系統最高可達 12 倍的投資回報率（ROI）。',a:true,
+    e:'正確。投影片指出最高可達 12× ROI，同時降低 2–8% 食品採購成本，實現財務與永續雙贏。'},
+  {q:'Fairmont 費爾蒙酒店結合 Orbisk 系統，7 個月內達成浪費減少 37%。',a:true,
+    e:'正確。投影片指出 Fairmont 在短短 7 個月內，結合 Orbisk 洞察達成 37% 浪費減少。'},
+];
+const SB_URL='https://qmldcjkllisvfgegkfsz.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbGRjamtsbGlzdmZnZWdrZnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMjM5ODYsImV4cCI6MjA4NjY5OTk4Nn0.Bfj0W7HN_n_vcjGe5502Chamk0YV-de8a0fxF4Nyczk';
+const COURSE='w11-ai-food-waste';const SESSION=COURSE+'-'+new Date().toISOString().slice(0,10);
+let cur=0,score=0,done=false,t0=Date.now();
+function init(){
+  cur=0;score=0;done=false;t0=Date.now();
+  document.getElementById('sc').style.display='none';
+  document.querySelector('.q-card').style.display='flex';
+  document.querySelector('.btn-row').style.display='flex';
+  document.getElementById('fb').style.display='none';
+  document.getElementById('nb').style.display='none';
+  render();
+}
+function render(){
+  if(cur>=QS.length){finish();return;}
+  const q=QS[cur];
+  document.getElementById('qt').textContent=q.q;
+  document.getElementById('qc').textContent=`第 ${cur+1} 題，共 ${QS.length} 題`;
+  document.getElementById('prog').style.width=(cur/QS.length*100)+'%';
+  done=false;
+  document.getElementById('fb').style.display='none';
+  document.getElementById('nb').style.display='none';
+  document.querySelectorAll('.tf-btn').forEach(b=>{b.disabled=false;b.style.opacity='1';});
+}
+function ans(v){
+  if(done)return;done=true;
+  const q=QS[cur];const ok=v===q.a;if(ok)score++;
+  const fb=document.getElementById('fb');
+  fb.className='feedback '+(ok?'ok':'ng');
+  fb.textContent=(ok?'⭕ 正確！':'✕ 錯誤。')+' '+q.e;
+  fb.style.display='block';
+  document.getElementById('nb').style.display='block';
+  document.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+}
+function next(){cur++;render();}
+async function finish(){
+  document.querySelector('.q-card').style.display='none';
+  document.querySelector('.btn-row').style.display='none';
+  document.getElementById('fb').style.display='none';
+  document.getElementById('nb').style.display='none';
+  document.getElementById('sc').style.display='block';
+  const pct=Math.round(score/QS.length*100);
+  document.getElementById('sn').textContent=score+'/'+QS.length;
+  document.getElementById('sd').textContent=`答對率 ${pct}%｜耗時 ${Math.round((Date.now()-t0)/1000)} 秒`;
+  document.getElementById('prog').style.width='100%';
+  try{await fetch(`${SB_URL}/rest/v1/interactions`,{method:'POST',
+    headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
+    body:JSON.stringify({course_code:COURSE,session_id:SESSION,student_id:'anon-'+Math.random().toString(36).slice(2,8),
+      game_id:'03-true-false',game_name:'是非判斷',score,total:QS.length,duration_ms:Date.now()-t0})
+  });}catch(e){}
+}
+init();
+</script>
+</body>
+</html>

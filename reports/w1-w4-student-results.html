@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>食品營養華語文獻閱讀 — 四週學習成果</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+:root{
+  --bg:#f0f4ff;--card:#fff;
+  --w1:#f59e0b;--w1light:#fffbeb;--w1border:#fde68a;
+  --w2:#3b82f6;--w2light:#eff6ff;--w2border:#bfdbfe;
+  --w3:#10b981;--w3light:#f0fdf4;--w3border:#a7f3d0;
+  --w4:#8b5cf6;--w4light:#f5f3ff;--w4border:#ddd6fe;
+  --ink:#1e293b;--ink2:#475569;--ink3:#94a3b8;
+  --border:#e2e8f0;--radius:16px;
+  --gold:#f59e0b;--silver:#94a3b8;--bronze:#b45309;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+.page{max-width:1080px;margin:0 auto;padding:24px 16px 80px}
+
+/* Hero */
+.hero{
+  background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  border-radius:24px;padding:48px 32px 40px;text-align:center;
+  color:#fff;margin-bottom:36px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero h1{font-size:2rem;font-weight:900;margin-bottom:8px;position:relative}
+.hero .tagline{font-size:1.05rem;opacity:.85;margin-bottom:24px;position:relative}
+.hero-stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;position:relative}
+.hero-stat{text-align:center}
+.hero-stat .big{font-size:2.4rem;font-weight:900;line-height:1}
+.hero-stat .lbl{font-size:.8rem;opacity:.8;margin-top:2px}
+
+/* Journey timeline */
+.timeline{position:relative;margin-bottom:36px}
+.tl-track{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+}
+.tl-card{
+  background:var(--card);border-radius:var(--radius);padding:20px 16px;
+  border-top:4px solid;text-align:center;
+  box-shadow:0 2px 8px #0001;transition:.2s;position:relative;
+}
+.tl-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px #0002}
+.tl-card.w1{border-color:var(--w1);background:var(--w1light)}
+.tl-card.w2{border-color:var(--w2);background:var(--w2light)}
+.tl-card.w3{border-color:var(--w3);background:var(--w3light)}
+.tl-card.w4{border-color:var(--w4);background:var(--w4light)}
+.tl-week{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:10px}
+.w1 .tl-week{background:var(--w1);color:#fff}
+.w2 .tl-week{background:var(--w2);color:#fff}
+.w3 .tl-week{background:var(--w3);color:#fff}
+.w4 .tl-week{background:var(--w4);color:#fff}
+.tl-card h3{font-size:.95rem;font-weight:700;margin-bottom:4px}
+.tl-card .date{font-size:.8rem;color:var(--ink3);margin-bottom:12px}
+.tl-card .vocab-list{text-align:left;list-style:none}
+.tl-card .vocab-list li{font-size:.8rem;color:var(--ink2);padding:2px 0;display:flex;gap:6px;align-items:flex-start}
+.tl-card .vocab-list li::before{content:'◆';font-size:.6rem;margin-top:4px;flex-shrink:0}
+.w1 .tl-card .vocab-list li::before{color:var(--w1)}
+.w2 .tl-card .vocab-list li::before{color:var(--w2)}
+.w3 .tl-card .vocab-list li::before{color:var(--w3)}
+.w4 .tl-card .vocab-list li::before{color:var(--w4)}
+.game-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;justify-content:center}
+.chip{font-size:.72rem;padding:2px 8px;border-radius:20px;font-weight:600}
+.w1 .chip{background:#fde68a;color:#92400e}
+.w2 .chip{background:#bfdbfe;color:#1e40af}
+.w3 .chip{background:#a7f3d0;color:#065f46}
+.w4 .chip{background:#ddd6fe;color:#5b21b6}
+
+/* Section */
+.section{background:var(--card);border-radius:var(--radius);padding:28px;margin-bottom:24px;
+  border:1px solid var(--border);box-shadow:0 2px 8px #0001}
+h2{font-size:1.15rem;font-weight:800;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+h2 .icon{font-size:1.4rem}
+h3{font-size:.95rem;font-weight:700;color:var(--ink2);margin:16px 0 10px}
+
+/* Achievement badges */
+.achievement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.achievement{
+  border-radius:12px;padding:16px;text-align:center;
+  border:2px solid var(--border);transition:.2s;position:relative;overflow:hidden;
+}
+.achievement:hover{transform:translateY(-2px);box-shadow:0 6px 20px #0002}
+.achievement .medal{font-size:2.2rem;margin-bottom:8px}
+.achievement .title{font-size:.88rem;font-weight:700;margin-bottom:4px}
+.achievement .desc{font-size:.78rem;color:var(--ink2)}
+.achievement.gold{background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:#f59e0b}
+.achievement.silver{background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-color:#94a3b8}
+.achievement.green{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#10b981}
+.achievement.purple{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-color:#8b5cf6}
+.achievement.blue{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#3b82f6}
+
+/* Leaderboard */
+.leaderboard{list-style:none}
+.lb-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;margin-bottom:6px;
+  background:#f8fafc;transition:.2s}
+.lb-item:hover{background:#f1f5f9}
+.lb-rank{font-size:1.2rem;width:32px;text-align:center;flex-shrink:0}
+.lb-name{flex:1;font-weight:600;font-size:.92rem}
+.lb-score{font-weight:800;font-size:1rem}
+.lb-bar-wrap{flex:2;background:#e2e8f0;border-radius:4px;height:8px;overflow:hidden}
+.lb-bar{height:100%;border-radius:4px;transition:width .6s ease}
+
+/* Poll viz */
+.poll-group{margin-bottom:16px}
+.poll-item{margin:6px 0}
+.poll-label{font-size:.88rem;color:var(--ink2);margin-bottom:3px;font-weight:500}
+.poll-bar-wrap{display:flex;align-items:center;gap:10px}
+.poll-bar{height:14px;border-radius:7px;min-width:4px;transition:width .6s ease}
+.poll-pct{font-size:.82rem;font-weight:700;color:var(--ink2)}
+
+/* Star row */
+.star-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.star-student{
+  display:flex;align-items:center;gap:6px;
+  background:#f8fafc;border:1px solid var(--border);
+  border-radius:10px;padding:8px 12px;font-size:.85rem;font-weight:600;
+}
+.star-student .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* Chart */
+.chart-wrap{position:relative;height:200px;margin-top:8px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:640px){.two-col{grid-template-columns:1fr}.tl-track{grid-template-columns:1fr 1fr}}
+@media(max-width:400px){.tl-track{grid-template-columns:1fr}}
+
+/* Growth chart hero */
+.growth-section{
+  background:linear-gradient(135deg,#0f172a,#1e293b);
+  border-radius:var(--radius);padding:28px;margin-bottom:24px;color:#fff;
+}
+.growth-section h2{color:#fff}
+.growth-section h3{color:#94a3b8}
+
+/* Fun facts */
+.funfact-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:8px}
+.funfact{background:#f8fafc;border-radius:12px;padding:14px;text-align:center;border:1px solid var(--border)}
+.funfact .num{font-size:1.8rem;font-weight:900;color:#6d28d9}
+.funfact .lbl{font-size:.78rem;color:var(--ink3);margin-top:2px}
+
+/* W4 table */
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th{background:#f8fafc;padding:8px 10px;text-align:left;font-weight:700;color:var(--ink2);border-bottom:2px solid var(--border)}
+td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f8fafc}
+.badge{display:inline-block;padding:2px 9px;border-radius:6px;font-weight:700;font-size:.82rem}
+.b-full{background:#d1fae5;color:#065f46}
+.b-good{background:#dbeafe;color:#1d4ed8}
+.b-ok{background:#fef3c7;color:#92400e}
+.b-v{background:#d1fae5;color:#065f46;padding:2px 8px}
+
+/* Debate room */
+.debate-cards{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin:20px 0}
+.debate-card{flex:1;min-width:180px;max-width:260px;border-radius:14px;padding:24px 20px;text-align:center;border:2px solid}
+.debate-card.blue{background:#eff6ff;border-color:#3b82f6}
+.debate-card.green{background:#f0fdf4;border-color:#10b981}
+.debate-num{font-size:2.8rem;font-weight:900;line-height:1}
+.debate-card.blue .debate-num{color:#2563eb}
+.debate-card.green .debate-num{color:#059669}
+.debate-label{font-size:.88rem;color:var(--ink2);margin-top:8px;line-height:1.5}
+.debate-vs{font-size:1.4rem;font-weight:900;color:var(--ink3);flex-shrink:0}
+.debate-q-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:16px 0}
+.debate-q{background:#f8fafc;border-radius:12px;padding:16px;border-left:4px solid #6366f1;display:flex;gap:12px;align-items:flex-start}
+.dq-num{background:#6366f1;color:#fff;font-size:.78rem;font-weight:800;padding:3px 8px;border-radius:6px;flex-shrink:0;margin-top:2px}
+.debate-q p{font-size:.87rem;color:var(--ink2);line-height:1.6;margin:0}
+.debate-note{background:#f5f3ff;border-radius:10px;padding:14px 16px;font-size:.84rem;color:#4c1d95;margin-top:16px;border-left:4px solid #8b5cf6;line-height:1.6}
+.section-lead{font-size:.9rem;color:var(--ink2);margin-bottom:6px}
+
+/* CTA */
+.cta{
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  border-radius:var(--radius);padding:32px;text-align:center;color:#fff;margin-bottom:24px;
+}
+.cta h2{color:#fff;justify-content:center;margin-bottom:8px}
+.cta p{opacity:.9;font-size:.95rem}
+
+/* footer */
+footer{text-align:center;font-size:.8rem;color:var(--ink3)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- Hero -->
+<div class="hero">
+  <h1>四週學習成果總覽</h1>
+  <p class="tagline">食品營養華語文獻閱讀｜2026年5月–6月</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="big">4</div><div class="lbl">週學習</div></div>
+    <div class="hero-stat"><div class="big">4</div><div class="lbl">個主題</div></div>
+    <div class="hero-stat"><div class="big">427</div><div class="lbl">次互動</div></div>
+    <div class="hero-stat"><div class="big">13</div><div class="lbl">位同學</div></div>
+    <div class="hero-stat"><div class="big">14</div><div class="lbl">種遊戲挑戰</div></div>
+  </div>
+</div>
+
+<!-- Learning Journey Timeline -->
+<div class="timeline">
+  <h2 style="margin-bottom:16px"><span class="icon">🗓️</span>四週學習旅程</h2>
+  <div class="tl-track">
+
+    <div class="tl-card w1">
+      <span class="tl-week">W1 5/13</span>
+      <h3>替代蛋白</h3>
+      <p class="date">普通班 ｜ 8位同學</p>
+      <ul class="vocab-list">
+        <li>昆蟲蛋白／植物肉</li>
+        <li>碳足跡．永續性</li>
+        <li>願付溢價</li>
+        <li>政策決策路徑</li>
+      </ul>
+      <div class="game-chips">
+        <span class="chip">詞彙配對</span>
+        <span class="chip">決策樹</span>
+        <span class="chip">即時投票</span>
+      </div>
+    </div>
+
+    <div class="tl-card w2">
+      <span class="tl-week">W2 5/18</span>
+      <h3>替代蛋白</h3>
+      <p class="date">越南大學班 ｜ 7位同學</p>
+      <ul class="vocab-list">
+        <li>替代蛋白類別比較</li>
+        <li>碳稅／補貼政策</li>
+        <li>消費者行為</li>
+        <li>溢價接受度</li>
+      </ul>
+      <div class="game-chips">
+        <span class="chip">詞彙配對</span>
+        <span class="chip">政策決策</span>
+        <span class="chip">即時投票</span>
+      </div>
+    </div>
+
+    <div class="tl-card w3">
+      <span class="tl-week">W3 5/25</span>
+      <h3>食品包裝</h3>
+      <p class="date">綠色革命 ｜ 10位同學</p>
+      <ul class="vocab-list">
+        <li>生物可分解包裝</li>
+        <li>供應鏈碳排放</li>
+        <li>循環經濟概念</li>
+        <li>環保材料技術</li>
+      </ul>
+      <div class="game-chips">
+        <span class="chip">詞彙配對</span>
+        <span class="chip">段落配對</span>
+        <span class="chip">流程排序</span>
+      </div>
+    </div>
+
+    <div class="tl-card w4">
+      <span class="tl-week">W4 6/1</span>
+      <h3>無可可巧克力</h3>
+      <p class="date">未來食品 ｜ 13位同學</p>
+      <ul class="vocab-list">
+        <li>無可可巧克力製程</li>
+        <li>精準發酵技術</li>
+        <li>食品感官科學</li>
+        <li>永續農業轉型</li>
+      </ul>
+      <div class="game-chips">
+        <span class="chip">詞彙配對</span>
+        <span class="chip">是非判斷</span>
+        <span class="chip">段落填空</span>
+        <span class="chip">句子重組</span>
+        <span class="chip">即時投票</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Growth Chart -->
+<div class="growth-section">
+  <h2><span class="icon">📈</span>班級人數持續成長</h2>
+  <p style="color:#94a3b8;font-size:.88rem;margin-bottom:16px">越來越多同學加入這個學習社群！</p>
+  <div class="chart-wrap" style="height:180px">
+    <canvas id="growthChart"></canvas>
+  </div>
+</div>
+
+<!-- W4 Highlight: class poll + scores -->
+<div class="section">
+  <h2><span class="icon">🍫</span>W4 無可可巧克力｜本週亮點</h2>
+  <div class="two-col">
+    <div>
+      <h3>暖身投票：你平常多常吃巧克力？</h3>
+      <div class="poll-group">
+        <div class="poll-item">
+          <div class="poll-label">很少吃</div>
+          <div class="poll-bar-wrap">
+            <div class="poll-bar" style="width:73%;background:#8b5cf6"></div>
+            <span class="poll-pct">73% (8人)</span>
+          </div>
+        </div>
+        <div class="poll-item">
+          <div class="poll-label">偶爾吃</div>
+          <div class="poll-bar-wrap">
+            <div class="poll-bar" style="width:18%;background:#a78bfa"></div>
+            <span class="poll-pct">18% (2人)</span>
+          </div>
+        </div>
+        <div class="poll-item">
+          <div class="poll-label">喜歡吃！</div>
+          <div class="poll-bar-wrap">
+            <div class="poll-bar" style="width:9%;background:#c4b5fd"></div>
+            <span class="poll-pct">9% (1人)</span>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:.82rem;color:var(--ink3);background:#f5f3ff;border-radius:8px;padding:8px 12px;margin-top:8px">
+        💡 有趣發現：73% 同學平常很少吃巧克力，這讓我們更期待了解它的科學！
+      </p>
+    </div>
+    <div>
+      <h3>本週遊戲完成率</h3>
+      <div class="chart-wrap"><canvas id="w4completion"></canvas></div>
+    </div>
+  </div>
+  <h3>W4 同學成績表</h3>
+  <table>
+    <thead><tr>
+      <th>同學</th>
+      <th style="text-align:center">配對/5</th>
+      <th style="text-align:center">是非/5</th>
+      <th style="text-align:center">填空/4</th>
+      <th style="text-align:center">重組</th>
+      <th style="text-align:center">完課</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>S-VN-01</strong></td>
+        <td style="text-align:center"><span class="badge b-full">5/5 ⭐</span></td>
+        <td style="text-align:center"><span class="badge b-full">5/5 ⭐</span></td>
+        <td style="text-align:center"><span class="badge b-full">4/4 ⭐</span></td>
+        <td style="text-align:center"><span class="badge b-v">✓</span></td>
+        <td style="text-align:center"><span class="badge b-v">✓</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-03</strong></td>
+        <td style="text-align:center"><span class="badge b-full">5/5 ⭐</span></td>
+        <td style="text-align:center"><span class="badge b-full">5/5 ⭐</span></td>
+        <td style="text-align:center"><span class="badge b-full">4/4 ⭐</span></td>
+        <td style="text-align:center"><span class="badge b-v">✓</span></td>
+        <td style="text-align:center"><span class="badge b-v">✓</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-04</strong></td>
+        <td style="text-align:center"><span class="badge b-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge b-good">4/5</span></td>
+        <td style="text-align:center"><span class="badge b-full">4/4</span></td>
+        <td style="text-align:center"><span class="badge b-v">✓</span></td>
+        <td style="text-align:center"><span class="badge b-v">✓</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-12</strong></td>
+        <td style="text-align:center"><span class="badge b-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge b-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge b-full">4/4</span></td>
+        <td style="text-align:center">—</td>
+        <td style="text-align:center"><span class="badge b-v">✓</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-05</strong></td>
+        <td style="text-align:center">—</td>
+        <td style="text-align:center"><span class="badge b-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge b-full">4/4</span></td>
+        <td style="text-align:center">—</td>
+        <td style="text-align:center"><span class="badge b-v">✓</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-06</strong></td>
+        <td style="text-align:center"><span class="badge b-full">5/5</span></td>
+        <td style="text-align:center">—</td>
+        <td style="text-align:center">—</td>
+        <td style="text-align:center">—</td>
+        <td style="text-align:center">—</td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-07</strong></td>
+        <td style="text-align:center"><span class="badge b-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge b-ok">3/5</span></td>
+        <td style="text-align:center"><span class="badge b-full">4/4</span></td>
+        <td style="text-align:center">—</td>
+        <td style="text-align:center">—</td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-08</strong></td>
+        <td style="text-align:center"><span class="badge b-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge b-good">4/5</span></td>
+        <td style="text-align:center"><span class="badge b-full">4/4</span></td>
+        <td style="text-align:center">—</td>
+        <td style="text-align:center">—</td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-02</strong></td>
+        <td colspan="4" style="color:var(--ink3);font-size:.85rem">當天有報到，遊戲資料未記錄到</td>
+        <td style="text-align:center"><span class="badge b-v">✓</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-09、S-VN-10、S-VN-11、S-VN-13</strong></td>
+        <td colspan="5" style="color:var(--ink3);font-size:.85rem">有出席，遊戲資料未記錄到 — 下次可找老師確認</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- W3 scores -->
+<div class="section">
+  <h2><span class="icon">♻️</span>W3 食品包裝綠色革命｜各項成績</h2>
+  <div class="two-col">
+    <div>
+      <h3>全班平均（最高分%）</h3>
+      <div class="chart-wrap"><canvas id="w3avg"></canvas></div>
+    </div>
+    <div>
+      <h3>各同學成績</h3>
+      <table>
+        <thead><tr><th>同學</th><th style="text-align:center">詞彙</th><th style="text-align:center">段落</th><th style="text-align:center">流程</th></tr></thead>
+        <tbody>
+          <tr><td>S-VN-03</td><td style="text-align:center"><span class="badge b-full">100%</span></td><td style="text-align:center"><span class="badge b-full">100%</span></td><td style="text-align:center"><span class="badge b-full">100% ⭐</span></td></tr>
+          <tr><td>S-VN-07</td><td style="text-align:center"><span class="badge b-full">100%</span></td><td style="text-align:center"><span class="badge b-full">100%</span></td><td style="text-align:center"><span class="badge b-full">100% ⭐</span></td></tr>
+          <tr><td>S-VN-09</td><td style="text-align:center"><span class="badge b-full">100%</span></td><td style="text-align:center"><span class="badge b-full">100%</span></td><td style="text-align:center"><span class="badge b-full">100% ⭐</span></td></tr>
+          <tr><td>S-VN-05</td><td style="text-align:center"><span class="badge b-good">90%</span></td><td style="text-align:center"><span class="badge b-full">100%</span></td><td style="text-align:center"><span class="badge b-full">100%</span></td></tr>
+          <tr><td>S-VN-13</td><td style="text-align:center"><span class="badge b-full">100%</span></td><td style="text-align:center"><span class="badge b-full">100%</span></td><td style="text-align:center"><span class="badge b-good">67%</span></td></tr>
+          <tr><td>S-VN-01</td><td style="text-align:center"><span class="badge b-ok">50%</span></td><td style="text-align:center"><span class="badge b-good">88%</span></td><td style="text-align:center"><span class="badge b-full">100%</span></td></tr>
+          <tr><td>S-VN-04</td><td style="text-align:center"><span class="badge b-ok">0%</span></td><td style="text-align:center"><span class="badge b-full">100%</span></td><td style="text-align:center"><span class="badge b-full">100%</span></td></tr>
+          <tr><td>S-VN-02</td><td style="text-align:center"><span class="badge b-ok">0%</span></td><td style="text-align:center"><span class="badge b-full">100%</span></td><td style="text-align:center"><span class="badge b-good">67%</span></td></tr>
+          <tr><td>S-VN-06</td><td style="text-align:center"><span class="badge b-ok">0%</span></td><td style="text-align:center"><span class="badge b-ok">13%</span></td><td style="text-align:center"><span class="badge b-full">100%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- W2 Leaderboard -->
+<div class="section">
+  <h2><span class="icon">🔬</span>W2 替代蛋白（越南大學班）｜詞彙大挑戰排行</h2>
+  <div class="two-col">
+    <div>
+      <ul class="leaderboard">
+        <li class="lb-item">
+          <span class="lb-rank">🥇</span>
+          <span class="lb-name">S-VN-10</span>
+          <div class="lb-bar-wrap"><div class="lb-bar" style="width:100%;background:#f59e0b"></div></div>
+          <span class="lb-score" style="color:#f59e0b">100</span>
+        </li>
+        <li class="lb-item">
+          <span class="lb-rank">🥇</span>
+          <span class="lb-name">S-VN-02</span>
+          <div class="lb-bar-wrap"><div class="lb-bar" style="width:100%;background:#f59e0b"></div></div>
+          <span class="lb-score" style="color:#f59e0b">100</span>
+        </li>
+        <li class="lb-item">
+          <span class="lb-rank">🥇</span>
+          <span class="lb-name">S-VN-03</span>
+          <div class="lb-bar-wrap"><div class="lb-bar" style="width:100%;background:#f59e0b"></div></div>
+          <span class="lb-score" style="color:#f59e0b">100</span>
+        </li>
+        <li class="lb-item">
+          <span class="lb-rank">🥇</span>
+          <span class="lb-name">S-VN-05</span>
+          <div class="lb-bar-wrap"><div class="lb-bar" style="width:100%;background:#f59e0b"></div></div>
+          <span class="lb-score" style="color:#f59e0b">100</span>
+        </li>
+        <li class="lb-item">
+          <span class="lb-rank">🥈</span>
+          <span class="lb-name">S-VN-01</span>
+          <div class="lb-bar-wrap"><div class="lb-bar" style="width:88%;background:#94a3b8"></div></div>
+          <span class="lb-score" style="color:#94a3b8">88</span>
+        </li>
+        <li class="lb-item">
+          <span class="lb-rank">🥈</span>
+          <span class="lb-name">S-VN-06</span>
+          <div class="lb-bar-wrap"><div class="lb-bar" style="width:88%;background:#94a3b8"></div></div>
+          <span class="lb-score" style="color:#94a3b8">88</span>
+        </li>
+        <li class="lb-item">
+          <span class="lb-rank">🥉</span>
+          <span class="lb-name">S-VN-09</span>
+          <div class="lb-bar-wrap"><div class="lb-bar" style="width:75%;background:#b45309"></div></div>
+          <span class="lb-score" style="color:#b45309">75</span>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <h3>政策選擇投票（W2）</h3>
+      <p style="font-size:.82rem;color:var(--ink3);margin-bottom:10px">如果你是政府，你會選哪個政策推廣替代蛋白？</p>
+      <div class="poll-item">
+        <div class="poll-label">碳稅派 — 用稅制改變市場</div>
+        <div class="poll-bar-wrap">
+          <div class="poll-bar" style="width:50%;background:#3b82f6"></div>
+          <span class="poll-pct">50% (4人)</span>
+        </div>
+      </div>
+      <div class="poll-item">
+        <div class="poll-label">教育派 — 改變消費者觀念</div>
+        <div class="poll-bar-wrap">
+          <div class="poll-bar" style="width:25%;background:#60a5fa"></div>
+          <span class="poll-pct">25% (2人)</span>
+        </div>
+      </div>
+      <div class="poll-item">
+        <div class="poll-label">補貼派 — 降低產品售價</div>
+        <div class="poll-bar-wrap">
+          <div class="poll-bar" style="width:12%;background:#93c5fd"></div>
+          <span class="poll-pct">12% (1人)</span>
+        </div>
+      </div>
+      <div class="poll-item">
+        <div class="poll-label">投資派 — 加速研發創新</div>
+        <div class="poll-bar-wrap">
+          <div class="poll-bar" style="width:12%;background:#bfdbfe"></div>
+          <span class="poll-pct">12% (1人)</span>
+        </div>
+      </div>
+      <p style="font-size:.8rem;color:var(--ink3);margin-top:10px;background:#eff6ff;border-radius:8px;padding:8px 12px">
+        💬 這些真實選擇，正是課堂辯論最好的起點！
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- W1 highlight -->
+<div class="section">
+  <h2><span class="icon">🌱</span>W1 替代蛋白（普通班）｜投票亮點</h2>
+  <div class="two-col">
+    <div>
+      <h3>你最常吃哪種動物性食品？</h3>
+      <div class="poll-item"><div class="poll-label">奶類</div><div class="poll-bar-wrap"><div class="poll-bar" style="width:43%;background:#f59e0b"></div><span class="poll-pct">43% (3人)</span></div></div>
+      <div class="poll-item"><div class="poll-label">雞蛋</div><div class="poll-bar-wrap"><div class="poll-bar" style="width:29%;background:#fbbf24"></div><span class="poll-pct">29% (2人)</span></div></div>
+      <div class="poll-item"><div class="poll-label">紅肉</div><div class="poll-bar-wrap"><div class="poll-bar" style="width:14%;background:#fcd34d"></div><span class="poll-pct">14% (1人)</span></div></div>
+      <div class="poll-item"><div class="poll-label">海鮮</div><div class="poll-bar-wrap"><div class="poll-bar" style="width:14%;background:#fde68a"></div><span class="poll-pct">14% (1人)</span></div></div>
+    </div>
+    <div>
+      <h3>你支持哪種替代蛋白路線？</h3>
+      <div class="poll-item"><div class="poll-label">植物派（大豆蛋白、豆腐）</div><div class="poll-bar-wrap"><div class="poll-bar" style="width:44%;background:#10b981"></div><span class="poll-pct">44% (4人)</span></div></div>
+      <div class="poll-item"><div class="poll-label">昆蟲派（蟋蟀粉、昆蟲油）</div><div class="poll-bar-wrap"><div class="poll-bar" style="width:33%;background:#34d399"></div><span class="poll-pct">33% (3人)</span></div></div>
+      <div class="poll-item"><div class="poll-label">海洋派（海藻、螺旋藻）</div><div class="poll-bar-wrap"><div class="poll-bar" style="width:22%;background:#6ee7b7"></div><span class="poll-pct">22% (2人)</span></div></div>
+      <p style="font-size:.8rem;color:var(--ink3);margin-top:10px;background:#f0fdf4;border-radius:8px;padding:8px 12px">
+        💬 全班最多人支持植物派！和世界趨勢一致嗎？
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Debate: WTP vs Policy -->
+<div class="section">
+  <h2><span class="icon">💬</span>班級數據辯論室｜替代蛋白的消費矛盾？</h2>
+  <p class="section-lead">W2 課堂有兩筆數據，放在一起很有意思——</p>
+
+  <div class="debate-cards">
+    <div class="debate-card blue">
+      <div class="debate-num">80%</div>
+      <div class="debate-label">同學願意為替代蛋白<br>多付最多 <strong>+10%</strong></div>
+    </div>
+    <div class="debate-vs">VS</div>
+    <div class="debate-card green">
+      <div class="debate-num">50%</div>
+      <div class="debate-label">同學希望政府用<br><strong>碳稅</strong>來改變市場</div>
+    </div>
+  </div>
+
+  <p style="font-size:.88rem;color:var(--ink3);text-align:center;margin:-8px 0 16px">這兩個選擇，是一致的？還是矛盾的？</p>
+
+  <div class="debate-q-grid">
+    <div class="debate-q">
+      <span class="dq-num">Q1</span>
+      <p>替代蛋白目前在市面上往往比傳統肉品貴 30–50%。如果你只願多付 10%，這個差距由誰來填補？消費者、企業，還是政府？</p>
+    </div>
+    <div class="debate-q">
+      <span class="dq-num">Q2</span>
+      <p>碳稅會讓傳統肉品變貴、讓替代蛋白相對「便宜」——這對「只願多付10%」的消費者來說，是一個好解方，還是一種強迫？</p>
+    </div>
+    <div class="debate-q">
+      <span class="dq-num">Q3</span>
+      <p>W2 投票中，選「教育派」的只有 25%，選「碳稅派」的有 50%。為什麼大家更相信制度的力量，而不是靠說服改變個人行為？</p>
+    </div>
+  </div>
+
+  <div class="debate-note">
+    💡 <strong>行為經濟學小提示：</strong>消費者「說的」和「做的」常常不一樣——這叫做「態度與行動的落差」（attitude-behavior gap）。你認為課文中哪種政策最有機會縮小這個落差？個人的 +10% 意願，加上碳稅推力，能不能讓替代蛋白真正普及？
+  </div>
+</div>
+
+<!-- Class Achievements -->
+<div class="section">
+  <h2><span class="icon">🏆</span>班級成就徽章</h2>
+  <div class="achievement-grid">
+    <div class="achievement gold">
+      <div class="medal">🥇</div>
+      <div class="title">詞彙滿分俱樂部</div>
+      <div class="desc">W4 詞彙配對完成者全員滿分（7/7）</div>
+    </div>
+    <div class="achievement gold">
+      <div class="medal">📝</div>
+      <div class="title">填空全對達人</div>
+      <div class="desc">W4 段落填空完成者全員滿分（7/7）</div>
+    </div>
+    <div class="achievement green">
+      <div class="medal">📈</div>
+      <div class="title">成長班級</div>
+      <div class="desc">W2→W3→W4 人數從7增至10再到13</div>
+    </div>
+    <div class="achievement purple">
+      <div class="medal">🔁</div>
+      <div class="title">堅持到底</div>
+      <div class="desc">S-VN-01、S-VN-05、S-VN-03、S-VN-09<br>三週全程出席！</div>
+    </div>
+    <div class="achievement blue">
+      <div class="medal">💎</div>
+      <div class="title">W2 詞彙滿分×4</div>
+      <div class="desc">S-VN-10、S-VN-02、S-VN-03、S-VN-05<br>100分完美配對</div>
+    </div>
+    <div class="achievement silver">
+      <div class="medal">🌏</div>
+      <div class="title">思辨力：碳稅派過半</div>
+      <div class="desc">W2 投票 50% 選擇碳稅政策<br>制度思維令人印象深刻</div>
+    </div>
+    <div class="achievement gold">
+      <div class="medal">🍫</div>
+      <div class="title">巧克力科學探索者</div>
+      <div class="desc">全班 W4 完成報到，迎接最複雜的主題</div>
+    </div>
+    <div class="achievement green">
+      <div class="medal">🔃</div>
+      <div class="title">重試挑戰精神</div>
+      <div class="desc">S-VN-05對是非題挑戰13次，精益求精！</div>
+    </div>
+  </div>
+</div>
+
+<!-- 3-week stars -->
+<div class="section">
+  <h2><span class="icon">⭐</span>跨週出席紀錄（越南大學班 W2–W4）</h2>
+  <p style="font-size:.88rem;color:var(--ink2);margin-bottom:14px">感謝每位同學持續參與，你們的出席讓課堂更精彩！</p>
+
+  <h3>三週全勤</h3>
+  <div class="star-row">
+    <div class="star-student"><span class="dot" style="background:#f59e0b"></span>S-VN-01 W2 W3 W4</div>
+    <div class="star-student"><span class="dot" style="background:#f59e0b"></span>S-VN-05 W2 W3 W4</div>
+    <div class="star-student"><span class="dot" style="background:#f59e0b"></span>S-VN-03 W2 W3 W4</div>
+    <div class="star-student"><span class="dot" style="background:#f59e0b"></span>S-VN-09 W2 W3 W4</div>
+  </div>
+
+  <h3>兩週出席</h3>
+  <div class="star-row">
+    <div class="star-student"><span class="dot" style="background:#3b82f6"></span>S-VN-06 W3 W4</div>
+    <div class="star-student"><span class="dot" style="background:#3b82f6"></span>S-VN-10 W2 W4</div>
+    <div class="star-student"><span class="dot" style="background:#3b82f6"></span>S-VN-02 W2 W4</div>
+  </div>
+
+  <div class="funfact-row">
+    <div class="funfact"><div class="num">427</div><div class="lbl">四週總互動筆數</div></div>
+    <div class="funfact"><div class="num">85%</div><div class="lbl">W2 願付替代蛋白溢價比例</div></div>
+    <div class="funfact"><div class="num">92.7%</div><div class="lbl">W3 流程排序全班平均分</div></div>
+    <div class="funfact"><div class="num">4.4/5</div><div class="lbl">W4 是非題全班平均</div></div>
+  </div>
+</div>
+
+<!-- CTA closing -->
+<div class="cta">
+  <h2><span class="icon">🚀</span>期待下一個主題！</h2>
+  <p>四週下來，我們一起探索了替代蛋白、綠色包裝、無可可巧克力……<br>
+  每個主題都讓我們更了解食品科學與永續未來。<br>
+  謝謝每位同學的參與和挑戰精神！</p>
+</div>
+
+<footer>
+  資料來源：Supabase 互動紀錄｜整理日期：2026-06-01｜學生成果版
+</footer>
+
+</div><!-- end .page -->
+
+<script>
+// Growth chart
+new Chart(document.getElementById('growthChart'), {
+  type: 'line',
+  data: {
+    labels: ['W1 (5/13)\n普通班', 'W2 (5/18)\n越南班', 'W3 (5/25)', 'W4 (6/1)'],
+    datasets: [{
+      label: '出席人數',
+      data: [8, 7, 10, 13],
+      borderColor: '#a78bfa',
+      backgroundColor: 'rgba(167,139,250,0.15)',
+      pointBackgroundColor: '#8b5cf6',
+      pointRadius: 8,
+      pointHoverRadius: 10,
+      fill: true,
+      tension: 0.4,
+      borderWidth: 3,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` ${ctx.raw} 位同學`
+        }
+      }
+    },
+    scales: {
+      x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+      y: { beginAtZero: false, min: 5, max: 15,
+           ticks: { color: '#94a3b8', stepSize: 2 },
+           grid: { color: '#334155' },
+           title: { display: true, text: '出席人數', color: '#94a3b8' } }
+    }
+  }
+});
+
+// W4 completion
+new Chart(document.getElementById('w4completion'), {
+  type: 'bar',
+  data: {
+    labels: ['詞彙配對','是非判斷','段落填空','句子重組','完整看完'],
+    datasets: [{
+      label: '完成人數',
+      data: [7, 7, 7, 3, 6],
+      backgroundColor: ['#8b5cf6','#a78bfa','#c4b5fd','#f59e0b','#34d399'],
+      borderRadius: 8,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true, max: 13,
+           title: { display: true, text: '人數（共 13 人報到）' } }
+    }
+  }
+});
+
+// W3 avg
+new Chart(document.getElementById('w3avg'), {
+  type: 'bar',
+  data: {
+    labels: ['詞彙配對', '段落配對', '流程排序'],
+    datasets: [{
+      label: '全班平均 %',
+      data: [64.0, 89.0, 92.7],
+      backgroundColor: ['#3b82f6','#10b981','#8b5cf6'],
+      borderRadius: 8,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true, max: 100,
+           title: { display: true, text: '平均最佳分數 %' } }
+    }
+  }
+});
+</script>
+</body>
+</html>

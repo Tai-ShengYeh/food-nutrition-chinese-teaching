@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>食品營養華語文獻閱讀｜互動教學工具</title>
+<style>
+:root{--accent:#6d28d9;--bg:#f5f3ff;--card:#fff;--border:#ddd6fe}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1e293b;line-height:1.6}
+.hero{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:48px 24px;text-align:center}
+.hero h1{font-size:1.8rem;font-weight:900;margin-bottom:8px}
+.hero p{opacity:.85;font-size:1rem}
+.page{max-width:900px;margin:0 auto;padding:32px 16px 60px}
+h2{font-size:1.1rem;font-weight:700;margin:28px 0 14px;color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;
+  text-decoration:none;color:inherit;display:block;transition:.2s;border-top:4px solid var(--accent)}
+.card:hover{box-shadow:0 8px 24px #7c3aed22;transform:translateY(-2px)}
+.card .tag{font-size:.72rem;font-weight:700;background:var(--bg);color:var(--accent);
+  padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:10px}
+.card h3{font-size:.95rem;font-weight:700;margin-bottom:6px}
+.card p{font-size:.82rem;color:#64748b}
+.note{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 16px;
+  font-size:.82rem;color:#64748b;margin-top:24px;border-left:4px solid #f59e0b}
+footer{text-align:center;font-size:.78rem;color:#94a3b8;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>食品營養華語文獻閱讀</h1>
+  <p>Food Nutrition Academic Chinese Reading｜A2–B1 Interactive Teaching Tools</p>
+  <p style="font-size:.85rem;opacity:.7;margin-top:8px">Spring 2026 ｜ Tai-Sheng Yeh</p>
+</div>
+<div class="page">
+
+  <h2>📊 班級成果報告（脫敏版）</h2>
+  <div class="grid">
+    <a class="card" href="reports/w1-w4-interaction-report.html">
+      <span class="tag">教師版</span>
+      <h3>四週互動紀錄報告</h3>
+      <p>W1–W4 遊戲成績、出席率、投票分析。學生姓名已匿名化。</p>
+    </a>
+    <a class="card" href="reports/w1-w4-student-results.html">
+      <span class="tag">學生版</span>
+      <h3>四週學習成果總覽</h3>
+      <p>學習旅程、班級成就徽章、跨週出席記錄。設計給學生看。</p>
+    </a>
+  </div>
+
+  <h2>🎮 互動教學投影片</h2>
+  <div class="grid">
+    <a class="card" href="slides/w4-cocoa-free-chocolate.html">
+      <span class="tag">W4 ｜ 6/1</span>
+      <h3>無可可巧克力的未來</h3>
+      <p>含詞彙配對、是非判斷、段落填空、句子重組、即時投票。</p>
+    </a>
+  </div>
+
+  <div class="note">
+    🔒 <strong>個資說明</strong>：所有班級報告中的學生姓名已替換為代碼（S-VN-01 等），
+    原始資料存於 Supabase，不含於本 repo。
+  </div>
+
+  <h2>📚 教學設計說明</h2>
+  <p style="font-size:.88rem;color:#475569;line-height:1.8">
+    本課程為食品營養學術華語閱讀，對象為 A2–B1 越南大學生。<br>
+    期中考前使用傳統 PPT；期中考後改為 HTML 互動工具＋Supabase 即時資料收集。<br>
+    教學實踐研究比較兩種方式對詞彙學習與課堂參與的影響。
+  </p>
+</div>
+<footer>Powered by GitHub Pages ｜ Data: Supabase ｜ 2026</footer>
+</body>
+</html>

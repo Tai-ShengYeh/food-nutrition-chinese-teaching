@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>無可可巧克力革命 — 華文文獻閱讀與寫作</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<!-- Supabase JS（即時投票同步＋記錄；anon insert-only 公開金鑰，無 Google 金鑰）-->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+html, body {
+  margin: 0; padding: 0;
+  width: 100%; height: 100%;
+  font-size: 18px;
+  font-family: 'Noto Sans TC', sans-serif;
+  background: #0a0e27;
+  overflow: hidden;
+}
+:root {
+  --bg: #0a0e27; --bg2: #11163a;
+  --ink: #eef3ff; --ink2: #b8c5e0; --ink3: #7a8bb8; --ink4: #4a5680;
+  --accent: #00d4ff; --accent2: #ff006e; --warn: #ffb800; --green: #00ff88;
+  --t1: clamp(1.8rem,3.5vw,2.8rem);
+  --t2: clamp(1.2rem,2.2vw,1.9rem);
+  --t3: clamp(0.95rem,1.5vw,1.15rem);
+  --t4: clamp(0.75rem,1.1vw,0.95rem);
+}
+#progress {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: linear-gradient(90deg,var(--accent),var(--accent2));
+  transition: width .4s ease; z-index: 100;
+}
+#section-tag {
+  position: fixed; top: 18px; left: 24px;
+  font-family: 'JetBrains Mono',monospace; font-size: var(--t4);
+  color: var(--accent); letter-spacing: .12em; text-transform: uppercase; z-index: 100;
+}
+#pageInfo {
+  position: fixed; bottom: 18px; right: 24px;
+  font-family: 'JetBrains Mono',monospace; font-size: var(--t4); color: var(--ink4); z-index: 100;
+}
+#hint {
+  position: fixed; bottom: 18px; left: 24px;
+  font-size: .75rem; color: var(--ink4); z-index: 100;
+}
+.nav-arrows {
+  position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 14px; z-index: 130;
+}
+.nav-arrow {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 1px solid rgba(0,212,255,.4); background: rgba(10,14,39,.72);
+  color: var(--accent); font-size: 1.15rem; cursor: pointer;
+  backdrop-filter: blur(6px); transition: all .15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-arrow:hover { background: rgba(0,212,255,.2); transform: scale(1.1); }
+.nav-arrow:active { transform: scale(.96); }
+.game-howto {
+  display: flex; gap: 8px; align-items: flex-start;
+  background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.22);
+  border-radius: 10px; padding: 9px 14px; margin-bottom: 14px;
+  font-size: var(--t4); color: var(--ink2); line-height: 1.55;
+}
+.game-howto b { color: var(--accent); }
+.fill-blank.current {
+  border-bottom-color: var(--warn);
+  animation: fillpulse 1.1s ease-in-out infinite;
+}
+@keyframes fillpulse {
+  0%,100% { background: rgba(255,184,0,.08); }
+  50% { background: rgba(255,184,0,.26); }
+}
+.sent-block.sel { border-color: var(--warn) !important; background: rgba(255,184,0,.12) !important; }
+
+.slide {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 60px 80px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .5s ease, transform .5s ease;
+  transform: translateY(16px); overflow: hidden;
+}
+.slide.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.slide-inner { width: 100%; max-width: 1300px; }
+
+.kicker {
+  font-family: 'JetBrains Mono',monospace; font-size: var(--t4);
+  color: var(--accent); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 8px;
+}
+.slide-title {
+  font-size: var(--t1); font-weight: 900; color: var(--ink); line-height: 1.2; margin: 0 0 16px;
+}
+.slide-title span { color: var(--accent); }
+.body-text { font-size: var(--t3); color: var(--ink2); line-height: 1.7; }
+
+.cards-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin-top: 24px; }
+.cards-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; margin-top: 24px; }
+.card {
+  background: rgba(255,255,255,.04); border: 1px solid rgba(0,212,255,.15);
+  border-radius: 16px; padding: 22px; backdrop-filter: blur(10px);
+}
+.card-icon { font-size: 1.8rem; margin-bottom: 10px; }
+.card-title { font-size: var(--t3); font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+.card-body { font-size: var(--t4); color: var(--ink2); line-height: 1.6; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-top: 16px; }
+
+.badge {
+  display: inline-block; background: rgba(0,212,255,.12); border: 1px solid var(--accent);
+  color: var(--accent); border-radius: 6px; padding: 2px 10px;
+  font-size: var(--t4); font-family: 'JetBrains Mono',monospace;
+}
+.badge-warn { background: rgba(255,184,0,.12); border-color: var(--warn); color: var(--warn); }
+.badge-pink { background: rgba(255,0,110,.12); border-color: var(--accent2); color: var(--accent2); }
+
+.callout {
+  background: rgba(0,212,255,.07); border: 1px solid rgba(0,212,255,.25);
+  border-radius: 12px; padding: 14px 18px; margin-top: 14px; font-size: var(--t4); color: var(--ink2);
+}
+.callout.warn { background: rgba(255,184,0,.07); border-color: rgba(255,184,0,.25); }
+
+.stat-bar { margin: 14px 0; }
+.stat-label { display: flex; justify-content: space-between; font-size: var(--t4); color: var(--ink2); margin-bottom: 6px; }
+.stat-track { background: rgba(255,255,255,.1); border-radius: 4px; height: 10px; overflow: hidden; }
+.stat-fill { height: 100%; border-radius: 4px; }
+
+.vocab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+.vocab-item {
+  background: rgba(255,255,255,.04); border-radius: 10px;
+  padding: 12px 16px; border-left: 3px solid var(--accent);
+}
+.vocab-zh { font-size: var(--t3); font-weight: 700; color: var(--ink); }
+.vocab-en { font-size: var(--t4); color: var(--accent); font-family: 'JetBrains Mono',monospace; }
+.vocab-vn { font-size: var(--t4); color: var(--ink3); font-style: italic; }
+
+.timeline-item { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 12px; }
+.timeline-dot {
+  width: 12px; height: 12px; border-radius: 50%; background: var(--accent);
+  flex-shrink: 0; margin-top: 5px; box-shadow: 0 0 8px var(--accent);
+}
+.tl-body { font-size: var(--t4); color: var(--ink2); line-height: 1.6; }
+
+/* Compare table */
+.compare-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+.compare-table th {
+  padding: 10px 14px; text-align: left; color: var(--accent);
+  font-size: var(--t4); border-bottom: 1px solid rgba(0,212,255,.3);
+  font-family: 'JetBrains Mono',monospace; font-weight: 700;
+}
+.compare-table td {
+  padding: 10px 14px; color: var(--ink2); font-size: var(--t4);
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.compare-table tr:hover td { background: rgba(255,255,255,.02); }
+
+/* Demographics */
+.demo-bar-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: var(--t4); }
+.demo-bar-label { color: var(--ink2); min-width: 100px; }
+.demo-bar-track { flex: 1; height: 8px; background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden; }
+.demo-bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+.demo-bar-value { font-family: 'JetBrains Mono',monospace; color: var(--accent); font-size: var(--t4); min-width: 42px; text-align: right; }
+.demo-section-label { font-family: 'JetBrains Mono',monospace; font-size: var(--t4); color: var(--ink4); margin: 16px 0 8px; letter-spacing: .1em; }
+
+/* Big number */
+.big-num { font-size: clamp(2.5rem,5vw,4rem); font-weight: 900; color: var(--accent); line-height: 1; font-family: 'JetBrains Mono',monospace; }
+.big-num.p { color: var(--accent2); }
+.big-num.w { color: var(--warn); }
+
+/* Poll */
+.poll-wrap { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; max-width: 640px; margin-left: auto; margin-right: auto; }
+.poll-opt {
+  display: flex; align-items: center; gap: 14px;
+  background: rgba(255,255,255,.04); border: 2px solid rgba(255,255,255,.1);
+  border-radius: 12px; padding: 14px 20px; cursor: pointer;
+  transition: all .25s; font-size: var(--t3); color: var(--ink2);
+}
+.poll-opt:hover { border-color: var(--accent); background: rgba(0,212,255,.07); }
+.poll-opt.active { border-color: var(--accent); }
+.poll-emoji { font-size: 1.4rem; }
+.poll-bar-wrap { flex: 1; height: 7px; background: rgba(255,255,255,.08); border-radius: 4px; overflow: hidden; display: none; }
+.poll-bar-fill { height: 100%; background: var(--accent); border-radius: 4px; width: 0%; transition: width .5s ease; }
+.poll-pct { font-family: 'JetBrains Mono',monospace; font-size: var(--t4); color: var(--accent); display: none; min-width: 55px; text-align: right; }
+
+/* Minigame container */
+.game-wrap {
+  background: rgba(255,255,255,.03); border: 1px solid rgba(0,212,255,.2);
+  border-radius: 18px; padding: 22px; margin-top: 14px;
+}
+.game-score { font-family: 'JetBrains Mono',monospace; font-size: var(--t4); color: var(--warn); text-align: right; margin-bottom: 12px; }
+.game-result { text-align: center; font-size: var(--t3); font-weight: 700; margin-top: 14px; min-height: 36px; }
+
+/* Matching game */
+.match-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.match-col-label { font-family: 'JetBrains Mono',monospace; font-size: var(--t4); color: var(--ink4); margin-bottom: 8px; }
+.match-item {
+  background: rgba(255,255,255,.05); border: 2px solid rgba(0,212,255,.2);
+  border-radius: 8px; padding: 10px 14px; cursor: pointer; font-size: var(--t4);
+  color: var(--ink2); text-align: center; transition: all .2s; margin-bottom: 8px;
+}
+.match-item:hover { border-color: var(--accent); background: rgba(0,212,255,.09); }
+.match-item.sel { border-color: var(--accent); background: rgba(0,212,255,.18); color: var(--accent); }
+.match-item.ok { border-color: var(--green); background: rgba(0,255,136,.08); color: var(--green); cursor: default; }
+.match-item.ng { border-color: var(--accent2); background: rgba(255,0,110,.08); color: var(--accent2); }
+
+/* T/F game */
+.tf-q { font-size: var(--t3); color: var(--ink); margin-bottom: 14px; padding: 14px 18px; background: rgba(255,255,255,.04); border-radius: 10px; border-left: 3px solid var(--accent); line-height: 1.6; }
+.tf-btns { display: flex; gap: 14px; justify-content: center; }
+.tf-btn {
+  padding: 11px 30px; border-radius: 10px; border: 2px solid;
+  background: transparent; font-size: var(--t3); font-family: 'Noto Sans TC',sans-serif;
+  cursor: pointer; font-weight: 700; transition: all .2s;
+}
+.tf-btn.t-btn { border-color: var(--green); color: var(--green); }
+.tf-btn.t-btn:hover, .tf-btn.t-btn.sel { background: rgba(0,255,136,.14); }
+.tf-btn.f-btn { border-color: var(--accent2); color: var(--accent2); }
+.tf-btn.f-btn:hover, .tf-btn.f-btn.sel { background: rgba(255,0,110,.14); }
+.tf-fb { text-align: center; font-size: var(--t4); margin-top: 12px; min-height: 28px; }
+.tf-dots { display: flex; gap: 8px; justify-content: center; margin-top: 12px; }
+.tf-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.15); transition: all .3s; }
+.tf-dot.ok { background: var(--green); }
+.tf-dot.ng { background: var(--accent2); }
+
+/* Fill blank game */
+.fill-sent { font-size: var(--t3); color: var(--ink2); line-height: 2.1; margin-bottom: 10px; }
+.fill-blank {
+  display: inline-block; min-width: 64px; border-bottom: 2px solid var(--accent);
+  text-align: center; color: var(--accent); font-weight: 700; padding: 0 6px; margin: 0 3px;
+}
+.fill-opts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.fill-opt {
+  background: rgba(0,212,255,.1); border: 1px solid var(--accent); color: var(--accent);
+  border-radius: 8px; padding: 7px 16px; cursor: pointer; font-size: var(--t3);
+  font-family: 'Noto Sans TC',sans-serif; font-weight: 700; transition: all .2s;
+}
+.fill-opt:hover { background: rgba(0,212,255,.22); }
+.fill-opt.used { opacity: .38; cursor: default; pointer-events: none; }
+
+/* Sentence order game */
+.sent-blocks { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.sent-block {
+  background: rgba(255,255,255,.05); border: 2px solid rgba(0,212,255,.2);
+  border-radius: 10px; padding: 12px 18px; cursor: grab; font-size: var(--t4);
+  color: var(--ink2); display: flex; align-items: flex-start; gap: 12px; transition: all .2s;
+  user-select: none;
+}
+.sent-block:hover { border-color: var(--accent); background: rgba(0,212,255,.07); }
+.sent-block.dragging { opacity: .45; cursor: grabbing; }
+.sent-block.over { border-color: var(--warn); }
+.sent-num { font-family: 'JetBrains Mono',monospace; font-size: .85rem; color: var(--ink4); min-width: 22px; flex-shrink: 0; padding-top: 1px; }
+
+.check-btn {
+  display: block; margin: 14px auto 0; padding: 11px 36px;
+  background: linear-gradient(135deg,var(--accent),#0099cc); color: #0a0e27;
+  border: none; border-radius: 10px; font-size: var(--t3);
+  font-family: 'Noto Sans TC',sans-serif; font-weight: 700;
+  cursor: pointer; transition: all .2s;
+}
+.check-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,212,255,.28); }
+
+/* Writing steps */
+.writing-steps { display: flex; align-items: stretch; gap: 0; margin-top: 22px; }
+.writing-step {
+  flex: 1; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 16px; padding: 22px 18px; text-align: center;
+}
+.writing-arrow { width: 30px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 1.4rem; }
+.ws-num { font-family: 'JetBrains Mono',monospace; font-size: 2rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+.ws-title { font-size: var(--t3); font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.ws-body { font-size: var(--t4); color: var(--ink3); line-height: 1.55; }
+
+/* Edcafe */
+.edcafe-card {
+  background: rgba(255,255,255,.03); border: 2px solid rgba(0,212,255,.28);
+  border-radius: 18px; padding: 24px; margin-top: 10px;
+}
+.edcafe-sec { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,.07); }
+.edcafe-sec:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.edcafe-lbl {
+  font-size: var(--t4); color: var(--accent); font-family: 'JetBrains Mono',monospace;
+  text-transform: uppercase; letter-spacing: .1em; margin-bottom: 6px;
+}
+.edcafe-body { font-size: var(--t4); color: var(--ink2); line-height: 1.7; }
+.rubric-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; margin-top: 12px; }
+.rubric-item {
+  background: rgba(255,255,255,.04); border-radius: 10px;
+  padding: 12px 8px; text-align: center; border-top: 3px solid;
+}
+.rubric-item:nth-child(1) { border-color: var(--accent); }
+.rubric-item:nth-child(2) { border-color: var(--accent2); }
+.rubric-item:nth-child(3) { border-color: var(--warn); }
+.rubric-item:nth-child(4) { border-color: var(--green); }
+.rubric-item:nth-child(5) { border-color: #cc88ff; }
+.rubric-score { font-size: var(--t2); font-weight: 900; color: var(--ink); font-family: 'JetBrains Mono',monospace; }
+.rubric-name { font-size: .78rem; color: var(--ink3); margin-top: 4px; line-height: 1.4; }
+
+/* Cover */
+.cover-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 18% 55%, rgba(0,212,255,.13) 0%, transparent 55%),
+    radial-gradient(ellipse at 82% 28%, rgba(255,0,110,.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 85%, rgba(0,80,180,.1) 0%, transparent 50%);
+}
+
+@media (max-width: 900px) {
+  .slide { padding: 40px 28px; }
+  .cards-3 { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; gap: 24px; }
+  .vocab-grid { grid-template-columns: 1fr; }
+  .writing-steps { flex-direction: column; }
+  .writing-arrow { transform: rotate(90deg); width: auto; height: 28px; }
+  .rubric-grid { grid-template-columns: repeat(3,1fr); }
+  .match-cols { grid-template-columns: 1fr; }
+}
+
+/* ─── 名字輸入閘門 ─── */
+#name-gate{
+  position:fixed; inset:0; z-index:500; display:none;
+  align-items:center; justify-content:center;
+  background:rgba(6,9,28,.93); backdrop-filter:blur(8px);
+}
+.gate-card{
+  background:linear-gradient(160deg,#11163a,#0a0e27); border:1px solid rgba(0,212,255,.3);
+  border-radius:22px; padding:38px 42px; text-align:center; max-width:420px; width:88%;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.gate-emoji{ font-size:3rem; margin-bottom:10px; }
+.gate-title{ font-size:1.6rem; font-weight:900; color:var(--ink); margin-bottom:8px; }
+.gate-sub{ font-size:.92rem; color:var(--ink3); margin-bottom:22px; line-height:1.6; }
+.gate-input{
+  width:100%; box-sizing:border-box; padding:13px 18px; font-size:1.1rem;
+  background:rgba(255,255,255,.06); border:2px solid rgba(0,212,255,.3); border-radius:12px;
+  color:var(--ink); text-align:center; font-family:'Noto Sans TC',sans-serif; outline:none;
+}
+.gate-input:focus{ border-color:var(--accent); }
+.gate-btn{
+  width:100%; margin-top:16px; padding:13px; font-size:1.1rem; font-weight:700;
+  background:linear-gradient(135deg,var(--accent),#0099cc); color:#0a0e27;
+  border:none; border-radius:12px; cursor:pointer; font-family:'Noto Sans TC',sans-serif;
+  transition:transform .15s;
+}
+.gate-btn:hover{ transform:translateY(-2px); }
+.gate-foot{ margin-top:16px; font-size:.78rem; color:var(--ink4); font-family:'JetBrains Mono',monospace; }
+</style>
+</head>
+<body>
+
+<div id="progress" style="width:5.56%"></div>
+<div id="section-tag">— 引起動機 —</div>
+<div id="pageInfo">1 / 18</div>
+<div id="hint">← → 或下方箭頭切換頁面 ｜ F 全螢幕</div>
+<div class="nav-arrows">
+  <button class="nav-arrow" onclick="prevSlide();this.blur();" aria-label="上一頁" title="上一頁">◀</button>
+  <button class="nav-arrow" onclick="nextSlide();this.blur();" aria-label="下一頁" title="下一頁">▶</button>
+</div>
+
+<!-- 名字輸入閘門（只有填了後端金鑰、且非投影模式時才出現）-->
+<div id="name-gate">
+  <div class="gate-card">
+    <div class="gate-emoji">🍫</div>
+    <div class="gate-title">歡迎來上課！</div>
+    <div class="gate-sub">請輸入你的名字，老師才看得到你的參與紀錄<br><span style="color:var(--ink4)">Nhập tên của bạn để bắt đầu</span></div>
+    <input id="gate-input" class="gate-input" placeholder="你的名字 / Tên" maxlength="30" autocomplete="off">
+    <button class="gate-btn" onclick="enterName()">開始上課 →</button>
+    <div class="gate-foot">場次 Session：<span id="gate-session"></span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 1 — COVER
+═══════════════════════════════════════════════════ -->
+<section class="slide active" data-slide="1" data-section="引起動機">
+  <div class="cover-bg"></div>
+  <div class="slide-inner" style="text-align:center;position:relative;z-index:1;">
+    <div style="font-size:5rem;margin-bottom:20px;filter:drop-shadow(0 0 22px rgba(0,212,255,.4));">🍫</div>
+    <div style="font-size:clamp(2rem,5vw,4rem);font-weight:900;color:var(--ink);line-height:1.1;margin-bottom:14px;">
+      無可可<span style="color:var(--accent)">巧克力</span>革命
+    </div>
+    <div style="font-size:var(--t3);color:var(--ink3);margin-bottom:28px;">
+      沒有可可豆，也能有巧克力味？
+    </div>
+    <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
+      <span class="badge">華文文獻閱讀與寫作</span>
+      <span class="badge badge-warn">越南籍大學生</span>
+      <span class="badge badge-pink">2 小時課程</span>
+    </div>
+    <div style="margin-top:26px;display:inline-flex;align-items:center;gap:16px;background:rgba(255,255,255,.05);border:1px solid rgba(0,212,255,.28);border-radius:16px;padding:14px 20px;">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdQAAAHUAQAAAACrXOTBAAADf0lEQVR4nO2dYW6kMAyFY6v/4QZ7/2PtDZITeJU4DiEzK8WZ7VbA+4RaCH6aIbUiYxtKElZJvCwNAdp52GE7Au087LAdgXYedtiOQDsPO2xHoJ2HHbZP1wYRkdgdlv3TiEjY8jYMSrzi9TK0T/BnUWynniqHfzWLV7xehvYRc5WIiNq+Oi3tects8sbsx7/zCrykUqC94Fyl7K7ZaUuAIb/rDu3f/LkO2GM8AO295+rrdYg2aUtwjjTySPzXn8vQTsPzpuHp2q/6u0UUxYEPx85blBAkkZzNrnm9DO0T/Jn6sbRL2stPsm2XV7NLXi9De39/3k5FQmqHFniQDp7Nrnm9DO395yoVt02U0xfdfV/e73yYlN3sr3u9i/CqMED7n9dn2qJGyznMaCc12NBbwhBCuSuklDMeH38uQzsNz5uGp2tDVx8ph/FURukLiKKlFq0Vop5yf9/gS/tzKF7a+2071AVZuuoh/PkBvsGX1kosgfEmuZiiVRWNn0tcHQoaP9vq/fPf2Q8vaAxoL7I+F46moxpO2KJtO8EM1B79Gx7YZX0GWn9+I9UtL79W3W65jprTSLZK13HM8zzssB2B1l9P2XKKo6aaNbOhhUItC1qKI6c7jgwe5nkedtiOQLseP4vd7tEv0fi5Lc5iTRxYn/3wgsaA1oF0/fx9Ou7Iy7X8RiHbIV/nhv2SBrTuuZKSdiai2iPaKoYachSHr+3QiDdW4CWVAq0D0VXXluIab3RPXWnGI7T8BvLPK/CSSoHWgSitJvhSVTkso/k26ilu2C9pQOtA+udhWxOdhdCHV2+nragwz/Oww3YE2s/W51jHe4Ngp7qCC+Z5HnbYjkDrQLqwua8AtnRHn/1QEG/44QWNAa0D0XhjeL2G7r/p4Q9HHIL12QF7jAegdSAD5ydfhy4OQbyxCK8KA7QL/RuNfNjVU2p/naJNd79Q716AV0QVaB3ImxcfWfhhqbmj+TkeoTXiDQ/ssj4Drf99BSn3zJUGpF3dOHcf2TNWCunP8vqCAuZ5HnbYjkD7wftkNgswttg32lFuris+bx13mGcP7LI+A+3Hc7VZvHG4t7RT3/i5U/Cc2VugfVz8HJSuRPi2aCjI193cN/gm73/eatGkT0GLPffd3TZe8XoZ2lvPFeH/p9z678vQTsPzpi9AOw87bEegnYcdtiPQzsMO2/Bw7R8GusrybsbfUgAAAABJRU5ErkJggg==" alt="QR-join" style="width:104px;height:104px;border-radius:8px;background:#fff;padding:5px;flex-shrink:0;">
+      <div style="text-align:left;">
+        <div style="color:var(--accent);font-weight:700;font-size:var(--t3);">📱 手機掃我，一起上課</div>
+        <div style="color:var(--ink3);font-size:var(--t4);">Quét mã QR để tham gia</div>
+      </div>
+    </div>
+    <div style="margin-top:28px;color:var(--ink4);font-size:var(--t4);">
+      資料來源：foodNEXT（2025）× Confectionery News（2025）
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 2 — LEARNING OBJECTIVES
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="2" data-section="引起動機">
+  <div class="slide-inner">
+    <div class="kicker">— 課程大綱 —</div>
+    <div class="slide-title">今天你會<span>學到</span>什麼？</div>
+    <div class="cards-3">
+      <div class="card">
+        <div class="card-icon">📖</div>
+        <div class="card-title">閱讀理解</div>
+        <div class="card-body">讀懂兩篇食品科技文章，掌握關鍵數據與論點</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <div class="card-title">批判思考</div>
+        <div class="card-body">比較兩篇文章的視角，形成自己的立場與判斷</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">✍️</div>
+        <div class="card-title">寫作輸出</div>
+        <div class="card-body">運用文章素材，寫出有論點、有根據的論說短文</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:20px;">
+      <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+        <span style="color:var(--accent);font-weight:700;">🚀 今天我們會一起這樣學</span>
+        <span>暖身＋認識新詞</span>
+        <span style="color:var(--ink4)">→</span>
+        <span>讀文章一＋玩遊戲</span>
+        <span style="color:var(--ink4)">→</span>
+        <span>讀文章二＋玩遊戲</span>
+        <span style="color:var(--ink4)">→</span>
+        <span>動手寫作</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 3 — WARM-UP POLL
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="3" data-section="引起動機">
+  <div class="slide-inner">
+    <div class="kicker">— 暖身活動 —</div>
+    <div class="slide-title">你和<span>巧克力</span>的關係</div>
+    <div style="font-size:var(--t4);color:var(--ink3);margin-bottom:6px;">點選最符合你的選項，看看全班的答案 👇</div>
+    <div class="poll-wrap" id="poll">
+      <div class="poll-opt" onclick="vote(0)">
+        <span class="poll-emoji">😍</span>
+        <span style="flex:1">我每週都吃巧克力！</span>
+        <div class="poll-bar-wrap"><div class="poll-bar-fill"></div></div>
+        <span class="poll-pct">0%</span>
+      </div>
+      <div class="poll-opt" onclick="vote(1)">
+        <span class="poll-emoji">🙂</span>
+        <span style="flex:1">偶爾吃，不常吃</span>
+        <div class="poll-bar-wrap"><div class="poll-bar-fill"></div></div>
+        <span class="poll-pct">0%</span>
+      </div>
+      <div class="poll-opt" onclick="vote(2)">
+        <span class="poll-emoji">🤔</span>
+        <span style="flex:1">很少吃，但知道什麼是可可豆</span>
+        <div class="poll-bar-wrap"><div class="poll-bar-fill"></div></div>
+        <span class="poll-pct">0%</span>
+      </div>
+      <div class="poll-opt" onclick="vote(3)">
+        <span class="poll-emoji">❓</span>
+        <span style="flex:1">我不確定巧克力是怎麼做的</span>
+        <div class="poll-bar-wrap"><div class="poll-bar-fill"></div></div>
+        <span class="poll-pct">0%</span>
+      </div>
+    </div>
+    <div style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:var(--t4);color:var(--ink4);margin-top:8px;">
+      總票數：<span id="poll-total" style="color:var(--accent)">0</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 4 — KEY VOCABULARY
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="4" data-section="引起動機">
+  <div class="slide-inner">
+    <div class="kicker">— 關鍵詞彙 Từ vựng chính —</div>
+    <div class="slide-title">今天的<span>重要詞語</span></div>
+    <div class="vocab-grid">
+      <div class="vocab-item">
+        <div class="vocab-zh">可可豆／替代可可</div>
+        <div class="vocab-en">cocoa bean / cocoa alternative</div>
+        <div class="vocab-vn">hạt ca cao / thay thế ca cao</div>
+      </div>
+      <div class="vocab-item">
+        <div class="vocab-zh">氣候變遷</div>
+        <div class="vocab-en">climate change</div>
+        <div class="vocab-vn">biến đổi khí hậu</div>
+      </div>
+      <div class="vocab-item">
+        <div class="vocab-zh">永續發展</div>
+        <div class="vocab-en">sustainable development</div>
+        <div class="vocab-vn">phát triển bền vững</div>
+      </div>
+      <div class="vocab-item">
+        <div class="vocab-zh">碳排放足跡</div>
+        <div class="vocab-en">carbon footprint</div>
+        <div class="vocab-vn">lượng khí thải carbon</div>
+      </div>
+      <div class="vocab-item">
+        <div class="vocab-zh">上游循環利用</div>
+        <div class="vocab-en">upcycling</div>
+        <div class="vocab-vn">tái chế nâng cấp</div>
+      </div>
+      <div class="vocab-item">
+        <div class="vocab-zh">精密發酵</div>
+        <div class="vocab-en">precision fermentation</div>
+        <div class="vocab-vn">lên men chính xác</div>
+      </div>
+      <div class="vocab-item">
+        <div class="vocab-zh">消費者洞察</div>
+        <div class="vocab-en">consumer insights</div>
+        <div class="vocab-vn">thấu hiểu người tiêu dùng</div>
+      </div>
+      <div class="vocab-item">
+        <div class="vocab-zh">純素認證</div>
+        <div class="vocab-en">vegan certified</div>
+        <div class="vocab-vn">chứng nhận thuần chay</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 5 — COCOA CRISIS
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="5" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">— 文章一：foodNEXT —</div>
+    <div class="slide-title">全球<span>可可危機</span></div>
+    <div class="two-col">
+      <div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="tl-body">🌡️ <strong style="color:var(--ink)">氣候變遷衝擊</strong>：西非主要產地遭遇極端天氣與病蟲害，可可產量驟降</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="tl-body">📈 <strong style="color:var(--ink)">價格創歷史高點</strong>：全球可可豆供應短缺，價格急速攀升</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="tl-body">💧 <strong style="color:var(--ink)">環境負擔沉重</strong>：傳統可可種植耗費大量水資源，產生高碳排放</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="tl-body">🌍 <strong style="color:var(--ink)">供應鏈集中</strong>：75% 以上的可可豆來自西非，風險高度集中</div>
+        </div>
+        <div class="callout warn" style="margin-top:8px;">
+          ⚠️ <span style="color:var(--warn)">食品業急需尋找可可的替代方案！</span>
+        </div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:4rem;margin-bottom:16px;">🌍</div>
+        <div style="margin-bottom:12px;">
+          <div class="big-num p" style="font-size:clamp(3rem,6vw,5rem);">75%</div>
+          <div style="color:var(--ink3);font-size:var(--t4);">全球可可來自西非</div>
+        </div>
+        <div style="color:var(--ink4);font-size:var(--t4);margin-top:8px;">⬇</div>
+        <div style="margin-top:8px;">
+          <div style="font-size:2rem;margin-bottom:4px;">🌧️ 病蟲害 ＋ 乾旱</div>
+          <div style="color:var(--accent2);font-size:var(--t3);font-weight:700;">產量不穩定 → 價格暴漲</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 6 — NEXTCOA PRODUCT
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="6" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">— 文章一：產品介紹 —</div>
+    <div class="slide-title">NextCoa 是<span>什麼</span>？</div>
+    <div class="two-col">
+      <div>
+        <div style="margin-bottom:14px;">
+          <span class="badge">Cargill</span> <span style="color:var(--ink4);font-size:var(--t4)">×</span> <span class="badge">Voyage Foods</span>
+        </div>
+        <div class="body-text" style="font-size:var(--t4);margin-bottom:16px;">
+          以<strong style="color:var(--accent)">葡萄籽</strong>（釀酒業廢料再利用）和<strong style="color:var(--accent)">葵花籽</strong>為原料，經過類似可可鹼化的工序，模擬巧克力風味。
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="tl-body">製造工廠設於俄亥俄州 Mason，廠房 <strong style="color:var(--accent)">26,400 m²</strong></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="tl-body">通過 <strong style="color:var(--accent)">9 大過敏原不含</strong>認證，純素（vegan）認證</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="tl-body">應用：能量棒、烘焙食品、冰淇淋、巧克力外衣</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="tl-body">競爭者：Nestlé（ChoViva）、Mondelēz、Puratos</div>
+        </div>
+      </div>
+      <div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;">
+        <div style="font-size:3.5rem;">🍇 ＋ 🌻</div>
+        <div style="color:var(--ink3);font-size:var(--t4);">葡萄籽 ＋ 葵花籽</div>
+        <div style="font-size:2rem;color:var(--accent);">↓ 鹼化製程</div>
+        <div style="font-size:3rem;">🍫</div>
+        <div class="badge" style="font-size:var(--t3);padding:6px 18px;">NextCoa™</div>
+        <div style="color:var(--ink3);font-size:var(--t4);">無可可豆的巧克力風味</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 7 — ENVIRONMENTAL DATA
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="7" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">— 文章一：環境數據 —</div>
+    <div class="slide-title">環境優勢有<span>多大</span>？</div>
+    <div style="margin-top:22px;">
+      <div class="stat-bar">
+        <div class="stat-label">
+          <span>💧 用水量减少</span>
+          <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:var(--t3)">95%</span>
+        </div>
+        <div class="stat-track"><div class="stat-fill" style="width:95%;background:linear-gradient(90deg,var(--accent),#0077aa)"></div></div>
+      </div>
+      <div class="stat-bar">
+        <div class="stat-label">
+          <span>🌿 土地使用減少</span>
+          <span style="color:var(--green);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:var(--t3)">90%</span>
+        </div>
+        <div class="stat-track"><div class="stat-fill" style="width:90%;background:linear-gradient(90deg,var(--green),#009955)"></div></div>
+      </div>
+      <div class="stat-bar">
+        <div class="stat-label">
+          <span>🏭 碳排放減少</span>
+          <span style="color:var(--warn);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:var(--t3)">67%</span>
+        </div>
+        <div class="stat-track"><div class="stat-fill" style="width:67%;background:linear-gradient(90deg,var(--warn),#cc8800)"></div></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:22px;">
+      <span style="color:var(--accent);font-weight:700;">和傳統可可生產相比，NextCoa 的環境足跡小很多。</span>
+    </div>
+    <div class="callout warn" style="margin-top:10px;">
+      🤔 <span style="color:var(--warn)">想一想：這些數字是廠商自己提供的，我們應該 100% 相信嗎？</span>
+      <br><span style="color:var(--ink4);font-size:var(--t4);">Suy nghĩ: Đây là số liệu do công ty tự công bố — bạn có nên tin hoàn toàn không?</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 8 — ARTICLE 1 SUMMARY CHECK
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="8" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">— 文章一理解確認 —</div>
+    <div class="slide-title">你讀懂了嗎？</div>
+    <div class="cards-3" style="margin-top:22px;">
+      <div class="card">
+        <div style="font-size:2.2rem;margin-bottom:8px;">🌱</div>
+        <div class="card-title">原料來源</div>
+        <div class="card-body">葡萄籽（釀酒業副產品再利用）＋ 葵花籽<br><span style="color:var(--ink4);font-size:.85rem;font-style:italic">hạt nho + hạt hướng dương</span></div>
+      </div>
+      <div class="card">
+        <div style="font-size:2.2rem;margin-bottom:8px;">📊</div>
+        <div class="card-title">三個關鍵數字</div>
+        <div class="card-body">用水 <strong style="color:var(--accent)">↓95%</strong>　土地 <strong style="color:var(--green)">↓90%</strong>　碳排 <strong style="color:var(--warn)">↓67%</strong></div>
+      </div>
+      <div class="card">
+        <div style="font-size:2.2rem;margin-bottom:8px;">🏪</div>
+        <div class="card-title">主要應用</div>
+        <div class="card-body">能量棒、烘焙食品、冰淇淋、巧克力外衣<br>不含 9 大過敏原，純素認證</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:18px;display:flex;gap:12px;align-items:flex-start;">
+      <span style="font-size:1.3rem;">🗣️</span>
+      <div>
+        <strong style="color:var(--ink);font-size:var(--t4)">換你說說看</strong>
+        <div style="color:var(--ink3);font-size:var(--t4);margin-top:4px">
+          用自己的話解釋：Cargill 為什麼要開發 NextCoa？<br>
+          <em style="color:var(--ink4)">Bạn thử giải thích: Tại sao Cargill phát triển NextCoa?</em>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 9 — MINIGAME 1: MATCHING
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="9" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">— 🎮 小遊戲一 —</div>
+    <div class="slide-title"><span>詞彙配對</span>挑戰</div>
+    <div class="game-wrap">
+      <div class="game-howto">🕹️ <span><b>玩法：</b>先點左邊一個詞彙，再點右邊它的定義。配對正確會變綠色 ✓，5 組全部完成就贏了！</span></div>
+      <div class="game-score">得分：<span id="match-score">0</span> ／ 5</div>
+      <div class="match-cols">
+        <div>
+          <div class="match-col-label">詞彙 Term</div>
+          <div class="match-item" id="t0" onclick="matchSel('t','0')" data-id="0">碳排放</div>
+          <div class="match-item" id="t1" onclick="matchSel('t','1')" data-id="1">上游循環利用</div>
+          <div class="match-item" id="t2" onclick="matchSel('t','2')" data-id="2">精密發酵</div>
+          <div class="match-item" id="t3" onclick="matchSel('t','3')" data-id="3">純素認證</div>
+          <div class="match-item" id="t4" onclick="matchSel('t','4')" data-id="4">替代可可</div>
+        </div>
+        <div>
+          <div class="match-col-label">定義 Definition</div>
+          <div class="match-item" id="d2" onclick="matchSel('d','2')" data-id="2">用微生物生產食品成分的技術</div>
+          <div class="match-item" id="d0" onclick="matchSel('d','0')" data-id="0">生產過程釋放的溫室氣體總量</div>
+          <div class="match-item" id="d4" onclick="matchSel('d','4')" data-id="4">不含可可豆的巧克力風味原料</div>
+          <div class="match-item" id="d1" onclick="matchSel('d','1')" data-id="1">把廢料轉化為更有價值的新產品</div>
+          <div class="match-item" id="d3" onclick="matchSel('d','3')" data-id="3">完全不含動物性產品的飲食認證</div>
+        </div>
+      </div>
+      <div id="match-result" class="game-result"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 10 — MINIGAME 2: TRUE/FALSE
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="10" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">— 🎮 小遊戲二 —</div>
+    <div class="slide-title">對還是<span>錯</span>？</div>
+    <div class="game-wrap" style="padding:18px;">
+      <div class="game-howto">🕹️ <span><b>玩法：</b>讀完句子，判斷它是對還是錯，點「✓ 正確」或「✗ 錯誤」。答完 5 題會顯示你的分數。</span></div>
+      <div id="tf-main">
+        <div class="tf-q" id="tf-q-text"></div>
+        <div class="tf-btns">
+          <button class="tf-btn t-btn" onclick="tfAns(true)">✓ 正確</button>
+          <button class="tf-btn f-btn" onclick="tfAns(false)">✗ 錯誤</button>
+        </div>
+        <div class="tf-fb" id="tf-fb"></div>
+        <div class="tf-dots" id="tf-dots"></div>
+      </div>
+      <div id="tf-end" style="display:none;text-align:center;padding:10px 0;">
+        <div style="font-size:2.5rem;margin-bottom:12px;">🎉</div>
+        <div id="tf-final" class="game-result"></div>
+        <button class="check-btn" onclick="resetTF()" style="margin-top:14px;">再玩一次 ↺</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 11 — CONSUMER PIE CHART
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="11" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">— 文章二：Confectionery News —</div>
+    <div class="slide-title">消費者<span>怎麼想</span>？</div>
+    <div class="two-col" style="align-items:flex-start;margin-top:18px;">
+      <div style="display:flex;justify-content:center;">
+        <canvas id="pie" width="280" height="280"></canvas>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;justify-content:center;padding-top:16px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:14px;height:14px;border-radius:3px;background:var(--accent);flex-shrink:0"></div>
+          <div>
+            <div class="big-num" style="font-size:clamp(2rem,4vw,3rem);">38%</div>
+            <div style="color:var(--ink3);font-size:var(--t4);">支持非傳統替代方案</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:14px;height:14px;border-radius:3px;background:var(--accent2);flex-shrink:0"></div>
+          <div>
+            <div class="big-num p" style="font-size:clamp(2rem,4vw,3rem);">24%</div>
+            <div style="color:var(--ink3);font-size:var(--t4);">反對新技術</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:14px;height:14px;border-radius:3px;background:var(--warn);flex-shrink:0"></div>
+          <div>
+            <div class="big-num w" style="font-size:clamp(2rem,4vw,3rem);">37%</div>
+            <div style="color:var(--ink3);font-size:var(--t4);">中立或未決定</div>
+          </div>
+        </div>
+        <div class="callout" style="margin-top:4px;">
+          <span style="color:var(--accent);font-size:var(--t4);font-weight:700;">💡 37% 中立者 = 最大說服空間！</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 12 — DEMOGRAPHICS
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="12" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">— 文章二：人口分析 —</div>
+    <div class="slide-title">誰<span>更願意</span>接受？</div>
+    <div style="margin-top:18px;">
+      <div class="demo-section-label">— 性別差異 —</div>
+      <div class="demo-bar-item">
+        <span class="demo-bar-label">👨 男性</span>
+        <div class="demo-bar-track"><div class="demo-bar-fill" style="width:46%;background:var(--accent)"></div></div>
+        <span class="demo-bar-value">46%</span>
+      </div>
+      <div class="demo-bar-item">
+        <span class="demo-bar-label">👩 女性</span>
+        <div class="demo-bar-track"><div class="demo-bar-fill" style="width:31%;background:var(--accent2)"></div></div>
+        <span class="demo-bar-value" style="color:var(--accent2)">31%</span>
+      </div>
+      <div class="demo-section-label" style="margin-top:18px;">— 年齡層差異 —</div>
+      <div class="demo-bar-item">
+        <span class="demo-bar-label">25–34 歲</span>
+        <div class="demo-bar-track"><div class="demo-bar-fill" style="width:55%;background:var(--green)"></div></div>
+        <span class="demo-bar-value" style="color:var(--green)">55%</span>
+      </div>
+      <div class="demo-bar-item">
+        <span class="demo-bar-label">55 歲以上</span>
+        <div class="demo-bar-track"><div class="demo-bar-fill" style="width:29%;background:var(--warn)"></div></div>
+        <span class="demo-bar-value" style="color:var(--warn)">29%</span>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:18px;">
+      <span style="color:var(--accent);font-weight:700;">結論：年輕男性接受度最高！</span>
+      <span style="color:var(--ink3);font-size:var(--t4)"> — 廠商應優先針對 25-34 歲族群行銷</span>
+    </div>
+    <div class="callout warn" style="margin-top:8px;">
+      🤔 想一想：你覺得越南 25–34 歲的年輕人，也會跟這個調查一樣嗎？
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 13 — MINIGAME 3: FILL BLANK
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="13" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">— 🎮 小遊戲三 —</div>
+    <div class="slide-title">數據<span>填空</span>挑戰</div>
+    <div class="game-wrap">
+      <div class="game-howto">🕹️ <span><b>玩法：</b>從上到下，依序把正確的百分比點進<span style="color:var(--warn)">閃黃色</span>的空格。點對變綠色，點錯會閃一下紅色。4 格全對就完成！</span></div>
+      <div class="game-score">完成：<span id="fill-done">0</span> ／ 4</div>
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:var(--t4);color:var(--ink2);line-height:2;">
+        <div>根據調查，有 <span class="fill-blank" id="fb0" data-ans="38%">____</span> 的消費者支持非傳統替代可可方案。</div>
+        <div>反對者佔 <span class="fill-blank" id="fb1" data-ans="24%">____</span>，中立或未決定者佔 <span class="fill-blank" id="fb2" data-ans="37%">____</span>。</div>
+        <div>在 25–34 歲的年齡層中，有 <span class="fill-blank" id="fb3" data-ans="55%">____</span> 的人願意嘗試精密發酵可可。</div>
+      </div>
+      <div class="fill-opts" style="margin-top:18px;">
+        <div class="fill-opt" onclick="fillSel(this,'37%')" data-val="37%">37%</div>
+        <div class="fill-opt" onclick="fillSel(this,'55%')" data-val="55%">55%</div>
+        <div class="fill-opt" onclick="fillSel(this,'24%')" data-val="24%">24%</div>
+        <div class="fill-opt" onclick="fillSel(this,'38%')" data-val="38%">38%</div>
+      </div>
+      <div id="fill-result" class="game-result"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 14 — COMPARE ARTICLES
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="14" data-section="維持注意">
+  <div class="slide-inner">
+    <div class="kicker">— 比較兩篇文章 —</div>
+    <div class="slide-title">兩篇文章的<span>異同</span></div>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>比較點</th>
+          <th>📰 文章一（foodNEXT 中文）</th>
+          <th>📰 文章二（Confectionery News 英文）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span style="color:var(--accent)">語言</span></td>
+          <td>繁體中文</td>
+          <td>英文</td>
+        </tr>
+        <tr>
+          <td><span style="color:var(--accent)">主要重點</span></td>
+          <td>產品技術 ＋ 環境優勢</td>
+          <td>消費者態度 ＋ 行銷策略</td>
+        </tr>
+        <tr>
+          <td><span style="color:var(--accent)">關鍵數據</span></td>
+          <td>↓95% 用水、↓90% 土地、↓67% 碳排</td>
+          <td>38% 支持、24% 反對、37% 中立</td>
+        </tr>
+        <tr>
+          <td><span style="color:var(--accent)">立場取向</span></td>
+          <td>樂觀：技術可行，環境效益顯著</td>
+          <td>謹慎：消費者仍需被說服</td>
+        </tr>
+        <tr>
+          <td><span style="color:var(--accent)">相同之處</span></td>
+          <td colspan="2" style="text-align:center;color:var(--green)">兩篇都認為無可可巧克力是食品業的重要趨勢 ✓</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout" style="margin-top:14px;">
+      <span style="color:var(--accent);font-size:var(--t4)">📚 和同學討論：你覺得哪篇文章更有說服力？為什麼？</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 15 — DISCUSSION: POSITION
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="15" data-section="喚起行動">
+  <div class="slide-inner">
+    <div class="kicker">— 議題討論 —</div>
+    <div class="slide-title" style="font-size:clamp(1.4rem,2.8vw,2.3rem);">
+      無可可巧克力是<span>好事</span>還是<span style="color:var(--accent2)">壞事</span>？
+    </div>
+    <div class="cards-3" style="margin-top:20px;">
+      <div class="card" style="border-color:rgba(0,212,255,.35);">
+        <div style="font-size:1.6rem;margin-bottom:6px;">👍</div>
+        <div class="card-title">支持立場</div>
+        <div class="card-body">
+          • 環境友善（碳排 ↓67%）<br>
+          • 解決供應鏈危機<br>
+          • 無 9 大過敏原，更安全<br>
+          • 純素消費者可食用
+        </div>
+      </div>
+      <div class="card" style="border-color:rgba(255,0,110,.35);">
+        <div style="font-size:1.6rem;margin-bottom:6px;">👎</div>
+        <div class="card-title">反對立場</div>
+        <div class="card-body">
+          • 口味是否真的一樣？<br>
+          • 僅 38% 消費者支持<br>
+          • 對西非可可農生計的衝擊<br>
+          • 「細胞培養」感覺不自然
+        </div>
+      </div>
+      <div class="card" style="border-color:rgba(255,184,0,.35);">
+        <div style="font-size:1.6rem;margin-bottom:6px;">🤔</div>
+        <div class="card-title">中立立場</div>
+        <div class="card-body">
+          • 需要更多長期研究<br>
+          • 應與傳統可可並存<br>
+          • 市場接受需要時間<br>
+          • 透明標示最重要
+        </div>
+      </div>
+    </div>
+    <div class="callout warn" style="margin-top:14px;">
+      ✏️ 現在選擇你的立場！等一下的作文會用到。
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 16 — WRITING STRUCTURE
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="16" data-section="喚起行動">
+  <div class="slide-inner">
+    <div class="kicker">— 寫作架構 —</div>
+    <div class="slide-title">論說文<span>三段架構</span></div>
+    <div class="writing-steps" style="margin-top:24px;">
+      <div class="writing-step">
+        <div class="ws-num">01</div>
+        <div class="ws-title">開頭段落</div>
+        <div class="ws-body">
+          提出你的<strong style="color:var(--accent)">立場</strong><br>（支持／反對／中立）<br><br>
+          引入主題，說明背景<br><br>
+          <em style="color:var(--ink4)">Mở bài: Nêu lập trường</em>
+        </div>
+      </div>
+      <div class="writing-arrow">→</div>
+      <div class="writing-step">
+        <div class="ws-num">02</div>
+        <div class="ws-title">中間論述</div>
+        <div class="ws-body">
+          引用<strong style="color:var(--accent)">至少 2 個</strong><br>文章中的數據或事實<br><br>
+          解釋這些數據如何<br>支持你的立場<br><br>
+          <em style="color:var(--ink4)">Thân bài: Dẫn chứng</em>
+        </div>
+      </div>
+      <div class="writing-arrow">→</div>
+      <div class="writing-step">
+        <div class="ws-num">03</div>
+        <div class="ws-title">結尾總結</div>
+        <div class="ws-body">
+          重申立場，<strong style="color:var(--accent)">升華觀點</strong><br>或提出對未來的<br>期望與展望<br><br>
+          <em style="color:var(--ink4)">Kết bài: Kết luận</em>
+        </div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:18px;">
+      📏 <span style="color:var(--warn);font-weight:700;">字數：300–400 字</span>
+      <span style="color:var(--ink3);font-size:var(--t4);margin-left:16px">格式：繁體中文論說短文｜引用數據時要寫出來（如：根據調查，38% 的消費者……）</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 17 — MINIGAME 4: SENTENCE ORDER
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="17" data-section="喚起行動">
+  <div class="slide-inner">
+    <div class="kicker">— 🎮 小遊戲四 —</div>
+    <div class="slide-title">段落<span>句子重組</span></div>
+    <div class="game-wrap">
+      <div class="game-howto">🕹️ <span><b>玩法：</b>用滑鼠<b>拖曳</b>句子，或<b>點兩個句子互換位置</b>，排成正確順序（立場→理由→例子→結論），再按「檢查答案」。</span></div>
+      <div class="sent-blocks" id="sent-blocks">
+        <div class="sent-block" draggable="true" data-order="2">
+          <span class="sent-num">?</span>
+          <span>例如，NextCoa 使用葡萄籽和葵花籽，相比傳統可可，可減少 95% 的用水量。</span>
+        </div>
+        <div class="sent-block" draggable="true" data-order="0">
+          <span class="sent-num">?</span>
+          <span>我認為無可可巧克力是食品業的重要創新，值得積極支持。</span>
+        </div>
+        <div class="sent-block" draggable="true" data-order="3">
+          <span class="sent-num">?</span>
+          <span>因此，我期待未來有更多消費者了解並接受這項創新技術。</span>
+        </div>
+        <div class="sent-block" draggable="true" data-order="1">
+          <span class="sent-num">?</span>
+          <span>首先，它對環境的影響遠比傳統巧克力生產方式小得多。</span>
+        </div>
+      </div>
+      <button class="check-btn" onclick="checkOrder()">檢查答案 ✓</button>
+      <div id="order-result" class="game-result"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 18 — EDCAFE ASSIGNMENT
+═══════════════════════════════════════════════════ -->
+<section class="slide" data-slide="18" data-section="喚起行動">
+  <div class="slide-inner">
+    <div class="kicker">— ✍️ 換你寫寫看 —</div>
+    <div class="slide-title">你的<span>寫作任務</span></div>
+    <div class="two-col" style="align-items:flex-start;margin-top:8px;">
+      <div>
+        <div class="card" style="border-color:rgba(0,212,255,.35);margin-bottom:14px;">
+          <div class="card-title" style="font-size:var(--t3);">📌 題目：無可可巧克力的未來，我的觀點</div>
+          <div class="card-body" style="font-size:var(--t4);line-height:1.7;margin-top:8px;">
+            用 <strong style="color:var(--accent)">300–400 字</strong>繁體中文寫一篇短文，說出你的立場：<br>
+            <span class="badge" style="margin-top:10px;">👍 支持</span>
+            <span class="badge badge-pink" style="margin-top:10px;">👎 反對</span>
+            <span class="badge badge-warn" style="margin-top:10px;">🤔 中立</span>
+          </div>
+        </div>
+        <div class="callout">
+          ✅ 記得：<strong style="color:var(--accent)">引用至少 2 個</strong>今天文章裡的數據或事實，來支持你的想法！
+        </div>
+        <div class="callout warn" style="margin-top:10px;">
+          💻 老師會把作業放在 <strong style="color:var(--warn)">Edcafe</strong>，你在那裡寫作，馬上就能拿到 AI 給你的回饋喔！
+        </div>
+      </div>
+      <div>
+        <div style="font-size:var(--t4);color:var(--ink3);margin-bottom:12px;font-family:'JetBrains Mono',monospace;">— 寫的時候，記得這 5 件事 —</div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="tl-body"><strong style="color:var(--ink)">立場清楚</strong>：一開始就說你支持還是反對</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="tl-body"><strong style="color:var(--ink)">有證據</strong>：用文章裡的數字（例如用水 ↓95%、38% 支持）</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="tl-body"><strong style="color:var(--ink)">結構完整</strong>：有開頭、中間、結尾三段</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="tl-body"><strong style="color:var(--ink)">句子通順</strong>：用詞正確，讀起來順</div></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="tl-body"><strong style="color:var(--ink)">有你的想法</strong>：不只抄文章，說出自己的看法</div></div>
+        <div class="callout" style="margin-top:14px;text-align:center;">
+          <span style="color:var(--green);font-weight:700;">把今天學到的用上就好，加油！🎉</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// ─── NAVIGATION ───────────────────────────────────────
+const TOTAL = 18;
+let cur = 1;
+
+function goTo(n) {
+  document.querySelector('.slide.active').classList.remove('active');
+  cur = Math.max(1, Math.min(n, TOTAL));
+  const s = document.querySelector('[data-slide="'+cur+'"]');
+  s.classList.add('active');
+  document.getElementById('progress').style.width = (cur/TOTAL*100).toFixed(2)+'%';
+  document.getElementById('pageInfo').textContent = cur+' / '+TOTAL;
+  document.getElementById('section-tag').textContent = '— '+s.dataset.section+' —';
+  if (cur === 11 && !pieInited) initPie();
+  if (cur === 18 && !_finished) { _finished = true; logInteraction('finish', {}); }
+}
+function nextSlide() { goTo(cur+1); }
+function prevSlide() { goTo(cur-1); }
+
+document.addEventListener('keydown', e => {
+  if (['INPUT','TEXTAREA'].includes(e.target.tagName)) return;
+  if (e.key==='ArrowRight'||e.key===' ') { e.preventDefault(); nextSlide(); }
+  if (e.key==='ArrowLeft') { e.preventDefault(); prevSlide(); }
+  if (e.key==='f'||e.key==='F') {
+    document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  }
+});
+
+let ts = 0, tsLock = false;
+document.addEventListener('touchstart', e => {
+  ts = e.touches[0].clientX;
+  tsLock = !!e.target.closest('.game-wrap, .poll-wrap, .nav-arrows, button, input, a');
+});
+document.addEventListener('touchend', e => {
+  if (tsLock) return;                       // 在遊戲/互動區滑動不換頁
+  const d = e.changedTouches[0].clientX - ts;
+  if (Math.abs(d) > 50) d < 0 ? nextSlide() : prevSlide();
+});
+
+// ─── BACKEND CONFIG ──────────────────────────────────────
+// Supabase anon key 是 insert-only 公開金鑰（只能寫、讀不到別人資料）。
+// Firebase 已移除：網站不放任何 Google 金鑰；投票改為單機計票 + Supabase 記錄。
+const SUPABASE_URL  = "https://qmldcjkllisvfgegkfsz.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbGRjamtsbGlzdmZnZWdrZnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMjM5ODYsImV4cCI6MjA4NjY5OTk4Nn0.Bfj0W7HN_n_vcjGe5502Chamk0YV-de8a0fxF4Nyczk";
+
+const SUPA_READY = SUPABASE_URL.startsWith('http') && !SUPABASE_ANON.includes('__');
+const FB_READY   = false;
+const LOGGING    = SUPA_READY;
+let _finished = false;
+
+const _qs = new URLSearchParams(location.search);
+const PRESENT_MODE = _qs.get('present')==='1';   // 老師投影模式 ?present=1：不問姓名、不記錄
+function _todayKey(){ const d=new Date(); return ''+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0'); }
+const SESSION_KEY = _qs.get('session') || (_todayKey()+'_VN1');   // 可用 ?session=20260531_VN1 指定場次
+let STUDENT = localStorage.getItem('cocoa_student') || '';
+
+// Supabase：每位學生一筆記錄（只能 insert，無法讀別人資料）
+async function logInteraction(eventType, data){
+  if(PRESENT_MODE || !STUDENT || !SUPA_READY) return;
+  try{
+    await fetch(SUPABASE_URL+'/rest/v1/student_interactions', {
+      method:'POST',
+      headers:{ 'apikey':SUPABASE_ANON, 'Authorization':'Bearer '+SUPABASE_ANON,
+                'Content-Type':'application/json', 'Prefer':'return=minimal' },
+      body: JSON.stringify({ student_name:STUDENT, session_key:SESSION_KEY,
+                             event_type:eventType, event_data:data||{} })
+    });
+  }catch(e){ console.warn('Supabase log failed:', e); }
+}
+
+// ─── Supabase Realtime（即時投票同步，無 Google 金鑰）────
+let sb=null, RT_OK=false;
+function initRealtime(){
+  if(!SUPA_READY || typeof supabase==='undefined') return;
+  try{ sb=supabase.createClient(SUPABASE_URL, SUPABASE_ANON); RT_OK=true; }
+  catch(e){ console.warn('Supabase client init failed:', e); }
+}
+
+// ─── 名字輸入閘門 ─────────────────────────────────────
+function showGateIfNeeded(){
+  const gs=document.getElementById('gate-session'); if(gs) gs.textContent=SESSION_KEY;
+  if(LOGGING && !PRESENT_MODE && !STUDENT){
+    document.getElementById('name-gate').style.display='flex';
+    setTimeout(()=>{ const gi=document.getElementById('gate-input'); if(gi) gi.focus(); }, 200);
+  }
+}
+function enterName(){
+  const v=document.getElementById('gate-input').value.trim();
+  if(!v){ document.getElementById('gate-input').focus(); return; }
+  STUDENT=v; localStorage.setItem('cocoa_student', v);
+  document.getElementById('name-gate').style.display='none';
+  logInteraction('join', {});
+}
+
+// ─── POLL（Supabase Realtime 即時同步 ／ 連不上時單機）──
+const POLL_LABELS = ['每週都吃','偶爾吃','很少吃','不確定怎麼做'];
+const pv = [0,0,0,0];
+let myVote = localStorage.getItem('cocoa_vote_'+SESSION_KEY);
+myVote = (myVote===null) ? null : parseInt(myVote);
+
+function renderPollBars(counts){
+  const total=counts.reduce((a,b)=>a+b,0);
+  const pt=document.getElementById('poll-total'); if(pt) pt.textContent=total;
+  document.querySelectorAll('.poll-opt').forEach((o,j)=>{
+    const bar=o.querySelector('.poll-bar-wrap'), fill=o.querySelector('.poll-bar-fill'), pct=o.querySelector('.poll-pct');
+    if(total>0){ bar.style.display='block'; pct.style.display='block'; }
+    const p=total?Math.round(counts[j]/total*100):0;
+    fill.style.width=p+'%'; pct.textContent=p+'% ('+counts[j]+')';
+    o.classList.toggle('active', myVote===j);
+  });
+}
+async function subscribePoll(){
+  if(!RT_OK) return;
+  // 先抓目前票數（讓晚進來的同學也看到累積結果）
+  try{
+    const { data } = await sb.from('poll_counts').select('opt0,opt1,opt2,opt3').eq('session_key', SESSION_KEY).maybeSingle();
+    if(data) renderPollBars([data.opt0||0, data.opt1||0, data.opt2||0, data.opt3||0]);
+  }catch(e){ console.warn('poll initial:', e); }
+  // 訂閱即時變化 → 全班手機同步
+  sb.channel('poll_'+SESSION_KEY)
+    .on('postgres_changes',
+        { event:'*', schema:'public', table:'poll_counts', filter:'session_key=eq.'+SESSION_KEY },
+        payload=>{ const r=payload.new||{}; renderPollBars([r.opt0||0, r.opt1||0, r.opt2||0, r.opt3||0]); })
+    .subscribe();
+}
+function vote(i){
+  const prev=myVote;
+  if(prev===i) return;                          // 已投同一個就不重複
+  myVote=i; localStorage.setItem('cocoa_vote_'+SESSION_KEY, i);
+  if(RT_OK){
+    sb.rpc('poll_vote', { p_session:SESSION_KEY, p_old:(prev==null?-1:prev), p_new:i })
+      .then(({error})=>{ if(error) console.warn('vote rpc:', error); });
+    document.querySelectorAll('.poll-opt').forEach((o,j)=>o.classList.toggle('active', j===i));
+  }else{
+    if(prev!=null && pv[prev]>0) pv[prev]--;
+    pv[i]++; renderPollBars(pv);
+  }
+  logInteraction('poll', {choice:i, label:POLL_LABELS[i]});
+}
+
+// ─── PIE CHART ────────────────────────────────────────
+let pieInited = false;
+function initPie() {
+  pieInited = true;
+  new Chart(document.getElementById('pie'), {
+    type: 'doughnut',
+    data: {
+      labels: ['支持 38%','反對 24%','中立 37%','其他 1%'],
+      datasets: [{
+        data: [38,24,37,1],
+        backgroundColor: ['#00d4ff','#ff006e','#ffb800','#4a5680'],
+        borderColor: '#0a0e27', borderWidth: 3, hoverOffset: 8
+      }]
+    },
+    options: {
+      responsive: false,
+      plugins: { legend: { display: false } },
+      cutout: '62%',
+      animation: { animateScale: true, duration: 900 }
+    }
+  });
+}
+
+// ─── MINIGAME 1: MATCHING ─────────────────────────────
+let mSel = {t: null, d: null}, mScore = 0;
+const mDone = new Set();
+
+function matchSel(type, id) {
+  if (mDone.has(id)) return;
+  const key = type==='t' ? 't' : 'd';
+  const other = key==='t' ? 'd' : 't';
+  if (mSel[key]) {
+    const prev = document.getElementById((key==='t'?'t':'d')+mSel[key]);
+    if (prev && !prev.classList.contains('ok')) prev.classList.remove('sel');
+  }
+  mSel[key] = id;
+  document.getElementById((key==='t'?'t':'d')+id).classList.add('sel');
+
+  if (mSel.t && mSel.d) {
+    if (mSel.t === mSel.d) {
+      ['t'+mSel.t, 'd'+mSel.d].forEach(k => {
+        const el = document.getElementById(k);
+        el.classList.remove('sel'); el.classList.add('ok');
+      });
+      mDone.add(mSel.t); mScore++;
+      document.getElementById('match-score').textContent = mScore;
+      if (mScore===5) {
+        document.getElementById('match-result').innerHTML = '<span style="color:var(--green)">🏆 完美！全部配對正確！</span>';
+        logInteraction('match', {score:mScore, total:5});
+      }
+    } else {
+      ['t'+mSel.t, 'd'+mSel.d].forEach(k => {
+        const el = document.getElementById(k);
+        el.classList.add('ng');
+        setTimeout(() => el.classList.remove('ng','sel'), 650);
+      });
+    }
+    mSel = {t:null, d:null};
+  }
+}
+
+// ─── MINIGAME 2: TRUE/FALSE ───────────────────────────
+const TF = [
+  {q:'NextCoa 的主要原料是葡萄籽和小麥胚芽。', a:false, fb:'❌ 錯！是葡萄籽 ＋ 葵花籽（sunflower seeds）。'},
+  {q:'NextCoa 宣稱與傳統可可相比，可減少 95% 的用水量。', a:true, fb:'✓ 正確！減少 95% 用水量。'},
+  {q:'根據調查，超過半數的消費者支持替代可可方案。', a:false, fb:'❌ 錯！僅 38% 支持，未過半。'},
+  {q:'25–34 歲族群是最願意嘗試精密發酵可可的年齡層。', a:true, fb:'✓ 正確！55% 願意嘗試。'},
+  {q:'NextCoa 含有多種過敏原，購買時需注意標示。', a:false, fb:'❌ 錯！NextCoa 不含 9 大過敏原（free from all major allergens）。'}
+];
+let tfIdx=0, tfScore=0;
+
+function initTF() {
+  tfIdx=0; tfScore=0;
+  document.getElementById('tf-main').style.display='block';
+  document.getElementById('tf-end').style.display='none';
+  document.getElementById('tf-dots').innerHTML = TF.map(()=>'<div class="tf-dot"></div>').join('');
+  renderTF();
+}
+function renderTF() {
+  document.getElementById('tf-q-text').textContent = 'Q'+(tfIdx+1)+'／'+TF.length+'： '+TF[tfIdx].q;
+  document.getElementById('tf-fb').textContent='';
+  document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('sel'));
+}
+function tfAns(ans) {
+  if (tfIdx>=TF.length) return;
+  const q=TF[tfIdx], ok=ans===q.a;
+  const fb=document.getElementById('tf-fb');
+  fb.textContent=q.fb; fb.style.color=ok?'var(--green)':'var(--accent2)';
+  document.querySelectorAll('.tf-dot')[tfIdx].classList.add(ok?'ok':'ng');
+  if(ok) tfScore++;
+  setTimeout(()=>{ tfIdx++; if(tfIdx<TF.length) renderTF(); else endTF(); }, 1300);
+}
+function endTF() {
+  document.getElementById('tf-main').style.display='none';
+  document.getElementById('tf-end').style.display='block';
+  const p=Math.round(tfScore/TF.length*100);
+  const em=p>=80?'🏆':p>=60?'👍':'💪';
+  document.getElementById('tf-final').innerHTML=
+    '<span style="color:var(--accent)">'+em+' '+tfScore+'／'+TF.length+' 答對</span><br>'+
+    '<span style="font-size:var(--t4);color:var(--ink3)">正確率 '+p+'%</span>';
+  logInteraction('truefalse', {score:tfScore, total:TF.length});
+}
+function resetTF() { initTF(); }
+
+// ─── MINIGAME 3: FILL BLANK ───────────────────────────
+const fillOrder=['fb0','fb1','fb2','fb3'];
+let fillCur=0, fillDone=0;
+
+function fillSel(el, val) {
+  if (el.classList.contains('used') || fillCur>=fillOrder.length) return;
+  const blank=document.getElementById(fillOrder[fillCur]);
+  if (!blank) return;
+  if (blank.dataset.ans===val) {
+    blank.textContent=val; blank.classList.remove('current');
+    blank.style.borderBottomColor='var(--green)'; blank.style.color='var(--green)';
+    el.classList.add('used');
+    fillDone++; fillCur++;
+    document.getElementById('fill-done').textContent=fillDone;
+    updateFillCurrent();
+    if (fillDone===4) {
+      document.getElementById('fill-result').innerHTML='<span style="color:var(--green)">🎉 全對！你掌握了所有消費者數據！</span>';
+      logInteraction('fill', {score:4, total:4});
+    }
+  } else {
+    const orig={bc:el.style.borderColor,c:el.style.color};
+    el.style.borderColor='var(--accent2)'; el.style.color='var(--accent2)';
+    setTimeout(()=>{ el.style.borderColor='var(--accent)'; el.style.color='var(--accent)'; }, 600);
+  }
+}
+function updateFillCurrent(){
+  document.querySelectorAll('.fill-blank').forEach(b=>b.classList.remove('current'));
+  if(fillCur<fillOrder.length){ const b=document.getElementById(fillOrder[fillCur]); if(b) b.classList.add('current'); }
+}
+
+// ─── MINIGAME 4: SENTENCE ORDER ───────────────────────
+let dragSrc=null, tapSel=null;
+function initDrag() {
+  const blocks=document.querySelectorAll('.sent-block');
+  blocks.forEach(b=>{
+    b.addEventListener('dragstart', e=>{ if(tapSel){tapSel.classList.remove('sel');tapSel=null;} dragSrc=b; b.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; });
+    b.addEventListener('dragend', ()=>{ b.classList.remove('dragging'); document.querySelectorAll('.sent-block').forEach(x=>x.classList.remove('over')); updateNums(); });
+    b.addEventListener('dragover', e=>{ e.preventDefault(); if(dragSrc!==b) b.classList.add('over'); });
+    b.addEventListener('dragleave', ()=>b.classList.remove('over'));
+    b.addEventListener('drop', e=>{
+      e.preventDefault();
+      if(dragSrc===b) return;
+      const container=document.getElementById('sent-blocks');
+      const all=[...container.querySelectorAll('.sent-block')];
+      const si=all.indexOf(dragSrc), ti=all.indexOf(b);
+      container.insertBefore(dragSrc, si<ti ? b.nextSibling : b);
+      b.classList.remove('over');
+    });
+    // 點兩個句子互換位置（手機或不想拖曳時用）
+    b.addEventListener('click', ()=>{
+      if(tapSel===b){ b.classList.remove('sel'); tapSel=null; return; }
+      if(!tapSel){ tapSel=b; b.classList.add('sel'); return; }
+      swapBlocks(tapSel, b); tapSel.classList.remove('sel'); tapSel=null; updateNums();
+    });
+  });
+  updateNums();
+}
+function swapBlocks(a,b){
+  const par=a.parentNode, mark=document.createElement('span');
+  par.insertBefore(mark,a); par.insertBefore(a,b); par.insertBefore(b,mark); par.removeChild(mark);
+}
+function updateNums() {
+  document.querySelectorAll('.sent-block').forEach((b,i)=>b.querySelector('.sent-num').textContent=i+1);
+}
+function checkOrder() {
+  const blocks=document.querySelectorAll('.sent-block');
+  let ok=true;
+  blocks.forEach((b,i)=>{ if(parseInt(b.dataset.order)!==i) ok=false; });
+  const res=document.getElementById('order-result');
+  if(ok) {
+    res.innerHTML='<span style="color:var(--green)">🎉 完美！段落順序正確——可以直接用來寫作！</span>';
+    blocks.forEach(b=>{ b.style.borderColor='var(--green)'; b.style.background='rgba(0,255,136,.06)'; });
+    logInteraction('order', {correct:true});
+  } else {
+    res.innerHTML='<span style="color:var(--accent2)">🔄 還不對，再試試！提示：先說立場→說理由→舉例子→下結論</span>';
+    blocks.forEach(b=>{ b.style.borderColor=''; b.style.background=''; });
+  }
+}
+
+// ─── INIT ─────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', ()=>{
+  goTo(1);
+  initTF();
+  initDrag();
+  updateFillCurrent();
+  initRealtime();
+  subscribePoll();
+  showGateIfNeeded();
+  const gi=document.getElementById('gate-input');
+  if(gi) gi.addEventListener('keydown', e=>{ if(e.key==='Enter') enterName(); });
+});
+</script>
+</body>
+</html>

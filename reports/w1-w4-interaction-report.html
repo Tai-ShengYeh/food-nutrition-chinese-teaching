@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>食品營養華語文獻閱讀 — 四週互動紀錄</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+:root{
+  --bg:#f8f9fb;--card:#fff;--accent:#4f8ef7;--accent2:#34d399;
+  --warn:#f59e0b;--danger:#f87171;--ink:#1e293b;--ink2:#475569;--ink3:#94a3b8;
+  --border:#e2e8f0;--radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+.page{max-width:1080px;margin:0 auto;padding:24px 16px 60px}
+h1{font-size:1.7rem;font-weight:800;margin-bottom:4px}
+.subtitle{color:var(--ink2);font-size:.95rem;margin-bottom:32px}
+h2{font-size:1.2rem;font-weight:700;margin:0 0 16px;display:flex;align-items:center;gap:8px}
+h3{font-size:1rem;font-weight:600;color:var(--ink2);margin:20px 0 10px}
+.week-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:32px}
+.week-card{background:var(--card);border-radius:var(--radius);padding:18px;border:1px solid var(--border);
+  box-shadow:0 1px 4px #0001;transition:.2s}
+.week-card:hover{box-shadow:0 4px 16px #0002}
+.week-tag{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:10px}
+.tag-w1{background:#fef3c7;color:#92400e}
+.tag-w2{background:#dbeafe;color:#1e40af}
+.tag-w3{background:#d1fae5;color:#065f46}
+.tag-w4{background:#ede9fe;color:#5b21b6}
+.week-card h3{margin:6px 0 4px;font-size:.98rem;color:var(--ink)}
+.week-card .meta{font-size:.82rem;color:var(--ink3);margin-bottom:10px}
+.stat-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
+.stat{text-align:center}
+.stat .num{font-size:1.5rem;font-weight:800;color:var(--accent)}
+.stat .lbl{font-size:.75rem;color:var(--ink3)}
+/* section */
+.section{background:var(--card);border-radius:var(--radius);padding:24px;margin-bottom:24px;
+  border:1px solid var(--border);box-shadow:0 1px 4px #0001}
+/* table */
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{background:#f1f5f9;padding:8px 10px;text-align:left;font-weight:600;color:var(--ink2);border-bottom:2px solid var(--border)}
+td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f8fafc}
+/* badge */
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;font-weight:600;font-size:.82rem}
+.badge-full{background:#d1fae5;color:#065f46}
+.badge-good{background:#dbeafe;color:#1d4ed8}
+.badge-warn{background:#fef3c7;color:#92400e}
+.badge-none{background:#f1f5f9;color:#94a3b8}
+/* dot */
+.dot{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 6px;border-radius:4px;margin:1px}
+.dot-on{background:var(--accent);color:#fff}
+.dot-off{background:#f1f5f9;color:var(--ink3)}
+/* poll bar */
+.poll-row{margin:6px 0}
+.poll-label{font-size:.88rem;margin-bottom:3px;color:var(--ink2)}
+/* chart */
+.chart-wrap{position:relative;height:220px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:640px){.two-col{grid-template-columns:1fr}}
+/* insight */
+.insight-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.insight-card{border-radius:var(--radius);padding:18px;border-left:4px solid var(--accent)}
+.insight-card.green{border-color:var(--accent2);background:#f0fdf4}
+.insight-card.blue{border-color:var(--accent);background:#eff6ff}
+.insight-card.orange{border-color:var(--warn);background:#fffbeb}
+.insight-card.red{border-color:var(--danger);background:#fef2f2}
+.insight-card h4{font-size:.95rem;font-weight:700;margin-bottom:6px}
+.insight-card ul{margin-left:16px;font-size:.87rem;color:var(--ink2)}
+.insight-card li{margin:4px 0}
+/* chip */
+.chip{display:inline-block;font-size:.78rem;background:#e0e7ff;color:#3730a3;
+  padding:2px 8px;border-radius:20px;margin:2px}
+/* footer */
+footer{text-align:center;font-size:.8rem;color:var(--ink3);margin-top:40px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<h1>食品營養華語文獻閱讀</h1>
+<p class="subtitle">2026-05-13 ～ 2026-06-01 ｜ 四週學生互動紀錄整合報告</p>
+
+<!-- ── Overview cards ── -->
+<div class="week-grid">
+  <div class="week-card">
+    <span class="week-tag tag-w1">W1 ｜ 5/13</span>
+    <h3>替代蛋白（普通班）</h3>
+    <p class="meta">altprot-class ｜ Firebase→Supabase</p>
+    <div class="stat-row">
+      <div class="stat"><div class="num">8</div><div class="lbl">具名學生</div></div>
+      <div class="stat"><div class="num">139</div><div class="lbl">互動筆數</div></div>
+      <div class="stat"><div class="num">3</div><div class="lbl">遊戲種類</div></div>
+    </div>
+  </div>
+  <div class="week-card">
+    <span class="week-tag tag-w2">W2 ｜ 5/18</span>
+    <h3>替代蛋白（越南大學班）</h3>
+    <p class="meta">altprot-uni ｜ Firebase→Supabase</p>
+    <div class="stat-row">
+      <div class="stat"><div class="num">7</div><div class="lbl">具名學生</div></div>
+      <div class="stat"><div class="num">49</div><div class="lbl">互動筆數</div></div>
+      <div class="stat"><div class="num">3</div><div class="lbl">遊戲種類</div></div>
+    </div>
+  </div>
+  <div class="week-card">
+    <span class="week-tag tag-w3">W3 ｜ 5/25</span>
+    <h3>食品包裝綠色革命</h3>
+    <p class="meta">food-packaging-vn ｜ Supabase 直連</p>
+    <div class="stat-row">
+      <div class="stat"><div class="num">10</div><div class="lbl">具名學生</div></div>
+      <div class="stat"><div class="num">95</div><div class="lbl">互動筆數</div></div>
+      <div class="stat"><div class="num">3</div><div class="lbl">遊戲種類</div></div>
+    </div>
+  </div>
+  <div class="week-card">
+    <span class="week-tag tag-w4">W4 ｜ 6/1</span>
+    <h3>無可可巧克力的未來</h3>
+    <p class="meta">cocoa-free ｜ Supabase 直連</p>
+    <div class="stat-row">
+      <div class="stat"><div class="num">13</div><div class="lbl">報到學生</div></div>
+      <div class="stat"><div class="num">144</div><div class="lbl">互動筆數</div></div>
+      <div class="stat"><div class="num">5</div><div class="lbl">遊戲種類</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── W4 Detail ── -->
+<div class="section">
+  <h2><span class="week-tag tag-w4" style="margin:0">W4 6/1</span>無可可巧克力｜詳細成績</h2>
+  <div class="two-col">
+    <div>
+      <h3>暖身投票 — 你平常多常吃巧克力？</h3>
+      <div class="poll-row"><div class="poll-label">很少吃</div><div style="display:flex;align-items:center;gap:8px"><div style="background:var(--accent);height:12px;border-radius:6px;width:87px;min-width:2px"></div><span style="font-size:13px;color:#555">8 (73%)</span></div></div>
+      <div class="poll-row"><div class="poll-label">偶爾吃</div><div style="display:flex;align-items:center;gap:8px"><div style="background:var(--accent);height:12px;border-radius:6px;width:21px;min-width:2px"></div><span style="font-size:13px;color:#555">2 (18%)</span></div></div>
+      <div class="poll-row"><div class="poll-label">不確定怎麼做</div><div style="display:flex;align-items:center;gap:8px"><div style="background:var(--accent);height:12px;border-radius:6px;width:10px;min-width:2px"></div><span style="font-size:13px;color:#555">1 (9%)</span></div></div>
+      <p style="font-size:.82rem;color:var(--ink3);margin-top:8px">未投票：S-VN-10, S-VN-07</p>
+    </div>
+    <div>
+      <h3>全班完成率</h3>
+      <div class="chart-wrap"><canvas id="w4completion"></canvas></div>
+    </div>
+  </div>
+  <h3>各學生成績</h3>
+  <table>
+    <thead><tr>
+      <th>學生</th><th>報到</th><th>投票</th>
+      <th style="text-align:center">配對/5</th>
+      <th style="text-align:center">對錯/5</th>
+      <th style="text-align:center">填空/4</th>
+      <th style="text-align:center">重組</th>
+      <th style="text-align:center">完課</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>S-VN-01</strong><br><small><span class="dot dot-on" title="W2">W2</span><span class="dot dot-on" title="W3">W3</span><span class="dot dot-on" title="W4">W4</span></small></td>
+        <td>08:56</td>
+        <td style="font-size:.82rem">偶爾吃</td>
+        <td style="text-align:center"><span class="badge badge-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge badge-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge badge-full">4/4</span></td>
+        <td style="text-align:center"><span class="badge badge-full">V</span></td>
+        <td style="text-align:center"><span class="badge badge-full">V</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-02</strong><br><small><span class="dot dot-on" title="W2">W2</span><span class="dot dot-off" title="W3">W3</span><span class="dot dot-on" title="W4">W4</span></small></td>
+        <td>08:56</td>
+        <td style="font-size:.82rem">很少吃</td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-full">V</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-03</strong><br><small><span class="dot dot-on" title="W2">W2</span><span class="dot dot-on" title="W3">W3</span><span class="dot dot-on" title="W4">W4</span></small></td>
+        <td>08:56</td>
+        <td style="font-size:.82rem">偶爾吃</td>
+        <td style="text-align:center"><span class="badge badge-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge badge-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge badge-full">4/4</span></td>
+        <td style="text-align:center"><span class="badge badge-full">V</span></td>
+        <td style="text-align:center"><span class="badge badge-full">V</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-04</strong><br><small><span class="dot dot-off" title="W2">W2</span><span class="dot dot-off" title="W3">W3</span><span class="dot dot-on" title="W4">W4</span></small></td>
+        <td>08:56</td>
+        <td style="font-size:.82rem">很少吃</td>
+        <td style="text-align:center"><span class="badge badge-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge badge-good">4/5</span></td>
+        <td style="text-align:center"><span class="badge badge-full">4/4</span></td>
+        <td style="text-align:center"><span class="badge badge-full">V</span></td>
+        <td style="text-align:center"><span class="badge badge-full">V</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-05</strong><br><small><span class="dot dot-on" title="W2">W2</span><span class="dot dot-on" title="W3">W3</span><span class="dot dot-on" title="W4">W4</span></small></td>
+        <td>08:57</td>
+        <td style="font-size:.82rem">很少吃</td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge badge-full">4/4</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-full">V</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-06</strong><br><small><span class="dot dot-off" title="W2">W2</span><span class="dot dot-on" title="W3">W3</span><span class="dot dot-on" title="W4">W4</span></small></td>
+        <td>08:57</td>
+        <td style="font-size:.82rem">很少吃</td>
+        <td style="text-align:center"><span class="badge badge-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-07</strong><br><small><span class="dot dot-off" title="W2">W2</span><span class="dot dot-off" title="W3">W3</span><span class="dot dot-on" title="W4">W4</span></small></td>
+        <td>08:57</td>
+        <td style="font-size:.82rem">—</td>
+        <td style="text-align:center"><span class="badge badge-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge badge-warn">3/5</span></td>
+        <td style="text-align:center"><span class="badge badge-full">4/4</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-08</strong><br><small><span class="dot dot-off" title="W2">W2</span><span class="dot dot-off" title="W3">W3</span><span class="dot dot-on" title="W4">W4</span></small></td>
+        <td>08:57</td>
+        <td style="font-size:.82rem">不確定怎麼做</td>
+        <td style="text-align:center"><span class="badge badge-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge badge-good">4/5</span></td>
+        <td style="text-align:center"><span class="badge badge-full">4/4</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-09</strong><br><small><span class="dot dot-on" title="W2">W2</span><span class="dot dot-on" title="W3">W3</span><span class="dot dot-on" title="W4">W4</span></small></td>
+        <td>08:57</td>
+        <td style="font-size:.82rem">很少吃</td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-10</strong><br><small><span class="dot dot-on" title="W2">W2</span><span class="dot dot-off" title="W3">W3</span><span class="dot dot-on" title="W4">W4</span></small></td>
+        <td>08:59</td>
+        <td style="font-size:.82rem">—</td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-11</strong><br><small><span class="dot dot-off" title="W2">W2</span><span class="dot dot-off" title="W3">W3</span><span class="dot dot-on" title="W4">W4</span></small></td>
+        <td>09:00</td>
+        <td style="font-size:.82rem">很少吃</td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-12</strong><br><small><span class="dot dot-off" title="W2">W2</span><span class="dot dot-off" title="W3">W3</span><span class="dot dot-on" title="W4">W4</span></small></td>
+        <td>09:01</td>
+        <td style="font-size:.82rem">很少吃</td>
+        <td style="text-align:center"><span class="badge badge-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge badge-full">5/5</span></td>
+        <td style="text-align:center"><span class="badge badge-full">4/4</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-full">V</span></td>
+      </tr>
+      <tr>
+        <td><strong>S-VN-13</strong><br><small><span class="dot dot-off" title="W2">W2</span><span class="dot dot-off" title="W3">W3</span><span class="dot dot-on" title="W4">W4</span></small></td>
+        <td>09:01</td>
+        <td style="font-size:.82rem">很少吃</td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+        <td style="text-align:center"><span class="badge badge-none">—</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── W3 Detail ── -->
+<div class="section">
+  <h2><span class="week-tag tag-w3" style="margin:0">W3 5/25</span>食品包裝綠色革命｜各遊戲成績</h2>
+  <div class="two-col">
+    <div>
+      <h3>全班平均（最佳分數 %）</h3>
+      <div class="chart-wrap"><canvas id="w3avg"></canvas></div>
+    </div>
+    <div>
+      <h3>各學生成績</h3>
+      <table>
+        <thead><tr><th>學生</th><th style="text-align:center">詞彙</th><th style="text-align:center">段落</th><th style="text-align:center">流程</th></tr></thead>
+        <tbody>
+<tr><td>S-VN-14</td><td style="text-align:center"><span class="badge badge-full">100%</span></td><td style="text-align:center"><span class="badge badge-none">—</span></td><td style="text-align:center"><span class="badge badge-none">—</span></td></tr>
+<tr><td>S-VN-06</td><td style="text-align:center"><span class="badge badge-warn">0%</span></td><td style="text-align:center"><span class="badge badge-warn">13%</span></td><td style="text-align:center"><span class="badge badge-full">100%</span></td></tr>
+<tr><td>S-VN-13</td><td style="text-align:center"><span class="badge badge-full">100%</span></td><td style="text-align:center"><span class="badge badge-full">100%</span></td><td style="text-align:center"><span class="badge badge-warn">67%</span></td></tr>
+<tr><td>S-VN-01</td><td style="text-align:center"><span class="badge badge-warn">50%</span></td><td style="text-align:center"><span class="badge badge-good">88%</span></td><td style="text-align:center"><span class="badge badge-full">100%</span></td></tr>
+<tr><td>S-VN-05</td><td style="text-align:center"><span class="badge badge-good">90%</span></td><td style="text-align:center"><span class="badge badge-full">100%</span></td><td style="text-align:center"><span class="badge badge-full">100%</span></td></tr>
+<tr><td>S-VN-03</td><td style="text-align:center"><span class="badge badge-full">100%</span></td><td style="text-align:center"><span class="badge badge-full">100%</span></td><td style="text-align:center"><span class="badge badge-full">100%</span></td></tr>
+<tr><td>S-VN-07</td><td style="text-align:center"><span class="badge badge-full">100%</span></td><td style="text-align:center"><span class="badge badge-full">100%</span></td><td style="text-align:center"><span class="badge badge-full">100%</span></td></tr>
+<tr><td>S-VN-04</td><td style="text-align:center"><span class="badge badge-warn">0%</span></td><td style="text-align:center"><span class="badge badge-full">100%</span></td><td style="text-align:center"><span class="badge badge-full">100%</span></td></tr>
+<tr><td>S-VN-09</td><td style="text-align:center"><span class="badge badge-full">100%</span></td><td style="text-align:center"><span class="badge badge-full">100%</span></td><td style="text-align:center"><span class="badge badge-full">100%</span></td></tr>
+<tr><td>S-VN-02</td><td style="text-align:center"><span class="badge badge-warn">0%</span></td><td style="text-align:center"><span class="badge badge-full">100%</span></td><td style="text-align:center"><span class="badge badge-warn">67%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── W2 Detail ── -->
+<div class="section">
+  <h2><span class="week-tag tag-w2" style="margin:0">W2 5/18</span>替代蛋白（越南大學班）｜成績摘要</h2>
+  <div class="two-col">
+    <div>
+      <h3>願付溢價投票（最後一票）</h3>
+      <div class="poll-row"><div class="poll-label">+10%</div><div style="display:flex;align-items:center;gap:8px"><div style="background:var(--accent);height:12px;border-radius:6px;width:96px;min-width:2px"></div><span style="font-size:13px;color:#555">4 (80%)</span></div></div>
+      <div class="poll-row"><div class="poll-label">任何價</div><div style="display:flex;align-items:center;gap:8px"><div style="background:var(--accent);height:12px;border-radius:6px;width:24px;min-width:2px"></div><span style="font-size:13px;color:#555">1 (20%)</span></div></div>
+    </div>
+    <div>
+      <h3>詞彙配對排行</h3>
+      <table>
+        <thead><tr><th>學生</th><th style="text-align:center">得分/100</th></tr></thead>
+        <tbody>
+<tr><td>S-VN-15</td><td style="text-align:center"><span class="badge badge-full">100</span></td></tr>
+<tr><td>S-VN-10</td><td style="text-align:center"><span class="badge badge-full">100</span></td></tr>
+<tr><td>S-VN-02</td><td style="text-align:center"><span class="badge badge-full">100</span></td></tr>
+<tr><td>S-VN-03</td><td style="text-align:center"><span class="badge badge-full">100</span></td></tr>
+<tr><td>S-VN-05</td><td style="text-align:center"><span class="badge badge-full">100</span></td></tr>
+<tr><td>S-VN-01</td><td style="text-align:center"><span class="badge badge-good">88</span></td></tr>
+<tr><td>S-VN-06</td><td style="text-align:center"><span class="badge badge-good">88</span></td></tr>
+<tr><td>S-VN-09</td><td style="text-align:center"><span class="badge badge-good">75</span></td></tr>
+        </tbody>
+      </table>
+      <h3 style="margin-top:16px">政策決策樹</h3>
+      <div class="poll-row"><div class="poll-label">碳稅派</div><div style="display:flex;align-items:center;gap:8px"><div style="background:var(--accent);height:12px;border-radius:6px;width:60px;min-width:2px"></div><span style="font-size:13px;color:#555">4 (50%)</span></div></div>
+      <div class="poll-row"><div class="poll-label">教育派</div><div style="display:flex;align-items:center;gap:8px"><div style="background:var(--accent);height:12px;border-radius:6px;width:30px;min-width:2px"></div><span style="font-size:13px;color:#555">2 (25%)</span></div></div>
+      <div class="poll-row"><div class="poll-label">補貼派</div><div style="display:flex;align-items:center;gap:8px"><div style="background:var(--accent);height:12px;border-radius:6px;width:15px;min-width:2px"></div><span style="font-size:13px;color:#555">1 (12%)</span></div></div>
+      <div class="poll-row"><div class="poll-label">投資派</div><div style="display:flex;align-items:center;gap:8px"><div style="background:var(--accent);height:12px;border-radius:6px;width:15px;min-width:2px"></div><span style="font-size:13px;color:#555">1 (12%)</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── W1 Detail ── -->
+<div class="section">
+  <h2><span class="week-tag tag-w1" style="margin:0">W1 5/13</span>替代蛋白（普通班）｜成績摘要</h2>
+  <div class="two-col">
+    <div>
+      <h3>飲食偏好投票（最後一票）</h3>
+      <div class="poll-row"><div class="poll-label">奶類</div><div style="display:flex;align-items:center;gap:8px"><div style="background:var(--accent);height:12px;border-radius:6px;width:51px;min-width:2px"></div><span style="font-size:13px;color:#555">3 (43%)</span></div></div>
+      <div class="poll-row"><div class="poll-label">雞蛋</div><div style="display:flex;align-items:center;gap:8px"><div style="background:var(--accent);height:12px;border-radius:6px;width:34px;min-width:2px"></div><span style="font-size:13px;color:#555">2 (29%)</span></div></div>
+      <div class="poll-row"><div class="poll-label">紅肉</div><div style="display:flex;align-items:center;gap:8px"><div style="background:var(--accent);height:12px;border-radius:6px;width:17px;min-width:2px"></div><span style="font-size:13px;color:#555">1 (14%)</span></div></div>
+      <div class="poll-row"><div class="poll-label">海鮮</div><div style="display:flex;align-items:center;gap:8px"><div style="background:var(--accent);height:12px;border-radius:6px;width:17px;min-width:2px"></div><span style="font-size:13px;color:#555">1 (14%)</span></div></div>
+    </div>
+    <div>
+      <h3>飲食決策樹派別</h3>
+      <div class="poll-row"><div class="poll-label">植物派</div><div style="display:flex;align-items:center;gap:8px"><div style="background:var(--accent);height:12px;border-radius:6px;width:53px;min-width:2px"></div><span style="font-size:13px;color:#555">4 (44%)</span></div></div>
+      <div class="poll-row"><div class="poll-label">昆蟲派</div><div style="display:flex;align-items:center;gap:8px"><div style="background:var(--accent);height:12px;border-radius:6px;width:40px;min-width:2px"></div><span style="font-size:13px;color:#555">3 (33%)</span></div></div>
+      <div class="poll-row"><div class="poll-label">海洋派</div><div style="display:flex;align-items:center;gap:8px"><div style="background:var(--accent);height:12px;border-radius:6px;width:26px;min-width:2px"></div><span style="font-size:13px;color:#555">2 (22%)</span></div></div>
+      <h3 style="margin-top:16px">產品配對遊戲（最佳分數）</h3>
+      <table>
+        <thead><tr><th>暱稱</th><th style="text-align:center">得分</th></tr></thead>
+        <tbody>
+<tr><td>紫色風暴</td><td style="text-align:center"><span class="badge badge-full">71</span></td></tr>
+<tr><td>奶佳樂</td><td style="text-align:center"><span class="badge badge-good">43</span></td></tr>
+<tr><td>屏榮監獄典獄長</td><td style="text-align:center"><span class="badge badge-warn">29</span></td></tr>
+<tr><td>🫪🫪🫪</td><td style="text-align:center"><span class="badge badge-warn">14</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── Cross-week ── -->
+<div class="section">
+  <h2>跨週出席紀錄（越南班 W2–W4）</h2>
+  <table>
+    <thead><tr><th>學生</th><th>出席週次</th><th>出席次數</th></tr></thead>
+    <tbody>
+<tr><td><strong>S-VN-01</strong></td><td><span class="dot dot-on">W2</span><span class="dot dot-on">W3</span><span class="dot dot-on">W4</span></td><td style="text-align:center"><strong>3</strong>/3</td></tr>
+<tr><td><strong>S-VN-05</strong></td><td><span class="dot dot-on">W2</span><span class="dot dot-on">W3</span><span class="dot dot-on">W4</span></td><td style="text-align:center"><strong>3</strong>/3</td></tr>
+<tr><td><strong>S-VN-03</strong></td><td><span class="dot dot-on">W2</span><span class="dot dot-on">W3</span><span class="dot dot-on">W4</span></td><td style="text-align:center"><strong>3</strong>/3</td></tr>
+<tr><td><strong>S-VN-09</strong></td><td><span class="dot dot-on">W2</span><span class="dot dot-on">W3</span><span class="dot dot-on">W4</span></td><td style="text-align:center"><strong>3</strong>/3</td></tr>
+<tr><td><strong>S-VN-06</strong></td><td><span class="dot dot-off">W2</span><span class="dot dot-on">W3</span><span class="dot dot-on">W4</span></td><td style="text-align:center"><strong>2</strong>/3</td></tr>
+<tr><td><strong>S-VN-10</strong></td><td><span class="dot dot-on">W2</span><span class="dot dot-off">W3</span><span class="dot dot-on">W4</span></td><td style="text-align:center"><strong>2</strong>/3</td></tr>
+<tr><td><strong>S-VN-02</strong></td><td><span class="dot dot-on">W2</span><span class="dot dot-off">W3</span><span class="dot dot-on">W4</span></td><td style="text-align:center"><strong>2</strong>/3</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.82rem;color:var(--ink3);margin-top:10px">
+    S-VN-06(W2) vs S-VN-06(W3) 可能為同一人，姓名輸入差異。
+  </p>
+</div>
+
+<!-- ── Teaching Insights ── -->
+<div class="section">
+  <h2>教學建議</h2>
+  <div class="insight-grid">
+
+    <div class="insight-card green">
+      <h4>優勢：核心學生表現穩健</h4>
+      <ul>
+        <li>S-VN-01、S-VN-03 三週全勤，W4 所有遊戲滿分</li>
+        <li>W4 詞彙配對完成者全部滿分（7/7），顯示詞彙設計難度適中</li>
+        <li>段落填空全部滿分（7/7），說明學生對課文理解到位</li>
+        <li>W2 85.7% 願意為替代蛋白付溢價 → 內容觸動學生反思</li>
+      </ul>
+    </div>
+
+    <div class="insight-card blue">
+      <h4>趨勢：學生人數成長中</h4>
+      <ul>
+        <li>W2: 7 人 → W3: 10 人 → W4: 13 人 報到</li>
+        <li>互動工具成熟後學生更願意參與</li>
+        <li>建議持續使用 QR Code 報到 + 即時投票</li>
+        <li>下一步可加入作文提交功能，擴大資料蒐集</li>
+      </ul>
+    </div>
+
+    <div class="insight-card orange">
+      <h4>注意：5 人未完成任何遊戲（W4）</h4>
+      <ul>
+        <li>S-VN-02、S-VN-09、S-VN-10、S-VN-11、S-VN-13</li>
+        <li>S-VN-02 08:56 即報到但無遊戲紀錄（可能手機問題）</li>
+        <li>建議：課前確認手機連線；設置「幫助站」讓學生互助</li>
+        <li>或降低遊戲門檻，先確保全班報到 + 投票</li>
+      </ul>
+    </div>
+
+    <div class="insight-card orange">
+      <h4>注意：句子重組完成率偏低（W4）</h4>
+      <ul>
+        <li>只有 3/13（23%）完成句子重組</li>
+        <li>W3 流程排序平均 92.7%，但 W4 重組格式更難</li>
+        <li>建議：句子重組改為課堂前半段示範再練習</li>
+        <li>或提供示例句，降低認知負荷</li>
+      </ul>
+    </div>
+
+    <div class="insight-card blue">
+      <h4>策略：True/False 可加強</h4>
+      <ul>
+        <li>W4 對錯判斷平均 4.4/5，4 人滿分</li>
+        <li>部分學生重複嘗試多次（S-VN-05嘗試 13 次）</li>
+        <li>建議：對錯題後加「為什麼」的討論，引導批判思考</li>
+        <li>可錯的題目用作下週複習起點</li>
+      </ul>
+    </div>
+
+    <div class="insight-card green">
+      <h4>策略：跨週學習軌跡追蹤</h4>
+      <ul>
+        <li>已可跨週追蹤 S-VN-01、S-VN-05、S-VN-03、S-VN-09、S-VN-02</li>
+        <li>建議建立個人成長檔案（portfolio）</li>
+        <li>下一步：將作文分數也納入 Supabase，形成完整評量記錄</li>
+        <li>期末可自動產生每人的四週進步報告</li>
+      </ul>
+    </div>
+
+    <div class="insight-card red">
+      <h4>行動：W4 後需跟進</h4>
+      <ul>
+        <li>聯繫 5 位未參與遊戲的學生，確認是否有技術問題</li>
+        <li>S-VN-07、S-VN-10 未投票 → 確認是否全程在場</li>
+        <li>建議下週課前 5 分鐘先確認全班手機連線正常</li>
+        <li>可讓早到的學生（S-VN-01、S-VN-03）擔任技術小助理</li>
+      </ul>
+    </div>
+
+    <div class="insight-card blue">
+      <h4>課程設計：投票數據可用於辯論</h4>
+      <ul>
+        <li>W4 投票：73% 很少吃巧克力 → 直接反駁「可可需求不高」立場</li>
+        <li>W2 投票：85.7% 願付溢價 → 可作為替代蛋白推廣的正面論點</li>
+        <li>W2 決策樹：58% 選碳稅派 → 反映制度思維優於個人改變</li>
+        <li>這些真實數據是最好的辯論素材，建議直接投影給全班看</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  資料來源：Supabase（[supabase-project-id]）｜整理日期：2026-06-01｜由 Claude 自動生成
+</footer>
+
+</div><!-- end .page -->
+
+<script>
+// W4 Completion chart
+new Chart(document.getElementById('w4completion'), {
+  type: 'bar',
+  data: {
+    labels: ['詞彙配對','對錯判斷','段落填空','句子重組','完整看完'],
+    datasets: [{
+      label: '完成人數',
+      data: [7,7,7,3,6],
+      backgroundColor: ['#4f8ef7','#34d399','#a78bfa','#f59e0b','#f87171'],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true, max: 13, title: { display: true, text: '人數（共 13 人）' } }
+    }
+  }
+});
+
+// W3 avg chart
+new Chart(document.getElementById('w3avg'), {
+  type: 'bar',
+  data: {
+    labels: ['詞彙配對','段落配對','流程排序'],
+    datasets: [{
+      label: '全班平均 %',
+      data: [64.0,89.0,92.7],
+      backgroundColor: ['#4f8ef7','#34d399','#a78bfa'],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true, max: 100,
+           title: { display: true, text: '平均最佳分數 %' } }
+    }
+  }
+});
+</script>
+</body>
+</html>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>食品營養華語文獻閱讀｜互動教學工具</title>
 <style>
-:root{--accent:#6d28d9;--bg:#f5f3ff;--card:#fff;--border:#ddd6fe}
+:root{--accent:#6d28d9;--bg:#f5f3ff;--card:#fff;--border:#ddd6fe;--glp:#0891b2;--glp-bg:#ecfeff;--glp-border:#a5f3fc}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1e293b;line-height:1.6}
 .hero{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:48px 24px;text-align:center}
@@ -62,13 +62,69 @@ footer{text-align:center;font-size:.78rem;color:#94a3b8;margin-top:40px}
     原始資料存於 Supabase，不含於本 repo。
   </div>
 
+  <h2 style="color:var(--glp)">💊 GLP-1 課程互動遊戲</h2>
+  <p style="font-size:.82rem;color:#64748b;margin:-8px 0 12px">
+    主題：瘦瘦針如何重塑食品市場｜Firebase 即時資料｜Spring 2026
+  </p>
+  <div class="grid">
+    <a class="card" href="https://tai-shengyeh.github.io/glp1-chinese-class/" target="_blank"
+       style="border-top-color:var(--glp);background:var(--glp-bg);border-color:var(--glp-border)">
+      <span class="tag" style="background:#cffafe;color:#0e7490">GLP-1 主頁</span>
+      <h3>4 個遊戲 QR Code 入口</h3>
+      <p>詞彙配對、數據判讀、產業分類、句型填空。掃碼即玩。</p>
+    </a>
+    <a class="card" href="https://tai-shengyeh.github.io/glp1-chinese-class/game-01-vocab-match.html" target="_blank"
+       style="border-top-color:var(--glp)">
+      <span class="tag" style="background:#cffafe;color:#0e7490">遊戲 1</span>
+      <h3>9 詞配對</h3>
+      <p>GLP-1 核心詞彙配對練習，對應投影片 Slide 5。</p>
+    </a>
+    <a class="card" href="https://tai-shengyeh.github.io/glp1-chinese-class/game-02-data-mcq.html" target="_blank"
+       style="border-top-color:var(--glp)">
+      <span class="tag" style="background:#cffafe;color:#0e7490">遊戲 2</span>
+      <h3>三大數據判讀</h3>
+      <p>選擇題理解市場數據，對應 Slide 13。</p>
+    </a>
+    <a class="card" href="https://tai-shengyeh.github.io/glp1-chinese-class/game-03-industry-sort.html" target="_blank"
+       style="border-top-color:var(--glp)">
+      <span class="tag" style="background:#cffafe;color:#0e7490">遊戲 3</span>
+      <h3>受惠 vs 受壓產業分類</h3>
+      <p>拖放排序，判斷各產業受 GLP-1 影響方向，Slide 14。</p>
+    </a>
+    <a class="card" href="https://tai-shengyeh.github.io/glp1-chinese-class/game-04-pattern-fill.html" target="_blank"
+       style="border-top-color:var(--glp)">
+      <span class="tag" style="background:#cffafe;color:#0e7490">遊戲 4</span>
+      <h3>句型填空</h3>
+      <p>學術句型練習，對應 Slide 15–16。</p>
+    </a>
+  </div>
+
+  <div class="note">
+    🔒 <strong>個資說明</strong>：班級報告中的學生姓名已替換為代碼（S-VN-01 等），
+    原始互動資料存於 Supabase／Firebase，不含於本 repo。
+  </div>
+
   <h2>📚 教學設計說明</h2>
   <p style="font-size:.88rem;color:#475569;line-height:1.8">
     本課程為食品營養學術華語閱讀，對象為 A2–B1 越南大學生。<br>
-    期中考前使用傳統 PPT；期中考後改為 HTML 互動工具＋Supabase 即時資料收集。<br>
+    期中考前使用傳統 PPT；期中考後改為 HTML 互動工具＋即時資料收集（Firebase → Supabase）。<br>
     教學實踐研究比較兩種方式對詞彙學習與課堂參與的影響。
   </p>
+
+  <h2>🗂️ 相關 Repo</h2>
+  <div class="grid">
+    <a class="card" href="https://github.com/Tai-ShengYeh/food-nutrition-chinese-teaching" target="_blank">
+      <span class="tag">本 Repo</span>
+      <h3>food-nutrition-chinese-teaching</h3>
+      <p>W1–W4 替代蛋白／包裝／可可 互動報告與投影片</p>
+    </a>
+    <a class="card" href="https://github.com/Tai-ShengYeh/glp1-chinese-class" target="_blank">
+      <span class="tag">姊妹 Repo</span>
+      <h3>glp1-chinese-class</h3>
+      <p>GLP-1 瘦瘦針課程 4 個遊戲，Firebase 版本</p>
+    </a>
+  </div>
 </div>
-<footer>Powered by GitHub Pages ｜ Data: Supabase ｜ 2026</footer>
+<footer>Powered by GitHub Pages ｜ Data: Supabase & Firebase ｜ 2026 ｜ Tai-Sheng Yeh</footer>
 </body>
 </html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>W10 遊戲入口｜機能性啤酒</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<style>
+:root{--amber:#d97706;--amber2:#f59e0b;--bg:#0a0d12;--surf:#13171f;
+  --surf2:#1d2230;--text:#e2e8f0;--text2:#94a3b8;--border:#1e2a3a;--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;
+  min-height:100vh;padding:32px 16px 60px;text-align:center}
+h1{font-size:1.8rem;font-weight:900;color:var(--amber2);margin-bottom:6px}
+.subtitle{color:var(--text2);font-size:.9rem;margin-bottom:36px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;
+  max-width:860px;margin:0 auto}
+.game-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);
+  padding:24px 16px;text-decoration:none;color:var(--text);transition:.2s;display:block}
+.game-card:hover{border-color:var(--amber);transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.4)}
+.game-icon{font-size:2.5rem;margin-bottom:10px}
+.game-title{font-size:1rem;font-weight:700;color:var(--amber2);margin-bottom:6px}
+.game-desc{font-size:.8rem;color:var(--text2);line-height:1.5}
+.qr-wrap{margin-top:12px}
+.qr-wrap canvas{border-radius:8px}
+.back-link{display:block;margin-top:28px;color:var(--text2);font-size:.85rem;text-decoration:none}
+.back-link:hover{color:var(--amber2)}
+</style>
+</head>
+<body>
+<h1>🍺 W10 互動遊戲</h1>
+<div class="subtitle">機能性啤酒｜掃描 QR Code 或點擊直接進入</div>
+<div class="grid">
+  <a class="game-card" href="01_vocab_match.html">
+    <div class="game-icon">🔤</div>
+    <div class="game-title">詞彙配對</div>
+    <div class="game-desc">機能成分名稱 ↔ 功效說明<br>8 對詞彙</div>
+    <div class="qr-wrap"><canvas id="qr1"></canvas></div>
+  </a>
+  <a class="game-card" href="02_brand_sort.html">
+    <div class="game-icon">🏷️</div>
+    <div class="game-title">品牌分類</div>
+    <div class="game-desc">拖放品牌到正確軸線<br>7 個品牌 × 3 軸線</div>
+    <div class="qr-wrap"><canvas id="qr2"></canvas></div>
+  </a>
+  <a class="game-card" href="03_true_false.html">
+    <div class="game-icon">✅</div>
+    <div class="game-title">是非判斷</div>
+    <div class="game-desc">10 道數據與知識判斷題<br>立即解析</div>
+    <div class="qr-wrap"><canvas id="qr3"></canvas></div>
+  </a>
+  <a class="game-card" href="04_fill_blank.html">
+    <div class="game-icon">✏️</div>
+    <div class="game-title">句型填空</div>
+    <div class="game-desc">從詞庫選詞填入句子<br>7 個關鍵句型</div>
+    <div class="qr-wrap"><canvas id="qr4"></canvas></div>
+  </a>
+</div>
+<a class="back-link" href="../slides.html">← 回投影片</a>
+<script>
+const base=location.href.replace('index.html','');
+['01_vocab_match','02_brand_sort','03_true_false','04_fill_blank'].forEach((f,i)=>{
+  QRCode.toCanvas(document.getElementById('qr'+(i+1)),base+f+'.html',
+    {width:120,margin:1,color:{dark:'#000',light:'#fff'}});
+});
+</script>
+</body>
+</html>

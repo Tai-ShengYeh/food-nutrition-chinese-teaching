@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>是非判斷｜W10 機能性啤酒</title>
+<style>
+:root{--amber:#d97706;--amber2:#f59e0b;--green:#059669;--green2:#10b981;
+  --red:#ef4444;--bg:#0a0d12;--surf:#13171f;--surf2:#1d2230;
+  --text:#e2e8f0;--text2:#94a3b8;--border:#1e2a3a;--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;
+  min-height:100vh;padding:24px 16px 60px}
+.page{max-width:700px;margin:0 auto;text-align:center}
+h1{font-size:1.6rem;font-weight:800;color:var(--amber2);margin-bottom:6px}
+.subtitle{color:var(--text2);font-size:.88rem;margin-bottom:24px}
+.progress-wrap{background:var(--surf2);border-radius:4px;height:6px;margin-bottom:24px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--amber),var(--green2));transition:width .3s}
+.q-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);
+  padding:32px 28px;margin-bottom:20px;min-height:140px;display:flex;align-items:center;justify-content:center}
+.q-text{font-size:1.05rem;line-height:1.65;font-weight:500}
+.btn-row{display:flex;gap:14px;justify-content:center;margin-bottom:16px}
+.tf-btn{flex:1;max-width:180px;padding:14px 0;border:2px solid;border-radius:10px;
+  font-size:1.1rem;font-weight:800;cursor:pointer;transition:.2s;background:var(--surf2)}
+.tf-btn.true-btn{border-color:var(--green);color:var(--green2)}
+.tf-btn.false-btn{border-color:var(--red);color:var(--red)}
+.tf-btn:hover{opacity:.85;transform:translateY(-2px)}
+.feedback{padding:14px 20px;border-radius:10px;font-size:.9rem;font-weight:600;
+  line-height:1.55;margin-bottom:16px;display:none}
+.feedback.correct{background:#022c22;border:1px solid var(--green);color:var(--green2)}
+.feedback.wrong{background:#450a0a;border:1px solid var(--red);color:#fca5a5}
+.next-btn{background:var(--amber);color:#0a0d12;border:none;border-radius:8px;
+  padding:10px 32px;font-size:.9rem;font-weight:700;cursor:pointer;display:none}
+.score-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;display:none}
+.score-big{font-size:3rem;font-weight:900;color:var(--amber2)}
+.restart-btn{margin-top:16px;background:var(--amber);color:#0a0d12;border:none;
+  border-radius:8px;padding:10px 28px;font-size:.9rem;font-weight:700;cursor:pointer}
+.back-link{display:block;margin-top:16px;font-size:.82rem;color:var(--text2);text-decoration:none}
+.back-link:hover{color:var(--amber2)}
+.q-counter{font-size:.8rem;color:var(--text2);margin-bottom:12px}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>✅ 是非判斷</h1>
+  <div class="subtitle">W10 機能性啤酒｜根據文章判斷每句話是否正確</div>
+  <div class="progress-wrap"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+  <div class="q-counter" id="qCounter">第 1 題，共 10 題</div>
+  <div class="q-card"><div class="q-text" id="qText"></div></div>
+  <div class="btn-row">
+    <button class="tf-btn true-btn" onclick="answer(true)">⭕ 正確</button>
+    <button class="tf-btn false-btn" onclick="answer(false)">✕ 錯誤</button>
+  </div>
+  <div class="feedback" id="feedback"></div>
+  <button class="next-btn" id="nextBtn" onclick="next()">下一題 →</button>
+  <div class="score-card" id="scoreCard">
+    <div style="font-size:1rem;color:var(--text2);margin-bottom:8px">最終得分</div>
+    <div class="score-big" id="scoreNum"></div>
+    <div style="font-size:.88rem;color:var(--text2);margin-top:8px" id="scoreDetail"></div>
+    <button class="restart-btn" onclick="init()">🔄 再玩一次</button>
+    <a class="back-link" href="../slides.html">← 回投影片</a>
+  </div>
+</div>
+
+<script>
+const QS=[
+  {q:'泰國 Full Moon Breweries 的 Say Play Cold IPA 每份含 2.5g 碳水化合物，一般啤酒約 12–15g。',ans:true,exp:'正確。文章明確指出 Say Play Cold IPA 每份僅含 2.5 克碳水化合物，一般啤酒為 12～15 克。'},
+  {q:'Probicent Red Billion Probiotic Beer 的益生菌含量是 1 億 CFU（10⁸）。',ans:false,exp:'錯誤。文章指出每份含 10 億 CFU（10⁹），不是 1 億。CFU 是菌落形成單位。'},
+  {q:'Collider 機能啤酒含有酒精，ABV 約為 5%。',ans:false,exp:'錯誤。Collider 是無酒精機能啤酒系列，酒精含量低於 0.5% ABV，不是 5%。'},
+  {q:'日本 SAPPORO うまみ搾り 添加甲肌肽（Anserine），通過日本健康食品認證。',ans:true,exp:'正確。文章指出 SAPPORO うまみ搾り 無酒精、不含普林、添加甲肌肽，並取得日本健康食品認證。'},
+  {q:'L-茶胺酸（L-Theanine）是人工合成的化學成分，不存在於天然食物中。',ans:false,exp:'錯誤。L-茶胺酸是茶葉中的天然成分，並非人工合成。文章明確指出這是茶葉天然成分。'},
+  {q:'南非醉茄（Ashwagandha）的功效包括促進 GABA 生成並降低皮質醇。',ans:true,exp:'正確。文章指出南非醉茄可促進 GABA 生成、降低皮質醇（壓力荷爾蒙）。'},
+  {q:'Zesty Gut OMG 系列小麥啤酒每 330ml 熱量不到 100 卡。',ans:true,exp:'正確。文章指出 330 毫升瓶裝熱量不到 100 卡，同時含 10 億 CFU 益生菌。'},
+  {q:'文章認為啤酒市場轉型的主要驅動力是「降低酒精稅」政策。',ans:false,exp:'錯誤。文章指出轉型主要驅動力是「疫情後健康意識提升」以及年輕消費者降低對酒精依賴，與稅收政策無關。'},
+  {q:'甲肌肽（Anserine）的功效主要是減少尿酸堆積並加速排除。',ans:true,exp:'正確。文章明確描述甲肌肽可減少尿酸堆積、加速排除尿酸，這對痛風風險族群有健康意義。'},
+  {q:'文章提到的機能性啤酒「三大軸線」依序為：植物萃取→益生菌→取消負擔。',ans:false,exp:'錯誤。三大軸線依市場演化邏輯為：①取消負擔（降低身體負擔）→②益生菌（腸道機能）→③植物萃取（情緒管理），順序不同。'},
+];
+
+let cur=0,score=0,answered=false,startTime=Date.now();
+const SB_URL='https://qmldcjkllisvfgegkfsz.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbGRjamtsbGlzdmZnZWdrZnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMjM5ODYsImV4cCI6MjA4NjY5OTk4Nn0.Bfj0W7HN_n_vcjGe5502Chamk0YV-de8a0fxF4Nyczk';
+const COURSE='w10-functional-beer';
+const SESSION=COURSE+'-'+new Date().toISOString().slice(0,10);
+
+function init(){
+  cur=0;score=0;answered=false;startTime=Date.now();
+  document.getElementById('scoreCard').style.display='none';
+  document.querySelector('.q-card').style.display='flex';
+  document.querySelector('.btn-row').style.display='flex';
+  document.getElementById('feedback').style.display='none';
+  document.getElementById('nextBtn').style.display='none';
+  renderQ();
+}
+function renderQ(){
+  if(cur>=QS.length){endGame();return;}
+  const q=QS[cur];
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qCounter').textContent=`第 ${cur+1} 題，共 ${QS.length} 題`;
+  document.getElementById('prog').style.width=((cur/QS.length)*100)+'%';
+  answered=false;
+  document.getElementById('feedback').style.display='none';
+  document.getElementById('nextBtn').style.display='none';
+  document.querySelectorAll('.tf-btn').forEach(b=>{b.disabled=false;b.style.opacity='1';});
+}
+function answer(val){
+  if(answered)return;
+  answered=true;
+  const q=QS[cur];
+  const correct=val===q.ans;
+  if(correct)score++;
+  const fb=document.getElementById('feedback');
+  fb.className='feedback '+(correct?'correct':'wrong');
+  fb.textContent=(correct?'⭕ 正確！':'✕ 錯誤。')+' '+q.exp;
+  fb.style.display='block';
+  document.getElementById('nextBtn').style.display='block';
+  document.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+}
+function next(){cur++;renderQ();}
+async function endGame(){
+  document.querySelector('.q-card').style.display='none';
+  document.querySelector('.btn-row').style.display='none';
+  document.getElementById('feedback').style.display='none';
+  document.getElementById('nextBtn').style.display='none';
+  const s=document.getElementById('scoreCard');
+  s.style.display='block';
+  const pct=Math.round(score/QS.length*100);
+  document.getElementById('scoreNum').textContent=score+'/'+QS.length;
+  document.getElementById('scoreDetail').textContent=`答對率 ${pct}%｜耗時 ${Math.round((Date.now()-startTime)/1000)} 秒`;
+  document.getElementById('prog').style.width='100%';
+  try{
+    await fetch(`${SB_URL}/rest/v1/interactions`,{
+      method:'POST',
+      headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
+      body:JSON.stringify({course_code:COURSE,session_id:SESSION,
+        student_id:'anon-'+Math.random().toString(36).slice(2,8),
+        game_id:'03-true-false',game_name:'是非判斷',score,
+        total:QS.length,duration_ms:Date.now()-startTime})
+    });
+  }catch(e){}
+}
+init();
+</script>
+</body>
+</html>

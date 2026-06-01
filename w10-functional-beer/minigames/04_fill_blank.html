@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>句型填空｜W10 機能性啤酒</title>
+<style>
+:root{--amber:#d97706;--amber2:#f59e0b;--amber-dim:#451a03;
+  --green:#059669;--green2:#10b981;
+  --bg:#0a0d12;--surf:#13171f;--surf2:#1d2230;
+  --text:#e2e8f0;--text2:#94a3b8;--border:#1e2a3a;--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;
+  min-height:100vh;padding:24px 16px 60px}
+.page{max-width:720px;margin:0 auto}
+h1{font-size:1.5rem;font-weight:800;color:var(--amber2);text-align:center;margin-bottom:6px}
+.subtitle{text-align:center;color:var(--text2);font-size:.88rem;margin-bottom:24px}
+.q-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);
+  padding:24px;margin-bottom:16px}
+.q-num{font-size:.72rem;font-weight:700;color:var(--amber);margin-bottom:10px;
+  text-transform:uppercase;letter-spacing:.08em}
+.q-sentence{font-size:1rem;line-height:1.9;margin-bottom:14px}
+.blank-input{background:var(--surf2);border:1px solid var(--border);border-radius:6px;
+  color:var(--text);padding:4px 10px;font-size:.95rem;font-family:inherit;
+  width:140px;text-align:center;outline:none}
+.blank-input:focus{border-color:var(--amber)}
+.blank-input.correct{border-color:var(--green);background:#022c22;color:var(--green2)}
+.blank-input.wrong{border-color:#ef4444;background:#450a0a;color:#fca5a5}
+.hint{font-size:.78rem;color:var(--text3);margin-top:6px}
+.ans-area{font-size:.82rem;margin-top:8px;padding:8px 12px;border-radius:6px;
+  background:var(--surf2);display:none}
+.ans-area.show{display:block}
+.word-bank{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;margin-bottom:20px}
+.word-bank h3{font-size:.8rem;font-weight:700;color:var(--text2);margin-bottom:10px}
+.word-chips{display:flex;flex-wrap:wrap;gap:8px}
+.word-chip{background:var(--surf2);border:1px solid var(--border);border-radius:6px;
+  padding:4px 12px;font-size:.85rem;cursor:pointer;transition:.15s}
+.word-chip:hover{border-color:var(--amber);color:var(--amber2)}
+.word-chip.used{opacity:.4;text-decoration:line-through;cursor:default}
+.submit-btn{display:block;margin:16px auto 0;background:var(--amber);color:#0a0d12;
+  border:none;border-radius:8px;padding:10px 32px;font-size:.9rem;font-weight:700;cursor:pointer}
+.result{text-align:center;padding:16px;background:var(--surf);border-radius:var(--radius);
+  border:1px solid var(--border);margin-top:16px;display:none}
+.restart-btn{margin-top:10px;background:var(--amber);color:#0a0d12;border:none;
+  border-radius:8px;padding:8px 24px;font-size:.85rem;font-weight:700;cursor:pointer}
+.back-link{display:block;text-align:center;margin-top:14px;
+  font-size:.82rem;color:var(--text2);text-decoration:none}
+.back-link:hover{color:var(--amber2)}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>✏️ 句型填空</h1>
+  <div class="subtitle">W10 機能性啤酒｜從詞庫選詞填入句子空格</div>
+
+  <div class="word-bank">
+    <h3>📚 詞庫（每詞只用一次）</h3>
+    <div class="word-chips" id="wordBank"></div>
+  </div>
+
+  <div id="questions"></div>
+  <button class="submit-btn" onclick="submit()">提交答案</button>
+  <div class="result" id="result"></div>
+  <div style="text-align:center"><button class="restart-btn" id="restartBtn" style="display:none" onclick="location.reload()">🔄 再試一次</button></div>
+  <a class="back-link" href="../slides.html">← 回投影片</a>
+</div>
+
+<script>
+const QS=[
+  {before:'Say Play Cold IPA 每份含',after:'克碳水化合物，遠低於一般啤酒的 12–15 克。',ans:'2.5',hint:'是一個數字（帶小數點）'},
+  {before:'Probicent Red Billion 每份含',after:'CFU 乳酸菌，達到腸道保健的有效劑量。',ans:'10億',hint:'用中文表示活菌數量'},
+  {before:'南非醉茄可以促進',after:'生成，降低壓力荷爾蒙皮質醇的濃度。',ans:'GABA',hint:'一種神經傳導物質的英文縮寫'},
+  {before:'日本 SAPPORO うまみ搾り 添加',after:'，具有減少尿酸堆積的功效，已取得日本健康食品認證。',ans:'甲肌肽',hint:'一種天然存在於魚類的二肽'},
+  {before:'機能性啤酒市場的演化邏輯是：先',after:'身體負擔，再加入腸道機能成分，最後優化情緒體驗。',ans:'降低',hint:'移除不健康成分的動作'},
+  {before:'L-茶胺酸可提升',after:'與多巴胺，帶來清醒而放鬆的感受。',ans:'血清素',hint:'與幸福感相關的神經傳導物質'},
+  {before:'Collider 系列機能啤酒的酒精含量低於',after:'ABV，屬於實質上的無酒精飲品。',ans:'0.5%',hint:'用百分比表示，帶小數點'},
+];
+
+const BANK=['2.5','10億','GABA','甲肌肽','降低','血清素','0.5%',
+  'CFU','甲肌肽','乳酸菌','猴頭菇','普林'];
+
+const SB_URL='https://qmldcjkllisvfgegkfsz.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbGRjamtsbGlzdmZnZWdrZnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMjM5ODYsImV4cCI6MjA4NjY5OTk4Nn0.Bfj0W7HN_n_vcjGe5502Chamk0YV-de8a0fxF4Nyczk';
+const COURSE='w10-functional-beer';
+const SESSION=COURSE+'-'+new Date().toISOString().slice(0,10);
+let startTime=Date.now();
+
+// Shuffle and render word bank
+const shuffledBank=[...BANK].sort(()=>Math.random()-.5);
+const wb=document.getElementById('wordBank');
+shuffledBank.forEach(w=>{
+  const chip=document.createElement('span');
+  chip.className='word-chip';chip.textContent=w;chip.dataset.word=w;
+  chip.onclick=()=>pasteWord(w,chip);
+  wb.appendChild(chip);
+});
+
+// Render questions
+let activeInput=null;
+const qc=document.getElementById('questions');
+QS.forEach((q,i)=>{
+  const div=document.createElement('div');
+  div.className='q-card';
+  div.innerHTML=`<div class="q-num">第 ${i+1} 題</div>
+    <div class="q-sentence">
+      ${q.before}
+      <input class="blank-input" id="inp${i}" type="text" placeholder="___" autocomplete="off"
+        onfocus="activeInput=this" onblur="activeInput=null">
+      ${q.after}
+    </div>
+    <div class="hint">💡 提示：${q.hint}</div>
+    <div class="ans-area" id="ans${i}"></div>`;
+  qc.appendChild(div);
+});
+
+function pasteWord(w,chip){
+  if(!activeInput)return;
+  if(chip.classList.contains('used'))return;
+  const prev=activeInput.dataset.usedChip;
+  if(prev){const old=document.querySelector(`.word-chip[data-word="${prev}"]`);if(old)old.classList.remove('used');}
+  activeInput.value=w;
+  activeInput.dataset.usedChip=w;
+  chip.classList.add('used');
+}
+
+async function submit(){
+  let correct=0;
+  QS.forEach((q,i)=>{
+    const inp=document.getElementById('inp'+i);
+    const val=inp.value.trim();
+    const ok=val===q.ans||val.replace(/\s/g,'')===q.ans.replace(/\s/g,'');
+    inp.classList.remove('correct','wrong');
+    inp.classList.add(ok?'correct':'wrong');
+    if(ok)correct++;
+    const ans=document.getElementById('ans'+i);
+    ans.classList.add('show');
+    ans.innerHTML=ok?`<span style="color:var(--green2)">✓ 正確答案：${q.ans}</span>`
+      :`<span style="color:#fca5a5">✗ 正確答案：<strong>${q.ans}</strong></span>`;
+  });
+  const pct=Math.round(correct/QS.length*100);
+  const r=document.getElementById('result');
+  r.style.display='block';
+  r.innerHTML=`<div style="font-size:1.3rem;font-weight:800;color:${correct===QS.length?'var(--green2)':'var(--amber2)'}">
+    ${correct}/${QS.length} 正確（得分 ${pct} 分）</div>
+    <div style="font-size:.85rem;color:var(--text2);margin-top:6px">
+    ${correct===QS.length?'🎉 全部答對！':'紅色輸入框顯示錯誤答案，請複習後再試。'}</div>`;
+  document.getElementById('restartBtn').style.display='inline-block';
+  try{
+    await fetch(`${SB_URL}/rest/v1/interactions`,{
+      method:'POST',
+      headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
+      body:JSON.stringify({course_code:COURSE,session_id:SESSION,
+        student_id:'anon-'+Math.random().toString(36).slice(2,8),
+        game_id:'04-fill-blank',game_name:'句型填空',
+        score:correct,total:QS.length,duration_ms:Date.now()-startTime})
+    });
+  }catch(e){}
+}
+</script>
+</body>
+</html>

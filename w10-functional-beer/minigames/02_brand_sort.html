@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>品牌分類｜W10 機能性啤酒</title>
+<style>
+:root{--amber:#d97706;--amber2:#f59e0b;--amber-dim:#451a03;
+  --green:#059669;--green2:#10b981;--green-dim:#022c22;
+  --purple:#7c3aed;--purple2:#c4b5fd;--purple-dim:#2e1065;
+  --bg:#0a0d12;--surf:#13171f;--surf2:#1d2230;
+  --text:#e2e8f0;--text2:#94a3b8;--border:#1e2a3a;--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;
+  min-height:100vh;padding:24px 16px 60px}
+.page{max-width:960px;margin:0 auto}
+h1{font-size:1.5rem;font-weight:800;color:var(--amber2);text-align:center;margin-bottom:6px}
+.subtitle{text-align:center;color:var(--text2);font-size:.88rem;margin-bottom:24px}
+.score-info{text-align:center;margin-bottom:20px;font-size:.9rem;color:var(--text2)}
+.score-info strong{color:var(--amber2);font-size:1.1rem}
+
+/* drag pool */
+.pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+  background:var(--surf);border:1px dashed var(--border);border-radius:var(--radius);
+  padding:18px;min-height:70px;margin-bottom:24px}
+.brand-chip{background:var(--surf2);border:2px solid var(--border);border-radius:8px;
+  padding:8px 14px;cursor:grab;font-size:.88rem;font-weight:600;
+  transition:.2s;user-select:none}
+.brand-chip:hover{border-color:var(--amber);color:var(--amber2)}
+.brand-chip.dragging{opacity:.5;cursor:grabbing}
+.brand-chip.placed{display:none}
+
+/* drop zones */
+.zones{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.zone{background:var(--surf);border:2px dashed var(--border);border-radius:var(--radius);
+  padding:16px;min-height:160px}
+.zone.over{border-style:solid;border-color:var(--amber)}
+.zone-title{font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.zone[data-zone="0"] .zone-title{color:var(--amber2)}
+.zone[data-zone="1"] .zone-title{color:var(--green2)}
+.zone[data-zone="2"] .zone-title{color:var(--purple2)}
+.zone-chips{display:flex;flex-wrap:wrap;gap:8px;min-height:40px}
+.placed-chip{font-size:.82rem;font-weight:600;padding:6px 12px;border-radius:6px;cursor:pointer}
+.placed-chip.correct{background:var(--green-dim);border:1px solid var(--green);color:var(--green2)}
+.placed-chip.wrong{background:#450a0a;border:1px solid #ef4444;color:#fca5a5}
+.placed-chip.pending{background:var(--surf2);border:1px solid var(--border);color:var(--text2)}
+
+.check-btn{display:block;margin:0 auto;background:var(--amber);color:#0a0d12;
+  border:none;border-radius:8px;padding:10px 32px;font-size:.9rem;font-weight:700;cursor:pointer}
+.result{text-align:center;margin-top:16px;font-size:1rem;font-weight:700;
+  color:var(--green2);display:none;padding:14px;
+  background:var(--surf);border:1px solid var(--green);border-radius:var(--radius)}
+.restart-btn{margin-top:12px;background:var(--amber);color:#0a0d12;border:none;
+  border-radius:8px;padding:8px 24px;font-size:.85rem;font-weight:700;cursor:pointer}
+.back-link{display:block;text-align:center;margin-top:14px;
+  font-size:.82rem;color:var(--text2);text-decoration:none}
+.back-link:hover{color:var(--amber2)}
+@media(max-width:600px){.zones{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>🏷️ 品牌分類</h1>
+  <div class="subtitle">W10 機能性啤酒｜把品牌卡片拖到正確的機能軸線區域</div>
+  <div class="score-info">拖放品牌 → 點擊「確認答案」</div>
+
+  <div class="pool" id="pool"></div>
+
+  <div class="zones">
+    <div class="zone" data-zone="0"
+      ondragover="ev.preventDefault();this.classList.add('over')"
+      ondragleave="this.classList.remove('over')"
+      ondrop="drop(event,0)">
+      <div class="zone-title">⚡ 軸線一：取消負擔<br><small>低碳・低酒精・低熱量</small></div>
+      <div class="zone-chips" id="zone0"></div>
+    </div>
+    <div class="zone" data-zone="1"
+      ondragover="ev.preventDefault();this.classList.add('over')"
+      ondragleave="this.classList.remove('over')"
+      ondrop="drop(event,1)">
+      <div class="zone-title">🦠 軸線二：益生菌<br><small>CFU 活菌・腸道機能</small></div>
+      <div class="zone-chips" id="zone1"></div>
+    </div>
+    <div class="zone" data-zone="2"
+      ondragover="ev.preventDefault();this.classList.add('over')"
+      ondragleave="this.classList.remove('over')"
+      ondrop="drop(event,2)">
+      <div class="zone-title">🌿 軸線三：植物萃取<br><small>情緒管理・壓力調節</small></div>
+      <div class="zone-chips" id="zone2"></div>
+    </div>
+  </div>
+
+  <button class="check-btn" onclick="checkAnswers()">確認答案</button>
+  <div class="result" id="result"></div>
+  <div style="text-align:center"><button class="restart-btn" id="restartBtn" style="display:none" onclick="init()">🔄 重新分類</button></div>
+  <a class="back-link" href="../slides.html">← 回投影片</a>
+</div>
+
+<script>
+const BRANDS=[
+  {name:'Full Moon Say Play Cold IPA 🇹🇭',zone:0},
+  {name:'SAPPORO うまみ搾り 🇯🇵',zone:0},
+  {name:'Say Play Nano IPA 🇹🇭',zone:0},
+  {name:'Probicent Red Billion 🇸🇬',zone:1},
+  {name:'Zesty Gut OMG 小麥啤酒 🇸🇬',zone:1},
+  {name:'Collider 猴頭菇系列 🇬🇧',zone:2},
+  {name:'Collider 南非醉茄系列 🇬🇧',zone:2},
+];
+
+const SB_URL='https://qmldcjkllisvfgegkfsz.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbGRjamtsbGlzdmZnZWdrZnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMjM5ODYsImV4cCI6MjA4NjY5OTk4Nn0.Bfj0W7HN_n_vcjGe5502Chamk0YV-de8a0fxF4Nyczk';
+const COURSE='w10-functional-beer';
+const SESSION=COURSE+'-'+new Date().toISOString().slice(0,10);
+
+let placements={};
+let startTime=Date.now();
+let dragging=null;
+
+function shuffle(a){return[...a].sort(()=>Math.random()-.5)}
+
+function init(){
+  placements={};startTime=Date.now();
+  document.getElementById('result').style.display='none';
+  document.getElementById('restartBtn').style.display='none';
+  [0,1,2].forEach(z=>document.getElementById('zone'+z).innerHTML='');
+  const pool=document.getElementById('pool');
+  pool.innerHTML='';
+  shuffle(BRANDS).forEach((b,i)=>{
+    const chip=document.createElement('div');
+    chip.className='brand-chip';
+    chip.draggable=true;
+    chip.dataset.idx=i;
+    chip.id='chip'+i;
+    chip.textContent=b.name;
+    chip.addEventListener('dragstart',e=>{
+      dragging=i;chip.classList.add('dragging');
+      e.dataTransfer.setData('text',i);
+    });
+    chip.addEventListener('dragend',()=>chip.classList.remove('dragging'));
+    // touch support
+    chip.addEventListener('touchstart',e=>{dragging=i;},{ passive: true });
+    pool.appendChild(chip);
+  });
+}
+
+function drop(e,zone){
+  e.preventDefault();
+  e.target.closest('.zone').classList.remove('over');
+  const idx=parseInt(e.dataTransfer.getData('text'));
+  if(isNaN(idx))return;
+  placements[idx]=zone;
+  renderZones();
+}
+
+function renderZones(){
+  [0,1,2].forEach(z=>{
+    const zc=document.getElementById('zone'+z);
+    zc.innerHTML='';
+    Object.entries(placements).forEach(([idx,zn])=>{
+      if(parseInt(zn)===z){
+        const b=BRANDS[parseInt(idx)];
+        const chip=document.createElement('div');
+        chip.className='placed-chip pending';
+        chip.textContent=b.name;
+        chip.dataset.idx=idx;
+        chip.onclick=()=>{delete placements[idx];renderZones();renderPool();};
+        zc.appendChild(chip);
+      }
+    });
+  });
+  renderPool();
+}
+
+function renderPool(){
+  document.querySelectorAll('.brand-chip').forEach(c=>{
+    const idx=parseInt(c.dataset.idx);
+    c.style.display=placements.hasOwnProperty(idx)?'none':'inline-block';
+  });
+}
+
+async function checkAnswers(){
+  let correct=0;
+  Object.entries(placements).forEach(([idx,zn])=>{
+    const b=BRANDS[parseInt(idx)];
+    const chips=document.querySelectorAll(`.placed-chip[data-idx="${idx}"]`);
+    chips.forEach(chip=>{
+      chip.classList.remove('pending','correct','wrong');
+      if(parseInt(zn)===b.zone){correct++;chip.classList.add('correct');}
+      else chip.classList.add('wrong');
+    });
+  });
+  const total=BRANDS.length;
+  const placed=Object.keys(placements).length;
+  const score=Math.round(correct/total*100);
+  const r=document.getElementById('result');
+  r.style.display='block';
+  r.innerHTML=`${correct===total&&placed===total?'🎉 全部正確！':'📊 結果：'}
+    <strong>${correct}/${total}</strong> 正確（得分 ${score} 分）<br>
+    <span style="font-size:.82rem;color:var(--text2)">紅色 = 分類錯誤，點擊可取回重試。</span>`;
+  document.getElementById('restartBtn').style.display='inline-block';
+  try{
+    await fetch(`${SB_URL}/rest/v1/interactions`,{
+      method:'POST',
+      headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
+      body:JSON.stringify({course_code:COURSE,session_id:SESSION,
+        student_id:'anon-'+Math.random().toString(36).slice(2,8),
+        game_id:'02-brand-sort',game_name:'品牌分類',
+        score,total:100,duration_ms:Date.now()-startTime})
+    });
+  }catch(e){}
+}
+init();
+</script>
+</body>
+</html>

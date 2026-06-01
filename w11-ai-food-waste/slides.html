@@ -214,7 +214,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;
 <div id="progress"></div>
 
 <!-- 提示 -->
-<div id="hint"><kbd>←</kbd><kbd>→</kbd> 或點擊按鈕換頁</div>
+<div id="hint"><kbd>←</kbd><kbd>→</kbd> 鍵盤｜點擊右/左側｜手機左右滑</div>
 
 <!-- ════════════════════════════════════════
      SLIDES
@@ -699,8 +699,21 @@ function show(n){
 }
 function go(d){ show(cur+d); }
 document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowRight'||e.key==='ArrowDown') go(1);
-  if(e.key==='ArrowLeft' ||e.key==='ArrowUp'  ) go(-1);
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();go(1);}
+  if(e.key==='ArrowLeft' ||e.key==='ArrowUp'){e.preventDefault();go(-1);}
+  if(e.key==='f'||e.key==='F'){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}
+});
+/* ── 點擊畫面左/右側換頁（排除互動元素） ── */
+document.addEventListener('click',e=>{
+  if(e.target.closest('button,a,.vote-btn'))return;
+  e.clientX>window.innerWidth*.65?go(1):e.clientX<window.innerWidth*.35?go(-1):null;
+});
+/* ── 觸控滑動換頁 ── */
+let _tx=0;
+document.addEventListener('touchstart',e=>{_tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-_tx;
+  if(Math.abs(dx)>50){dx<0?go(1):go(-1);}
 });
 
 /* ── Supabase 投票 ── */

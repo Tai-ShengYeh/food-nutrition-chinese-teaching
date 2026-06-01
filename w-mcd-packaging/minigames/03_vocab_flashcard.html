@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>詞義配對賽｜麥當勞無塑包裝</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFBF0; --bg-2:#FFF4D6; --bg-3:#FFE9B0;
+  --ink:#2D1A0F; --ink-2:#5C3F2C; --ink-3:#8A6F55; --ink-4:#B89E80;
+  --accent:#E63946; --accent-2:#F4A300; --eco:#2A9D8F; --warn:#F77F00;
+  --paper:#FFFFFF; --line:rgba(45,26,15,0.12);
+  --shadow:0 8px 24px rgba(45,26,15,0.08);
+  --shadow-hi:0 16px 36px rgba(230,57,70,0.2);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:linear-gradient(135deg,var(--bg) 0%,var(--bg-2) 100%);color:var(--ink);min-height:100vh;padding:24px 16px;line-height:1.6}
+.wrap{max-width:1100px;margin:0 auto}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--eco);font-weight:700;letter-spacing:0.2em;margin-bottom:8px}
+h1{font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:900;margin-bottom:8px;line-height:1.2}
+.subtitle{color:var(--ink-2);font-size:clamp(0.95rem,1.4vw,1.05rem);margin-bottom:20px}
+.tag{display:inline-block;padding:4px 12px;background:var(--bg-3);border-radius:999px;font-size:0.8rem;font-weight:700;color:var(--ink);font-family:'JetBrains Mono',monospace}
+
+.bar{background:var(--paper);padding:14px 20px;border-radius:14px;box-shadow:var(--shadow);margin-bottom:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.score{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.05rem;color:var(--ink)}
+.score b{color:var(--eco);font-size:1.4rem}
+.score.wrong b{color:var(--warn)}
+.pbar{flex:1;height:10px;background:var(--bg-3);border-radius:999px;overflow:hidden;min-width:120px}
+.pfill{height:100%;background:linear-gradient(90deg,var(--eco),var(--accent-2));width:0%;transition:width .4s ease}
+
+.hint-box{background:var(--paper);padding:12px 18px;border-radius:12px;border-left:5px solid var(--accent-2);margin-bottom:18px;font-size:0.92rem;color:var(--ink-2)}
+.hint-box b{color:var(--accent);font-weight:900}
+
+.game{display:grid;grid-template-columns:1fr 1.4fr;gap:18px;margin-bottom:20px}
+.col{background:var(--paper);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.col h3{font-size:0.95rem;margin-bottom:14px;color:var(--ink);font-weight:900;border-bottom:3px solid var(--accent);padding-bottom:8px;display:flex;align-items:center;gap:8px}
+.col.right h3{border-color:var(--eco)}
+
+.word-card{padding:12px 14px;border-radius:12px;margin-bottom:8px;cursor:pointer;background:linear-gradient(135deg,var(--bg-2),var(--bg-3));border:2px solid transparent;font-weight:900;font-size:clamp(1rem,1.5vw,1.15rem);color:var(--ink);transition:all .2s ease;user-select:none;display:flex;align-items:center;gap:10px}
+.word-card .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.word-card:hover:not(.matched){transform:translateX(4px);border-color:var(--accent-2);box-shadow:var(--shadow-hi)}
+.word-card.selected{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border-color:var(--ink);transform:translateX(6px)}
+.word-card.selected .dot{background:#fff}
+.word-card.matched{background:linear-gradient(135deg,#C5E8DE,#A0D8C8);border-color:var(--eco);color:var(--ink);cursor:default;opacity:0.75}
+.word-card.matched .dot{background:var(--eco)}
+.word-card.matched::after{content:'✓';color:var(--eco);font-weight:900;margin-left:auto;font-size:1.2rem}
+
+.meaning-card{padding:12px 14px;border-radius:12px;margin-bottom:8px;cursor:pointer;background:var(--bg);border:2px solid var(--ink-4);font-size:clamp(0.85rem,1.2vw,0.98rem);color:var(--ink-2);transition:all .2s ease;line-height:1.5}
+.meaning-card:hover:not(.matched){background:var(--bg-2);border-color:var(--accent-2);transform:translateX(-2px)}
+.meaning-card.wrong{background:#FFCCD1;border-color:var(--accent);animation:shake .4s}
+.meaning-card.matched{background:linear-gradient(135deg,#E8F6F2,#C5E8DE);border-color:var(--eco);color:var(--ink);font-weight:600;cursor:default;opacity:0.85}
+.meaning-card.matched::before{content:attr(data-paired);display:block;font-weight:900;color:var(--eco);margin-bottom:4px;font-family:'Noto Sans TC';font-size:1rem}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;justify-content:center}
+.btn{padding:12px 24px;border-radius:999px;border:none;font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:1rem;cursor:pointer;transition:all .2s ease;min-height:48px}
+.btn.primary{background:var(--accent);color:#fff}
+.btn.primary:hover{background:#C0303B;transform:translateY(-2px)}
+.btn.eco{background:var(--eco);color:#fff}
+.btn.ghost{background:var(--paper);color:var(--ink);border:2px solid var(--ink-4)}
+
+.result{display:none;background:var(--paper);border-radius:20px;padding:28px;box-shadow:var(--shadow-hi);text-align:center;margin-top:20px}
+.result.show{display:block;animation:popin .4s ease}
+@keyframes popin{0%{transform:scale(0.9);opacity:0}100%{transform:scale(1);opacity:1}}
+.result .big{font-family:'JetBrains Mono',monospace;font-size:3rem;font-weight:900;line-height:1;background:linear-gradient(135deg,var(--eco),var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.result h2{font-size:1.5rem;margin-bottom:10px;color:var(--accent)}
+.result p{color:var(--ink-2);margin-bottom:14px}
+
+.qr-section{background:var(--paper);padding:18px;border-radius:14px;margin-top:20px;text-align:center;box-shadow:var(--shadow)}
+.qr-section img{border-radius:8px;margin-bottom:8px}
+.qr-section p{font-size:0.85rem;color:var(--ink-3);font-family:'JetBrains Mono',monospace}
+.nav-back{display:inline-block;margin-top:20px;padding:10px 18px;background:var(--paper);border-radius:999px;text-decoration:none;color:var(--ink);font-weight:700;box-shadow:var(--shadow);font-size:0.9rem}
+
+@media (max-width:720px){
+  .game{grid-template-columns:1fr;gap:14px}
+  body{padding:16px 12px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">遊戲 3 / 5</span>
+  <div class="kicker" style="margin-top:10px">MINIGAME · 詞義配對</div>
+  <h1>詞義配對賽 🔗</h1>
+  <p class="subtitle">把左邊的 <b>9 個詞</b>，配到右邊正確的意思上。看你是不是真的懂了！</p>
+
+  <div class="hint-box">
+    💡 <b>玩法</b>：先點左邊的詞（會變紅色），再點右邊你覺得對應的意思。對了就會變綠色，錯了會抖一下。
+  </div>
+
+  <div class="bar">
+    <div class="score">配對：<b id="score">0</b> / 9</div>
+    <div class="score wrong">錯誤：<b id="wrong">0</b></div>
+    <div class="pbar"><div class="pfill" id="pfill"></div></div>
+    <span class="tag">3 分鐘</span>
+  </div>
+
+  <div class="game">
+    <div class="col">
+      <h3>📝 9 個關鍵詞</h3>
+      <div id="leftCol"></div>
+    </div>
+    <div class="col right">
+      <h3>📖 9 個意思（順序打亂）</h3>
+      <div id="rightCol"></div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn ghost" onclick="reset()">🔄 重新打散</button>
+  </div>
+
+  <div class="result" id="result">
+    <div class="big" id="finalScore">9 / 9</div>
+    <h2 id="finalTitle">全部配對成功！</h2>
+    <p id="finalText"></p>
+    <div class="actions" style="justify-content:center">
+      <button class="btn primary" onclick="reset()">🔄 再玩一次</button>
+      <a href="04_process_order.html" class="btn ghost" style="text-decoration:none;display:inline-flex;align-items:center;">下一關 →</a>
+    </div>
+  </div>
+
+  <div class="qr-section">
+    <img id="qr-img" width="130" height="130" alt="QR Code">
+    <p>掃描分享給同學</p>
+  </div>
+  <a href="index.html" class="nav-back">← 回到遊戲總覽</a>
+</div>
+
+<script src="supabase-config.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+const ID = 'mcd_minigame_03';
+const _startTime = Date.now();
+const PAIRS = [
+  {word:'淋膜', meaning:'在紙上鍍一層薄膜（常見：塑膠 PE），用來防水、防油'},
+  {word:'塗佈', meaning:'把液態材料均勻塗在表面上的工藝；本案是塗澱粉'},
+  {word:'複合材料', meaning:'兩種以上材料黏在一起的成品；難分離，所以難回收'},
+  {word:'源頭管理', meaning:'從一開始就設計好，不要等變垃圾再來想辦法'},
+  {word:'負責任採購', meaning:'採購時要看來源：環境、勞工、認證都要顧到'},
+  {word:'耐久測試', meaning:'模擬長時間使用，看材料會不會壞掉'},
+  {word:'量產設備', meaning:'能大量生產的工廠機台；和實驗室小批量不同'},
+  {word:'透氣性', meaning:'讓空氣 / 水蒸氣穿過的能力；蒸製食品包裝很重要'},
+  {word:'永續', meaning:'能長期做下去、不傷地球的方式'},
+];
+const TOTAL = PAIRS.length;
+let selectedWord = null;
+let score = 0, wrong = 0;
+
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-0.5); }
+
+function render(){
+  const left = document.getElementById('leftCol');
+  const right = document.getElementById('rightCol');
+  const words = shuffle(PAIRS.map((p,i)=>({...p, id:i})));
+  const meanings = shuffle(PAIRS.map((p,i)=>({...p, id:i})));
+  left.innerHTML = words.map(w=>`<div class="word-card" data-id="${w.id}" onclick="pickWord(${w.id})"><span class="dot"></span>${w.word}</div>`).join('');
+  right.innerHTML = meanings.map(m=>`<div class="meaning-card" data-id="${m.id}" onclick="pickMeaning(${m.id})">${m.meaning}</div>`).join('');
+}
+
+function pickWord(id){
+  const card = document.querySelector('.word-card[data-id="'+id+'"]');
+  if(card.classList.contains('matched')) return;
+  document.querySelectorAll('.word-card').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedWord = id;
+}
+
+function pickMeaning(id){
+  const m = document.querySelector('.meaning-card[data-id="'+id+'"]');
+  if(m.classList.contains('matched')) return;
+  if(selectedWord===null){
+    m.classList.add('wrong');
+    setTimeout(()=>m.classList.remove('wrong'),420);
+    return;
+  }
+  if(selectedWord===id){
+    // 配對成功
+    const w = document.querySelector('.word-card[data-id="'+id+'"]');
+    w.classList.remove('selected');
+    w.classList.add('matched');
+    m.classList.add('matched');
+    m.dataset.paired = PAIRS[id].word;
+    score++;
+    document.getElementById('score').textContent = score;
+    document.getElementById('pfill').style.width = (score/TOTAL*100)+'%';
+    selectedWord = null;
+    if(score===TOTAL) finish();
+  }else{
+    // 錯
+    m.classList.add('wrong');
+    setTimeout(()=>m.classList.remove('wrong'),420);
+    wrong++;
+    document.getElementById('wrong').textContent = wrong;
+  }
+}
+
+function finish(){
+  document.getElementById('finalScore').textContent = TOTAL+' / '+TOTAL;
+  const r = document.getElementById('result');
+  const t = document.getElementById('finalTitle');
+  const p = document.getElementById('finalText');
+  if(wrong===0){ t.textContent='完美零失誤 🏆'; p.innerHTML='9 個包裝專業詞你全都掌握了！<br>讀任何永續包裝報導都不會卡關了。'; }
+  else if(wrong<=3){ t.textContent='很穩！過關 🌟'; p.innerHTML='錯了 '+wrong+' 次，最後仍配對成功。<br>建議回頭看一下錯的那幾組詞。'; }
+  else if(wrong<=6){ t.textContent='完成挑戰 💪'; p.innerHTML='錯了 '+wrong+' 次，建議再玩一次加深印象。<br>食品包裝專業詞是這堂課的核心，記熟以後讀文章會快很多。'; }
+  else{ t.textContent='完成！多練幾次更熟 📚'; p.innerHTML='錯了 '+wrong+' 次。回到 slide 13 重新讀一次定義，再回來挑戰。'; }
+  r.classList.add('show');
+  try{ localStorage.setItem(ID, JSON.stringify({done:true,score:TOTAL-Math.min(wrong,TOTAL),wrong:wrong,total:TOTAL,ts:Date.now()})); }catch(e){}
+  if (window.MCDFirebase) window.MCDFirebase.recordResult({
+    gameId: ID, gameName: '詞義配對賽',
+    score: TOTAL, wrong: wrong, total: TOTAL,
+    durationMs: Date.now() - _startTime
+  });
+}
+
+function reset(){
+  score=0; wrong=0; selectedWord=null;
+  document.getElementById('score').textContent='0';
+  document.getElementById('wrong').textContent='0';
+  document.getElementById('pfill').style.width='0%';
+  document.getElementById('result').classList.remove('show');
+  render();
+}
+
+reset();
+document.getElementById('qr-img').src='https://api.qrserver.com/v1/create-qr-code/?size=130x130&data='+encodeURIComponent(window.location.href);
+</script>
+</body>
+</html>

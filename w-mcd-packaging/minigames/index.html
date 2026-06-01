@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>麥當勞無塑包裝｜小遊戲總覽</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="supabase-config.js"></script>
+<script src="firebase-config.js"></script>
+<style>
+:root{
+  --bg:#FFFBF0; --bg-2:#FFF4D6; --bg-3:#FFE9B0;
+  --ink:#2D1A0F; --ink-2:#5C3F2C; --ink-3:#8A6F55; --ink-4:#B89E80;
+  --accent:#E63946; --accent-2:#F4A300; --eco:#2A9D8F; --warn:#F77F00;
+  --paper:#FFFFFF; --line:rgba(45,26,15,0.12);
+  --shadow:0 8px 24px rgba(45,26,15,0.08);
+  --shadow-hi:0 16px 36px rgba(230,57,70,0.2);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:linear-gradient(135deg,var(--bg) 0%,var(--bg-2) 50%,var(--bg-3) 100%);color:var(--ink);min-height:100vh;padding:32px 16px;line-height:1.6}
+.wrap{max-width:1100px;margin:0 auto}
+
+.hero{background:var(--paper);border-radius:24px;padding:32px;box-shadow:var(--shadow);margin-bottom:24px;background:linear-gradient(135deg,#FFF 0%,var(--bg-2) 100%);position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--accent-2) 0%,transparent 70%);opacity:0.3;border-radius:50%}
+.hero .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.hero-badge{padding:5px 14px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:0.78rem;font-weight:700;letter-spacing:0.1em}
+.hero h1{font-size:clamp(1.6rem,4vw,2.6rem);font-weight:900;margin-bottom:10px;line-height:1.15;position:relative;z-index:1}
+.hero h1 .red{color:var(--accent)}
+.hero p{font-size:clamp(0.95rem,1.5vw,1.1rem);color:var(--ink-2);max-width:680px;position:relative;z-index:1}
+
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px;position:relative;z-index:1}
+.stat{background:var(--paper);border-radius:14px;padding:14px 18px;box-shadow:var(--shadow);border-top:4px solid var(--accent)}
+.stat:nth-child(2){border-top-color:var(--accent-2)}
+.stat:nth-child(3){border-top-color:var(--eco)}
+.stat .num{font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:900;color:var(--ink);line-height:1}
+.stat .lbl{font-size:0.85rem;color:var(--ink-3);margin-top:2px;font-weight:500}
+.stat .num b{font-size:1.1rem;color:var(--ink-3);font-weight:700;margin-left:2px}
+
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-bottom:24px}
+.gcard{background:var(--paper);border-radius:20px;padding:24px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:all .3s ease;text-decoration:none;color:inherit;display:block;border:3px solid transparent}
+.gcard::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.gcard:nth-child(2)::before{background:linear-gradient(90deg,var(--accent-2),var(--warn))}
+.gcard:nth-child(3)::before{background:linear-gradient(90deg,var(--eco),var(--accent-2))}
+.gcard:nth-child(4)::before{background:linear-gradient(90deg,var(--warn),var(--accent))}
+.gcard:nth-child(5)::before{background:linear-gradient(90deg,var(--accent),var(--eco))}
+.gcard:hover{transform:translateY(-6px);box-shadow:var(--shadow-hi);border-color:var(--accent-2)}
+.gcard.done{border-color:var(--eco)}
+.gcard.done::before{background:var(--eco)}
+
+.gcard .head{display:flex;align-items:flex-start;gap:14px;margin-bottom:12px}
+.gcard .gnum{width:48px;height:48px;background:var(--accent);color:#fff;border-radius:14px;font-family:'JetBrains Mono',monospace;font-weight:900;font-size:1.3rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.gcard.done .gnum{background:var(--eco)}
+.gcard .meta{flex:1}
+.gcard .type{font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--accent);font-weight:700;letter-spacing:0.15em;margin-bottom:2px}
+.gcard.done .type{color:var(--eco)}
+.gcard h3{font-size:clamp(1.05rem,1.6vw,1.25rem);font-weight:900;color:var(--ink);line-height:1.3}
+.gcard .desc{font-size:0.9rem;color:var(--ink-2);margin-bottom:14px;line-height:1.55}
+.gcard .footer{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.gcard .time-tag{padding:3px 10px;background:var(--bg-3);border-radius:999px;font-size:0.78rem;font-weight:700;color:var(--ink);font-family:'JetBrains Mono',monospace}
+.gcard .score-tag{padding:3px 10px;background:#C5E8DE;border-radius:999px;font-size:0.78rem;font-weight:700;color:var(--eco);font-family:'JetBrains Mono',monospace}
+.gcard .go{margin-left:auto;font-weight:900;color:var(--accent);font-size:0.95rem}
+.gcard.done .go{color:var(--eco)}
+.gcard.done .go::before{content:'✓ ';font-weight:900}
+
+.bigcard{grid-column:span 2;background:linear-gradient(135deg,var(--ink) 0%,#4A2E1A 100%);color:#fff}
+.bigcard h3,.bigcard .desc{color:#fff}
+.bigcard .desc{opacity:0.85}
+.bigcard::before{background:linear-gradient(90deg,var(--accent),var(--accent-2))!important}
+.bigcard .type{color:var(--accent-2)!important}
+.bigcard .gnum{background:var(--accent-2);color:var(--ink)}
+.bigcard .go{color:var(--accent-2)}
+.bigcard .time-tag{background:rgba(244,163,0,0.2);color:var(--accent-2)}
+
+.tools{background:var(--paper);border-radius:18px;padding:22px;box-shadow:var(--shadow);margin-bottom:24px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.tools .label{font-weight:900;color:var(--ink);font-size:1rem}
+.tool-btn{padding:8px 16px;background:var(--bg);border:2px solid var(--ink-4);border-radius:999px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:inherit;color:var(--ink);transition:all .2s}
+.tool-btn:hover{border-color:var(--accent);color:var(--accent)}
+.tool-btn.danger:hover{border-color:var(--accent);background:#FFE5E8}
+
+.teacher-only{display:none}
+body.teacher-mode .teacher-only{display:flex}
+.footer-link{text-align:center;padding:24px;color:var(--ink-3);font-size:0.85rem;font-family:'JetBrains Mono',monospace}
+.footer-link a{color:var(--accent);text-decoration:none;font-weight:700}
+.footer-link a:hover{text-decoration:underline}
+
+.deck-cta{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);border-radius:20px;padding:24px;color:#fff;display:flex;align-items:center;gap:20px;margin-bottom:24px;box-shadow:var(--shadow);flex-wrap:wrap}
+.deck-cta .icon{font-size:3rem}
+.deck-cta .text{flex:1;min-width:240px}
+.deck-cta h2{font-size:clamp(1.1rem,1.8vw,1.35rem);font-weight:900;margin-bottom:4px}
+.deck-cta p{font-size:0.9rem;opacity:0.95}
+.deck-cta a{padding:10px 20px;background:#fff;color:var(--accent);border-radius:999px;font-weight:900;text-decoration:none;font-size:0.95rem;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+
+@media (max-width:780px){
+  .grid{grid-template-columns:1fr}
+  .bigcard{grid-column:span 1}
+  .summary{grid-template-columns:1fr}
+  body{padding:20px 12px}
+  .hero{padding:24px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="badge-row">
+      <span class="hero-badge">低碳生活與食品安全</span>
+      <span class="hero-badge">食品 / 餐飲科</span>
+      <span class="hero-badge">5 個遊戲</span>
+    </div>
+    <h1>麥當勞無塑包裝<br><span class="red">小遊戲總覽</span></h1>
+    <p>玩完這 5 個小遊戲，你就完整掌握了「永續包裝」的核心概念。<br>每個遊戲 2–5 分鐘，可以順著玩，也可以挑你最有興趣的開始 🚀</p>
+    <div class="summary">
+      <div class="stat"><div class="num"><span id="doneCount">0</span><b> / 5 關</b></div><div class="lbl">已完成遊戲</div></div>
+      <div class="stat"><div class="num"><span id="totalScore">0</span><b> 分</b></div><div class="lbl">累計得分（含計分遊戲）</div></div>
+      <div class="stat"><div class="num"><span id="progress">0</span><b>%</b></div><div class="lbl">學習進度</div></div>
+    </div>
+  </div>
+
+  <div style="background:var(--paper);padding:14px 20px;border-radius:14px;margin-bottom:20px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:0.9rem">
+    <span>👤 你的代碼：<b id="myId" style="font-family:'JetBrains Mono',monospace;color:var(--accent);font-size:1.1rem">—</b></span>
+    <span>📚 班級：<b id="mySession" style="font-family:'JetBrains Mono',monospace;color:var(--eco)">—</b></span>
+    <span id="fbStatus" style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:var(--ink-3)">—</span>
+  </div>
+
+  <div class="grid">
+
+    <a class="gcard" href="01_5r_match.html" id="card1">
+      <div class="head">
+        <div class="gnum">1</div>
+        <div class="meta">
+          <div class="type">配對挑戰</div>
+          <h3>5R 配對挑戰</h3>
+        </div>
+      </div>
+      <div class="desc">把 Responsible / Replace / Reduce / Reuse / Recycle 對到正確的中文意思</div>
+      <div class="footer">
+        <span class="time-tag">⏱ 2 分鐘</span>
+        <span class="score-tag" id="card1Score" style="display:none"></span>
+        <span class="go" id="card1Go">開始 →</span>
+      </div>
+    </a>
+
+    <a class="gcard" href="02_packaging_quiz.html" id="card2">
+      <div class="head">
+        <div class="gnum">2</div>
+        <div class="meta">
+          <div class="type">選擇題</div>
+          <h3>包裝知識小測驗</h3>
+        </div>
+      </div>
+      <div class="desc">5 題單選題，測你聽進去多少。包含 86 噸、淋膜、澱粉、矽基、13 部門</div>
+      <div class="footer">
+        <span class="time-tag">⏱ 3 分鐘</span>
+        <span class="score-tag" id="card2Score" style="display:none"></span>
+        <span class="go" id="card2Go">開始 →</span>
+      </div>
+    </a>
+
+    <a class="gcard" href="03_vocab_flashcard.html" id="card3">
+      <div class="head">
+        <div class="gnum">3</div>
+        <div class="meta">
+          <div class="type">詞義配對</div>
+          <h3>詞義配對賽</h3>
+        </div>
+      </div>
+      <div class="desc">9 個食品包裝專業詞 vs 9 個意思，全部配對成功。考你「真的懂」還是「只是看過」</div>
+      <div class="footer">
+        <span class="time-tag">⏱ 3 分鐘</span>
+        <span class="score-tag" id="card3Score" style="display:none"></span>
+        <span class="go" id="card3Go">開始 →</span>
+      </div>
+    </a>
+
+    <a class="gcard" href="04_process_order.html" id="card4">
+      <div class="head">
+        <div class="gnum">4</div>
+        <div class="meta">
+          <div class="type">排序題</div>
+          <h3>減塑流程排排站</h3>
+        </div>
+      </div>
+      <div class="desc">把開發新包裝的 6 個步驟排出正確順序：從採購到全面導入</div>
+      <div class="footer">
+        <span class="time-tag">⏱ 3 分鐘</span>
+        <span class="score-tag" id="card4Score" style="display:none"></span>
+        <span class="go" id="card4Go">開始 →</span>
+      </div>
+    </a>
+
+    <a class="gcard bigcard" href="05_decision_quiz.html" id="card5">
+      <div class="head">
+        <div class="gnum">5</div>
+        <div class="meta">
+          <div class="type">終極挑戰 · 情境決策</div>
+          <h3>你也是包裝設計師：3 個產品的包裝決策</h3>
+        </div>
+      </div>
+      <div class="desc">三種食品（漢堡 / 蒸製麵包 / 油炸蘋果派），你會選什麼包裝材料？解釋你的判斷。<br>這是綜合應用題，把前 4 關學到的全部用上。</div>
+      <div class="footer">
+        <span class="time-tag">⏱ 5 分鐘</span>
+        <span class="score-tag" id="card5Score" style="display:none"></span>
+        <span class="go" id="card5Go">挑戰最終關 →</span>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="deck-cta">
+    <div class="icon">📊</div>
+    <div class="text">
+      <h2>還沒看過教學簡報？</h2>
+      <p>建議先看完 18 頁簡報再玩遊戲，學習效果會翻倍</p>
+    </div>
+    <a href="../mcd_no_plastic_deck.html">📖 開啟簡報</a>
+  </div>
+
+  <div class="tools teacher-only" id="teacherTools">
+    <span class="label">🛠️ 老師工具（僅老師可見）</span>
+    <a class="tool-btn" href="teacher_dashboard.html" target="_blank" style="text-decoration:none;display:inline-flex;align-items:center;background:var(--ink);color:#fff;border-color:var(--ink)">📊 老師儀表板</a>
+    <button class="tool-btn" onclick="refresh()">🔄 重新整理進度</button>
+    <button class="tool-btn danger" onclick="clearAll()">🗑️ 清除我的紀錄</button>
+    <button class="tool-btn" onclick="copyAllLinks()">📋 複製全部遊戲網址</button>
+    <button class="tool-btn" onclick="copyStudentLink()">🔗 複製學生分享連結</button>
+  </div>
+
+  <div class="footer-link">
+    教材來源：<a href="https://www.foodnext.net/science/packing/paper/6731156751" target="_blank">食力 foodNEXT｜林玉婷（2026.04.08）</a><br>
+    低碳生活與食品安全 · 高職彈性課程
+  </div>
+
+</div>
+
+<script>
+const GAMES = [
+  {id:'mcd_minigame_01', card:'card1', label:'5R 配對'},
+  {id:'mcd_minigame_02', card:'card2', label:'知識測驗', hasScore:true, total:5},
+  {id:'mcd_minigame_03', card:'card3', label:'詞義配對', hasScore:true, total:9},
+  {id:'mcd_minigame_04', card:'card4', label:'流程排序', hasScore:true, total:6},
+  {id:'mcd_minigame_05', card:'card5', label:'情境決策', hasScore:true, total:3},
+];
+
+function refresh(){
+  let done = 0, totalScore = 0;
+  GAMES.forEach(g=>{
+    let data = null;
+    try{ data = JSON.parse(localStorage.getItem(g.id)||'null'); }catch(e){}
+    const card = document.getElementById(g.card);
+    const goEl = document.getElementById(g.card+'Go');
+    const scoreEl = document.getElementById(g.card+'Score');
+    if(data && data.done){
+      done++;
+      card.classList.add('done');
+      goEl.textContent = '再玩一次 →';
+      if(g.hasScore && data.score!=null){
+        scoreEl.style.display='inline-block';
+        scoreEl.textContent = '🏅 '+data.score+' / '+g.total;
+        totalScore += data.score;
+      }else{
+        scoreEl.style.display='inline-block';
+        scoreEl.textContent = '✓ 已完成';
+      }
+    }else{
+      card.classList.remove('done');
+      goEl.textContent = goEl.textContent.includes('挑戰')?'挑戰最終關 →':'開始 →';
+      scoreEl.style.display='none';
+    }
+  });
+  document.getElementById('doneCount').textContent = done;
+  document.getElementById('totalScore').textContent = totalScore;
+  document.getElementById('progress').textContent = Math.round(done/GAMES.length*100);
+}
+
+function clearAll(){
+  if(!confirm('確定要清除所有遊戲進度嗎？這個動作無法復原。'))return;
+  GAMES.forEach(g=>localStorage.removeItem(g.id));
+  refresh();
+}
+
+function showIdentity(){
+  if(!window.MCDFirebase) return;
+  document.getElementById('myId').textContent = window.MCDFirebase.getStudentId();
+  document.getElementById('mySession').textContent = window.MCDFirebase.getSessionId();
+  const st = window.MCDFirebase.getFirebaseStatus();
+  document.getElementById('fbStatus').textContent = st.message;
+  document.getElementById('fbStatus').style.color = st.ready ? 'var(--eco)' : 'var(--warn)';
+}
+
+function copyStudentLink(){
+  const session = (window.MCDFirebase ? window.MCDFirebase.getSessionId() : 'default');
+  const newSession = prompt('輸入要分享給學生的 Session ID（建議格式：YYYYMMDD_班級）：', session);
+  if(!newSession) return;
+  const base = window.location.href.replace(/index\.html.*$/,'').replace(/\/$/,'');
+  const link = base+'/index.html?session='+encodeURIComponent(newSession);
+  navigator.clipboard.writeText(link).then(()=>{
+    alert('✅ 已複製分享連結（Session：'+newSession+'）：\n'+link+'\n\n貼到 LINE 群組或 Email，學生點進去就會記錄到這個 session。');
+  }).catch(()=>prompt('複製這個連結：',link));
+}
+
+function copyAllLinks(){
+  const base = window.location.href.replace(/index\.html.*$/,'').replace(/\/$/,'');
+  const links = [
+    '🎮 麥當勞無塑包裝・小遊戲總覽',
+    '──────────────',
+    '📌 總入口：'+window.location.href,
+    '',
+    '① 5R 配對：'+base+'/01_5r_match.html',
+    '② 知識測驗：'+base+'/02_packaging_quiz.html',
+    '③ 詞彙翻卡：'+base+'/03_vocab_flashcard.html',
+    '④ 流程排序：'+base+'/04_process_order.html',
+    '⑤ 情境決策：'+base+'/05_decision_quiz.html',
+  ].join('\n');
+  navigator.clipboard.writeText(links).then(()=>{
+    alert('✅ 已複製全部 5 個遊戲網址到剪貼簿，可以貼到 LINE / Email 分享給學生！');
+  }).catch(()=>{
+    prompt('複製以下文字：', links);
+  });
+}
+
+refresh();
+showIdentity();
+
+// 老師模式：URL 加 ?teacher=1 才顯示老師工具
+(function(){
+  if(new URLSearchParams(location.search).get('teacher')==='1'){
+    document.body.classList.add('teacher-mode');
+  }
+})();
+</script>
+</body>
+</html>

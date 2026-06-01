@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5R 配對挑戰｜麥當勞無塑包裝</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFBF0; --bg-2:#FFF4D6; --bg-3:#FFE9B0;
+  --ink:#2D1A0F; --ink-2:#5C3F2C; --ink-3:#8A6F55; --ink-4:#B89E80;
+  --accent:#E63946; --accent-2:#F4A300; --eco:#2A9D8F; --warn:#F77F00;
+  --paper:#FFFFFF; --line:rgba(45,26,15,0.12);
+  --shadow:0 8px 24px rgba(45,26,15,0.08);
+  --shadow-hi:0 16px 36px rgba(230,57,70,0.2);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:linear-gradient(135deg,var(--bg) 0%,var(--bg-2) 100%);color:var(--ink);min-height:100vh;padding:24px 16px;line-height:1.6}
+.wrap{max-width:980px;margin:0 auto}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--accent);font-weight:700;letter-spacing:0.2em;margin-bottom:8px}
+h1{font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:900;margin-bottom:8px;line-height:1.2}
+.subtitle{color:var(--ink-2);font-size:clamp(0.95rem,1.4vw,1.05rem);margin-bottom:20px}
+.scorebar{display:flex;gap:12px;align-items:center;background:var(--paper);padding:14px 20px;border-radius:16px;box-shadow:var(--shadow);margin-bottom:24px;flex-wrap:wrap}
+.score{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.1rem;color:var(--ink)}
+.score b{color:var(--accent);font-size:1.4rem}
+.tag{display:inline-block;padding:4px 12px;background:var(--bg-3);border-radius:999px;font-size:0.8rem;font-weight:700;color:var(--ink);font-family:'JetBrains Mono',monospace}
+
+.game{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+.col{background:var(--paper);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
+.col h3{font-size:1.05rem;margin-bottom:14px;color:var(--ink);font-weight:900;border-bottom:3px solid var(--accent);padding-bottom:8px}
+.col.right h3{border-color:var(--eco)}
+
+.draggable{padding:14px 18px;border-radius:12px;margin-bottom:10px;cursor:grab;background:linear-gradient(135deg,var(--bg-2),var(--bg-3));border:2px solid transparent;font-weight:700;display:flex;align-items:center;gap:10px;transition:all .2s ease;user-select:none}
+.draggable .en{font-family:'JetBrains Mono',monospace;color:var(--accent);font-weight:900;min-width:30px;text-align:center;font-size:1.1rem;background:var(--paper);width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px}
+.draggable.dragging{opacity:0.4;cursor:grabbing}
+.draggable.matched{background:linear-gradient(135deg,#C5E8DE,#A0D8C8);border-color:var(--eco);color:var(--ink)}
+.draggable.matched .en{color:var(--eco)}
+.draggable.wrong{animation:shake .4s;background:#FFCCD1}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+.dropzone{padding:14px 18px;border-radius:12px;margin-bottom:10px;background:var(--bg);border:2px dashed var(--ink-4);min-height:54px;display:flex;align-items:center;font-weight:700;color:var(--ink-2);transition:all .2s ease}
+.dropzone.hover{background:var(--bg-3);border-color:var(--accent);border-style:solid;transform:scale(1.02)}
+.dropzone.filled{border-style:solid;border-color:var(--eco);background:linear-gradient(135deg,#E8F6F2,#C5E8DE);color:var(--ink)}
+.dropzone .label{flex:1}
+.dropzone .placed{font-family:'JetBrains Mono',monospace;font-weight:900;color:var(--eco);margin-left:12px}
+
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.btn{padding:12px 24px;border-radius:999px;border:none;font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:1rem;cursor:pointer;transition:all .2s ease;min-height:48px}
+.btn.primary{background:var(--accent);color:#fff}
+.btn.primary:hover{background:#C0303B;transform:translateY(-2px)}
+.btn.ghost{background:var(--paper);color:var(--ink);border:2px solid var(--ink-4)}
+.btn.ghost:hover{border-color:var(--ink)}
+
+.result{display:none;background:var(--paper);border-radius:18px;padding:28px;box-shadow:var(--shadow-hi);text-align:center;margin-top:20px}
+.result.show{display:block;animation:popin .4s ease}
+@keyframes popin{0%{transform:scale(0.9);opacity:0}100%{transform:scale(1);opacity:1}}
+.result h2{font-size:1.6rem;margin-bottom:10px;color:var(--accent)}
+.result .star{font-size:3rem;margin-bottom:10px}
+.result p{color:var(--ink-2);margin-bottom:14px}
+
+.qr-section{background:var(--paper);padding:18px;border-radius:14px;margin-top:20px;text-align:center;box-shadow:var(--shadow)}
+.qr-section img{border-radius:8px;margin-bottom:8px}
+.qr-section p{font-size:0.85rem;color:var(--ink-3);font-family:'JetBrains Mono',monospace}
+
+.nav-back{display:inline-block;margin-top:20px;padding:10px 18px;background:var(--paper);border-radius:999px;text-decoration:none;color:var(--ink);font-weight:700;box-shadow:var(--shadow);font-size:0.9rem}
+.nav-back:hover{background:var(--bg-2)}
+
+@media (max-width:640px){
+  .game{grid-template-columns:1fr;gap:14px}
+  body{padding:16px 12px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">遊戲 1 / 5</span>
+  <div class="kicker" style="margin-top:10px">MINIGAME · 配對挑戰</div>
+  <h1>5R 配對挑戰 🎯</h1>
+  <p class="subtitle">把左邊的 5 個英文 R 拖到右邊正確的中文意思上。全部對才算過關！</p>
+
+  <div class="scorebar">
+    <div class="score">配對：<b id="score">0</b> / 5</div>
+    <div class="score">錯誤：<b id="wrong" style="color:var(--warn)">0</b></div>
+    <div style="flex:1"></div>
+    <span class="tag">2 分鐘 · 拖拉</span>
+  </div>
+
+  <div class="game">
+    <div class="col">
+      <h3>📦 把這 5 個 R 拖過去 →</h3>
+      <div id="leftCol">
+        <div class="draggable" draggable="true" data-id="responsible"><span class="en">R</span> Responsible</div>
+        <div class="draggable" draggable="true" data-id="replace"><span class="en">R</span> Replace</div>
+        <div class="draggable" draggable="true" data-id="reduce"><span class="en">R</span> Reduce</div>
+        <div class="draggable" draggable="true" data-id="reuse"><span class="en">R</span> Reuse</div>
+        <div class="draggable" draggable="true" data-id="recycle"><span class="en">R</span> Recycle</div>
+      </div>
+    </div>
+    <div class="col right">
+      <h3>🌱 5 個中文意思（請對應）</h3>
+      <div id="rightCol">
+        <div class="dropzone" data-answer="reuse"><span class="label">重複使用</span></div>
+        <div class="dropzone" data-answer="responsible"><span class="label">負責任採購</span></div>
+        <div class="dropzone" data-answer="recycle"><span class="label">強化回收</span></div>
+        <div class="dropzone" data-answer="replace"><span class="label">轉換材質</span></div>
+        <div class="dropzone" data-answer="reduce"><span class="label">包裝減量</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn primary" onclick="checkAll()">✅ 檢查答案</button>
+    <button class="btn ghost" onclick="reset()">🔄 重新開始</button>
+  </div>
+
+  <div class="result" id="result">
+    <div class="star">🎉</div>
+    <h2 id="rTitle">全部配對成功！</h2>
+    <p id="rText"></p>
+    <button class="btn primary" onclick="reset()">再玩一次</button>
+    <a href="02_packaging_quiz.html" class="btn ghost" style="text-decoration:none;display:inline-flex;align-items:center;">下一關 →</a>
+  </div>
+
+  <div class="qr-section">
+    <img id="qr-img" width="130" height="130" alt="QR Code">
+    <p>掃描分享給同學</p>
+  </div>
+  <a href="index.html" class="nav-back">← 回到遊戲總覽</a>
+</div>
+
+<script src="supabase-config.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+const ID = 'mcd_minigame_01';
+const _startTime = Date.now();
+let dragging = null;
+let score = 0, wrong = 0;
+const total = 5;
+
+function setupDrag(){
+  document.querySelectorAll('.draggable').forEach(el=>{
+    el.addEventListener('dragstart',e=>{
+      if(el.classList.contains('matched')){e.preventDefault();return}
+      dragging = el;
+      el.classList.add('dragging');
+      e.dataTransfer.effectAllowed='move';
+    });
+    el.addEventListener('dragend',()=>{ el.classList.remove('dragging'); dragging=null; });
+    // touch / mobile
+    el.addEventListener('click',()=>{
+      if(el.classList.contains('matched'))return;
+      document.querySelectorAll('.draggable').forEach(x=>x.classList.remove('selected'));
+      el.classList.add('selected');
+      dragging = el;
+    });
+  });
+  document.querySelectorAll('.dropzone').forEach(dz=>{
+    dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('hover')});
+    dz.addEventListener('dragleave',()=>dz.classList.remove('hover'));
+    dz.addEventListener('drop',e=>{
+      e.preventDefault();
+      dz.classList.remove('hover');
+      placeAttempt(dz);
+    });
+    dz.addEventListener('click',()=>{
+      if(dragging) placeAttempt(dz);
+    });
+  });
+}
+
+function placeAttempt(dz){
+  if(!dragging || dz.classList.contains('filled'))return;
+  const id = dragging.dataset.id;
+  const ans = dz.dataset.answer;
+  if(id===ans){
+    dz.classList.add('filled');
+    dz.querySelector('.label').innerHTML = dragging.textContent.trim().replace(/^R\s*/,'<b style="color:var(--eco)">R</b> ') + ' ✓';
+    dragging.classList.add('matched');
+    dragging.style.opacity = 0.5;
+    dragging.draggable = false;
+    score++;
+    document.getElementById('score').textContent = score;
+    if(score===total) finish();
+  }else{
+    dragging.classList.add('wrong');
+    setTimeout(()=>dragging&&dragging.classList.remove('wrong'),420);
+    wrong++;
+    document.getElementById('wrong').textContent = wrong;
+  }
+  dragging = null;
+}
+
+function checkAll(){
+  if(score===total){ finish(); return; }
+  alert(score+' / '+total+' 完成。錯了 '+wrong+' 次。繼續加油！');
+}
+
+function finish(){
+  const r = document.getElementById('result');
+  r.classList.add('show');
+  const t = document.getElementById('rTitle');
+  const p = document.getElementById('rText');
+  if(wrong===0){
+    t.textContent = '完美！0 失誤通關 🏆';
+    p.innerHTML = '你已掌握 5R 永續包裝策略：<br><b>負責任採購 / 轉換材質 / 包裝減量 / 重複使用 / 強化回收</b>';
+  }else if(wrong<=3){
+    t.textContent = '很好！過關 🌟';
+    p.innerHTML = '錯了 '+wrong+' 次，但你成功配對了全部 5 組。<br>5R 是國際通用的永續設計框架，記下來很有用！';
+  }else{
+    t.textContent = '挑戰成功！再試一次更熟練 💪';
+    p.innerHTML = '錯了 '+wrong+' 次但仍完成挑戰。<br>建議回到簡報複習一下 5R 的中英對照。';
+  }
+  try{
+    const data = JSON.parse(localStorage.getItem(ID)||'{}');
+    data.done = true; data.wrong = wrong; data.ts = Date.now();
+    localStorage.setItem(ID, JSON.stringify(data));
+  }catch(e){}
+  if (window.MCDFirebase) window.MCDFirebase.recordResult({
+    gameId: ID, gameName: '5R 配對挑戰',
+    score: score, wrong: wrong, total: total,
+    durationMs: Date.now() - _startTime
+  });
+}
+
+function reset(){
+  score=0; wrong=0;
+  document.getElementById('score').textContent='0';
+  document.getElementById('wrong').textContent='0';
+  document.getElementById('result').classList.remove('show');
+  // 重置左欄
+  const left = document.getElementById('leftCol');
+  const items = Array.from(left.children);
+  items.sort(()=>Math.random()-0.5);
+  items.forEach(el=>{
+    el.classList.remove('matched','wrong','dragging','selected');
+    el.style.opacity='';
+    el.draggable=true;
+    left.appendChild(el);
+  });
+  // 重置右欄
+  const right = document.getElementById('rightCol');
+  const zones = Array.from(right.children);
+  zones.sort(()=>Math.random()-0.5);
+  zones.forEach(dz=>{
+    dz.classList.remove('filled','hover');
+    const ans = dz.dataset.answer;
+    const labels = {responsible:'負責任採購',replace:'轉換材質',reduce:'包裝減量',reuse:'重複使用',recycle:'強化回收'};
+    dz.querySelector('.label').textContent = labels[ans];
+    right.appendChild(dz);
+  });
+}
+
+setupDrag();
+reset();
+document.getElementById('qr-img').src='https://api.qrserver.com/v1/create-qr-code/?size=130x130&data='+encodeURIComponent(window.location.href);
+</script>
+</body>
+</html>

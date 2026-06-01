@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>麥當勞無塑包裝挑戰｜低碳生活與食品安全</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:linear-gradient(135deg,#FFE9B0 0%,#FFD876 50%,#FFB347 100%);color:#2D1A0F;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;line-height:1.6}
+.wrap{max-width:880px;width:100%;text-align:center}
+.badge-row{display:flex;justify-content:center;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.badge{padding:6px 14px;background:#fff;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:0.78rem;font-weight:700;color:#E63946;box-shadow:0 4px 12px rgba(45,26,15,0.08)}
+h1{font-size:clamp(1.8rem,5vw,3rem);font-weight:900;margin-bottom:14px;line-height:1.15}
+.red{color:#E63946}
+.sub{font-size:clamp(1rem,1.8vw,1.25rem);color:#5C3F2C;margin-bottom:32px;max-width:680px;margin-left:auto;margin-right:auto}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.card{background:#fff;border-radius:20px;padding:32px 24px;box-shadow:0 12px 32px rgba(45,26,15,0.08);text-decoration:none;color:inherit;transition:all .3s ease;border-top:6px solid #E63946;display:flex;flex-direction:column;align-items:center;text-align:center}
+.card:nth-child(2){border-top-color:#2A9D8F}
+.card:hover{transform:translateY(-6px);box-shadow:0 20px 48px rgba(230,57,70,0.2)}
+.card .emoji{font-size:3.5rem;margin-bottom:14px}
+.card .title{font-size:clamp(1.2rem,2vw,1.5rem);font-weight:900;color:#2D1A0F;margin-bottom:8px}
+.card .desc{font-size:0.95rem;color:#5C3F2C;line-height:1.5;margin-bottom:16px;flex:1}
+.card .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;background:#E63946;color:#fff;border-radius:999px;font-weight:900;font-size:0.95rem;font-family:'JetBrains Mono',monospace}
+.card:nth-child(2) .btn{background:#2A9D8F}
+.tools{background:rgba(255,255,255,0.4);border-radius:14px;padding:14px 20px;backdrop-filter:blur(8px);display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;font-size:0.85rem;color:#5C3F2C}
+.tools b{color:#2D1A0F}
+.tools a{color:#E63946;font-weight:700;text-decoration:none}
+.tools a:hover{text-decoration:underline}
+.meta{margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:#5C3F2C;opacity:0.7}
+@media (max-width:640px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="badge-row">
+    <span class="badge">低碳生活與食品安全</span>
+  </div>
+  <h1>麥當勞如何讓<br>包裝紙<span class="red">不再含塑膠</span>？</h1>
+  <p class="sub">5R 永續包裝策略 · 5 個互動小遊戲 · 從 2025 年起，台灣麥當勞每年減少 <b>86 噸塑膠使用</b>。它是怎麼做到的？</p>
+
+  <div class="cards">
+    <a class="card" href="mcd_no_plastic_deck.html">
+      <div class="emoji">🎓</div>
+      <div class="title">開始上課</div>
+      <div class="desc">21 頁 SOIL 教學簡報，含 Chart.js 互動圖表與 5 個遊戲穿插點</div>
+      <span class="btn">進入簡報 →</span>
+    </a>
+    <a class="card" href="minigames/index.html">
+      <div class="emoji">🎮</div>
+      <div class="title">學生玩遊戲</div>
+      <div class="desc">5 個小遊戲：5R 配對、知識測驗、詞義配對、流程排序、情境決策</div>
+      <span class="btn">進入遊戲區 →</span>
+    </a>
+  </div>
+
+  <div class="tools">
+    <span>👩‍🏫 <b>老師工具：</b></span>
+    <a href="minigames/teacher_dashboard.html" target="_blank">📊 即時儀表板</a>
+    <span>·</span>
+    <a href="https://www.foodnext.net/science/packing/paper/6731156751" target="_blank">📖 原文報導</a>
+  </div>
+
+  <div class="meta">
+    低碳生活與食品安全 · 2026
+  </div>
+</div>
+<script>
+// Session 傳遞：把 URL 的 ?session= 存進 localStorage，並加到所有內部連結
+(function(){
+  const session = new URLSearchParams(location.search).get('session');
+  if(!session) return;
+  try{ localStorage.setItem('mcd_session_id', session); }catch(e){}
+  document.querySelectorAll('a').forEach(a=>{
+    try{
+      const href = a.getAttribute('href');
+      if(!href || /^(https?:|mailto:|#)/.test(href)) return;
+      const u = new URL(a.href, location.href);
+      u.searchParams.set('session', session);
+      a.href = u.toString();
+    }catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

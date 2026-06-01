@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>減塑流程排排站｜麥當勞無塑包裝</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFBF0; --bg-2:#FFF4D6; --bg-3:#FFE9B0;
+  --ink:#2D1A0F; --ink-2:#5C3F2C; --ink-3:#8A6F55; --ink-4:#B89E80;
+  --accent:#E63946; --accent-2:#F4A300; --eco:#2A9D8F; --warn:#F77F00;
+  --paper:#FFFFFF; --line:rgba(45,26,15,0.12);
+  --shadow:0 8px 24px rgba(45,26,15,0.08);
+  --shadow-hi:0 16px 36px rgba(230,57,70,0.2);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:linear-gradient(135deg,var(--bg) 0%,var(--bg-2) 100%);color:var(--ink);min-height:100vh;padding:24px 16px;line-height:1.6}
+.wrap{max-width:820px;margin:0 auto}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--warn);font-weight:700;letter-spacing:0.2em;margin-bottom:8px}
+h1{font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:900;margin-bottom:8px;line-height:1.2}
+.subtitle{color:var(--ink-2);font-size:clamp(0.95rem,1.4vw,1.05rem);margin-bottom:20px}
+.tag{display:inline-block;padding:4px 12px;background:var(--bg-3);border-radius:999px;font-size:0.8rem;font-weight:700;color:var(--ink);font-family:'JetBrains Mono',monospace}
+
+.bar{background:var(--paper);padding:14px 20px;border-radius:14px;box-shadow:var(--shadow);margin-bottom:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.bar .info{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--ink)}
+.bar .info b{color:var(--warn);font-size:1.3rem}
+
+.list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.item{background:var(--paper);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;cursor:grab;border-left:6px solid var(--accent-2);user-select:none;transition:all .2s ease}
+.item:hover{transform:translateX(4px);box-shadow:var(--shadow-hi)}
+.item.dragging{opacity:0.5;cursor:grabbing}
+.item.over{border-left-color:var(--accent);background:var(--bg-2)}
+.item .pos{font-family:'JetBrains Mono',monospace;font-weight:900;font-size:1.5rem;color:var(--accent);min-width:36px;text-align:center;background:var(--bg-2);width:48px;height:48px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
+.item .body{flex:1}
+.item .title{font-weight:900;font-size:1.05rem;color:var(--ink);margin-bottom:2px}
+.item .note{font-size:0.85rem;color:var(--ink-2);line-height:1.4}
+.item .grip{font-size:1.4rem;color:var(--ink-4);cursor:grab}
+.item.correct{border-left-color:var(--eco);background:linear-gradient(135deg,#E8F6F2,var(--paper))}
+.item.correct .pos{background:var(--eco);color:#fff}
+.item.wrong{border-left-color:var(--accent);background:#FFE5E8}
+.item.wrong .pos{background:var(--accent);color:#fff}
+
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
+.miniBtn{padding:6px 14px;border-radius:999px;background:var(--paper);border:2px solid var(--ink-4);font-size:0.85rem;font-weight:700;cursor:pointer;font-family:inherit;color:var(--ink)}
+.miniBtn:hover{border-color:var(--accent);color:var(--accent)}
+
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;justify-content:center}
+.btn{padding:12px 24px;border-radius:999px;border:none;font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:1rem;cursor:pointer;transition:all .2s ease;min-height:48px}
+.btn.primary{background:var(--accent);color:#fff}
+.btn.primary:hover{background:#C0303B;transform:translateY(-2px)}
+.btn.ghost{background:var(--paper);color:var(--ink);border:2px solid var(--ink-4)}
+
+.result{display:none;background:var(--paper);border-radius:20px;padding:28px;box-shadow:var(--shadow-hi);text-align:center;margin-top:20px}
+.result.show{display:block;animation:popin .4s}
+@keyframes popin{0%{transform:scale(0.9);opacity:0}100%{transform:scale(1);opacity:1}}
+.result h2{font-size:1.5rem;margin-bottom:8px;color:var(--accent)}
+.result p{color:var(--ink-2);margin-bottom:14px}
+.result .big{font-family:'JetBrains Mono',monospace;font-size:3rem;font-weight:900;line-height:1;background:linear-gradient(135deg,var(--eco),var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+
+.qr-section{background:var(--paper);padding:18px;border-radius:14px;margin-top:20px;text-align:center;box-shadow:var(--shadow)}
+.qr-section img{border-radius:8px;margin-bottom:8px}
+.qr-section p{font-size:0.85rem;color:var(--ink-3);font-family:'JetBrains Mono',monospace}
+.nav-back{display:inline-block;margin-top:20px;padding:10px 18px;background:var(--paper);border-radius:999px;text-decoration:none;color:var(--ink);font-weight:700;box-shadow:var(--shadow);font-size:0.9rem}
+
+@media (max-width:560px){
+  body{padding:16px 12px}
+  .item{padding:14px}
+  .item .pos{width:40px;height:40px;font-size:1.2rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">遊戲 4 / 5</span>
+  <div class="kicker" style="margin-top:10px">MINIGAME · 流程排序</div>
+  <h1>減塑流程排排站 📋</h1>
+  <p class="subtitle">把 6 個開發新包裝的步驟，<b>從上到下排出正確順序</b>。用滑鼠拖拉，或點上下按鈕來移動。</p>
+
+  <div class="bar">
+    <div class="info">完成度：<b id="prog">— / 6</b></div>
+    <div style="flex:1"></div>
+    <span class="tag">3 分鐘 · 排序</span>
+  </div>
+
+  <div class="list" id="list"></div>
+
+  <div class="actions">
+    <button class="btn primary" onclick="checkOrder()">✅ 檢查順序</button>
+    <button class="btn ghost" onclick="shuffle()">🔀 重新打散</button>
+  </div>
+
+  <div class="result" id="result">
+    <div class="big" id="finalScore">— / 6</div>
+    <h2 id="finalTitle">完美排序！</h2>
+    <p id="finalText"></p>
+    <div class="actions" style="justify-content:center">
+      <button class="btn primary" onclick="shuffle()">🔄 再玩一次</button>
+      <a href="05_decision_quiz.html" class="btn ghost" style="text-decoration:none;display:inline-flex;align-items:center;">下一關 →</a>
+    </div>
+  </div>
+
+  <div class="qr-section">
+    <img id="qr-img" width="130" height="130" alt="QR Code">
+    <p>掃描分享給同學</p>
+  </div>
+  <a href="index.html" class="nav-back">← 回到遊戲總覽</a>
+</div>
+
+<script src="supabase-config.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+const ID = 'mcd_minigame_04';
+const _startTime = Date.now();
+const STEPS = [
+  {id:1, title:'採購找紙材', note:'尋找符合 FSC 認證、能承受塗佈工藝的紙廠'},
+  {id:2, title:'研發測試塗層', note:'實驗室調配天然澱粉 / 矽基塗料，測試防油、防水效能'},
+  {id:3, title:'供應商進駐餐廳觀察', note:'上游廠商到門市現場看員工怎麼包、怎麼遞'},
+  {id:4, title:'員工試包調手感', note:'員工大量試包，回饋紙厚、摩擦力、速度問題'},
+  {id:5, title:'量產設備試印', note:'從實驗室搬到工廠機台，整捲紙投入量產、耐久測試'},
+  {id:6, title:'全面導入餐廳', note:'通過所有測試後，逐區、逐品項替換到全台門市'}
+];
+
+let order = [];
+
+function shuffle(){
+  do{
+    order = STEPS.map(s=>s.id).sort(()=>Math.random()-0.5);
+  }while(isSorted(order));
+  render();
+  document.getElementById('result').classList.remove('show');
+}
+function isSorted(arr){ return arr.every((v,i)=>i===0||arr[i-1]<=v); }
+
+function render(){
+  const list = document.getElementById('list');
+  list.innerHTML = order.map((id,idx)=>{
+    const s = STEPS.find(x=>x.id===id);
+    return `<div class="item" draggable="true" data-id="${id}" data-pos="${idx}">
+      <div class="pos">${idx+1}</div>
+      <div class="body">
+        <div class="title">${s.title}</div>
+        <div class="note">${s.note}</div>
+        <div class="btnrow" style="margin-top:8px">
+          <button class="miniBtn" onclick="event.stopPropagation();move(${idx},-1)">↑ 上移</button>
+          <button class="miniBtn" onclick="event.stopPropagation();move(${idx},1)">↓ 下移</button>
+        </div>
+      </div>
+      <div class="grip">⋮⋮</div>
+    </div>`;
+  }).join('');
+  bindDrag();
+  document.getElementById('prog').textContent = '— / 6';
+}
+
+function bindDrag(){
+  let dragId = null;
+  document.querySelectorAll('.item').forEach(el=>{
+    el.addEventListener('dragstart',e=>{ dragId = +el.dataset.id; el.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; });
+    el.addEventListener('dragend',()=>el.classList.remove('dragging'));
+    el.addEventListener('dragover',e=>{ e.preventDefault(); el.classList.add('over'); });
+    el.addEventListener('dragleave',()=>el.classList.remove('over'));
+    el.addEventListener('drop',e=>{
+      e.preventDefault();
+      el.classList.remove('over');
+      const targetId = +el.dataset.id;
+      if(dragId===targetId)return;
+      const from = order.indexOf(dragId);
+      const to = order.indexOf(targetId);
+      order.splice(from,1);
+      order.splice(to,0,dragId);
+      render();
+    });
+  });
+}
+
+function move(idx,dir){
+  const newIdx = idx + dir;
+  if(newIdx<0||newIdx>=order.length)return;
+  const [it] = order.splice(idx,1);
+  order.splice(newIdx,0,it);
+  render();
+}
+
+function checkOrder(){
+  const correct = STEPS.map(s=>s.id);
+  let right = 0;
+  order.forEach((id,i)=>{
+    const el = document.querySelector('[data-id="'+id+'"]');
+    if(correct[i]===id){ el.classList.add('correct'); right++; }
+    else el.classList.add('wrong');
+  });
+  document.getElementById('prog').textContent = right+' / 6 正確';
+  document.getElementById('finalScore').textContent = right+' / 6';
+  let t='',txt='';
+  if(right===6){ t='完美過關！🏆'; txt='你完全掌握了一個減塑專案從採購到上線的完整流程。這就是真實業界的工作邏輯！'; }
+  else if(right>=4){ t='非常接近！⭐'; txt='大致順序對了，再微調一下就完美。回頭看一下：研發測試 → 進餐廳觀察 → 員工試包 → 量產 → 全面導入。'; }
+  else if(right>=2){ t='方向對了，再試一次 💪'; txt='幾個關鍵步驟有抓到，但順序需要再想想。提示：「實驗室」永遠在「量產」之前。'; }
+  else{ t='換個角度想想 🤔'; txt='試著想：如果你是專案經理，你會先做什麼？通常是先有原料和方案，才能測試、才能上線。'; }
+  document.getElementById('finalTitle').textContent = t;
+  document.getElementById('finalText').textContent = txt;
+  document.getElementById('result').classList.add('show');
+  try{ localStorage.setItem(ID, JSON.stringify({done:true,score:right,total:6,ts:Date.now()})); }catch(e){}
+  if (window.MCDFirebase) window.MCDFirebase.recordResult({
+    gameId: ID, gameName: '減塑流程排排站',
+    score: right, wrong: 6 - right, total: 6,
+    durationMs: Date.now() - _startTime
+  });
+}
+
+shuffle();
+document.getElementById('qr-img').src='https://api.qrserver.com/v1/create-qr-code/?size=130x130&data='+encodeURIComponent(window.location.href);
+</script>
+</body>
+</html>

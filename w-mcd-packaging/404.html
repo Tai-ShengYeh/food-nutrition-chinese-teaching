@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>頁面找不到・自動修正中</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:linear-gradient(135deg,#FFE9B0 0%,#FFD876 50%,#FFB347 100%);color:#2D1A0F;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;line-height:1.6}
+.card{background:#fff;border-radius:24px;padding:36px 32px;max-width:520px;width:100%;text-align:center;box-shadow:0 20px 48px rgba(45,26,15,0.15)}
+.emoji{font-size:3.5rem;margin-bottom:10px}
+h1{font-size:clamp(1.3rem,2.5vw,1.6rem);font-weight:900;color:#2D1A0F;margin-bottom:10px}
+.msg{font-size:1rem;color:#5C3F2C;margin-bottom:18px;line-height:1.6}
+.btn{display:inline-block;padding:12px 26px;background:#E63946;color:#fff;border-radius:999px;text-decoration:none;font-weight:900;font-size:0.95rem;margin-top:8px;box-shadow:0 8px 20px rgba(230,57,70,0.25)}
+.btn:hover{background:#C0303B}
+.meta{font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:#8A6F55;word-break:break-all;margin-top:20px;padding:12px 16px;background:#FFFBF0;border-radius:10px;border:1px dashed #B89E80}
+.meta b{color:#2D1A0F;display:block;margin-bottom:4px}
+.countdown{font-family:'JetBrains Mono',monospace;font-weight:900;color:#E63946}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="emoji">🧭</div>
+  <h1 id="title">頁面找不到</h1>
+  <p class="msg" id="msg">將於 <span class="countdown" id="cd">3</span> 秒後自動跳轉...</p>
+  <a class="btn" href="/" id="goBtn">立即回到首頁</a>
+  <div class="meta" id="urlInfo"></div>
+</div>
+<script>
+(function(){
+  const url = new URL(location.href);
+  const session = url.searchParams.get('session') || localStorage.getItem('mcd_session_id') || '';
+  let path = url.pathname;
+  let corrected = null;
+
+  // 修正常見錯誤：.html/ → .html
+  if(/\.html\/$/.test(path)){
+    corrected = path.slice(0,-1);
+  }
+  // 一般尾斜線（除根目錄）
+  else if(path.endsWith('/') && path !== '/'){
+    corrected = path.slice(0,-1);
+  }
+
+  const sessionQ = session ? '?session=' + encodeURIComponent(session) : '';
+  const target = corrected
+    ? url.origin + corrected + sessionQ
+    : url.origin + '/' + sessionQ;
+
+  document.getElementById('goBtn').href = target;
+
+  if(corrected){
+    document.getElementById('title').textContent = '網址多了個斜線，幫您修正了';
+    document.getElementById('msg').innerHTML = '正確網址是 <b style="color:#E63946">' + corrected + '</b><br>將於 <span class="countdown" id="cd">2</span> 秒後跳轉到正確頁面...';
+    document.getElementById('urlInfo').innerHTML = '<b>原網址</b>' + location.pathname + location.search + '<br><br><b>修正為</b>' + corrected + sessionQ;
+  }else{
+    document.getElementById('urlInfo').innerHTML = '<b>找不到網址</b>' + location.pathname;
+  }
+
+  let n = corrected ? 2 : 3;
+  const cdEl = document.getElementById('cd');
+  if(cdEl) cdEl.textContent = n;
+  const tick = setInterval(()=>{
+    n--;
+    const el = document.getElementById('cd');
+    if(el) el.textContent = n;
+    if(n<=0){
+      clearInterval(tick);
+      location.replace(target);
+    }
+  },1000);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>你也是包裝設計師｜情境決策題</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFBF0; --bg-2:#FFF4D6; --bg-3:#FFE9B0;
+  --ink:#2D1A0F; --ink-2:#5C3F2C; --ink-3:#8A6F55; --ink-4:#B89E80;
+  --accent:#E63946; --accent-2:#F4A300; --eco:#2A9D8F; --warn:#F77F00;
+  --paper:#FFFFFF; --line:rgba(45,26,15,0.12);
+  --shadow:0 8px 24px rgba(45,26,15,0.08);
+  --shadow-hi:0 16px 36px rgba(230,57,70,0.2);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:linear-gradient(135deg,var(--bg) 0%,var(--bg-2) 100%);color:var(--ink);min-height:100vh;padding:24px 16px;line-height:1.6}
+.wrap{max-width:820px;margin:0 auto}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--accent);font-weight:700;letter-spacing:0.2em;margin-bottom:8px}
+h1{font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:900;margin-bottom:8px;line-height:1.2}
+.subtitle{color:var(--ink-2);font-size:clamp(0.95rem,1.4vw,1.05rem);margin-bottom:20px}
+.tag{display:inline-block;padding:4px 12px;background:var(--bg-3);border-radius:999px;font-size:0.8rem;font-weight:700;color:var(--ink);font-family:'JetBrains Mono',monospace}
+
+.bar{background:var(--paper);padding:14px 20px;border-radius:14px;box-shadow:var(--shadow);margin-bottom:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.pcount{font-family:'JetBrains Mono',monospace;font-weight:700}
+.pbar{flex:1;height:10px;background:var(--bg-3);border-radius:999px;overflow:hidden;min-width:120px}
+.pfill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%;transition:width .4s ease}
+.pscore{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--eco)}
+
+.scene{background:var(--paper);border-radius:20px;padding:28px;box-shadow:var(--shadow);margin-bottom:20px}
+.scene-head{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.scene-emoji{font-size:3rem;width:74px;height:74px;background:linear-gradient(135deg,var(--bg-2),var(--bg-3));border-radius:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.scene-title{flex:1}
+.scene-num{font-family:'JetBrains Mono',monospace;color:var(--accent);font-weight:900;font-size:0.85rem;letter-spacing:0.15em}
+.scene-name{font-size:clamp(1.2rem,2.2vw,1.5rem);font-weight:900;color:var(--ink);line-height:1.2}
+.scene-brief{padding:14px 16px;background:var(--bg-2);border-left:5px solid var(--accent-2);border-radius:10px;font-size:0.95rem;color:var(--ink);line-height:1.6;margin-bottom:18px}
+.scene-q{font-size:1.05rem;font-weight:900;color:var(--ink);margin-bottom:14px}
+.opts{display:grid;gap:10px}
+.opt{padding:14px 18px;border-radius:12px;border:2px solid var(--line);background:var(--bg);cursor:pointer;font-size:0.98rem;font-weight:500;color:var(--ink);transition:all .2s ease;text-align:left;font-family:inherit;display:flex;gap:12px;align-items:flex-start}
+.opt .mark{font-family:'JetBrains Mono',monospace;font-weight:900;color:var(--ink-3);min-width:28px;flex-shrink:0}
+.opt:hover{border-color:var(--accent-2);background:var(--bg-2);transform:translateX(4px)}
+.opt:disabled{cursor:default;transform:none}
+.opt.correct{background:linear-gradient(135deg,#C5E8DE,#A0D8C8);border-color:var(--eco);font-weight:700}
+.opt.correct .mark{color:var(--eco)}
+.opt.wrong{background:#FFCCD1;border-color:var(--accent);font-weight:700}
+.opt.wrong .mark{color:var(--accent)}
+
+.feedback{display:none;margin-top:16px;padding:16px 20px;background:linear-gradient(135deg,var(--bg-2),var(--bg-3));border-radius:14px;border-left:5px solid var(--eco)}
+.feedback.show{display:block;animation:fadein .3s}
+.feedback.wrong{border-left-color:var(--accent)}
+@keyframes fadein{0%{opacity:0;transform:translateY(-4px)}100%{opacity:1;transform:translateY(0)}}
+.feedback .head{font-weight:900;color:var(--ink);margin-bottom:8px;font-size:1rem}
+.feedback .body{font-size:0.92rem;color:var(--ink-2);line-height:1.6}
+.feedback b{color:var(--accent)}
+.feedback .eco{color:var(--eco)}
+
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;justify-content:flex-end}
+.btn{padding:12px 24px;border-radius:999px;border:none;font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:1rem;cursor:pointer;transition:all .2s ease;min-height:48px}
+.btn.primary{background:var(--accent);color:#fff}
+.btn.primary:hover{background:#C0303B;transform:translateY(-2px)}
+.btn.ghost{background:var(--paper);color:var(--ink);border:2px solid var(--ink-4)}
+
+.result{display:none;background:var(--paper);border-radius:20px;padding:32px;box-shadow:var(--shadow-hi);text-align:center;margin-top:20px}
+.result.show{display:block;animation:popin .4s}
+@keyframes popin{0%{transform:scale(0.9);opacity:0}100%{transform:scale(1);opacity:1}}
+.result .big{font-family:'JetBrains Mono',monospace;font-size:3rem;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--eco));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.result h2{font-size:1.6rem;margin-bottom:10px}
+
+.qr-section{background:var(--paper);padding:18px;border-radius:14px;margin-top:20px;text-align:center;box-shadow:var(--shadow)}
+.qr-section img{border-radius:8px;margin-bottom:8px}
+.qr-section p{font-size:0.85rem;color:var(--ink-3);font-family:'JetBrains Mono',monospace}
+.nav-back{display:inline-block;margin-top:20px;padding:10px 18px;background:var(--paper);border-radius:999px;text-decoration:none;color:var(--ink);font-weight:700;box-shadow:var(--shadow);font-size:0.9rem}
+
+@media (max-width:560px){
+  body{padding:16px 12px}
+  .scene{padding:20px 16px}
+  .scene-emoji{font-size:2.2rem;width:60px;height:60px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">遊戲 5 / 5 · 終極挑戰</span>
+  <div class="kicker" style="margin-top:10px">MINIGAME · 情境決策</div>
+  <h1>你也是包裝設計師 🎨</h1>
+  <p class="subtitle">麥當勞給你 3 個食品，<b>每個需要不同的包裝材料</b>。看清楚產品特性，做出對的選擇！</p>
+
+  <div class="bar">
+    <span class="pcount" id="pcount">情境 1 / 3</span>
+    <div class="pbar"><div class="pfill" id="pfill"></div></div>
+    <span class="pscore">答對：<b id="pscore">0</b></span>
+  </div>
+
+  <div id="sceneHolder"></div>
+
+  <div class="result" id="result">
+    <div class="big" id="finalScore">3 / 3</div>
+    <h2 id="finalTitle">合格的包裝設計師！</h2>
+    <p id="finalText" style="color:var(--ink-2);margin-bottom:20px"></p>
+    <div class="actions" style="justify-content:center">
+      <button class="btn primary" onclick="restart()">🔄 再玩一次</button>
+      <a href="index.html" class="btn ghost" style="text-decoration:none;display:inline-flex;align-items:center;">🎯 回到總覽</a>
+    </div>
+  </div>
+
+  <div class="qr-section">
+    <img id="qr-img" width="130" height="130" alt="QR Code">
+    <p>掃描分享給同學</p>
+  </div>
+  <a href="index.html" class="nav-back">← 回到遊戲總覽</a>
+</div>
+
+<script src="supabase-config.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+const ID = 'mcd_minigame_05';
+const _startTime = Date.now();
+const SCENES = [
+  {
+    emoji:'🍔',
+    name:'大麥克（雙層牛肉漢堡）',
+    brief:'產品特性：常溫食用、有醬汁與起司會出油、需要消費者單手好拿、要看起來像麥當勞的招牌商品。',
+    q:'這個漢堡的包裝，最適合用什麼材料？',
+    opts:[
+      '塑膠淋膜紙盒（防油效果好）',
+      '天然澱粉塗佈的腰帶型紙包裝',
+      '矽基材質紙包裝',
+      '不需要塗任何東西的純紙'
+    ],
+    ans:1,
+    correct:'<b class="eco">✅ 答對了！</b> 大麥克最適合的就是「<b>天然澱粉塗佈 + 腰帶型紙包裝</b>」。澱粉塗佈防得住肉汁油脂，腰帶型結構讓單手食用方便，紙材還能回收。這正是麥當勞 2025 的正式答案。',
+    wrong:[
+      '❌ 雖然防油，但<b>塑膠淋膜會讓紙變成複合材料，難以回收</b>。麥當勞已經淘汰這個方案了。',
+      '<b class="eco">✅</b>',
+      '❌ 矽基材質是專門給「會冒水蒸氣」的食品用的，大麥克常溫食用，<b>不需要透氣性</b>，會浪費材料成本。',
+      '❌ 漢堡有醬汁和起司油脂，<b>純紙會被滲透</b>，紙會油到不行還可能漏出來。'
+    ]
+  },
+  {
+    emoji:'🐟',
+    name:'麥香魚（蒸製麵包 + 魚排）',
+    brief:'產品特性：麵包是「蒸熟」的，包起來後仍會持續冒水蒸氣。如果水氣悶在包裝內，麵包就會變濕黏、口感變差。',
+    q:'麥香魚的包裝，應該選什麼材料？',
+    opts:[
+      '塑膠淋膜紙（完全密封最保險）',
+      '天然澱粉塗佈紙（跟大麥克一樣）',
+      '矽基材質紙（可擋油水、放蒸氣）',
+      '不用塗任何東西'
+    ],
+    ans:2,
+    correct:'<b class="eco">✅ 太棒了！</b> 麥香魚要用「<b>矽基材質</b>」。它能擋住油和水，但讓<b>水蒸氣可以散出去</b>，麵包才不會悶到變濕黏。不同產品配不同材料，這就是專業！',
+    wrong:[
+      '❌ 完全密封看似保險，但<b>水蒸氣會悶在裡面</b>，麵包就會變濕黏、像被泡爛一樣。',
+      '❌ 跟大麥克一樣的澱粉塗佈紙是好材料，但對「<b>會冒蒸氣的蒸製麵包</b>」來說透氣性不夠。',
+      '<b class="eco">✅</b>',
+      '❌ 純紙會被油和水浸透，<b>不可能用於熱食包裝</b>。'
+    ]
+  },
+  {
+    emoji:'🥧',
+    name:'蘋果派（油炸高油脂）',
+    brief:'產品特性：剛炸完非常燙、油脂含量很高、有甜餡會滲出黏液、消費者常邊走邊吃，包裝體積要小。',
+    q:'蘋果派的包裝，最關鍵的是什麼？',
+    opts:[
+      '塑膠淋膜（最防油）',
+      '天然澱粉塗佈紙（防油 + 可回收）',
+      '矽基材質紙（透氣）',
+      '雙層純紙包（不需塗佈）'
+    ],
+    ans:1,
+    correct:'<b class="eco">✅ 全對！</b> 蘋果派也是用「<b>天然澱粉塗佈紙</b>」，原因跟大麥克一樣：<b>需要強防油但不需要透氣</b>。澱粉塗層性能等同塑膠淋膜，卻能保留純紙基底，回收容易，是麥當勞減塑 86 公噸的關鍵之一。',
+    wrong:[
+      '❌ 雖然防油效果好，<b>但塑膠淋膜會讓紙變成不可回收的複合材料</b>。澱粉塗佈已經能做到一樣的效果。',
+      '<b class="eco">✅</b>',
+      '❌ 矽基的「透氣」對油炸食品<b>反而是缺點</b>——油可能會慢慢透出。矽基是給蒸製食品用的。',
+      '❌ 蘋果派油脂含量極高，<b>純紙連幾分鐘都撐不住</b>，必須有防油塗層。'
+    ]
+  }
+];
+
+let idx=0, score=0, answered=false;
+
+function render(){
+  const s = SCENES[idx];
+  const opts = s.opts.map((o,i)=>`<button class="opt" onclick="pick(${i})"><span class="mark">${'ABCD'[i]}</span>${o}</button>`).join('');
+  document.getElementById('sceneHolder').innerHTML = `
+    <div class="scene">
+      <div class="scene-head">
+        <div class="scene-emoji">${s.emoji}</div>
+        <div class="scene-title">
+          <div class="scene-num">SCENARIO ${idx+1} / ${SCENES.length}</div>
+          <div class="scene-name">${s.name}</div>
+        </div>
+      </div>
+      <div class="scene-brief">📋 ${s.brief}</div>
+      <div class="scene-q">❓ ${s.q}</div>
+      <div class="opts" id="opts">${opts}</div>
+      <div class="feedback" id="feedback"></div>
+      <div class="actions" id="actions" style="display:none">
+        <button class="btn primary" onclick="next()">${idx+1<SCENES.length?'下一情境 →':'看總成績 🏁'}</button>
+      </div>
+    </div>`;
+  document.getElementById('pcount').textContent = '情境 '+(idx+1)+' / '+SCENES.length;
+  document.getElementById('pfill').style.width = (idx/SCENES.length*100)+'%';
+  answered=false;
+}
+
+function pick(i){
+  if(answered)return;
+  answered=true;
+  const s = SCENES[idx];
+  document.querySelectorAll('#opts .opt').forEach((b,j)=>{
+    b.disabled=true;
+    if(j===s.ans) b.classList.add('correct');
+    else if(j===i) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('feedback');
+  if(i===s.ans){
+    score++;
+    document.getElementById('pscore').textContent = score;
+    fb.classList.remove('wrong');
+    fb.innerHTML = '<div class="head">🎯 包裝設計師的判斷</div><div class="body">'+s.correct+'</div>';
+  }else{
+    fb.classList.add('wrong');
+    fb.innerHTML = '<div class="head">💡 換個思路想想</div><div class="body">'+s.wrong[i]+'<br><br>正確答案是 <b class="eco">'+'ABCD'[s.ans]+'：'+s.opts[s.ans]+'</b><br>'+s.correct.replace(/<b class="eco">[^<]+<\/b>\s*/, '')+'</div>';
+  }
+  fb.classList.add('show');
+  document.getElementById('actions').style.display='flex';
+  document.getElementById('pfill').style.width = ((idx+1)/SCENES.length*100)+'%';
+}
+
+function next(){
+  idx++;
+  if(idx>=SCENES.length) finish();
+  else render();
+}
+
+function finish(){
+  document.getElementById('sceneHolder').innerHTML='';
+  document.getElementById('finalScore').textContent = score+' / '+SCENES.length;
+  let t='',txt='';
+  if(score===3){ t='合格的包裝設計師！🏆'; txt='3 題全對！你完全理解「不同食品配不同材料」的設計邏輯。麥當勞的工程師會為你拍手 👏'; }
+  else if(score===2){ t='接近專業 ⭐'; txt='答對 2 題。你已經知道材料不能亂選，再複習一下「為什麼」就完美了。'; }
+  else if(score===1){ t='抓到一個 ✨'; txt='關鍵是要看產品「會不會冒蒸氣」「油脂多不多」「常溫還是熱食」。再玩一次！'; }
+  else{ t='重新出發 💪'; txt='沒關係！回去複習一下大麥克、麥香魚、蘋果派的特性，再來挑戰。'; }
+  document.getElementById('finalTitle').textContent = t;
+  document.getElementById('finalText').textContent = txt;
+  document.getElementById('result').classList.add('show');
+  try{ localStorage.setItem(ID, JSON.stringify({done:true,score:score,total:SCENES.length,ts:Date.now()})); }catch(e){}
+  if (window.MCDFirebase) window.MCDFirebase.recordResult({
+    gameId: ID, gameName: '你也是包裝設計師',
+    score: score, wrong: SCENES.length - score, total: SCENES.length,
+    durationMs: Date.now() - _startTime
+  });
+}
+
+function restart(){ idx=0; score=0; document.getElementById('pscore').textContent='0'; document.getElementById('result').classList.remove('show'); render(); }
+
+render();
+document.getElementById('qr-img').src='https://api.qrserver.com/v1/create-qr-code/?size=130x130&data='+encodeURIComponent(window.location.href);
+</script>
+</body>
+</html>

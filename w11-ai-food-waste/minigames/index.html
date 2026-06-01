@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>W11 遊戲入口｜AI 餐飲剩食革命</title>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <style>
 :root{--g:#059669;--g2:#10b981;--bg:#0a0d12;--surf:#13171f;
   --surf2:#1d2230;--text:#e2e8f0;--text2:#94a3b8;--border:#1e2a3a;--radius:12px}
@@ -21,8 +20,9 @@ h1{font-size:1.8rem;font-weight:900;color:var(--g2);margin-bottom:6px}
 .gi{font-size:2.5rem;margin-bottom:10px}
 .gt{font-size:1rem;font-weight:700;color:var(--g2);margin-bottom:6px}
 .gd{font-size:.8rem;color:var(--text2);line-height:1.5}
-.qr{margin-top:12px}
-.qr canvas{border-radius:8px}
+.qr{margin-top:14px;min-height:128px;display:flex;align-items:center;justify-content:center}
+.qr img{width:120px;height:120px;border-radius:8px;background:#fff;padding:5px}
+.qr .qr-fallback{font-size:.68rem;color:var(--text2);word-break:break-all;line-height:1.4}
 .back{display:block;margin-top:28px;color:var(--text2);font-size:.85rem;text-decoration:none}
 .back:hover{color:var(--g2)}
 </style>
@@ -35,34 +35,41 @@ h1{font-size:1.8rem;font-weight:900;color:var(--g2);margin-bottom:6px}
     <div class="gi">🔤</div>
     <div class="gt">詞彙配對</div>
     <div class="gd">8 組關鍵詞彙 ↔ 解釋<br>剩食、ROI、ESG…</div>
-    <div class="qr"><canvas id="q1"></canvas></div>
+    <div class="qr"><img alt="QR：詞彙配對" data-game="01_vocab_match.html"></div>
   </a>
   <a class="card" href="02_company_match.html">
     <div class="gi">🏢</div>
     <div class="gt">公司配對</div>
     <div class="gd">11 個數據/特色<br>拖到 Winnow / Orbisk / Leanpath</div>
-    <div class="qr"><canvas id="q2"></canvas></div>
+    <div class="qr"><img alt="QR：公司配對" data-game="02_company_match.html"></div>
   </a>
   <a class="card" href="03_true_false.html">
     <div class="gi">✅</div>
     <div class="gt">是非判斷</div>
     <div class="gd">10 道數據題<br>附詳細解析</div>
-    <div class="qr"><canvas id="q3"></canvas></div>
+    <div class="qr"><img alt="QR：是非判斷" data-game="03_true_false.html"></div>
   </a>
   <a class="card" href="04_process_order.html">
     <div class="gi">🔄</div>
     <div class="gt">流程排序</div>
     <div class="gd">Throw &amp; Go 4 步驟<br>零廢棄迴圈 4 步驟（可切換）</div>
-    <div class="qr"><canvas id="q4"></canvas></div>
+    <div class="qr"><img alt="QR：流程排序" data-game="04_process_order.html"></div>
   </a>
 </div>
 <a class="back" href="../slides.html">← 回投影片</a>
 <script>
-const base=location.href.replace('index.html','');
-[['01_vocab_match','q1'],['02_company_match','q2'],
- ['03_true_false','q3'],['04_process_order','q4']].forEach(([f,id])=>{
-  QRCode.toCanvas(document.getElementById(id),base+f+'.html',
-    {width:120,margin:1,color:{dark:'#000',light:'#fff'}});
+/* QR Code：用 qrserver 圖片 API（免 JS 函式庫／免 CDN script）。
+   以當前頁面位置動態解析每個遊戲的絕對網址，部署到任何網域都正確。
+   若圖片載入失敗（離線／防火牆），自動降級顯示網址文字。 */
+document.querySelectorAll('.qr img').forEach(function(img){
+  var url=new URL(img.dataset.game, location.href).href;
+  img.src='https://api.qrserver.com/v1/create-qr-code/?size=120x120&margin=0&data='+encodeURIComponent(url);
+  img.onerror=function(){
+    var span=document.createElement('span');
+    span.className='qr-fallback';
+    span.textContent=url;
+    img.replaceWith(span);
+  };
 });
 </script>
 </body>

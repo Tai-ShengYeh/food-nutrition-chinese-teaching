@@ -645,6 +645,7 @@ footer{text-align:center;font-size:.8rem;color:var(--ink3)}
       <span id="w16dot" style="font-size:.72rem;color:#94a3b8;font-family:monospace;margin-left:auto;">● 連線中…</span>
     </div>
     <p style="font-size:.8rem;color:#64748b;margin:0 0 14px;line-height:1.6;">即時讀取 Supabase（<code>course_code=cultivated-eel</code>），每 20 秒自動更新；學生作答後出現。本頁網址可加 <code>?session=班級</code> 篩選單一場次。為保護隱私僅顯示匿名代碼。</p>
+    <div id="w16poll" style="margin-bottom:6px;"></div>
     <div id="w16body" style="font-size:.86rem;color:#475569;">載入中…</div>
   </div>
 </div>
@@ -654,7 +655,7 @@ footer{text-align:center;font-size:.8rem;color:var(--ink3)}
       ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbGRjamtsbGlzdmZnZWdrZnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMjM5ODYsImV4cCI6MjA4NjY5OTk4Nn0.Bfj0W7HN_n_vcjGe5502Chamk0YV-de8a0fxF4Nyczk",
       MODE="student",
       sess=new URLSearchParams(location.search).get("session"),
-      GAMES=[["cultivated_eel_vocab_match","生詞配對"],["cultivated_eel_reading_quiz","閱讀小測驗"],["cultivated_eel_stance","思辨立場"],["cultivated_eel_cloze","句型克漏字"]];
+      GAMES=[["cultivated_eel_vocab_match","生詞配對"],["cultivated_eel_vocab_fill","生詞填空"],["cultivated_eel_reading_quiz","閱讀小測驗"],["cultivated_eel_stance","思辨立場"],["cultivated_eel_cloze","句型克漏字"]];
   var body=document.getElementById("w16body"),dot=document.getElementById("w16dot");
   function esc(s){return String(s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];});}
   function cardN(n,l){return '<div style="flex:1;min-width:110px;background:#f0fdfa;border:1px solid #99f6e4;border-radius:10px;padding:12px 14px;"><div style="font-size:1.5rem;font-weight:800;color:#0d9488;">'+n+'</div><div style="font-size:.74rem;color:#64748b;">'+l+'</div></div>';}
@@ -687,7 +688,8 @@ footer{text-align:center;font-size:.8rem;color:var(--ink3)}
       body.innerHTML=h;dot.textContent="● 已更新 "+new Date().toLocaleTimeString("zh-TW");dot.style.color="#0d9488";
     }).catch(function(e){dot.textContent="● 連線異常";dot.style.color="#dc2626";});
   }
-  load();setInterval(load,20000);
+  function loadPoll(){var pe=document.getElementById('w16poll');if(!pe)return;var OPTS=['常常吃','吃過幾次','沒吃過','不知道'];var u=SUPA+'/rest/v1/poll_counts?select=session_key,opt0,opt1,opt2,opt3';if(sess)u+='&session_key=eq.'+encodeURIComponent(sess+'_eelwarmup');else u+='&session_key=like.*_eelwarmup';fetch(u,{headers:{apikey:ANON,Authorization:'Bearer '+ANON}}).then(function(r){return r.json();}).then(function(rows){if(!Array.isArray(rows)||!rows.length){pe.innerHTML='';return;}var c=[0,0,0,0];rows.forEach(function(x){c[0]+=x.opt0||0;c[1]+=x.opt1||0;c[2]+=x.opt2||0;c[3]+=x.opt3||0;});var tot=c[0]+c[1]+c[2]+c[3];if(!tot){pe.innerHTML='';return;}var h='<div style="font-weight:700;color:#0d9488;margin-bottom:8px;font-size:.9rem;">🗳 暖身投票：你吃過鰻魚飯嗎？（'+tot+' 人）</div>';OPTS.forEach(function(l,j){var p=Math.round(c[j]/tot*100);h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;font-size:.82rem;"><span style="width:84px;color:#475569;flex-shrink:0;">'+l+'</span><span style="flex:1;height:14px;background:#f1f5f9;border-radius:7px;overflow:hidden;"><span style="display:block;height:100%;width:'+p+'%;background:linear-gradient(90deg,#0d9488,#14b8a6);"></span></span><span style="width:62px;text-align:right;color:#0d9488;font-weight:700;flex-shrink:0;">'+p+'%（'+c[j]+'）</span></div>';});h+='<div style="border-bottom:1px solid #e5e7eb;margin:12px 0;"></div>';pe.innerHTML=h;}).catch(function(e){});}
+load();loadPoll();setInterval(function(){load();loadPoll();},20000);
 })();
 </script>
 

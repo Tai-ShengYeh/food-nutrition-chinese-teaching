@@ -636,6 +636,61 @@ footer{text-align:center;font-size:.8rem;color:var(--ink3)}
   謝謝每位同學的參與和挑戰精神！</p>
 </div>
 
+<!-- ── W16 即時成績（cultivated-eel，2026-06-08 新增；歷史 W2–W4 為 6/1 快照不變）── -->
+<div id="w16-live" style="margin:30px auto 0;max-width:960px;">
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:20px 22px;box-shadow:0 1px 3px #0000000d;">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px;">
+      <span style="font-size:.72rem;font-weight:800;letter-spacing:.06em;color:#fff;background:#0d9488;border-radius:20px;padding:4px 12px;">W16 ｜ 6/8</span>
+      <h2 style="margin:0;font-size:1.05rem;color:#1e293b;">人造鰻魚飯 × 培植肉｜即時成績</h2>
+      <span id="w16dot" style="font-size:.72rem;color:#94a3b8;font-family:monospace;margin-left:auto;">● 連線中…</span>
+    </div>
+    <p style="font-size:.8rem;color:#64748b;margin:0 0 14px;line-height:1.6;">即時讀取 Supabase（<code>course_code=cultivated-eel</code>），每 20 秒自動更新；學生作答後出現。本頁網址可加 <code>?session=班級</code> 篩選單一場次。為保護隱私僅顯示匿名代碼。</p>
+    <div id="w16body" style="font-size:.86rem;color:#475569;">載入中…</div>
+  </div>
+</div>
+<script>
+(function(){
+  var SUPA="https://qmldcjkllisvfgegkfsz.supabase.co",
+      ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbGRjamtsbGlzdmZnZWdrZnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMjM5ODYsImV4cCI6MjA4NjY5OTk4Nn0.Bfj0W7HN_n_vcjGe5502Chamk0YV-de8a0fxF4Nyczk",
+      MODE="student",
+      sess=new URLSearchParams(location.search).get("session"),
+      GAMES=[["cultivated_eel_vocab_match","生詞配對"],["cultivated_eel_reading_quiz","閱讀小測驗"],["cultivated_eel_stance","思辨立場"],["cultivated_eel_cloze","句型克漏字"]];
+  var body=document.getElementById("w16body"),dot=document.getElementById("w16dot");
+  function esc(s){return String(s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];});}
+  function cardN(n,l){return '<div style="flex:1;min-width:110px;background:#f0fdfa;border:1px solid #99f6e4;border-radius:10px;padding:12px 14px;"><div style="font-size:1.5rem;font-weight:800;color:#0d9488;">'+n+'</div><div style="font-size:.74rem;color:#64748b;">'+l+'</div></div>';}
+  function load(){
+    var url=SUPA+"/rest/v1/interactions?course_code=eq.cultivated-eel&select=session_id,student_id,game_id,score,total,client_meta&order=id.desc";
+    if(sess)url+="&session_id=eq."+encodeURIComponent(sess);
+    fetch(url,{headers:{apikey:ANON,Authorization:"Bearer "+ANON}}).then(function(r){return r.json();}).then(function(rows){
+      if(!Array.isArray(rows))throw new Error("bad");
+      if(!rows.length){body.innerHTML='<div style="padding:6px 0;color:#94a3b8;">尚無資料 — W16 進行中，學生作答後會自動出現。'+(sess?"（場次 "+esc(sess)+"）":"")+'</div>';dot.textContent="● 已連線";dot.style.color="#0d9488";return;}
+      var stu={},byG={},ses={};
+      rows.forEach(function(x){stu[x.student_id]=1;ses[x.session_id]=1;(byG[x.game_id]=byG[x.game_id]||[]).push(x);});
+      function done(g){return (byG[g]||[]).length;}
+      function pct(g){var a=byG[g]||[];if(!a.length)return null;var s=0,t=0;a.forEach(function(x){s+=x.score||0;t+=x.total||0;});return t?Math.round(s/t*100):0;}
+      var rp=pct("cultivated_eel_reading_quiz");
+      var h='<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;">'+cardN(Object.keys(stu).length,"報到學生")+cardN(rows.length,"完成遊戲次數")+cardN((rp==null?"—":rp+"%"),"閱讀測驗平均")+'</div>';
+      h+='<table style="width:100%;border-collapse:collapse;font-size:.84rem;"><thead><tr><th style="text-align:left;padding:8px;border-bottom:2px solid #e5e7eb;color:#64748b;">遊戲</th><th style="text-align:center;padding:8px;border-bottom:2px solid #e5e7eb;color:#64748b;">完成人次</th><th style="text-align:center;padding:8px;border-bottom:2px solid #e5e7eb;color:#64748b;">平均答對率</th></tr></thead><tbody>';
+      GAMES.forEach(function(g){var p=pct(g[0]);h+='<tr><td style="padding:8px;border-bottom:1px solid #f1f5f9;">'+g[1]+'</td><td style="text-align:center;padding:8px;border-bottom:1px solid #f1f5f9;">'+done(g[0])+'</td><td style="text-align:center;padding:8px;border-bottom:1px solid #f1f5f9;font-weight:700;color:#0d9488;">'+(p==null?"—":p+"%")+'</td></tr>';});
+      h+='</tbody></table>';
+      var st={};(byG["cultivated_eel_stance"]||[]).forEach(function(x){var s=(x.client_meta&&x.client_meta.stance)||"未選";st[s]=(st[s]||0)+1;});
+      var sk=Object.keys(st);if(sk.length)h+='<div style="margin-top:12px;font-size:.82rem;color:#475569;"><b>思辨立場：</b>'+sk.map(function(k){return esc(k)+" "+st[k];}).join("　｜　")+'</div>';
+      if(MODE==="teacher"){
+        var ps={};rows.forEach(function(x){(ps[x.student_id]=ps[x.student_id]||{})[x.game_id]=x;});
+        h+='<details style="margin-top:14px;"><summary style="cursor:pointer;font-size:.84rem;color:#0d9488;font-weight:700;">每位學生明細（'+Object.keys(ps).length+' 人，匿名）</summary><table style="width:100%;border-collapse:collapse;font-size:.8rem;margin-top:8px;"><thead><tr><th style="text-align:left;padding:6px;border-bottom:1px solid #e5e7eb;color:#64748b;">學生</th>';
+        GAMES.forEach(function(g){h+='<th style="text-align:center;padding:6px;border-bottom:1px solid #e5e7eb;color:#64748b;">'+g[1]+'</th>';});
+        h+='</tr></thead><tbody>';
+        Object.keys(ps).forEach(function(sid){h+='<tr><td style="padding:6px;border-bottom:1px solid #f1f5f9;font-family:monospace;">'+esc(sid)+'</td>';GAMES.forEach(function(g){var r=ps[sid][g[0]];h+='<td style="text-align:center;padding:6px;border-bottom:1px solid #f1f5f9;">'+(r?(r.score+"/"+r.total):"—")+'</td>';});h+='</tr>';});
+        h+='</tbody></table></details>';
+      }
+      h+='<div style="margin-top:10px;font-size:.75rem;color:#94a3b8;">場次數：'+Object.keys(ses).length+(sess?"（已篩選 "+esc(sess)+"）":"")+'</div>';
+      body.innerHTML=h;dot.textContent="● 已更新 "+new Date().toLocaleTimeString("zh-TW");dot.style.color="#0d9488";
+    }).catch(function(e){dot.textContent="● 連線異常";dot.style.color="#dc2626";});
+  }
+  load();setInterval(load,20000);
+})();
+</script>
+
 <footer>
   資料來源：Supabase 互動紀錄｜整理日期：2026-06-01｜學生成果版
 </footer>

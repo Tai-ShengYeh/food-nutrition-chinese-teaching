@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>期末考複習自測｜食品營養華語文獻閱讀與寫作 II</title>
+<style>
+  :root{
+    --dark:#1a1a2e; --accent:#0f3460; --hl:#e94560;
+    --ok:#2e7d32; --okbg:#e8f5e9; --bad:#c62828; --badbg:#ffebee;
+    --card:#ffffff; --bg:#f0f2f7; --border:#d8dee9;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  body{margin:0; background:var(--bg); color:var(--dark);
+       font-family:"Microsoft JhengHei","PingFang TC","Noto Sans TC",sans-serif;
+       font-size:16px; line-height:1.7;}
+  header{background:linear-gradient(135deg,var(--dark),var(--accent));
+         color:#fff; padding:20px 16px; text-align:center;}
+  header h1{margin:0; font-size:1.25rem;}
+  header p{margin:6px 0 0; font-size:.85rem; opacity:.85;}
+  #scorebar{position:sticky; top:0; z-index:10; background:#fff;
+            border-bottom:2px solid var(--accent); padding:8px 16px;
+            display:flex; justify-content:space-between; align-items:center;
+            font-weight:bold; font-size:.95rem;}
+  #scorebar .pct{color:var(--hl);}
+  main{max-width:760px; margin:0 auto; padding:12px 12px 60px;}
+  section{background:var(--card); border:1px solid var(--border);
+          border-radius:12px; margin:14px 0; overflow:hidden;}
+  section>h2{margin:0; padding:12px 16px; background:var(--accent); color:#fff;
+             font-size:1.05rem; cursor:pointer; user-select:none;
+             display:flex; justify-content:space-between; align-items:center;}
+  section>h2 .arrow{transition:transform .2s;}
+  section.open>h2 .arrow{transform:rotate(90deg);}
+  .body{display:none; padding:14px 16px;}
+  section.open .body{display:block;}
+  .note{font-size:.85rem; color:#666; margin:0 0 10px;}
+  /* 重點整理卡片 */
+  .wk{border:1px solid var(--border); border-left:5px solid var(--accent);
+      border-radius:8px; padding:10px 12px; margin:10px 0; background:#fafbfd;}
+  .wk h3{margin:0 0 4px; font-size:1rem; color:var(--accent);}
+  .wk p{margin:3px 0; font-size:.92rem;}
+  .wk .tag{display:inline-block; background:#e3eaf5; color:var(--accent);
+           border-radius:6px; padding:1px 8px; margin:2px 4px 2px 0; font-size:.85rem;}
+  /* 題目 */
+  .q{border-bottom:1px dashed var(--border); padding:12px 0;}
+  .q:last-child{border-bottom:none;}
+  .q .stem{font-weight:bold; margin-bottom:8px;}
+  .passage{background:#fafafa; border:1px solid var(--border); border-radius:8px;
+           padding:10px 12px; font-size:.95rem; margin:10px 0;}
+  .opts{display:flex; flex-direction:column; gap:6px;}
+  .opts button{
+    text-align:left; border:1.5px solid var(--border); background:#fff;
+    border-radius:8px; padding:9px 12px; font-size:.95rem; cursor:pointer;
+    font-family:inherit; line-height:1.5;}
+  .opts button:hover{border-color:var(--accent);}
+  .opts.ox{flex-direction:row;}
+  .opts.ox button{flex:1; text-align:center; font-size:1.1rem; font-weight:bold;}
+  .opts button.correct{background:var(--okbg); border-color:var(--ok); color:var(--ok);}
+  .opts button.wrong{background:var(--badbg); border-color:var(--bad); color:var(--bad);}
+  .opts button:disabled{cursor:default; opacity:.92;}
+  .fb{margin-top:8px; font-size:.9rem; border-radius:8px; padding:8px 10px; display:none;}
+  .fb.ok{display:block; background:var(--okbg); color:var(--ok);}
+  .fb.bad{display:block; background:var(--badbg); color:var(--bad);}
+  /* 句型 / 寫作 */
+  textarea{width:100%; min-height:64px; border:1.5px solid var(--border);
+           border-radius:8px; padding:8px 10px; font-family:inherit; font-size:.95rem;}
+  .reveal{margin-top:6px; background:none; border:none; color:var(--accent);
+          font-weight:bold; cursor:pointer; font-size:.9rem; padding:4px 0;
+          font-family:inherit;}
+  .model{display:none; background:#eef3fa; border-left:4px solid var(--accent);
+         border-radius:0 8px 8px 0; padding:8px 12px; margin-top:6px; font-size:.92rem;}
+  .model.show{display:block;}
+  .check{display:block; margin:6px 0; font-size:.95rem;}
+  #result{background:var(--card); border:2px solid var(--accent); border-radius:12px;
+          padding:16px; text-align:center; margin:18px 0; display:none;}
+  #result h3{margin:0 0 6px; color:var(--accent);}
+  .btn-main{display:block; width:100%; background:var(--hl); color:#fff; border:none;
+            border-radius:10px; padding:13px; font-size:1.05rem; font-weight:bold;
+            cursor:pointer; font-family:inherit; margin:6px 0;}
+  footer{text-align:center; font-size:.8rem; color:#888; padding:20px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 期末考複習自測</h1>
+  <p>食品營養華語文獻閱讀與寫作 II（第 10–16 週）｜美和科技大學　葉泰聖老師</p>
+</header>
+<div id="scorebar">
+  <span>自測進度：<span id="done">0</span> / <span id="total">31</span> 題</span>
+  <span class="pct"><span id="score">0</span> 分</span>
+</div>
+<main>
+
+<section class="open" id="sec-summary">
+  <h2>一、七週重點整理 <span class="arrow">▶</span></h2>
+  <div class="body" id="summary"></div>
+</section>
+
+<section>
+  <h2>二、詞彙選擇（10 題）<span class="arrow">▶</span></h2>
+  <div class="body"><p class="note">點選你的答案，馬上看對不對。</p><div id="vocab"></div></div>
+</section>
+
+<section>
+  <h2>三、是非題（10 題）<span class="arrow">▶</span></h2>
+  <div class="body"><p class="note">對的選 O，錯的選 X。答錯會告訴你正確的說法。</p><div id="tf"></div></div>
+</section>
+
+<section>
+  <h2>四、閱讀理解（6 題）<span class="arrow">▶</span></h2>
+  <div class="body" id="reading"></div>
+</section>
+
+<section>
+  <h2>五、5R 策略配對（5 題）<span class="arrow">▶</span></h2>
+  <div class="body"><p class="note">下面每一個做法，屬於 5R 永續包裝策略的哪一個？</p><div id="fiver"></div></div>
+</section>
+
+<section>
+  <h2>六、句型練習（5 題）<span class="arrow">▶</span></h2>
+  <div class="body"><p class="note">先自己寫寫看，再按「看參考答案」比較。（不計分）</p><div id="patterns"></div></div>
+</section>
+
+<section>
+  <h2>七、寫作練習 <span class="arrow">▶</span></h2>
+  <div class="body" id="writing"></div>
+</section>
+
+<div id="result"></div>
+<button class="btn-main" onclick="showResult()">看我的自測結果 🎯</button>
+<button class="btn-main" style="background:var(--accent)" onclick="location.reload()">重新練習 🔄</button>
+</main>
+<footer>期末考題型：閱讀選擇 20 分｜閱讀簡答 20 分｜詞彙語法 20 分｜寫作 40 分（作文寫在稿紙）</footer>
+
+<script>
+'use strict';
+
+/* ───────── 資料 ───────── */
+const WEEKS = [
+  {w:'W10', t:'功能性啤酒', v:['益生菌','機能性','成分','無酒精'],
+   k:'消費者最在意「有科學根據」和「成分標示透明」。'},
+  {w:'W11', t:'AI 餐飲剩食', v:['剩食','浪費','影像辨識','採購'],
+   k:'餐飲業每年損失超過 100 億美元；5–15% 食材中途流失；ROI 最高 12 倍。'},
+  {w:'W12', t:'GLP-1 瘦瘦針', v:['荷爾蒙','飽足感','營養密度','纖維'],
+   k:'含糖飲料購買量下降約 7%；約 1/4 使用者不再喝酒；產品從「高份量、高刺激」轉向「小份量、高營養密度」。'},
+  {w:'W13', t:'替代蛋白', v:['植物蛋白','昆蟲蛋白','海洋蛋白','螺旋藻'],
+   k:'植物蛋白佔市場約一半；螺旋藻每克約 70% 蛋白質（雞肉 31%）。'},
+  {w:'W14', t:'麥當勞無塑包裝', v:['淋膜','防油','澱粉塗佈','回收','減量','替代'],
+   k:'每年減少 86 噸塑膠＝少用 430 萬個塑膠袋；每個漢堡成本多 0.5 元；5R 策略。'},
+  {w:'W15', t:'無可可巧克力', v:['可可豆','極端天氣','病蟲害','剩料'],
+   k:'75% 以上可可豆來自西非；用葡萄籽、葵花籽製作；減少 95% 用水；55% 年輕人願意嘗試。'},
+  {w:'W16', t:'培植鰻魚', v:['瀕危','洄游','永續','類器官','培植肉','供不應求','節節下降'],
+   k:'野生鰻魚十年減少 90–95%；培植肉不用抗生素和激素。'},
+];
+const PATTERN_NOTE = '五個必會句型：不是……而是……｜從……轉向……｜為了……｜不但……而且……｜雖然……但是……';
+
+const VOCAB = [
+  {q:'「鰻魚需要在大海和河流之間洄游」，「洄游」的意思是：',
+   o:['魚在不同的水域之間移動','魚在水裡睡覺','魚游得非常快','魚住在河底'], a:0},
+  {q:'下面哪一種情況是「供不應求」？',
+   o:['鰻魚太多，沒有人想買','大家都想買鰻魚飯，但是鰻魚不夠','鰻魚的價格越來越便宜','商店不想賣鰻魚'], a:1},
+  {q:'「機能性飲料」是什麼樣的飲料？',
+   o:['顏色很特別的飲料','只有運動員能喝的飲料','對身體有特別功能（例如幫助腸道健康）的飲料','酒精很多的飲料'], a:2},
+  {q:'下面哪一個是減少「剩食」的好方法？',
+   o:['每次多點一些菜','把吃不完的食物直接丟掉','不去想浪費的問題','只買需要的食材，記錄常被丟掉的食物'], a:3},
+  {q:'下面哪一種食品的「營養密度」最高？',
+   o:['一小杯高蛋白、高纖維的優格','一大包洋芋片','一瓶含糖飲料','一片白吐司'], a:0},
+  {q:'「生物分解」的包裝材料是指：',
+   o:['永遠不會壞的材料','只能用一次的材料','可以被自然環境慢慢分解的材料','很貴的材料'], a:2},
+  {q:'下面哪一個是「極端天氣」的例子？',
+   o:['每天都是晴天','長時間不下雨，非常乾旱','春天天氣溫暖','晚上比白天涼'], a:1},
+  {q:'下面哪一種動物的情況叫做「瀕危」？',
+   o:['數量很多的麻雀','家裡養的小狗','數量越來越少、快要消失的野生鰻魚','動物園裡的大象'], a:2},
+  {q:'下面哪一個做法比較「永續」？',
+   o:['用可以回收的包裝，減少塑膠','每天用很多免洗餐具','把垃圾丟到海裡','只用一次就丟掉的塑膠袋'], a:0},
+  {q:'「投資回報率（ROI）12 倍」的意思最接近：',
+   o:['花 12 元，賺回 1 元','花 1 元，可以帶來 12 元的價值','價格漲了 12%','一年只能用 12 次'], a:1},
+];
+
+const TF = [
+  {q:'台灣麥當勞的新包裝紙，用天然澱粉和矽基塗佈取代塑膠淋膜。', a:true},
+  {q:'麥當勞換新包裝以後，每年「增加」86 噸塑膠。', a:false, why:'是「減少」86 噸塑膠。'},
+  {q:'野生鰻魚的數量，最近十年增加了很多。', a:false, why:'減少了 90–95%。'},
+  {q:'培植鰻魚肉需要使用很多抗生素和激素。', a:false, why:'培植肉不需要抗生素和激素。'},
+  {q:'全球大部分（75% 以上）的可可豆來自西非。', a:true},
+  {q:'無可可巧克力可以用葡萄籽、葵花籽等剩料做成。', a:true},
+  {q:'使用 GLP-1（瘦瘦針）的人，通常會買更多含糖飲料。', a:false, why:'含糖飲料購買量下降約 7%。'},
+  {q:'AI 影像辨識系統可以自動記錄被丟掉的食材種類和重量。', a:true},
+  {q:'螺旋藻的蛋白質含量比雞肉低。', a:false, why:'螺旋藻約 70%、雞肉約 31%，螺旋藻比較高。'},
+  {q:'機能性啤酒可能加入益生菌等健康成分。', a:true},
+];
+
+const READING = [
+  {title:'【複習短文 A】啤酒也要「機能性」（W10）',
+   text:'以前，啤酒給人的印象常常是「不健康」。但是現在，有些公司開始做「機能性啤酒」：有的加入益生菌，幫助腸道健康；有的做成無酒精，讓不想喝酒的人也能享受啤酒的味道。調查發現，消費者買這種新飲料的時候，最在意兩件事：產品有沒有科學根據，還有成分標示清不清楚。',
+   qs:[
+     {q:'「機能性啤酒」可能加入什麼成分？', o:['更多的糖','益生菌','咖啡因','色素'], a:1},
+     {q:'消費者買機能性飲料時，最在意什麼？',
+      o:['包裝漂不漂亮','廣告多不多','有沒有科學根據、成分標示清不清楚','瓶子大不大'], a:2},
+     {q:'「無酒精啤酒」最適合什麼人？',
+      o:['想喝很多酒的人','不想喝酒，但想享受啤酒味道的人','只喝水的人','小朋友'], a:1},
+   ]},
+  {title:'【複習短文 B】蛋白質大戰（W13）',
+   text:'為了找到新的蛋白質來源，科學家開始研究「替代蛋白」。現在市場最大的是植物蛋白，例如豆腐、豆漿，大約佔全球替代蛋白市場的一半。另外還有昆蟲蛋白和海洋蛋白：黃粉蟲的飼養成本低、碳排放少；螺旋藻是一種藻類，每克大約有 70% 是蛋白質，比雞肉（31%）高很多。連速食店也開始推出高蛋白菜單，所以有人說，現在是「蛋白質大戰」的時代。',
+   qs:[
+     {q:'全球替代蛋白市場中，最大的是哪一種？', o:['昆蟲蛋白','海洋蛋白','動物蛋白','植物蛋白'], a:3},
+     {q:'關於螺旋藻，下面哪一個正確？',
+      o:['它是一種昆蟲','它的蛋白質含量比雞肉高','它只能餵動物','它的蛋白質只有 31%'], a:1},
+     {q:'為什麼說現在是「蛋白質大戰」？',
+      o:['因為很多品牌搶著推出高蛋白產品','因為蛋白質越來越便宜','因為大家都不吃蛋白質了','因為只有一家公司賣蛋白質'], a:0},
+   ]},
+];
+
+const FIVER_OPTS = ['Reduce（減量）','Replace（替代）','Recycle（回收）','Redesign（重新設計）','Rethink（重新思考）'];
+const FIVER = [
+  {q:'把紙杯做得更輕、更薄，用更少材料', a:0},
+  {q:'用澱粉塗佈取代塑膠淋膜', a:1},
+  {q:'把用過的紙包裝收集起來再利用', a:2},
+  {q:'重新設計包裝形狀，節省 30% 倉儲空間', a:3},
+  {q:'先想一想：「真的需要這一層包裝嗎？」', a:4},
+];
+
+const PATTERNS = [
+  {p:'不是……而是……', q:'無可可巧克力不是用＿＿＿做的，而是用＿＿＿做的。',
+   ref:'無可可巧克力不是用可可豆做的，而是用葡萄籽和葵花籽做的。'},
+  {p:'從……轉向……', q:'因為使用瘦瘦針的人越來越多，食品公司從「＿＿＿」轉向「＿＿＿」。',
+   ref:'食品公司從「高份量、高刺激」轉向「小份量、高營養密度」。'},
+  {p:'為了……', q:'為了＿＿＿，台灣麥當勞改用無塑膠淋膜的包裝紙。',
+   ref:'為了讓包裝對環境更友善（／為了減少塑膠），台灣麥當勞改用無塑膠淋膜的包裝紙。'},
+  {p:'不但……而且……', q:'螺旋藻不但＿＿＿，而且＿＿＿。',
+   ref:'螺旋藻不但蛋白質含量很高，而且對環境比較友善。'},
+  {p:'雖然……但是……', q:'雖然 AI 剩食系統＿＿＿，但是＿＿＿。',
+   ref:'雖然 AI 剩食系統一開始要花錢，但是長期可以幫餐廳省下更多錢。'},
+];
+
+const REWRITE = {
+  text:'「全球 75% 以上的可可豆來自西非，但是極端天氣和病蟲害讓可可豆的收成變差、價格大漲。有公司開始用葡萄籽、葵花籽做「無可可巧克力」，跟傳統可可相比，減少了 95% 的用水量。」',
+  ref:'參考示範：世界上大部分的可可豆都來自西非，可是因為天氣太極端、又有病蟲害，可可豆越來越少、越來越貴。所以有公司用葡萄籽和葵花籽做出不用可可豆的巧克力，用的水也比傳統可可少很多。'};
+
+const ESSAYS = [
+  '練習題目 1：你願意吃實驗室培植的肉嗎？為什麼？',
+  '練習題目 2：學校餐廳應該花錢用 AI 系統減少剩食嗎？',
+  '練習題目 3：為了環保，你可以接受食物或包裝變貴一點嗎？',
+];
+const SCAFFOLD = [
+  ['① 立場','我支持／不支持……｜我願意／不願意……'],
+  ['② 理由','因為……｜第一……第二……'],
+  ['③ 例子','例如……｜在越南／在我的國家……｜文章說……（用一個數字更有說服力）'],
+  ['④ 結論','所以我覺得……｜總之……'],
+];
+const CHECKS = ['字數 150～250','四段結構都有（立場→理由→例子→結論）',
+  '至少 2 個生詞，並用【　】標出','至少 1 個轉折句型','標點符號正確'];
+
+/* ───────── 狀態 ───────── */
+let answered = 0, correct = 0;
+const TOTAL = VOCAB.length + TF.length + READING.reduce((s,p)=>s+p.qs.length,0) + FIVER.length;
+document.getElementById('total').textContent = TOTAL;
+
+function record(ok){
+  answered++; if(ok) correct++;
+  document.getElementById('done').textContent = answered;
+  document.getElementById('score').textContent = correct;
+}
+
+/* ───────── 渲染 ───────── */
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+function mcQuestion(container, num, stem, opts, ansIdx, fbWhy){
+  const div = document.createElement('div'); div.className = 'q';
+  div.innerHTML = '<div class="stem">' + num + '. ' + esc(stem) + '</div>';
+  const box = document.createElement('div'); box.className = 'opts';
+  const fb = document.createElement('div'); fb.className = 'fb';
+  const labels = 'ABCD';
+  opts.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.textContent = '(' + labels[i] + ') ' + opt;
+    b.onclick = () => {
+      box.querySelectorAll('button').forEach(x => x.disabled = true);
+      const ok = i === ansIdx;
+      b.classList.add(ok ? 'correct' : 'wrong');
+      if(!ok) box.children[ansIdx].classList.add('correct');
+      fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+      fb.textContent = ok ? '✅ 答對了！' :
+        '❌ 正確答案是 (' + labels[ansIdx] + ')' + (fbWhy ? '：' + fbWhy : '');
+      record(ok);
+    };
+    box.appendChild(b);
+  });
+  div.appendChild(box); div.appendChild(fb); container.appendChild(div);
+}
+
+/* 一、重點整理 */
+(function(){
+  const el = document.getElementById('summary');
+  WEEKS.forEach(w => {
+    const d = document.createElement('div'); d.className = 'wk';
+    d.innerHTML = '<h3>' + w.w + '　' + esc(w.t) + '</h3>' +
+      '<p>' + w.v.map(x => '<span class="tag">' + esc(x) + '</span>').join('') + '</p>' +
+      '<p>' + esc(w.k) + '</p>';
+    el.appendChild(d);
+  });
+  const p = document.createElement('p'); p.className = 'note';
+  p.textContent = PATTERN_NOTE; el.appendChild(p);
+})();
+
+/* 二、詞彙 */
+(function(){
+  const el = document.getElementById('vocab');
+  VOCAB.forEach((item, i) => mcQuestion(el, i + 1, item.q, item.o, item.a));
+})();
+
+/* 三、是非 */
+(function(){
+  const el = document.getElementById('tf');
+  TF.forEach((item, i) => {
+    const div = document.createElement('div'); div.className = 'q';
+    div.innerHTML = '<div class="stem">' + (i + 1) + '. ' + esc(item.q) + '</div>';
+    const box = document.createElement('div'); box.className = 'opts ox';
+    const fb = document.createElement('div'); fb.className = 'fb';
+    [['O', true], ['X', false]].forEach(([label, val]) => {
+      const b = document.createElement('button'); b.textContent = label;
+      b.onclick = () => {
+        box.querySelectorAll('button').forEach(x => x.disabled = true);
+        const ok = val === item.a;
+        b.classList.add(ok ? 'correct' : 'wrong');
+        fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+        fb.textContent = ok ? '✅ 答對了！' + (item.why ? '（' + item.why + '）' : '')
+                            : '❌ 答案是 ' + (item.a ? 'O' : 'X') + (item.why ? '：' + item.why : '');
+        record(ok);
+      };
+      box.appendChild(b);
+    });
+    div.appendChild(box); div.appendChild(fb); el.appendChild(div);
+  });
+})();
+
+/* 四、閱讀 */
+(function(){
+  const el = document.getElementById('reading');
+  let n = 0;
+  READING.forEach(p => {
+    const h = document.createElement('h3'); h.textContent = p.title;
+    h.style.cssText = 'color:var(--accent);font-size:1rem;margin:10px 0 4px;';
+    el.appendChild(h);
+    const t = document.createElement('div'); t.className = 'passage';
+    t.textContent = p.text; el.appendChild(t);
+    p.qs.forEach(q => { n++; mcQuestion(el, n, q.q, q.o, q.a); });
+  });
+})();
+
+/* 五、5R */
+(function(){
+  const el = document.getElementById('fiver');
+  FIVER.forEach((item, i) => mcQuestion(el, i + 1, item.q, FIVER_OPTS, item.a));
+})();
+
+/* 六、句型 */
+(function(){
+  const el = document.getElementById('patterns');
+  PATTERNS.forEach((item, i) => {
+    const div = document.createElement('div'); div.className = 'q';
+    div.innerHTML = '<div class="stem">' + (i + 1) + '.【' + esc(item.p) + '】' + esc(item.q) + '</div>';
+    const ta = document.createElement('textarea');
+    ta.placeholder = '在這裡寫你的句子……';
+    const btn = document.createElement('button'); btn.className = 'reveal';
+    btn.textContent = '👀 看參考答案';
+    const model = document.createElement('div'); model.className = 'model';
+    model.textContent = item.ref;
+    btn.onclick = () => model.classList.toggle('show');
+    div.appendChild(ta); div.appendChild(btn); div.appendChild(model);
+    el.appendChild(div);
+  });
+})();
+
+/* 七、寫作 */
+(function(){
+  const el = document.getElementById('writing');
+  const h1 = document.createElement('h3'); h1.textContent = '（一）改寫練習（60～100 字，不可以抄原文）';
+  h1.style.cssText = 'color:var(--accent);font-size:1rem;margin:6px 0 4px;';
+  el.appendChild(h1);
+  const t = document.createElement('div'); t.className = 'passage'; t.textContent = REWRITE.text;
+  el.appendChild(t);
+  const ta = document.createElement('textarea'); ta.style.minHeight = '110px';
+  ta.placeholder = '用自己的話重新寫一遍……'; el.appendChild(ta);
+  const btn = document.createElement('button'); btn.className = 'reveal';
+  btn.textContent = '👀 看參考示範';
+  const model = document.createElement('div'); model.className = 'model'; model.textContent = REWRITE.ref;
+  btn.onclick = () => model.classList.toggle('show');
+  el.appendChild(btn); el.appendChild(model);
+
+  const h2 = document.createElement('h3');
+  h2.textContent = '（二）觀點寫作練習（選一題，150～250 字，寫在稿紙或打字練習）';
+  h2.style.cssText = 'color:var(--accent);font-size:1rem;margin:14px 0 4px;';
+  el.appendChild(h2);
+  ESSAYS.forEach(s => {
+    const p = document.createElement('p'); p.textContent = s; p.style.margin = '4px 0';
+    el.appendChild(p);
+  });
+  const sc = document.createElement('div'); sc.className = 'passage';
+  sc.innerHTML = SCAFFOLD.map(r => '<b>' + r[0] + '</b>　' + esc(r[1])).join('<br>');
+  el.appendChild(sc);
+  const h3 = document.createElement('p'); h3.innerHTML = '<b>交卷前檢查清單：</b>'; el.appendChild(h3);
+  CHECKS.forEach(c => {
+    const label = document.createElement('label'); label.className = 'check';
+    const cb = document.createElement('input'); cb.type = 'checkbox';
+    label.appendChild(cb); label.appendChild(document.createTextNode(' ' + c));
+    el.appendChild(label);
+  });
+})();
+
+/* 摺疊 */
+document.querySelectorAll('section>h2').forEach(h => {
+  h.onclick = () => h.parentElement.classList.toggle('open');
+});
+
+/* 結果 */
+function showResult(){
+  const r = document.getElementById('result');
+  const pct = answered ? Math.round(correct / TOTAL * 100) : 0;
+  let msg;
+  if(answered < TOTAL) msg = '還有 ' + (TOTAL - answered) + ' 題沒做，繼續加油！';
+  else if(pct >= 90) msg = '🏆 太棒了！你已經準備好考試了！';
+  else if(pct >= 70) msg = '💪 不錯！把答錯的題目再看一次。';
+  else msg = '📖 建議重讀「七週重點整理」，再練習一次。';
+  r.innerHTML = '<h3>自測結果</h3><p style="font-size:1.6rem;margin:4px 0;"><b>' +
+    correct + ' / ' + TOTAL + '</b>（' + pct + '%）</p><p>' + msg + '</p>';
+  r.style.display = 'block';
+  r.scrollIntoView({behavior: 'smooth'});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🏆 期末複習排行榜（老師用）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0e27;--bg2:#11163a;--ink:#eef3ff;--ink2:#b8c5e0;--ink3:#7a8bb8;--ink4:#4a5680;--accent:#00d4ff;--accent2:#ff006e;--ok:#27e0a0;--line:rgba(255,255,255,.12);--card:rgba(255,255,255,.05)}
+html,body{height:100%}
+body{background:radial-gradient(1200px 700px at 75% -10%,#18204d,#0a0e27 55%),var(--bg);color:var(--ink);font-family:"Noto Sans TC",system-ui,sans-serif;padding:30px 38px;min-height:100vh}
+.mono{font-family:"JetBrains Mono",monospace}
+header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:6px}
+h1{font-size:clamp(1.7rem,3.2vw,2.6rem);font-weight:900}
+h1 .em{color:var(--accent)}
+.live{font-family:"JetBrains Mono",monospace;font-size:.9rem;color:var(--ink3)}
+.live b{color:var(--accent)}
+.sub{color:var(--ink2);font-size:clamp(.95rem,1.5vw,1.2rem);margin-bottom:18px}
+.sub b{color:var(--accent)}
+#privtoggle{background:var(--card);border:1px solid var(--line);color:var(--ink2);border-radius:10px;padding:8px 14px;font-size:.85rem;cursor:pointer;font-family:inherit;white-space:nowrap}
+#privtoggle:hover{border-color:var(--accent);color:var(--accent)}
+#chart{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 24px;margin-bottom:22px}
+#chart:empty{display:none}
+.chart-title{font-weight:900;color:var(--accent);font-size:clamp(1rem,1.6vw,1.3rem);margin-bottom:14px}
+.cbar{display:grid;grid-template-columns:120px 1fr auto;gap:14px;align-items:center;font-size:clamp(.85rem,1.3vw,1.05rem)}
+.cbar-l{color:var(--ink2);font-weight:700;white-space:nowrap}
+.cbar-track{height:18px;background:rgba(255,255,255,.07);border-radius:9px;overflow:hidden}
+.cbar-fill{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .6s ease}
+.cbar-v{color:var(--accent);font-weight:700;font-family:"JetBrains Mono",monospace;min-width:118px;text-align:right;white-space:nowrap}
+.row{display:grid;grid-template-columns:60px 1fr auto auto;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px 22px;margin-bottom:11px;transition:.3s}
+.row.r1{border-color:#ffd54a;background:linear-gradient(90deg,rgba(255,213,74,.14),rgba(255,213,74,.03))}
+.row.r2{border-color:#cfd8e3;background:linear-gradient(90deg,rgba(207,216,227,.12),transparent)}
+.row.r3{border-color:#e8a06a;background:linear-gradient(90deg,rgba(232,160,106,.12),transparent)}
+.row.hi{border-color:var(--ok);box-shadow:0 0 0 1px var(--ok),0 0 26px rgba(39,224,160,.28)}
+.allbadge{font-size:.66rem;font-weight:800;color:#06231a;background:var(--ok);border-radius:8px;padding:3px 9px;margin-left:10px;vertical-align:middle;white-space:nowrap}
+.rank{font-size:clamp(1.5rem,2.4vw,2.1rem);font-weight:900;text-align:center;color:var(--ink3)}
+.name{font-size:clamp(1.15rem,2.1vw,1.6rem);font-weight:700}
+.sid{font-size:clamp(.7rem,1vw,.85rem);color:var(--ink4);margin-top:3px}
+.donecount{font-size:clamp(1.1rem,2vw,1.5rem);font-weight:900;color:var(--accent);text-align:center;min-width:96px}
+.donecount span{display:block;font-size:.55em;color:var(--ink3);font-weight:500}
+.avg{font-size:clamp(1.1rem,2vw,1.5rem);font-weight:900;color:var(--ok);text-align:center;min-width:84px}
+.avg span{display:block;font-size:.55em;color:var(--ink3);font-weight:500}
+.more{text-align:center;color:var(--ink3);padding:14px;font-size:clamp(.9rem,1.4vw,1.1rem)}
+.empty{text-align:center;color:var(--ink3);padding:60px 20px;font-size:clamp(1rem,1.8vw,1.4rem);line-height:1.8}
+.foot{margin-top:18px;text-align:center;color:var(--ink4);font-size:.82rem}
+/* 密碼門 */
+#lock{position:fixed;inset:0;z-index:999;background:radial-gradient(900px 600px at 50% 0%,#18204d,#0a0e27 60%),#0a0e27;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;padding:24px;text-align:center}
+#lock h2{font-size:clamp(1.3rem,3vw,1.9rem);font-weight:900;color:var(--accent)}
+#lock p{color:var(--ink3);font-size:.92rem;max-width:340px;line-height:1.6}
+#lock input{width:min(300px,80vw);border:1.5px solid var(--line);background:rgba(255,255,255,.06);color:var(--ink);border-radius:10px;padding:13px;font-size:1.1rem;text-align:center;font-family:inherit}
+#lock input:focus{outline:none;border-color:var(--accent)}
+#lock button{width:min(300px,80vw);background:var(--accent);color:#06122b;border:none;border-radius:10px;padding:13px;font-size:1.05rem;font-weight:800;cursor:pointer;font-family:inherit}
+#pwerr{color:var(--accent2);font-size:.85rem;min-height:1.1em}
+</style>
+</head>
+<body>
+
+<div id="lock">
+  <h2>🔒 期末複習排行榜</h2>
+  <p>老師專用看板。請輸入通關碼進入,上課時投影給學生看完成度與排名。</p>
+  <input id="pw" type="password" placeholder="通關碼" onkeydown="if(event.key==='Enter')unlock()">
+  <button onclick="unlock()">進入看板</button>
+  <div id="pwerr"></div>
+</div>
+
+<header>
+  <h1>🏆 <span class="em">期末複習排行榜</span></h1>
+  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <button id="privtoggle" onclick="togglePriv()">🙈 隱藏名字</button>
+    <div class="live" id="live">● 連線中…</div>
+  </div>
+</header>
+<div class="sub" id="sub"></div>
+<div id="chart"></div>
+<div id="board"><div class="empty">載入中…</div></div>
+<div class="foot mono" id="foot"></div>
+
+<script>
+/* ───────── 通關碼（要改就改這一行；注意：靜態頁的密碼擋得住學生，擋不了會看原始碼的人）───────── */
+var PASS = "meiho2026";
+
+var SUPA="https://qmldcjkllisvfgegkfsz.supabase.co";
+var ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbGRjamtsbGlzdmZnZWdrZnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMjM5ODYsImV4cCI6MjA4NjY5OTk4Nn0.Bfj0W7HN_n_vcjGe5502Chamk0YV-de8a0fxF4Nyczk";
+var COURSE="chinese-final-review", GAME="final-review-quiz", LABEL="期末複習自測（華語文閱讀與寫作 II · W10–16）";
+
+var qs=new URLSearchParams(location.search);
+var sess=qs.get("session");
+var HIDE=qs.get("anon")==="1";
+var started=false;
+var live=document.getElementById("live"),board=document.getElementById("board"),sub=document.getElementById("sub"),foot=document.getElementById("foot"),chartEl=document.getElementById("chart");
+
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];});}
+function medal(i){return i===0?"🥇":i===1?"🥈":i===2?"🥉":(i+1);}
+function maskName(n){ if(!HIDE) return n; if(n.length<=1) return n+"○"; return n.charAt(0)+"○".repeat(Math.min(n.length-1,2)); }
+function togglePriv(){ HIDE=!HIDE; var b=document.getElementById("privtoggle"); if(b)b.textContent=HIDE?"👁 顯示名字":"🙈 隱藏名字"; load(); }
+
+function unlock(){
+  if(document.getElementById("pw").value===PASS){
+    try{ sessionStorage.setItem("rev_ok","1"); }catch(e){}
+    document.getElementById("lock").style.display="none";
+    begin();
+  } else {
+    document.getElementById("pwerr").textContent="通關碼不對,再試一次。";
+  }
+}
+
+function begin(){
+  if(started) return; started=true;
+  var b=document.getElementById("privtoggle"); if(b)b.textContent=HIDE?"👁 顯示名字":"🙈 隱藏名字";
+  load(); setInterval(load,8000);
+}
+
+function load(){
+  sub.innerHTML='<b>'+esc(LABEL)+'</b>'+(sess?'　·　場次 '+esc(sess):'　·　全部');
+  var url=SUPA+"/rest/v1/interactions?course_code=eq."+encodeURIComponent(COURSE)
+    +"&select=student_id,student_name,game_id,score,total";
+  if(sess)url+="&session_id=eq."+encodeURIComponent(sess);
+  fetch(url,{headers:{apikey:ANON,Authorization:"Bearer "+ANON}}).then(function(r){return r.json();}).then(function(rows){
+    if(!Array.isArray(rows)){throw new Error("bad");}
+    if(!rows.length){ board.innerHTML='<div class="empty">還沒有學生做複習自測。<br>學生用學號登入「期末複習自測」後,這裡就會即時出現。</div>'; chartEl.innerHTML=""; live.textContent="● 已連線 · 0 人"; foot.textContent=""; return; }
+    // 同一學生可能練多次：取「答對最多」那次
+    var stu={};
+    rows.forEach(function(x){
+      if(x.game_id!==GAME) return;
+      var id=x.student_id||"?", name=x.student_name||id, sc=x.score||0, tt=x.total||31;
+      if(!stu[id] || sc>stu[id].sc){ stu[id]={name:name, sc:sc, tt:tt}; }
+      else if(name && stu[id].name===id){ stu[id].name=name; }
+    });
+    var arr=Object.keys(stu).map(function(id){var s=stu[id];return {name:s.name, sc:s.sc, tt:s.tt, avg:s.tt?Math.round(s.sc/s.tt*100):0};});
+    arr.sort(function(a,b){ return (b.avg-a.avg) || (b.sc-a.sc) || a.name.localeCompare(b.name,"zh-Hant"); });
+    var TT=arr[0]?arr[0].tt:31;
+    // 全班概況
+    var done=arr.length, avgAll=Math.round(arr.reduce(function(a,b){return a+b.avg;},0)/arr.length);
+    chartEl.innerHTML='<div class="chart-title">全班複習概況</div>'
+      +'<div class="cbar"><span class="cbar-l">已完成複習</span><span class="cbar-track"><span class="cbar-fill" style="width:100%"></span></span><span class="cbar-v">'+done+' 人</span></div>'
+      +'<div class="cbar" style="margin-top:10px"><span class="cbar-l">全班平均答對率</span><span class="cbar-track"><span class="cbar-fill" style="width:'+avgAll+'%"></span></span><span class="cbar-v">'+avgAll+'%</span></div>';
+    var html="";
+    arr.slice(0,12).forEach(function(p,i){
+      var rc=i===0?"r1":i===1?"r2":i===2?"r3":"";
+      if(p.avg>=90)rc+=" hi";
+      var badge=p.avg>=90?'<span class="allbadge">🌟 高手</span>':'';
+      var nm=esc(maskName(p.name))+badge;
+      html+='<div class="row '+rc+'"><div class="rank">'+medal(i)+'</div>'
+        +'<div><div class="name">'+nm+'</div></div>'
+        +'<div class="donecount">'+p.sc+' / '+p.tt+'<span>答對題數</span></div>'
+        +'<div class="avg">'+p.avg+'%<span>答對率</span></div></div>';
+    });
+    if(arr.length>12) html+='<div class="more">…還有 '+(arr.length-12)+' 位同學</div>';
+    board.innerHTML=html;
+    live.innerHTML='● 即時 · <b>'+arr.length+'</b> 人已複習';
+    foot.textContent="顯示前 12 名　·　依答對率排名　·　每 8 秒自動更新　·　更新於 "+new Date().toLocaleTimeString("zh-TW");
+  }).catch(function(e){ live.textContent="● 連線異常"; });
+}
+
+// 同一分頁已解鎖過就直接進入
+(function(){ try{ if(sessionStorage.getItem("rev_ok")==="1"){ document.getElementById("lock").style.display="none"; begin(); } }catch(e){} })();
+</script>
+</body>
+</html>

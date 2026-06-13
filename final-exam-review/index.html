@@ -81,6 +81,15 @@
 </style>
 </head>
 <body>
+<div id="gate" style="position:fixed;inset:0;z-index:100;background:linear-gradient(135deg,#1a1a2e,#0f3460);display:flex;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:16px;padding:28px 24px;max-width:380px;width:100%;text-align:center;box-shadow:0 10px 40px #0005;">
+    <h2 style="margin:0 0 6px;color:#0f3460;">📚 期末複習自測</h2>
+    <p style="font-size:.9rem;color:#666;margin:0 0 18px;line-height:1.6;">請輸入學號和姓名再開始,這樣老師才看得到你的複習狀況。</p>
+    <input id="g-sid" placeholder="學號" autocomplete="off" style="width:100%;box-sizing:border-box;border:1.5px solid #d8dee9;border-radius:8px;padding:11px;font-size:1rem;margin-bottom:10px;font-family:inherit;">
+    <input id="g-name" placeholder="姓名" autocomplete="off" style="width:100%;box-sizing:border-box;border:1.5px solid #d8dee9;border-radius:8px;padding:11px;font-size:1rem;margin-bottom:16px;font-family:inherit;">
+    <button onclick="startReview()" style="width:100%;background:#e94560;color:#fff;border:none;border-radius:10px;padding:13px;font-size:1.05rem;font-weight:bold;cursor:pointer;font-family:inherit;">開始複習 →</button>
+  </div>
+</div>
 <header>
   <h1>📚 期末考複習自測</h1>
   <p>食品營養華語文獻閱讀與寫作 II（第 10–16 週）｜美和科技大學　葉泰聖老師</p>
@@ -256,6 +265,36 @@ let answered = 0, correct = 0;
 const TOTAL = VOCAB.length + TF.length + READING.reduce((s,p)=>s+p.qs.length,0) + FIVER.length;
 document.getElementById('total').textContent = TOTAL;
 
+// ───────── Supabase 學習紀錄（沿用課程既有 interactions 表）─────────
+let SID = '', NAME = '', T0 = 0, lastSaved = -1;
+const SESS = 'review_' + Math.floor(Date.now() / 1000);
+const SUPA_URL = 'https://qmldcjkllisvfgegkfsz.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbGRjamtsbGlzdmZnZWdrZnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMjM5ODYsImV4cCI6MjA4NjY5OTk4Nn0.Bfj0W7HN_n_vcjGe5502Chamk0YV-de8a0fxF4Nyczk';
+
+function startReview(){
+  const sid = document.getElementById('g-sid').value.trim();
+  const name = document.getElementById('g-name').value.trim();
+  if(!sid || !name){ alert('請輸入學號和姓名'); return; }
+  SID = sid; NAME = name; T0 = Date.now();
+  document.getElementById('gate').style.display = 'none';
+}
+
+// 寫入一筆學習紀錄；同一進度連點不重送，做更多題後看結果會更新
+function saveResult(){
+  if(!SID || answered === lastSaved) return;
+  lastSaved = answered;
+  const pct = answered ? Math.round(correct / TOTAL * 100) : 0;
+  try{
+    fetch(SUPA_URL + '/rest/v1/interactions', { method:'POST',
+      headers:{ 'apikey':SUPA_KEY, 'Authorization':'Bearer '+SUPA_KEY,
+                'Content-Type':'application/json', 'Prefer':'return=minimal' },
+      body: JSON.stringify({ course_code:'chinese-final-review', session_id:SESS,
+        student_id:SID, student_name:NAME, game_id:'final-review-quiz', game_name:'期末複習自測',
+        score:correct, wrong:answered-correct, total:TOTAL,
+        duration_ms:Date.now()-T0, client_meta:{ answered:answered, pct:pct } }) });
+  }catch(e){}
+}
+
 function record(ok){
   answered++; if(ok) correct++;
   document.getElementById('done').textContent = answered;
@@ -426,6 +465,7 @@ function showResult(){
     correct + ' / ' + TOTAL + '</b>（' + pct + '%）</p><p>' + msg + '</p>';
   r.style.display = 'block';
   r.scrollIntoView({behavior: 'smooth'});
+  saveResult();
 }
 </script>
 </body>

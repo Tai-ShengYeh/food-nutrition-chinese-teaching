@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang='zh-TW'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>食品營養華語 I — 五大平臺教學搭配指南</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@900&display=swap');
+:root{--bg:#0B1F18;--card:#13362A;--card2:#0E2A20;--pri:#34D399;--gold:#FBBF24;--acc:#FB7185;--vio:#5EEAD4;--txt:#ECF5F0;--muted:#7FA593;--bdr:rgba(52,211,153,.20);}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans TC','Microsoft JhengHei',sans-serif;line-height:1.75;color:var(--txt);background:radial-gradient(1100px 700px at 80% -10%,rgba(52,211,153,.10),transparent 60%),radial-gradient(900px 600px at -10% 25%,rgba(94,234,212,.10),transparent 55%),var(--bg)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+header{position:sticky;top:0;z-index:90;backdrop-filter:blur(12px);background:rgba(8,23,17,.85);border-bottom:1px solid var(--bdr)}
+.navbar{display:flex;align-items:center;justify-content:space-between;height:58px}
+.brand{font-weight:900;font-size:16px}
+.navlinks{display:flex;gap:4px;flex-wrap:wrap}
+.navlinks a{color:var(--muted);text-decoration:none;font-size:13.5px;padding:6px 12px;border-radius:8px}
+.navlinks a:hover{color:var(--txt);background:rgba(52,211,153,.10)}
+.hero{padding:54px 0 26px}
+.kicker{display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.16em;color:var(--pri);background:rgba(52,211,153,.10);border:1px solid rgba(52,211,153,.28);padding:5px 14px;border-radius:20px;margin-bottom:16px}
+h1{font-family:'Noto Serif TC',serif;font-weight:900;font-size:clamp(26px,4vw,42px);line-height:1.22;margin-bottom:14px}
+h1 .g{background:linear-gradient(120deg,var(--pri),var(--vio) 60%,var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lead{font-size:clamp(14.5px,1.6vw,17.5px);color:#B7D6C8;max-width:820px;margin-bottom:20px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.tag{font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:8px;background:var(--card);border:1px solid var(--bdr);color:#C7E8DA}
+section.blk{padding:34px 0}
+.shead h2{font-family:'Noto Serif TC',serif;font-weight:900;font-size:clamp(21px,2.6vw,29px);margin-bottom:6px}
+.shead h2 .num{color:var(--pri);margin-right:10px}
+.shead p{color:var(--muted);font-size:14px;margin-bottom:20px}
+.pcards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.pc{background:linear-gradient(160deg,var(--card),var(--card2));border:1px solid var(--bdr);border-radius:14px;padding:20px 22px}
+.pc.full{grid-column:1/-1}
+.toprow{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.ic{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;color:#fff}
+.pc h3{font-family:'Noto Serif TC',serif;font-size:19px;font-weight:900}
+.role{font-size:13px;color:var(--gold);font-weight:700}
+.pc ul{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.pc li{font-size:13.8px;color:#D7EEE4;padding-left:20px;position:relative}
+.pc li::before{content:'▸';position:absolute;left:2px;color:var(--pri)}
+.pc b{color:var(--txt)}
+.steps{display:flex;flex-direction:column}
+.step{display:flex;gap:16px;align-items:flex-start;position:relative;padding:2px 0 20px}
+.step:not(:last-child)::before{content:'';position:absolute;left:17px;top:38px;bottom:0;width:2px;background:rgba(52,211,153,.25)}
+.step .b{flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--card);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:var(--vio)}
+.step .t{font-size:14.2px;color:#DCF2E9}
+.step .t b{color:var(--txt)}
+.step .tm{color:var(--gold);font-weight:700;font-size:12px;margin-left:6px}
+.rtab{width:100%;border-collapse:collapse;font-size:13px}
+.rtab th{background:var(--card);color:var(--pri);padding:9px 8px;text-align:left;border:1px solid var(--bdr);white-space:nowrap}
+.rtab td{padding:8px;border:1px solid rgba(52,211,153,.14);color:#D7EEE4;vertical-align:top}
+.rtab tr:nth-child(even) td{background:rgba(19,54,42,.45)}
+.rtab .pw{color:var(--gold);font-weight:600;white-space:nowrap}
+.rtab .exam td{background:rgba(251,191,36,.08)!important;color:var(--gold)}
+.check{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.check li{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:12px 14px;font-size:13.8px;color:#D7EEE4;padding-left:36px;position:relative}
+.check li::before{content:'✓';position:absolute;left:12px;color:var(--pri);font-weight:900}
+footer{padding:30px 0 40px;color:var(--muted);font-size:12.5px;text-align:center}
+@media(max-width:820px){.pcards{grid-template-columns:1fr}.check{grid-template-columns:1fr}.navlinks{display:none}}
+</style>
+</head>
+<body>
+<header><div class='wrap navbar'>
+<div class='brand'>🎯 寫作 I ｜ 平臺搭配指南</div>
+<nav class='navlinks'><a href='#roles'>平臺分工</a><a href='#routine'>每週節奏</a><a href='#rotate'>輪替表</a><a href='#reuse'>詞彙復用</a><a href='#a2'>A2 調整</a><a href='semester1_寫作I.html' style='color:var(--gold)'>← 回 18 週地圖</a></nav>
+</div></header>
+<div class='wrap'>
+<section class='hero'>
+<span class='kicker'>上學期 ｜ 教學科技整合 ｜ A2 越南學生</span>
+<h1>Kahoot × Wayground × WordWall × Gimkit × EdCafe<br><span class='g'>五大平臺教學搭配指南</span></h1>
+<p class='lead'>工具不是越多越好，而是<b>各司其職</b>。本指南把五個平臺放進「每週 2 小時」的固定節奏：讀前啟動詞彙、課中同步競賽、課後非同步作業、寫作 AI 批改。所有題目都從<b>同一份週核心詞彙表</b>產出——一次輸入、四處復用。</p>
+<div class='tags'><span class='tag'>🟥 Kahoot!　同步暖機</span><span class='tag'>🟪 Wayground　非同步作業</span><span class='tag'>🟩 WordWall　讀前配對</span><span class='tag'>🟦 Gimkit　重複操練</span><span class='tag'>🟨 EdCafe　AI 批改</span></div>
+</section>
+<!--P2-->
+<section class='blk' id='roles'>
+<div class='shead'><h2><span class='num'>01</span>平臺分工：誰在做什麼？</h2>
+<p>每個平臺只負責<b>一個主要角色</b>，避免工具疲勞；評估標準是「能否服務本課程的閱讀×寫作雙軸」。</p></div>
+<div class='pcards'>
+<div class='pc'><div class='toprow'><div class='ic' style='background:#46178F'>🟥</div><div><h3>Kahoot!</h3><div class='role'>全班同步競賽＝課堂暖機與迷思投票</div></div></div>
+<ul><li><b>何時：</b>每週前 10 分鐘：複習上週 5 題＋本週預測題 2–3 題（如「全脂牛奶一定讓人變胖？對／錯」）。</li>
+<li><b>A2 要點：</b>題幹 ≤20 字、選項 ≤4、每題配圖；「預測式提問」引發閱讀動機，答錯不打擊信心。</li>
+<li><b>產出：</b>現場排行榜只看前段加速，不看總分排名。</li></ul></div>
+<div class='pc'><div class='toprow'><div class='ic' style='background:#864CBF'>🟪</div><div><h3>Wayground（Quizizz）</h3><div class='role'>非同步作業＝課後練習與教師診斷報告</div></div></div>
+<ul><li><b>何時：</b>雙週指派本週 g2（是非）＋g5（填空）題庫為家庭作業；考試週變身模擬題庫。</li>
+<li><b>A2 要點：</b>開啟「題目朗讀」與放寬時間限制；學生自訂速度完成。</li>
+<li><b>產出：</b>教師看<b>錯題率報告</b>，錯誤率 &gt;50% 的詞列入下週 Kahoot 複習題。</li></ul></div>
+<div class='pc'><div class='toprow'><div class='ic' style='background:#0E9F6E'>🟩</div><div><h3>WordWall</h3><div class='role'>讀前詞彙啟動＝配對、翻牌、轉盤（可印紙本）</div></div></div>
+<ul><li><b>何時：</b>每週閱讀前 8 分鐘詞義配對；轉盤隨機點人朗讀例句。</li>
+<li><b>A2 要點：</b>每組 ≤10 個詞（正好對應每課 10 個核心詞）；<b>列印紙本版</b>給沒有手機的學生。</li>
+<li><b>產出：</b>讀前把 10 個核心詞「混個眼熟」，降低正式閱讀時的生詞焦慮。</li></ul></div>
+<div class='pc'><div class='toprow'><div class='ic' style='background:#1367A7'>🟦</div><div><h3>Gimkit</h3><div class='role'>高重複操練＝單元末與考前總複習</div></div></div>
+<ul><li><b>何時：</b>每單元最後一週（W4／8／13／17）＋期中、期末前一週；每次 12–15 分鐘。</li>
+<li><b>A2 要點：</b>用團隊模式（Team Mode）避免個人墊底挫敗；設定「每人答對 20 題」目標而非金額排行。</li>
+<li><b>產出：</b>經濟機制讓同一批詞被反覆提取——正是間隔重複（spaced repetition）。</li></ul></div>
+<div class='pc full'><div class='toprow'><div class='ic' style='background:#B45309'>🟨</div><div><h3>EdCafe（edcafe.ai）</h3><div class='role'>AI 備課＋寫作自動批改＝課程的中樞</div></div></div>
+<ul><li><b>批改：</b>教師專用整合頁 <a href="semester1_Edcafe批改包.html">semester1_Edcafe批改包.html</a>（放在教師區 next_year_plan，<u>學生課件頁已移除此功能</u>）：展開該週 → 一鍵複製整段（含課文全文、五大面向 rubric、本週評分重點）→ 貼到 EdCafe Assignment Grader，即依「內容理解／科學概念／結構組織／語言表達／思辨應用」各 20 分自動回饋。僅用於<b>段落級作文</b>；課堂「詞彙造句」屬句子級練習，由學生課件內建「⚡ 開寫暖身・句子快檢」做離線機械檢核即可，不送 AI。</li>
+<li><b>備課：</b>把每週 10 個核心詞餵給 EdCafe 生成閃卡與小測，匯出後再導入其他平臺（見第 05 節）。</li>
+<li><b>銜接：</b>與 week5 LINE 批改 bot 共用同一套五面向 rubric，線上線下評分一致。</li></ul></div>
+</div>
+</section>
+<!--P3-->
+<section class='blk' id='routine'>
+<div class='shead'><h2><span class='num'>02</span>每一週 120 分鐘怎麼排？</h2>
+<p>固定節奏＝學生一進教室就知道要做什麼，降低 A2 學生的認知負荷。</p></div>
+<div class='steps'>
+<div class='step'><div class='b'>1</div><div class='t'><b>暖機 Kahoot!</b><span class='tm'>10 分鐘</span><br>複習上週 5 題＋本週「預測題」2–3 題（對了就給閱讀動機）。</div></div>
+<div class='step'><div class='b'>2</div><div class='t'><b>WordWall 讀前詞彙</b><span class='tm'>8 分鐘</span><br>10 個核心詞配對/翻牌；轉盤點名朗讀例句。</div></div>
+<div class='step'><div class='b'>3</div><div class='t'><b>正式閱讀＋互動</b><span class='tm'>40 分鐘</span><br>用 lesson 頁面的五種遊戲（配對、是非、重組、情境、填空）讀完全篇。</div></div>
+<div class='step'><div class='b'>4</div><div class='t'><b>寫作鷹架＋現場草稿</b><span class='tm'>35 分鐘</span><br>照每週 3 步驟鷹架，先在紙上／手機寫草稿。</div></div>
+<div class='step'><div class='b'>5</div><div class='t'><b>Wayground 作業派發</b><span class='tm'>5 分鐘</span><br>派本週 g2＋g5 為非同步作業，設截止時間。</div></div>
+<div class='step'><div class='b'>6</div><div class='t'><b>下課前 2 分鐘小結</b><span class='tm'>2 分鐘</span><br>用一句話說今天學到什麼＋提醒作業。</div></div>
+</div>
+</section>
+
+<section class='blk' id='rotate'>
+<div class='shead'><h2><span class='num'>03</span>18 週平臺輪替表</h2>
+<p>不是每週五個平臺全上，而是<b>輪流加重</b>：平常 2–3 個，單元末用 Gimkit 收斂，考試前全員總複習。</p></div>
+<table class='rtab'><tr><th>週</th><th>單元</th><th>Kahoot</th><th>Wayground</th><th>WordWall</th><th>Gimkit</th><th>EdCafe</th></tr>
+<tr><td class='pw'>W1–4</td><td>一 走進食品營養華語</td><td>每週暖機</td><td>W2、W4</td><td>每週</td><td>—</td><td>每次作文</td></tr>
+<tr><td class='pw'>W4</td><td>單元一收斂</td><td>—</td><td>—</td><td>—</td><td>★總複習</td><td>—</td></tr>
+<tr><td class='pw'>W5–8</td><td>二 吃出營養與健康</td><td>每週暖機</td><td>W6、W8</td><td>每週</td><td>—</td><td>每次作文</td></tr>
+<tr><td class='pw'>W8</td><td>單元二收斂</td><td>—</td><td>—</td><td>—</td><td>★總複習</td><td>—</td></tr>
+<tr><td class='pw'>W9</td><td>期中考</td><td>—</td><td>★模擬題庫</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td class='pw'>W10–13</td><td>三 食品的處理與安全</td><td>每週暖機</td><td>W11、W13</td><td>每週</td><td>—</td><td>每次作文</td></tr>
+<tr><td class='pw'>W13</td><td>單元三收斂</td><td>—</td><td>—</td><td>—</td><td>★總複習</td><td>—</td></tr>
+<tr><td class='pw'>W14–17</td><td>四 飲食文化與健康選擇</td><td>每週暖機</td><td>W15、W17</td><td>每週</td><td>—</td><td>每次作文</td></tr>
+<tr><td class='pw'>W17</td><td>單元四收斂</td><td>—</td><td>—</td><td>—</td><td>★總複習</td><td>—</td></tr>
+<tr class='exam'><td class='pw'>W18</td><td>期末考</td><td>—</td><td>★全冊題庫</td><td>—</td><td>★</td><td>期末短文</td></tr>
+</table>
+</section>
+<!--P4-->
+<section class='blk' id='reuse'>
+<div class='shead'><h2><span class='num'>04</span>一份詞彙表，五個平臺復用</h2>
+<p>關鍵就是把每課的 <b>10 個核心詞</b>當成「母資料」，產一次、四處用，避免五個平臺各做各的題目。</p></div>
+<div class='pcards'>
+<div class='pc'><div class='toprow'><div class='ic' style='background:#34D399'>🌱</div><div><h3>母資料＝每課核心詞表</h3><div class='role'>lesson 檔案的 vocab[10 詞]</div></div></div>
+<ul><li>詞＋拼音(py)＋越南文(vn)＋簡單定義(df)＋例句(ex)。</li><li>詞義配對、是非、重組、情境、填空五種遊戲<b>全部由此產生</b>。</li></ul></div>
+<div class='pc'><div class='toprow'><div class='ic' style='background:#38BDF8'>⚙️</div><div><h3>四處輸出</h3><div class='role'>20 分鐘內完成一週題庫</div></div></div>
+<ul><li><b>WordWall：</b>詞↔越南/定義 配對（直接匯詞表）。</li><li><b>Gimkit：</b>「詞→定義」選擇題（同批 10 詞連鎖問）。</li><li><b>Kahoot：</b>挑 5 個誤解度高的詞做預測題。</li><li><b>Wayground：</b>g2+g5 原題整組上拋即家庭作業。</li></ul></div>
+</div>
+</section>
+
+<section class='blk' id='a2'>
+<div class='shead'><h2><span class='num'>05</span>A2 學生的通用守則</h2><p>五個平臺都適用：先把「讀得懂題目」擺在「競賽輸贏」之前。</p></div>
+<ul class='check'>
+<li>選項 ≤4 個，文字 ≤手機會話寬一行。</li>
+<li>每題配圖或 emoji，靠圖像輔助理解詞義。</li>
+<li>把時間限制放寬 1.5–2 倍，專注正確率。</li>
+<li>一律繁體中文，越南文只放「詞彙對照」區。</li>
+<li>競賽輸掉不處罰；用「完成題數」代替排名。</li>
+<li>作業可用手機完成，支援離線＋朗讀功能。</li>
+<li>每單元末一趟 Gimkit「再提取」，抵過三次競賽。</li>
+<li>錯題數據回饋到下週 Kahoot 複習題。</li>
+</ul>
+</section>
+<div class='wrap' style='padding:6px 22px 30px'><p style='font-size:13px;color:var(--muted);text-align:center'>本指南為上學期（寫作 I）搭配使用；下學期（寫作 II）可在同架構下把「報導型文章」換成「評論／文獻述評」。各平臺題庫可直接拆自各週 lesson 的 g1–g5 + vocab 欄位。</p></div>
+<footer>食品營養華語文獻閱讀與寫作 I ｜ 五大平臺搭配指南 ｜ 美和科技大學 ｜ 授課教師：葉泰聖 ｜ 繁體中文（台灣用語）</footer>
+</div>
+</body>
+</html>

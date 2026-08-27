@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>第 6 週</title></head>
+<body>
+<script>
+const WEEK={
+ course:'寫作 I',unit:'單元二　吃出營養與健康',week:6,icon:'🍊',accent:'#F59E0B',
+ theme:'台灣與越南的水果：當季的柳橙',readingTitle:'國產柳橙：高維生素C，4月前都吃得到',
+ source:'改寫自食力 foodNEXT〈高維生素C、鈣質和膳食纖維！國產柳橙4月前都吃得到 3大挑選步驟報你知〉（節氣飲食）｜原文請至 foodnext.net 以標題搜尋｜A2 教學改寫',
+ rSkill:'看簡單圖表',wTaskTitle:'寫比較句',
+ readingSections:[
+  {h:'當季的水果最好吃',p:[
+   '「<span class=kw>當季</span>」就是現在產量最多、最新鮮的時候。',
+   '台灣的<span class=kw>柳橙</span>，冬天到四月都吃得到。當季水果比較<span class=kw>便宜</span>，也比較好吃。']},
+  {h:'一顆柳橙有多少營養？',p:[
+   '文章介紹柳橙的三個好朋友：<span class=kw>維生素C</span>、<span class=kw>鈣質</span>、膳食<span class=kw>纖維</span>。',
+   '維生素C讓皮膚漂亮、身體有力氣；膳食纖維幫助肚子順順的。',
+   '柳橙的維生素C比很多水果都多，看看下面的圖就知道。',
+   '<div class=chartbox><div class=ct>圖：每 100 克水果的維生素 C（約略值）</div><div class=crow><span class=clab>柳橙</span><div class=cbar style="width:95%">約 50 毫克</div></div><div class=crow><span class=clab>芒果</span><div class=cbar style="width:48%">約 25 毫克</div></div><div class=crow><span class=clab>鳳梨</span><div class=cbar style="width:24%">約 12 毫克</div></div><div class=crow><span class=clab>山竹</span><div class=cbar style="width:10%">約 5 毫克</div></div><div class=csrc>資料來源：常見食品營養成分約略值</div></div>']},
+  {h:'台越水果小對照',p:[
+   '越南的水果王和水果后是<ruby>榴槤<rt>liú lián</rt></ruby>與<ruby>山竹<rt>shān zhú</rt></ruby>；台灣則以芒果、鳳梨聞名世界。',
+   '兩邊的超市都會用「產季月曆」告訴客人：現在什麼最好吃。']},
+  {h:'三大挑選步驟',p:[
+   '第一步：拿起來，選有<span class=kw>重量</span>的（水分多）。第二步：看<span class=kw>表皮</span>，<ruby>光滑<rt>guāng huá</rt></ruby>的比較<span class=kw>新鮮</span>。',
+   '第三步：聞香味，有清香味的最好。越南也有好吃的橘子，跟台灣比一比吧！']}
+ ],
+ readingNote:'閱讀方法：文章有數字和步驟的時候，把它們畫出來。「三步驟」就有三件事，一件一件找，比一次全部記住簡單。',
+ vocab:[
+  {w:'當季',py:'dāng jì',vn:'đúng mùa',df:'這個季節最多的。',ex:'當季水果最便宜。'},
+  {w:'柳橙',py:'liǔ chéng',vn:'cam',df:'橘色的柑橘水果。',ex:'柳橙汁我很愛喝。'},
+  {w:'維生素C',py:'wéi shēng sù C',vn:'vitamin C',df:'一種營養，讓人健康。',ex:'柳橙有很多維生素C。'},
+  {w:'鈣質',py:'gài zhì',vn:'canxi',df:'讓骨頭強壯的營養。',ex:'牛奶有鈣質。'},
+  {w:'纖維',py:'xiān wéi',vn:'chất xơ',df:'幫助消化的營養。',ex:'多吃纖維不便秘。'},
+  {w:'挑選',py:'tiāo xuǎn',vn:'chọn lựa',df:'仔細地選。',ex:'挑選水果有三步驟。'},
+  {w:'重量',py:'zhòng liàng',vn:'trọng lượng',df:'有多重。',ex:'重的柳橙水分多。'},
+  {w:'表皮',py:'biǎo pí',vn:'vỏ',df:'外面那一層皮。',ex:'表皮要光滑。'},
+  {w:'新鮮',py:'xīn xiān',vn:'tươi',df:'剛摘不久的。',ex:'市場的水果很新鮮。'},
+  {w:'便宜',py:'pián yí',vn:'rẻ',df:'錢花得少。',ex:'夜市的水果很便宜。'}
+ ],g1:[
+  {zh:'當季',py:'dāng jì',df:'這季節最多的。'},
+  {zh:'柳橙',py:'liǔ chéng',df:'橘色的柑橘水果。'},
+  {zh:'維生素C',py:'wéi shēng sù C',df:'讓人健康的營養。'},
+  {zh:'鈣質',py:'gài zhì',df:'讓骨頭強壯。'},
+  {zh:'纖維',py:'xiān wéi',df:'幫助消化。'},
+  {zh:'挑選',py:'tiāo xuǎn',df:'仔細地選。'},
+  {zh:'重量',py:'zhòng liàng',df:'有多重。'},
+  {zh:'新鮮',py:'xīn xiān',df:'剛摘不久。'}
+ ],
+g2:[
+  {t:'台灣的柳橙到四月都吃得到。',a:true,e:'冬天到春天是產季。'},
+  {t:'挑柳橙第一步是看成語故事。',a:false,e:'是拿起來感覺重量。'},
+  {t:'愈有重量的柳橙通常水分愈多。',a:true,e:'所以先掂掂看。'},
+  {t:'當季水果比較貴。',a:false,e:'當季通常比較便宜。'},
+  {t:'柳橙含有膳食纖維。',a:true,e:'三個營養之一。'},
+  {t:'從圖來看，柳橙的維生素C比鳳梨多。',a:true,e:'看圖的長條：柳橙約 50 毫克，鳳梨約 12 毫克，柳橙的長條比較長。'}
+ ],
+g3:[
+  {label:'句型一',tokens:['台灣的柳橙','比','我的','手掌','大一點']},
+  {label:'句型二',tokens:['越南的','西瓜','比','台灣的','甜']},
+  {label:'句型三',tokens:['我們','都有','芒果','和','鳳梨']}
+ ],
+g4:[
+  {s:'水果攤上有兩顆柳橙，你會先做什麼？',o:['拿手上掂重量','看廣告','問路人'],a:0,w:'步驟一：選有重量的。'},
+  {s:'表皮皺皺的和光滑的，選哪個？',o:['光滑的','皺皺的','長毛的'],a:0,w:'光滑表示比較新鮮。'},
+  {s:'想省錢又想吃好水果，怎麼買？',o:['買當季的','買飛機送來的','不吃'],a:0,w:'當季盛產價格低。'}
+ ],
+ g5:[
+  {s:'現在最豐收的叫___水果。',o:['當季','過去','外太空'],a:0},
+  {s:'柳橙的維生素___很豐富。',o:['C','X','Z'],a:0},
+  {s:'挑選第一步感受柳橙的___。',o:['重量','心情','夢想'],a:0},
+  {s:'表皮___的比較新鮮。',o:['光滑','破掉','髒髒'],a:0}
+ ],
+ review:[
+  {s:'「產季」的意思是什麼？',o:['作物最多、最好的季節','水果的價錢','水果的顏色'],a:0,e:'第 5 週學過：產季是作物最多、最好的季節，八月是甘藷的產季。'},
+  {s:'「口感」是指什麼？',o:['吃起來的感覺','食物的名字','食物的重量'],a:0,e:'第 5 週學過：口感是吃起來的感覺，例如軟軟的、粉粉的。'},
+  {s:'臺農57號的甘藷有什麼特徵？',o:['黃色的肉，粉粉的像栗子','紅橘色的肉，水分很多','綠色的肉，酸酸的'],a:0,e:'第 5 週學過：57 號是黃肉、粉粉的、像栗子；紅橘色的是 66 號。'}
+ ],
+ write:{title:'寫比較句',goal:'用「⋯⋯比⋯⋯」或「台灣和越南都⋯⋯」寫 2 句話，比較台灣與越南的一種水果。',
+ chips:['A 比 B 甜','都很便宜','形狀像…'],
+ placeholder:'例：台灣的柳橙比越南的大一點。台灣和越南都有好吃的橘子。',
+ scaffold:['選兩種水果','找相同點或不同點','套入句型','加一句感想']},
+ edcafe:{keypoints:['兩句含比較','用「比」或「都」','事實合理','3 個本週詞彙']}
+};
+</script>
+<script src='lesson_engine.js'></script>
+</body></html>

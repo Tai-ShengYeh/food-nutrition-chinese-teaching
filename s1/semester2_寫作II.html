@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>食品營養華語文獻閱讀與寫作 II — 18 週課程地圖（優化版）</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&display=swap');
+:root{
+  --bg:#0D1B2A; --bg2:#0A1622; --card:#1A3050; --card2:#102038;
+  --pri:#00C6FF; --gold:#FFD700; --acc:#FF4D8D; --grn:#00E676; --vio:#A78BFA;
+  --txt:#ECEEF2; --muted:#7A91B0; --bdr:rgba(0,198,255,.20);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans TC','Microsoft JhengHei',sans-serif;
+  background:radial-gradient(1200px 800px at 80% -10%,rgba(0,198,255,.10),transparent 60%),
+             radial-gradient(1000px 700px at -10% 20%,rgba(167,139,250,.10),transparent 55%),var(--bg);
+  color:var(--txt); line-height:1.7; -webkit-font-smoothing:antialiased;}
+.wrap{max-width:1160px;margin:0 auto;padding:0 22px;}
+header{position:sticky;top:0;z-index:90;backdrop-filter:blur(12px);background:rgba(10,22,34,.82);border-bottom:1px solid var(--bdr);}
+.navbar{display:flex;align-items:center;justify-content:space-between;height:62px;}
+.brand{display:flex;align-items:center;gap:11px;font-weight:900;font-size:17px;letter-spacing:.02em;}
+.brand .dot{width:30px;height:30px;border-radius:9px;flex-shrink:0;background:linear-gradient(135deg,var(--pri),var(--vio));display:flex;align-items:center;justify-content:center;font-size:16px;}
+.navlinks{display:flex;gap:6px;}
+.navlinks a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;padding:7px 13px;border-radius:8px;transition:.18s;}
+.navlinks a:hover{color:var(--txt);background:rgba(0,198,255,.10);}
+.navlinks a.alt{color:var(--grn);border:1px solid rgba(0,230,118,.4);}
+.hero{padding:62px 0 34px;}
+.kicker{display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.18em;color:var(--pri);background:rgba(0,198,255,.10);border:1px solid rgba(0,198,255,.28);padding:5px 14px;border-radius:20px;margin-bottom:20px;}
+.hero h1{font-family:'Noto Serif TC',serif;font-weight:900;line-height:1.18;font-size:clamp(30px,4.6vw,54px);margin-bottom:16px;}
+.hero h1 .g{background:linear-gradient(120deg,var(--pri),var(--vio) 60%,var(--acc));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.lead{font-size:clamp(15px,1.7vw,19px);color:#B7C6DB;max-width:780px;margin-bottom:26px;}
+.tags{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:34px;}
+.tag{font-size:13px;font-weight:600;padding:6px 14px;border-radius:8px;background:var(--card);border:1px solid var(--bdr);color:#C7D6E8;}
+.tag b{color:var(--pri);}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px;}
+.stat{background:linear-gradient(160deg,var(--card),var(--card2));border:1px solid var(--bdr);border-radius:14px;padding:18px 20px;}
+.stat .n{font-family:'Noto Serif TC',serif;font-weight:900;font-size:clamp(26px,3.4vw,38px);line-height:1;}
+.stat .l{font-size:13px;color:var(--muted);margin-top:7px;}
+.stat.s1 .n{color:var(--pri);} .stat.s2 .n{color:var(--grn);} .stat.s3 .n{color:var(--gold);} .stat.s4 .n{color:var(--vio);}
+section.blk{padding:40px 0;}
+.shead{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:24px;flex-wrap:wrap;}
+.shead h2{font-family:'Noto Serif TC',serif;font-weight:900;font-size:clamp(23px,2.9vw,33px);}
+.shead h2 .num{color:var(--pri);margin-right:10px;}
+.shead p{color:var(--muted);font-size:14px;max-width:520px;}
+.obj{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.ocard{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:22px 22px 24px;position:relative;overflow:hidden;}
+.ocard::before{content:'';position:absolute;left:0;top:0;width:4px;height:100%;}
+.ocard.o1::before{background:var(--pri);} .ocard.o2::before{background:var(--grn);} .ocard.o3::before{background:var(--acc);}
+.ocard .oi{font-size:26px;margin-bottom:12px;}
+.ocard h3{font-size:16px;font-weight:700;margin-bottom:8px;}
+.ocard p{font-size:14px;color:#AFC0D6;}
+.chips{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:26px;}
+.chip{cursor:pointer;font-size:13.5px;font-weight:600;padding:8px 16px;border-radius:22px;background:var(--card);border:1px solid var(--bdr);color:#C7D6E8;transition:.18s;user-select:none;}
+.chip:hover{border-color:var(--pri);}
+.chip.on{background:var(--pri);color:#06121f;border-color:var(--pri);}
+.chip .sw{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle;}
+.ublock{margin-bottom:30px;}
+.uhead{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.ubadge{font-family:'Noto Serif TC',serif;font-weight:900;font-size:15px;width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#06121f;flex-shrink:0;}
+.uhead h3{font-size:19px;font-weight:700;}
+.uhead .ur{font-size:13px;color:var(--muted);}
+.uhead .line{flex:1;height:1px;background:var(--bdr);}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.wcard{background:linear-gradient(165deg,var(--card),var(--card2));border:1px solid var(--bdr);border-radius:14px;padding:16px 16px 18px;cursor:pointer;position:relative;transition:transform .16s,box-shadow .16s,border-color .16s;overflow:hidden;}
+.wcard::before{content:'';position:absolute;left:0;top:0;height:100%;width:4px;background:var(--c);}
+.wcard:hover{transform:translateY(-4px);border-color:var(--c);box-shadow:0 14px 30px -14px rgba(0,0,0,.7);}
+.wcard .wk{font-size:11.5px;font-weight:700;letter-spacing:.1em;color:var(--c);margin-bottom:7px;}
+.wcard .wi{font-size:23px;line-height:1;margin-bottom:9px;}
+.wcard h4{font-size:15.5px;font-weight:700;line-height:1.35;margin-bottom:9px;min-height:42px;}
+.wcard .art{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:11px;min-height:36px;}
+.wcard .sk{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:#9fb3cc;background:rgba(255,255,255,.04);padding:4px 8px;border-radius:6px;}
+.wcard .sk b{color:var(--c);}
+.wcard .live{position:absolute;top:12px;right:12px;font-size:10px;font-weight:700;color:#06121f;background:var(--grn);padding:2px 7px;border-radius:10px;}
+.wcard .more{position:absolute;right:14px;bottom:14px;font-size:12px;color:var(--muted);opacity:.7;}
+.exam{display:flex;align-items:center;gap:18px;cursor:pointer;background:linear-gradient(110deg,rgba(255,215,0,.13),rgba(255,215,0,.04));border:1px solid rgba(255,215,0,.38);border-radius:14px;padding:20px 24px;margin-bottom:30px;transition:.18s;}
+.exam:hover{border-color:var(--gold);box-shadow:0 12px 30px -16px rgba(255,215,0,.5);}
+.exam .ei{font-size:34px;}
+.exam .et{flex:1;}
+.exam .et .l{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--gold);}
+.exam .et h3{font-family:'Noto Serif TC',serif;font-weight:900;font-size:23px;margin:3px 0 4px;}
+.exam .et p{font-size:13px;color:#C9D6E6;}
+.exam .ego{font-size:13px;font-weight:700;color:var(--gold);white-space:nowrap;}
+.arc{background:var(--card2);border:1px solid var(--bdr);border-radius:16px;padding:26px 20px;overflow-x:auto;}
+.track{margin-bottom:26px;}
+.track:last-child{margin-bottom:0;}
+.tlabel{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px;margin-bottom:14px;}
+.tlabel .ic{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;color:#06121f;}
+.tline{display:flex;gap:8px;min-width:760px;}
+.tnode{flex:1;background:var(--card);border:1px solid var(--bdr);border-radius:9px;padding:9px 8px;text-align:center;position:relative;}
+.tnode .tw{font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;}
+.tnode .tt{font-size:11.5px;font-weight:600;line-height:1.35;color:#D5E1F0;}
+.track.read .tnode{border-top:3px solid var(--pri);}
+.track.write .tnode{border-top:3px solid var(--acc);}
+.asgrid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.panel{background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:24px;}
+.panel h3{font-size:17px;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:9px;}
+.bar{margin-bottom:15px;}
+.bar .top{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px;}
+.bar .track2{height:10px;background:rgba(255,255,255,.06);border-radius:6px;overflow:hidden;}
+.bar .fill{height:100%;border-radius:6px;}
+.dim{display:flex;align-items:flex-start;gap:13px;margin-bottom:15px;}
+.dim .dn{width:34px;height:34px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#06121f;}
+.dim h4{font-size:14.5px;font-weight:700;margin-bottom:2px;}
+.dim p{font-size:12.5px;color:var(--muted);}
+.dim .sc{margin-left:auto;font-size:12px;font-weight:700;color:var(--gold);white-space:nowrap;}
+footer{border-top:1px solid var(--bdr);margin-top:30px;padding:30px 0;color:var(--muted);font-size:13px;}
+footer .fr{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.ov{position:fixed;inset:0;z-index:200;background:rgba(5,12,20,.74);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:24px;}
+.ov.show{display:flex;}
+.modal{background:var(--bg);border:1px solid var(--bdr);border-radius:18px;max-width:660px;width:100%;max-height:88vh;overflow-y:auto;position:relative;box-shadow:0 40px 90px -30px rgba(0,0,0,.85);}
+.mtop{position:sticky;top:0;z-index:2;padding:24px 28px 18px;background:linear-gradient(180deg,var(--bg),var(--bg) 70%,transparent);border-bottom:1px solid var(--bdr);}
+.mtop .mwk{font-size:12px;font-weight:700;letter-spacing:.12em;}
+.mtop h2{font-family:'Noto Serif TC',serif;font-weight:900;font-size:25px;line-height:1.25;margin:6px 0 4px;}
+.mtop .mart{font-size:13.5px;color:#AEC0D6;}
+.mclose{position:absolute;top:18px;right:20px;width:34px;height:34px;border-radius:9px;border:none;background:var(--card);color:var(--txt);font-size:18px;cursor:pointer;transition:.16s;}
+.mclose:hover{background:var(--acc);color:#fff;}
+.mbody{padding:8px 28px 30px;}
+.mrow{padding:16px 0;border-bottom:1px solid rgba(255,255,255,.06);}
+.mrow:last-child{border-bottom:none;}
+.mrow .rl{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.05em;color:var(--pri);margin-bottom:9px;text-transform:uppercase;}
+.mrow .rl .e{font-size:15px;}
+.mrow p{font-size:15px;color:#DCE6F2;}
+.vlist{display:flex;flex-wrap:wrap;gap:8px;}
+.vchip{background:var(--card);border:1px solid var(--bdr);border-radius:9px;padding:7px 12px;font-size:13.5px;}
+.vchip b{color:var(--pri);font-weight:700;}
+.vchip span{color:var(--muted);font-size:12px;margin-left:6px;}
+.plist li{list-style:none;font-size:14.5px;color:#DCE6F2;padding:7px 0 7px 24px;position:relative;}
+.plist li::before{content:'「';position:absolute;left:4px;color:var(--acc);font-weight:900;}
+.plist li::after{content:'」';color:var(--acc);font-weight:900;}
+.scaf{display:flex;flex-direction:column;gap:7px;}
+.scaf .step{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:#DCE6F2;}
+.scaf .step .b{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--acc);color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;}
+.amat{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--gold);background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.3);border-radius:8px;padding:8px 13px;margin-top:4px;text-decoration:none;}
+.amat:hover{background:rgba(255,215,0,.16);}
+.edc{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--vio);background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.3);border-radius:8px;padding:8px 13px;margin-top:8px;}
+@media(max-width:860px){.stats{grid-template-columns:repeat(2,1fr);}.obj{grid-template-columns:1fr;}.grid{grid-template-columns:repeat(2,1fr);}.asgrid{grid-template-columns:1fr;}.navlinks{display:none;}}
+@media(max-width:480px){.grid{grid-template-columns:1fr;}.hero{padding:42px 0 24px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap navbar">
+    <div class="brand"><span class="dot">🍱</span><span>食品營養華語 II｜課程地圖（優化版）</span></div>
+    <nav class="navlinks">
+      <a href="#hero">課程總覽</a>
+      <a href="#map">18 週地圖</a>
+      <a href="#skills">技能雙軸</a>
+      <a href="#assess">評量方式</a>
+      <a class="alt" href="semester1_寫作I.html">← 上學期 寫作 I</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero" id="hero">
+    <span class="kicker">下學期 ｜ A2 → B1 ｜ 學術閱讀 × 學術寫作</span>
+    <h1>食品營養華語文獻閱讀與寫作 II<br><span class="g">一學期 18 週進階課程（優化版）</span></h1>
+    <p class="lead">承接寫作 I 的句段基礎，帶學生從<b>看懂一篇文獻的結構</b>，一路練到能寫出<b>比較、評論與小型文獻綜述</b>。本版<b>補齊全 18 週</b>、<b>主題更新為明年最新</b>（精準發酵、培植肉、GLP-1、AI 剩食、永續包裝），並為每週加上<b>寫作鷹架</b>與 <b>Edcafe 自動批改</b>。綠色標記為已部署的線上互動教材。</p>
+    <div class="tags">
+      <span class="tag">📅 <b>18 週</b>＝16 上課＋2 考試</span>
+      <span class="tag">🧩 <b>4 大主題單元</b></span>
+      <span class="tag">📖 閱讀技能 16 階</span>
+      <span class="tag">✍️ 寫作 句→篇→綜述</span>
+      <span class="tag">🟢 <b>7 週</b>線上互動已上線</span>
+      <span class="tag">🤖 Edcafe 自動批改</span>
+    </div>
+    <div class="stats">
+      <div class="stat s1"><div class="n">16</div><div class="l">週上課（閱讀＋寫作）</div></div>
+      <div class="stat s3"><div class="n">2</div><div class="l">週考試（期中＋期末）</div></div>
+      <div class="stat s4"><div class="n">4</div><div class="l">主題單元</div></div>
+      <div class="stat s2"><div class="n">90+</div><div class="l">核心專業詞彙</div></div>
+    </div>
+  </section>
+
+  <section class="blk" id="obj">
+    <div class="shead"><div><h2><span class="num">01</span>課程目標</h2></div>
+      <p>對應 CEFR A2→B1，學期末學生能獨立讀懂並轉述一篇食品營養短文獻，並完成小型文獻綜述。</p></div>
+    <div class="obj">
+      <div class="ocard o1"><div class="oi">🔍</div><h3>讀得懂</h3>
+        <p>能辨認文獻結構，找出研究<b>目的句</b>、<b>重點結果</b>與作者立場，並判讀簡單圖表、評估證據。</p></div>
+      <div class="ocard o2"><div class="oi">✍️</div><h3>寫得出</h3>
+        <p>能寫出<b>150 字讀後摘要</b>、<b>300 字政策建議</b>，到<b>小型文獻綜述</b>，每步都有鷹架支持。</p></div>
+      <div class="ocard o3"><div class="oi">💬</div><h3>說得清</h3>
+        <p>能用學術句型口頭轉述文獻重點，並對食品科技議題表達<b>有根據的看法</b>與評論。</p></div>
+    </div>
+  </section>
+
+  <section class="blk" id="map">
+    <div class="shead"><div><h2><span class="num">02</span>18 週課程地圖</h2></div>
+      <p>點任一週卡片，展開閱讀技能、寫作任務、寫作鷹架、核心詞彙、句型、活動與線上互動教材連結。</p></div>
+    <div class="chips" id="chips"></div>
+    <div id="mapHost"></div>
+  </section>
+
+  <section class="blk" id="skills">
+    <div class="shead"><div><h2><span class="num">03</span>閱讀 × 寫作 技能雙軸</h2></div>
+      <p>兩條主軸貫穿 16 週上課，難度由 A2 逐週爬升到 B1。</p></div>
+    <div class="arc">
+      <div class="track read">
+        <div class="tlabel"><span class="ic" style="background:var(--pri)">📖</span>閱讀技能軸（學術文獻閱讀策略）</div>
+        <div class="tline" id="readTrack"></div></div>
+      <div class="track write">
+        <div class="tlabel"><span class="ic" style="background:var(--acc)">✍️</span>寫作任務軸（從一句到一篇綜述）</div>
+        <div class="tline" id="writeTrack"></div></div>
+    </div>
+  </section>
+
+  <section class="blk" id="assess">
+    <div class="shead"><div><h2><span class="num">04</span>評量方式</h2></div>
+      <p>平時與形成性評量並重；期中、期末以五大面向（每項 20 分）評分，Edcafe 自動批改提供即時回饋。</p></div>
+    <div class="asgrid">
+      <div class="panel">
+        <h3>📊 學期成績配分</h3>
+        <div class="bar"><div class="top"><b>平時（出席＋每週作業）</b><span style="color:var(--pri)">25%</span></div>
+          <div class="track2"><div class="fill" style="width:25%;background:var(--pri)"></div></div></div>
+        <div class="bar"><div class="top"><b>形成性小測 / 互動遊戲</b><span style="color:var(--grn)">15%</span></div>
+          <div class="track2"><div class="fill" style="width:15%;background:var(--grn)"></div></div></div>
+        <div class="bar"><div class="top"><b>期中考（第 9 週）</b><span style="color:var(--gold)">25%</span></div>
+          <div class="track2"><div class="fill" style="width:25%;background:var(--gold)"></div></div></div>
+        <div class="bar"><div class="top"><b>期末考＋文獻綜述專題（第 18 週）</b><span style="color:var(--acc)">35%</span></div>
+          <div class="track2"><div class="fill" style="width:35%;background:var(--acc)"></div></div></div>
+      </div>
+      <div class="panel">
+        <h3>🎯 寫作五大評分面向（每項 20 分，共 100）</h3>
+        <div class="dim"><span class="dn" style="background:var(--pri)">1</span><div><h4>內容理解</h4><p>是否正確抓到文獻的目的與重點</p></div><span class="sc">20 分</span></div>
+        <div class="dim"><span class="dn" style="background:var(--grn)">2</span><div><h4>科學概念</h4><p>食品營養名詞使用是否正確</p></div><span class="sc">20 分</span></div>
+        <div class="dim"><span class="dn" style="background:var(--gold)">3</span><div><h4>結構組織</h4><p>段落安排、起承轉合是否清楚</p></div><span class="sc">20 分</span></div>
+        <div class="dim"><span class="dn" style="background:var(--vio)">4</span><div><h4>語言表達</h4><p>句型、用字、語法是否正確簡潔</p></div><span class="sc">20 分</span></div>
+        <div class="dim"><span class="dn" style="background:var(--acc)">5</span><div><h4>思辨應用</h4><p>能否提出有根據的看法與評論</p></div><span class="sc">20 分</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap fr">
+    <div>食品營養華語文獻閱讀與寫作 II（下學期·優化版）｜ 美和科技大學 ｜ 授課教師：葉泰聖</div>
+    <div>素材來源：食力 foodNEXT ｜ 線上互動：GitHub Pages＋Supabase/Firebase ｜ 繁體中文</div>
+  </div>
+</footer>
+
+<div class="ov" id="ov"><div class="modal" id="modal"></div></div>
+
+<script>
+const UNITS={
+  u1:{name:'單元一　食品加工的科學',range:'第 1–4 週',color:'#00C6FF',badge:'壹'},
+  u2:{name:'單元二　營養與健康生活',range:'第 5–8 週',color:'#00E676',badge:'貳'},
+  u3:{name:'單元三　未來食品與永續',range:'第 10–13 週',color:'#A78BFA',badge:'參'},
+  u4:{name:'單元四　AI 與食品科技',range:'第 14–17 週',color:'#FF4D8D',badge:'肆'},
+};
+const COLOR={u1:'#00C6FF',u2:'#00E676',u3:'#A78BFA',u4:'#FF4D8D',exam:'#FFD700'};
+
+const WEEKS=[
+{wk:1,unit:'u1',icon:'📖',theme:'怎麼讀一篇食品文獻',
+ art:'〈吃加工食品不好嗎？〉食力 foodNEXT',
+ rSkill:'認識文獻結構',rDesc:'標題→摘要→引言→方法→結果→討論→結論，學會先看哪裡。',
+ wTask:'名詞解釋造句',wDesc:'用中文解釋一個營養名詞，並造一個完整句子。',
+ scaffold:['回顧寫作 I 的造句','加入「定義＋例子」兩部分','改寫成學術語氣'],
+ vocab:[['文獻','學術專業資料'],['摘要','重點的簡短說明'],['引言','背景與目的'],['結論','總結或建議'],['加工食品','經處理的食品']],
+ patterns:['這篇文章主要在說……','作者想知道……'],
+ activity:'看標題猜主題；用色筆圈出七個結構區塊，全班核對。',
+ hw:'找一則食品營養短新聞，用一句中文寫出它的主題。'},
+
+{wk:2,unit:'u1',icon:'🍺',theme:'機能性啤酒：低碳與益生菌',
+ art:'〈啤酒市場新趨勢：低碳、機能、益生菌〉',
+ rSkill:'找主題句與關鍵詞',rDesc:'每段第一句常是主題句；圈出反覆出現的關鍵詞。',
+ wTask:'寫主題句',wDesc:'為一段食品趨勢說明，寫一句能涵蓋全段的主題句。',
+ scaffold:['讀段落找已有主題句','拿掉後自己重寫','比較哪句最能涵蓋全段'],
+ vocab:[['機能性','對健康有特別功能'],['益生菌','對腸道好的菌'],['低碳','少碳排放'],['趨勢','發展的方向'],['市場','買賣的地方']],
+ patterns:['……的特點是……','近年來，……越來越……'],
+ activity:'機能性啤酒三大軸線拆解；品牌矩陣分類。',
+ hw:'用三個關鍵詞描述一種飲料的趨勢，寫成兩句。',
+ asset:'機能性啤酒 SOIL 投影片＋4 遊戲',
+ url:'https://tai-shengyeh.github.io/food-nutrition-chinese-teaching/w10-functional-beer/slides.html'},
+
+{wk:3,unit:'u1',icon:'🧪',theme:'食品添加物與增稠劑',
+ art:'〈三仙膠的性質與在食品加工上之應用〉',
+ rSkill:'找研究目的句',rDesc:'尋找「本研究旨在…」「為了探討…」等訊號詞，鎖定作者目的。',
+ wTask:'寫研究目的句',wDesc:'仿照文獻句型，寫一句清楚的研究目的句。',
+ scaffold:['找出文中的訊號詞','填入「研究＋目的」句模','換主題再寫一句'],
+ vocab:[['添加物','額外加入的物質'],['增稠劑','讓液體變濃稠'],['黏度','濃稠的程度'],['安定性','不易變質'],['乳化','讓油水混合']],
+ patterns:['本研究的目的是……','……可以用來……'],
+ activity:'「找出目的句」競賽：分組最快找到並標出目的句。',
+ hw:'查一個常見食品添加物，用一句話寫出它的用途。'},
+
+{wk:4,unit:'u1',icon:'🦠',theme:'殺菌與保存技術',
+ art:'〈食品加工的殺菌技術介紹〉',
+ rSkill:'找重點結果',rDesc:'在結果段找數字、比較與趨勢（多/少、高/低、增加/下降）。',
+ wTask:'用數字寫結果',wDesc:'用兩句話寫出文中兩個含數字或比較的重點結果。',
+ scaffold:['圈出文中的數字','配上比較詞','寫成兩句結果句'],
+ vocab:[['殺菌','殺死細菌'],['滅菌','完全除菌'],['巴氏殺菌','低溫殺菌法'],['保存期限','可食用的時間'],['微生物','看不見的小生物']],
+ patterns:['結果顯示……','……比……高（低）'],
+ activity:'「殺菌方法比一比」表格填空：溫度、時間、適用食品三欄。',
+ hw:'比較兩種食品保存方法，寫成兩句（含一個比較詞）。'},
+
+{wk:5,unit:'u2',icon:'🥛',theme:'發酵與優格',
+ art:'〈20 小時優格的奇蹟〉／大谷翔平的優格習慣',
+ rSkill:'摘要找重點',rDesc:'從整篇抓出最重要的兩件事，先兩句、再擴寫成段。',
+ wTask:'150 字讀後摘要',wDesc:'讀完文章後，用約 150 字寫出讀後摘要（對應現有量表）。',
+ scaffold:['先寫一句總述','補 2–3 句重點','加結尾句並數字數'],
+ vocab:[['發酵','微生物轉化'],['益生菌','對腸道好的菌'],['乳酸菌','發酵乳的菌'],['蛋白質','修復身體的營養'],['腸道','消化器官']],
+ patterns:['這篇文章告訴我們……','總結來說……'],
+ activity:'優格製作流程排序卡；對照「大谷翔平優格」量表自評。',
+ hw:'完成 150 字優格文章讀後摘要，下週互評。',
+ asset:'ohtani_yogurt.html／大谷翔平_優格_rubric'},
+
+{wk:6,unit:'u2',icon:'🫘',theme:'植物營養：黑豆',
+ art:'〈黑豆初級食品加工：烘炒、蒸煮或醱酵〉',
+ rSkill:'區分事實與意見',rDesc:'分辨「研究發現…（事實）」與「我認為…（意見）」兩種句子。',
+ wTask:'改寫意見為事實',wDesc:'把一句帶有意見的句子，改寫成有根據的事實陳述句。',
+ scaffold:['判斷句子是事實或意見','找支持的根據','改寫成事實句'],
+ vocab:[['花青素','紫黑色的色素'],['抗氧化','防止氧化'],['膳食纖維','幫助排便'],['加工方式','處理的方法'],['營養素','身體需要的成分']],
+ patterns:['研究發現……','我認為……，因為……'],
+ activity:'事實／意見分類遊戲：把句子卡分到兩個籃子並說明理由。',
+ hw:'從文章找出兩句事實、一句意見，抄寫並標註。'},
+
+{wk:7,unit:'u2',icon:'👵',theme:'銀髮飲食與超高齡社會',
+ art:'〈把日子吃好才幸福：超高齡社會的飲食轉型〉',
+ rSkill:'圖表判讀',rDesc:'看懂長條圖、折線圖；找出橫軸、縱軸與趨勢。',
+ wTask:'描述一張圖表',wDesc:'用一段話描述圖表的主要趨勢與一個重點數據。',
+ scaffold:['讀軸標題','找最大/最小與趨勢','用趨勢句型寫成段'],
+ vocab:[['高齡化','老年人變多'],['咀嚼','用牙齒嚼'],['吞嚥','把食物吞下'],['營養不良','營養不足'],['質地調整','改變軟硬']],
+ patterns:['從圖中可以看到……','隨著……增加，……也……'],
+ activity:'人口老化／長者飲食數據圖解讀，分組口頭報告趨勢。',
+ hw:'找一張食品營養數據圖，用三句話描述它。'},
+
+{wk:8,unit:'u2',icon:'🌍',theme:'減碳飲食與低碳餐桌',
+ art:'〈英國實證低成本減碳飲食法〉食力 foodNEXT',
+ rSkill:'因果關係',rDesc:'抓出「因為…所以…」「導致」的因果鏈，理解作者推論。',
+ wTask:'寫因果段落',wDesc:'寫一個含因果關係的小段落（4–5 句）。',
+ scaffold:['列出「因」與「果」','用因果連接詞串起','加主題句與結尾'],
+ vocab:[['碳足跡','碳排放總量'],['永續','長久不破壞環境'],['溫室氣體','造成暖化的氣體'],['植物性飲食','以蔬果為主'],['菜單順序','上菜的次序']],
+ patterns:['因為……，所以……','……導致……'],
+ activity:'減碳菜單設計工作坊（SNEAK 菜單設計）。',
+ hw:'寫一個「我的減碳飲食」因果段落（約 80 字）。',
+ asset:'本資料夾互動：week08_ESG_永續低碳.html'},
+
+{wk:9,unit:'exam',icon:'📝',theme:'期中考',
+ art:'考試範圍：第 1–8 週（單元一＋單元二）',
+ rSkill:'閱讀綜合測驗',rDesc:'詞彙配對、文獻結構辨識、找目的句與重點結果、圖表判讀。',
+ wTask:'150 字讀後摘要',wDesc:'就指定的食品營養短文，現場寫一篇 150 字讀後摘要。',
+ scaffold:['提供文章與生詞','提供摘要句模','五大面向評分'],
+ vocab:[['複習','單元一、單元二全部核心詞']],
+ patterns:['五大評分面向：內容理解／科學概念／結構組織／語言表達／思辨應用'],
+ activity:'紙筆測驗 90 分鐘：閱讀測驗 60% ＋ 寫作 40%。',
+ hw:'考後檢討與錯題訂正。'},
+
+{wk:10,unit:'u3',icon:'🦗',theme:'替代蛋白',
+ art:'〈未來蛋白前沿〉／〈麵包蟲勝過乳清〉',
+ rSkill:'比較與對照',rDesc:'兩篇（或兩種來源）對讀，列出相同點與不同點。',
+ wTask:'寫比較段落',wDesc:'寫一段比較傳統肉與替代蛋白的文字（含一組對照）。',
+ scaffold:['用表格列對照面向','選 2 點寫成句','加總述與評論句'],
+ vocab:[['替代蛋白','取代肉的蛋白'],['昆蟲蛋白','來自昆蟲'],['植物肉','用植物做的肉'],['永續','不傷環境'],['胺基酸','蛋白質的單位']],
+ patterns:['相較於……，……','兩者最大的不同是……'],
+ activity:'蛋白質來源大比拼：營養、成本、環境三面向打分。',
+ hw:'比較傳統肉與一種替代蛋白，寫成一段（約 100 字）。',
+ asset:'替代蛋白（越南班）教師投影片＋學生遊戲',
+ url:'https://tai-shengyeh.github.io/food-nutrition-chinese-teaching/w2-altprot-uni/slides.html'},
+
+{wk:11,unit:'u3',icon:'🐟',theme:'細胞農業：培植肉與人造鰻魚',
+ art:'〈實驗室種出鰻魚〉培植肉專題',
+ rSkill:'推論與預測',rDesc:'根據文章證據，合理推論未來可能的發展。',
+ wTask:'預測未來趨勢',wDesc:'根據文章，用兩句話預測這項技術的未來。',
+ scaffold:['找出文中的證據','連到「所以未來可能…」','加上條件句「如果…就…」'],
+ vocab:[['細胞農業','用細胞生產食物'],['培植肉','實驗室養的肉'],['細胞培養','讓細胞增生'],['食品科技','食品的技術'],['量產','大量生產']],
+ patterns:['未來可能會……','如果……，就會……'],
+ activity:'培植肉 22 張 SOIL 投影片＋5 內嵌遊戲＋暖身投票。',
+ hw:'預測「十年後的餐桌」，寫三句你的推論。',
+ asset:'人造鰻魚飯×培植肉 互動課（cultivated-eel-lesson）',
+ url:'https://tai-shengyeh.github.io/cultivated-eel-lesson/'},
+
+{wk:12,unit:'u3',icon:'🍫',theme:'無可可巧克力',
+ art:'〈Cocoa-free chocolate：消費者洞察〉',
+ rSkill:'作者立場與論點',rDesc:'找出作者支持或反對什麼，他的主要論點是什麼。',
+ wTask:'論點＋表態',wDesc:'寫出作者的主要論點一句，再寫你同意或不同意的一句。',
+ scaffold:['先摘作者論點','寫自己立場一句','補一個理由'],
+ vocab:[['可可','巧克力原料'],['替代原料','取代的材料'],['消費者接受度','願不願意買'],['風味','味道與香氣'],['永續','環境友善']],
+ patterns:['作者認為……','我同意（不同意），因為……'],
+ activity:'無可可巧克力立場投票＋小組辯論一回合。',
+ hw:'寫一篇 80 字立場短文：你會買無可可巧克力嗎？為什麼？',
+ asset:'無可可巧克力 互動課（cocoa-free-chocolate-lesson）',
+ url:'https://tai-shengyeh.github.io/cocoa-free-chocolate-lesson/'},
+
+{wk:13,unit:'u3',icon:'🔴',theme:'精準發酵與食用色素',
+ art:'〈紅色 40 號 × 精準發酵〉（2027 最新趨勢）',
+ rSkill:'證據評估',rDesc:'問自己：作者用什麼證據？這些證據可信嗎？夠不夠？',
+ wTask:'評估一個論點',wDesc:'針對一個食品宣稱，寫兩句評估它的證據是否充分。',
+ scaffold:['找出宣稱與證據','判斷證據強弱','寫成評估句'],
+ vocab:[['精準發酵','精確控制的發酵'],['食用色素','食物的顏色'],['天然色素','來自天然'],['安全性','是否安全'],['法規','法律規定']],
+ patterns:['這個證據可信，因為……','還需要更多證據證明……'],
+ activity:'紅色 40 號互動小遊戲；為食品宣稱「打證據分數」。',
+ hw:'找一個食品廣告宣稱，評估它的證據，寫兩句。',
+ asset:'紅色40號精準發酵 minigame（week_red40_fermentation）'},
+
+{wk:14,unit:'u4',icon:'🤖',theme:'AI 與餐飲剩食革命',
+ art:'〈AI 垃圾桶讓廚餘變純利〉／AI Food Waste',
+ rSkill:'跨文獻整合',rDesc:'把多則資訊整合成自己的論述，標出共同重點。',
+ wTask:'300 字政策建議',wDesc:'整合本週資訊，寫一份 300 字食物浪費政策建議（對應現有量表）。',
+ scaffold:['列出 3 則重點','分「問題→建議→效益」段','合成 300 字並檢查連接詞'],
+ vocab:[['食物浪費','丟掉的食物'],['人工智慧','AI'],['廚餘','剩下的食物'],['循環經濟','資源再利用'],['效率','做事的速度']],
+ patterns:['綜合以上……','建議……，以……'],
+ activity:'AI 科技與剩食革命 14 張投影片＋4 遊戲（含流程排序）。',
+ hw:'完成 300 字食物浪費政策建議初稿。',
+ asset:'AI 餐飲剩食革命 投影片＋遊戲（w11-ai-food-waste）',
+ url:'https://tai-shengyeh.github.io/food-nutrition-chinese-teaching/w11-ai-food-waste/slides.html'},
+
+{wk:15,unit:'u4',icon:'🥗',theme:'AI 營養師與智慧飲食',
+ art:'〈智能營養數位助理：A⁺ 營養師的誕生〉',
+ rSkill:'批判閱讀',rDesc:'找出研究或技術的限制與沒說清楚的地方。',
+ wTask:'指出限制＋評論',wDesc:'寫出一個 AI 營養應用的限制，並加上你的一句評論。',
+ scaffold:['找出技術的優點','找出一個限制','用「雖然…但是…」評論'],
+ vocab:[['數位助理','電腦助手'],['飲食評估','分析吃的東西'],['個人化','為個人設計'],['演算法','電腦的計算規則'],['隱私','個人資料保護']],
+ patterns:['雖然……，但是……','這項技術的限制是……'],
+ activity:'AI 營養師角色扮演：一人扮 AI、一人扮使用者，找出盲點。',
+ hw:'寫「AI 營養師」的優點與限制各一段。',
+ asset:'本資料夾互動：week15_AI_智慧飲食.html'},
+
+{wk:16,unit:'u4',icon:'💉',theme:'GLP-1 與飲食革命',
+ art:'〈GLP-1 食品大破壞〉GLP-1 Food Disruption',
+ rSkill:'小型文獻綜述',rDesc:'把本學期讀過的 2–3 篇相關文章，整理成一個主題回顧。',
+ wTask:'文獻綜述初稿',wDesc:'選一個主題，整合 2–3 篇文章，寫一篇小型文獻綜述（B1）。',
+ scaffold:['列出 2–3 篇文章重點','找共同主題','用綜述句型串成一段'],
+ vocab:[['GLP-1','控制食慾的荷爾蒙'],['食慾','想吃的慾望'],['減重藥','幫助減肥的藥'],['食品產業','食品行業'],['消費趨勢','購買的潮流']],
+ patterns:['許多研究指出……','綜觀全學期……'],
+ activity:'GLP-1 詞彙配對、數據判讀、產業分類、句型填空 4 遊戲。',
+ hw:'完成期末文獻綜述初稿，第 17 週發表。',
+ asset:'GLP-1 互動遊戲（glp1-chinese-class）',
+ url:'https://tai-shengyeh.github.io/glp1-chinese-class/'},
+
+{wk:17,unit:'u4',icon:'♻️',theme:'永續包裝與期末統整',
+ art:'〈麥當勞無感減塑〉永續包裝專題',
+ rSkill:'全學期閱讀策略統整',rDesc:'回顧 16 週的閱讀技能，套用在最後一篇文章上。',
+ wTask:'文獻綜述定稿＋發表',wDesc:'完成文獻綜述定稿，並做 3 分鐘口頭發表。',
+ scaffold:['依回饋修改初稿','加引用與結論','準備 3 分鐘口頭稿'],
+ vocab:[['減塑','減少塑膠'],['永續包裝','環保包裝'],['消費者行為','購買習慣'],['循環經濟','資源循環'],['政策','政府的做法']],
+ patterns:['綜合本學期所學……','我建議……'],
+ activity:'麥當勞無塑包裝 5R 策略；期末專題口頭發表會＋同儕互評。',
+ hw:'準備期末考；繳交文獻綜述定稿。',
+ asset:'麥當勞無塑包裝 投影片＋5 遊戲（w-mcd-packaging）',
+ url:'https://tai-shengyeh.github.io/food-nutrition-chinese-teaching/w-mcd-packaging/mcd_no_plastic_deck.html'},
+
+{wk:18,unit:'exam',icon:'📝',theme:'期末考',
+ art:'考試範圍：第 10–17 週（單元三＋單元四）＋文獻綜述專題',
+ rSkill:'閱讀綜合測驗',rDesc:'比較對照、推論預測、作者立場、證據評估、批判閱讀全面測驗。',
+ wTask:'比較／評論寫作',wDesc:'就指定主題寫一篇比較或評論短文；專題綜述併入計分。',
+ scaffold:['提供題目與生詞','提供綜述句型','分段給分'],
+ vocab:[['複習','單元三、單元四全部核心詞']],
+ patterns:['五大評分面向：內容理解／科學概念／結構組織／語言表達／思辨應用'],
+ activity:'紙筆測驗 90 分鐘 ＋ 文獻綜述專題成績合計。',
+ hw:'學期結束，恭喜完成 B1 學術閱讀寫作訓練！'},
+];
+
+const chipDefs=[['all','全部','#7A91B0'],['u1','單元一','#00C6FF'],['u2','單元二','#00E676'],
+ ['u3','單元三','#A78BFA'],['u4','單元四','#FF4D8D'],['exam','考試週','#FFD700']];
+const chipsEl=document.getElementById('chips');
+chipDefs.forEach((c,i)=>{
+  const d=document.createElement('div');
+  d.className='chip'+(i===0?' on':'');d.dataset.f=c[0];
+  d.innerHTML=(c[0]!=='all'?`<span class="sw" style="background:${c[2]}"></span>`:'')+c[1];
+  d.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));d.classList.add('on');applyFilter(c[0]);};
+  chipsEl.appendChild(d);
+});
+
+const host=document.getElementById('mapHost');
+function unitBlock(uk){
+  const u=UNITS[uk];const ws=WEEKS.filter(w=>w.unit===uk);
+  const cards=ws.map(w=>`
+    <div class="wcard" data-unit="${uk}" data-wk="${w.wk}" style="--c:${COLOR[uk]}">
+      ${w.url?'<span class="live">🟢 線上</span>':''}
+      <div class="wk">WEEK ${w.wk}</div><div class="wi">${w.icon}</div>
+      <h4>${w.theme}</h4><div class="art">${w.art}</div>
+      <span class="sk">📖 <b>${w.rSkill}</b></span><span class="more">點看詳情 ›</span>
+    </div>`).join('');
+  return `<div class="ublock" data-unit="${uk}">
+    <div class="uhead"><span class="ubadge" style="background:${u.color}">${u.badge}</span>
+      <h3>${u.name}</h3><span class="ur">${u.range}</span><span class="line"></span></div>
+    <div class="grid">${cards}</div></div>`;
+}
+function examBanner(wk){
+  const w=WEEKS.find(x=>x.wk===wk);
+  return `<div class="exam" data-unit="exam" data-wk="${wk}">
+    <div class="ei">📝</div><div class="et"><div class="l">EXAM WEEK ${wk}</div><h3>${w.theme}</h3><p>${w.art}</p></div>
+    <div class="ego">點看考試說明 ›</div></div>`;
+}
+host.innerHTML = unitBlock('u1')+unitBlock('u2')+examBanner(9)+unitBlock('u3')+unitBlock('u4')+examBanner(18);
+
+function applyFilter(f){
+  document.querySelectorAll('[data-unit]').forEach(el=>{
+    if(el.classList.contains('wcard'))return;
+    const u=el.dataset.unit;el.style.display=(f==='all'||f===u)?'':'none';
+  });
+}
+
+const teach=WEEKS.filter(w=>w.unit!=='exam');
+const rt=document.getElementById('readTrack');const wt=document.getElementById('writeTrack');
+teach.forEach(w=>{
+  rt.insertAdjacentHTML('beforeend',`<div class="tnode"><div class="tw">W${w.wk}</div><div class="tt">${w.rSkill}</div></div>`);
+  wt.insertAdjacentHTML('beforeend',`<div class="tnode"><div class="tw">W${w.wk}</div><div class="tt">${w.wTask}</div></div>`);
+});
+
+const ov=document.getElementById('ov');const modal=document.getElementById('modal');
+function openWk(wk){
+  const w=WEEKS.find(x=>x.wk===wk);if(!w)return;
+  const c=COLOR[w.unit];const isExam=w.unit==='exam';
+  const uname=isExam?'考試週':UNITS[w.unit].name;
+  const vocab=w.vocab.map(v=>`<div class="vchip"><b>${v[0]}</b>${v[1]?`<span>${v[1]}</span>`:''}</div>`).join('');
+  const pats=w.patterns.map(p=>`<li>${p}</li>`).join('');
+  const scaf=(w.scaffold||[]).map((s,i)=>`<div class="step"><span class="b">${i+1}</span><span>${s}</span></div>`).join('');
+  const assetHtml=w.asset?(w.url?`<a class="amat" href="${w.url}" target="_blank" rel="noopener">🟢 ${w.asset} ↗</a>`:`<div class="amat">🔗 ${w.asset}</div>`):'';
+  modal.innerHTML=`
+    <button class="mclose" onclick="closeOv()">✕</button>
+    <div class="mtop" style="border-bottom-color:${c}55">
+      <div class="mwk" style="color:${c}">WEEK ${w.wk} ｜ ${uname}</div>
+      <h2>${w.icon} ${w.theme}</h2><div class="mart">📄 ${w.art}</div>
+    </div>
+    <div class="mbody">
+      <div class="mrow"><div class="rl"><span class="e">📖</span>閱讀技能</div>
+        <p><b style="color:${c}">${w.rSkill}</b> — ${w.rDesc}</p></div>
+      <div class="mrow"><div class="rl"><span class="e">✍️</span>寫作任務</div>
+        <p><b style="color:${c}">${w.wTask}</b> — ${w.wDesc}</p></div>
+      ${scaf?`<div class="mrow"><div class="rl"><span class="e">🪜</span>寫作鷹架</div><div class="scaf">${scaf}</div></div>`:''}
+      <div class="mrow"><div class="rl"><span class="e">🔑</span>核心詞彙</div><div class="vlist">${vocab}</div></div>
+      <div class="mrow"><div class="rl"><span class="e">💬</span>本週句型</div><ul class="plist">${pats}</ul></div>
+      <div class="mrow"><div class="rl"><span class="e">🎲</span>課堂活動</div>
+        <p>${w.activity}</p>${assetHtml}
+        ${isExam?'':'<div class="edc">🤖 Edcafe 自動批改：學生上傳作文，依五大面向（每項 20 分）即時回饋，課後修改再交。</div>'}</div>
+      <div class="mrow"><div class="rl"><span class="e">🏠</span>${isExam?'課後':'回家作業'}</div><p>${w.hw}</p></div>
+    </div>`;
+  ov.classList.add('show');document.body.style.overflow='hidden';
+}
+function closeOv(){ov.classList.remove('show');document.body.style.overflow='';}
+document.addEventListener('click',e=>{
+  if(e.target.closest('.amat'))return;
+  const card=e.target.closest('.wcard,.exam');if(card){openWk(+card.dataset.wk);}
+});
+ov.addEventListener('click',e=>{if(e.target===ov)closeOv();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeOv();});
+</script>
+</body>
+</html>

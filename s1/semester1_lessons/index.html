@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>寫作 I 互動課程 · 16 週</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:#FFFBF0;color:#22301C;line-height:1.7;padding:36px 18px 60px;}
+.wrap{max-width:1000px;margin:0 auto;}
+h1{font-size:1.7rem;font-weight:900;}
+.sub{color:#7A8C6E;margin-bottom:8px;}
+.links{margin-bottom:24px;}
+.links a{text-decoration:none;font-size:.85rem;font-weight:700;color:#0D9488;border:1px solid #D8E0CF;border-radius:18px;padding:7px 14px;background:#fff;margin-right:8px;}
+.unit{margin:26px 0 10px;font-weight:900;font-size:1.05rem;padding-left:12px;border-left:5px solid var(--u);}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.card{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid #E3E8D8;border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:.15s;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;left:0;top:0;width:5px;height:100%;background:var(--u);}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 26px rgba(0,0,0,.1);}
+.wk{font-size:.72rem;font-weight:700;letter-spacing:.1em;color:var(--u);}
+.ic{font-size:1.8rem;margin:4px 0;}
+.card h3{font-size:1.05rem;font-weight:900;margin-bottom:6px;}
+.card .sk{font-size:.78rem;color:#7A8C6E;}
+.exam{background:#FEF6E0;border:1px dashed #F0C674;border-radius:12px;padding:12px 16px;margin:14px 0;color:#9A6B00;font-weight:700;font-size:.9rem;}
+footer{color:#7A8C6E;font-size:.8rem;margin-top:26px;text-align:center;}
+</style></head>
+<body><div class="wrap">
+  <h1>🌱 食品營養華語文獻閱讀與寫作 I · 互動課程</h1>
+  <p class="sub">A2 基礎 ｜ 越南學生適用 ｜ 每課：課文＋詞彙（拼音＋越南文）＋5 種遊戲＋寫作任務</p>
+  <div class="links">
+    <a href="../semester1_寫作I.html">📋 課程地圖</a>
+    <a href="../index.html">🗺️ 全年總覽</a>
+    <a href="../semester2_寫作II.html">🍱 下學期 寫作 II</a>
+    <a href="../semester1_平台搭配指南.html">🎮 平臺搭配指南</a>
+    <a href="../semester1_教學流程120分.html">🕒 120 分鐘課堂流程</a>
+    <a href="../semester1_Edcafe批改包.html">🤖 教師・Edcafe 批改包</a>
+  </div>
+
+  <div class="unit" style="--u:#10B981">單元一　走進食品營養華語（W1–4）</div>
+  <div class="grid" id="u1"></div>
+
+  <div class="unit" style="--u:#0D9488">單元二　吃出營養與健康（W5–8）</div>
+  <div class="grid" id="u2"></div>
+
+  <div class="exam">📝 第 9 週 · 期中考（範圍：單元一＋單元二）</div>
+
+  <div class="unit" style="--u:#0891B2">單元三　食品的處理與安全（W10–13）</div>
+  <div class="grid" id="u3"></div>
+
+  <div class="unit" style="--u:#EA580C">單元四　飲食文化與健康選擇（W14–17）</div>
+  <div class="grid" id="u4"></div>
+
+  <div class="exam">📝 第 18 週 · 期末考（範圍：單元三＋單元四＋短文寫作）</div>
+
+  <footer>素材：食力 foodNEXT ｜ 繁體中文（台灣用語）｜ 授課教師：葉泰聖</footer>
+</div>
+<script>
+const L=[
+ [1,'📖','怎麼讀食品文章','認識標題與文章','w01_怎麼讀食品文章.html','#10B981','u1'],
+ [2,'🍚','六大類食物','找關鍵詞','w02_六大類食物.html','#10B981','u1'],
+ [3,'🥗','均衡飲食與餐盤','找主題句','w03_均衡飲食餐盤.html','#10B981','u1'],
+ [4,'🌈','蔬果的顏色與營養','看懂分類','w04_蔬果顏色營養.html','#10B981','u1'],
+ [5,'🍠','主食：白飯跟甘藷','找細節資訊','w05_主食米飯麵包.html','#0D9488','u2'],
+ [6,'🍊','台灣與越南的水果','看簡單圖表','w06_台越水果.html','#0D9488','u2'],
+ [7,'🥤','飲料、含糖與水','猜詞義','w07_飲料含糖與水.html','#0D9488','u2'],
+ [8,'🍳','早餐的重要','找順序詞','w08_早餐的重要.html','#0D9488','u2'],
+ [10,'🥛','發酵食品','找原因','w10_發酵食品.html','#0891B2','u3'],
+ [11,'🥫','食品保存的方法','找步驟','w11_食品保存.html','#0891B2','u3'],
+ [12,'🧪','認識食品添加物','區分主要與次要','w12_食品添加物.html','#0891B2','u3'],
+ [13,'🏷️','看懂食品標示','看標示與數字','w13_看懂食品標示.html','#0891B2','u3'],
+ [14,'🧼','食品安全與衛生','找重點句','w14_食品安全衛生.html','#EA580C','u4'],
+ [15,'🍜','台灣小吃與飲食文化','抓段落大意','w15_台灣小吃文化.html','#EA580C','u4'],
+ [16,'🌏','台越飲食大比較','比較異同','w16_台越飲食比較.html','#EA580C','u4'],
+ [17,'✅','健康飲食的選擇與統整','全學期統整','w17_健康飲食統整.html','#EA580C','u4']
+];
+L.forEach(x=>{
+ const c=`<a class="card" style="--u:${x[5]}" href="${x[4]}"><div class="wk">WEEK ${x[0]}</div><div class="ic">${x[1]}</div><h3>${x[2]}</h3><div class="sk">📖 ${x[3]}</div></a>`;
+ document.getElementById(x[6]).insertAdjacentHTML('beforeend',c);
+});
+</script>
+</body></html>

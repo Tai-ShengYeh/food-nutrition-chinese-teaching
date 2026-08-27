@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>食品營養華語文獻閱讀與寫作 — 全年 36 週課程地圖</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap');
+:root{--bg:#0A1622;--card:#13263B;--card2:#0E1E30;--green:#34D399;--blue:#00C6FF;--gold:#FFD700;--acc:#FF4D8D;--txt:#ECEEF2;--muted:#8AA3BF;--bdr:rgba(255,255,255,.12);}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans TC','Microsoft JhengHei',sans-serif;color:var(--txt);line-height:1.7;
+  background:radial-gradient(1100px 700px at 75% -10%,rgba(52,211,153,.12),transparent 60%),
+             radial-gradient(1000px 700px at -5% 25%,rgba(0,198,255,.12),transparent 55%),var(--bg);}
+.wrap{max-width:1140px;margin:0 auto;padding:0 22px;}
+.hero{padding:64px 0 26px;}
+.kicker{display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.18em;color:var(--green);background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);padding:5px 14px;border-radius:20px;margin-bottom:18px;}
+.hero h1{font-family:'Noto Serif TC',serif;font-weight:900;font-size:clamp(30px,4.8vw,52px);line-height:1.15;margin-bottom:14px;}
+.hero h1 .g{background:linear-gradient(120deg,var(--green),var(--blue) 60%,var(--acc));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.lead{font-size:clamp(15px,1.7vw,18px);color:#BDD0E2;max-width:780px;margin-bottom:30px;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
+.stat{background:linear-gradient(160deg,var(--card),var(--card2));border:1px solid var(--bdr);border-radius:14px;padding:18px 20px;}
+.stat .n{font-family:'Noto Serif TC',serif;font-weight:900;font-size:clamp(26px,3.4vw,40px);line-height:1;}
+.stat .l{font-size:13px;color:var(--muted);margin-top:7px;}
+.stat.a .n{color:var(--green);}.stat.b .n{color:var(--blue);}.stat.c .n{color:var(--gold);}.stat.d .n{color:var(--acc);}
+.sems{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding:24px 0 40px;}
+.sem{display:block;text-decoration:none;color:inherit;border-radius:18px;padding:28px;position:relative;overflow:hidden;border:1px solid var(--bdr);transition:transform .16s,box-shadow .16s;}
+.sem:hover{transform:translateY(-5px);box-shadow:0 22px 50px -22px rgba(0,0,0,.8);}
+.sem.s1{background:linear-gradient(165deg,#13362A,#0E2A20);border-color:rgba(52,211,153,.35);}
+.sem.s2{background:linear-gradient(165deg,#1A3050,#102038);border-color:rgba(0,198,255,.35);}
+.sem .badge{font-size:12px;font-weight:700;letter-spacing:.12em;padding:4px 12px;border-radius:16px;display:inline-block;margin-bottom:14px;}
+.sem.s1 .badge{background:rgba(52,211,153,.16);color:var(--green);}
+.sem.s2 .badge{background:rgba(0,198,255,.16);color:var(--blue);}
+.sem h2{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:900;margin-bottom:6px;}
+.sem .level{font-size:14px;color:var(--muted);margin-bottom:16px;}
+.sem ul{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:18px;}
+.sem li{font-size:14px;color:#CBDCEC;padding-left:22px;position:relative;}
+.sem li::before{content:'▸';position:absolute;left:2px;}
+.sem.s1 li::before{color:var(--green);}.sem.s2 li::before{color:var(--blue);}
+.sem .go{display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:14px;}
+.sem.s1 .go{color:var(--green);}.sem.s2 .go{color:var(--blue);}
+.arc{display:flex;align-items:center;gap:10px;justify-content:center;margin:6px 0 8px;flex-wrap:wrap;}
+.arc .node{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:600;}
+.arc .ar{color:var(--muted);}
+.sec{padding:30px 0;}
+.sec h3{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:900;margin-bottom:8px;}
+.sec .sub{color:var(--muted);font-size:14px;margin-bottom:20px;}
+.feat{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.fc{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:18px;}
+.fc .i{font-size:24px;margin-bottom:9px;}
+.fc h4{font-size:15px;font-weight:700;margin-bottom:6px;}
+.fc p{font-size:13px;color:var(--muted);}
+.bonus{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;}
+.bonus a{text-decoration:none;font-size:13.5px;font-weight:600;color:#CBDCEC;background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:10px 14px;transition:.15s;}
+.bonus a:hover{border-color:var(--green);color:var(--green);}
+footer{border-top:1px solid var(--bdr);margin-top:24px;padding:26px 0;color:var(--muted);font-size:13px;text-align:center;}
+@media(max-width:820px){.sems{grid-template-columns:1fr;}.stats{grid-template-columns:repeat(2,1fr);}.feat{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <span class="kicker">明年度全年課程規劃 ｜ 越南四技班 ｜ 葉泰聖</span>
+    <h1>食品營養華語文獻閱讀與寫作<br><span class="g">全年 36 週課程地圖</span></h1>
+    <p class="lead">兩學期、共 36 週（每週 2 小時），以「食力 foodNEXT」食品營養文章為素材，為已通過 A2 的越南學生設計。上學期（寫作 I）打基礎，下學期（寫作 II）進階到評論與文獻綜述；全程繁體中文、含越南文詞彙對照、互動遊戲與 Edcafe 自動批改。</p>
+    <div class="stats">
+      <div class="stat a"><div class="n">36</div><div class="l">全年週數（2 學期）</div></div>
+      <div class="stat b"><div class="n">72</div><div class="l">總上課時數（每週 2hr）</div></div>
+      <div class="stat c"><div class="n">8</div><div class="l">主題單元</div></div>
+      <div class="stat d"><div class="n">A2→B1</div><div class="l">CEFR 程度進程</div></div>
+    </div>
+  </section>
+
+  <section class="sems">
+    <a class="sem s1" href="semester1_寫作I.html">
+      <span class="badge">上學期 ｜ 寫作 I ｜ A2 基礎</span>
+      <h2>🌱 文獻閱讀與寫作 I</h2>
+      <div class="level">走進食品營養華語：從詞到句到段</div>
+      <ul>
+        <li>單元一　走進食品營養華語（W1–4）</li>
+        <li>單元二　吃出營養與健康（W5–8）</li>
+        <li>單元三　食品的處理與安全（W10–13）</li>
+        <li>單元四　飲食文化與健康選擇（W14–17）</li>
+      </ul>
+      <div class="arc"><span class="node">詞彙造句</span><span class="ar">→</span><span class="node">主題句</span><span class="ar">→</span><span class="node">80–100 字短段</span></div>
+      <span class="go">查看 18 週地圖 →</span>
+    </a>
+
+    <a class="sem s2" href="semester2_寫作II.html">
+      <span class="badge">下學期 ｜ 寫作 II ｜ A2→B1 進階</span>
+      <h2>🍱 文獻閱讀與寫作 II</h2>
+      <div class="level">從文獻結構到評論與文獻綜述（優化版）</div>
+      <ul>
+        <li>單元一　食品加工的科學（W1–4）</li>
+        <li>單元二　營養與健康生活（W5–8）</li>
+        <li>單元三　未來食品與永續（W10–13）</li>
+        <li>單元四　AI 與食品科技（W14–17）</li>
+      </ul>
+      <div class="arc"><span class="node">150 字摘要</span><span class="ar">→</span><span class="node">300 字建議</span><span class="ar">→</span><span class="node">文獻綜述</span></div>
+      <span class="go">查看 18 週地圖 →</span>
+    </a>
+  </section>
+
+  <section class="sec">
+    <h3>全年共同設計特色</h3>
+    <p class="sub">兩學期共用同一套教學骨架，確保銜接順暢、評量一致。</p>
+    <div class="feat">
+      <div class="fc"><div class="i">🇻🇳</div><h4>越南學生取向</h4><p>核心詞彙附拼音與越南文對照，課文加注音，並設台越飲食比較主題。</p></div>
+      <div class="fc"><div class="i">🎮</div><h4>互動教學遊戲</h4><p>每課含詞義配對、是非、句子重組、情境決策、填空等遊戲，連 Supabase/Firebase 記錄。</p></div>
+      <div class="fc"><div class="i">🪜</div><h4>寫作鷹架</h4><p>每週寫作任務都拆成 3 步驟鷹架，從詞句到整篇逐步搭建。</p></div>
+      <div class="fc"><div class="i">🤖</div><h4>Edcafe 自動批改</h4><p>作文依五大面向（內容、科學、結構、語言、思辨，各 20 分）即時回饋。</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h3>已部署線上互動教材（下學期）</h3>
+    <p class="sub">這些課已上線，可直接投影或讓學生用手機操作。</p>
+    <div class="bonus">
+      <a href="https://tai-shengyeh.github.io/food-nutrition-chinese-teaching/" target="_blank" rel="noopener">🌐 教學工具總入口 ↗</a>
+      <a href="https://tai-shengyeh.github.io/cultivated-eel-lesson/" target="_blank" rel="noopener">🐟 培植肉／人造鰻魚 ↗</a>
+      <a href="https://tai-shengyeh.github.io/cocoa-free-chocolate-lesson/" target="_blank" rel="noopener">🍫 無可可巧克力 ↗</a>
+      <a href="https://tai-shengyeh.github.io/glp1-chinese-class/" target="_blank" rel="noopener">💉 GLP-1 課程 ↗</a>
+      <a href="../new_semester_II/index.html">🤖🌱 本機互動課：AI 智慧飲食 ／ ESG 永續低碳</a>
+      <a href="semester1_平台搭配指南.html">🎮 上學期五大平臺搭配指南（Kahoot・Wayground・WordWall・Gimkit・Edcafe）</a>
+      <a href="semester1_Edcafe批改包.html">🤖 上學期 Edcafe 作文批改包（教師專用，16 週一鍵複製）</a>
+    </div>
+  </section>
+</div>
+
+<footer>食品營養華語文獻閱讀與寫作 ｜ 全年 36 週 ｜ 美和科技大學 ｜ 授課教師：葉泰聖 ｜ 素材：食力 foodNEXT ｜ 繁體中文（台灣用語）</footer>
+</body>
+</html>

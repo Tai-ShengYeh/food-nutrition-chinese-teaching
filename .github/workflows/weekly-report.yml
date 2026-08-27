@@ -1,0 +1,30 @@
+# 每週五台北 16:00 產生「食品營養華語 寫作 I」學習週報並 commit 進 repo。
+# 查詢本身兼作 Supabase keepalive（取代原本沒設定成功的 Windows 排程）。
+# 手動觸發：Actions 頁面 → Weekly Learning Report → Run workflow
+name: Weekly Learning Report
+
+on:
+  schedule:
+    - cron: '0 8 * * 5' # UTC 08:00 週五 = 台北 16:00
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Generate report (doubles as Supabase keepalive)
+        run: node scripts/weekly_report.mjs
+      - name: Commit report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/
+          git diff --cached --quiet || git commit -m "chore: weekly learning report $(date -u +%F)"
+          git push

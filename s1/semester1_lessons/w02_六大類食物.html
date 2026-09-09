@@ -86,4 +86,105 @@ const WEEK={
 };
 </script>
 <script src='lesson_engine.js'></script>
+
+<script>
+/* Week 2: original SVG learning aids, usable offline. */
+(function () {
+  const read = document.getElementById('readBody');
+  if (!read) return;
+  const css = document.createElement('style');
+  css.textContent = `
+    .w2-panel{margin:24px 0;padding:24px;background:#f0f8f4;border:1px solid #b9d8c7;border-radius:20px;line-height:1.65}
+    .w2-panel h3{margin:0 0 10px;color:#19533c;font-size:1.25rem}
+    .w2-panel p{font-size:1rem;margin:8px 0}
+    .w2-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0}
+    .w2-card{padding:18px;background:white;border:1px solid #d7e6dd;border-top:5px solid var(--food-color);border-radius:14px;min-width:0}
+    .w2-card h4{margin:8px 0;color:#243c30;font-size:1.1rem}
+    .w2-art{display:block;width:100%;height:128px}
+    .w2-small{font-size:.88rem!important;color:#526258}
+    .w2-prompt{padding:16px;border-radius:12px;background:white;margin:14px 0;border:1px solid #cdded3}
+    .w2-prompt .w2-art{max-width:200px;margin:auto}
+    .w2-options{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+    .w2-options button{font:inherit;background:white;color:#254b36;border:2px solid #81aa92;padding:10px 16px;border-radius:10px;cursor:pointer}
+    .w2-options button[aria-pressed="true"]{background:#dcf0e3;border-color:#256740}
+    .w2-options button:focus-visible,.w2-panel summary:focus-visible{outline:3px solid #2563eb;outline-offset:3px}
+    .w2-feedback{min-height:2em;font-weight:bold}
+    .w2-road{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .w2-road li{background:white;padding:16px;border:1px solid #d7e6dd;border-radius:12px}
+    .w2-road b{display:block;color:#19533c;font-size:1.1rem}
+    .w2-icon{font-size:2rem;display:block}
+    .w2-panel summary{cursor:pointer;font-weight:bold;padding:10px 0;color:#19533c}
+    @media(max-width:700px){.w2-grid,.w2-road{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:440px){.w2-grid,.w2-road{grid-template-columns:1fr}.w2-panel{padding:16px}}
+  `;
+  document.head.appendChild(css);
+  const drawings = [
+    '<ellipse cx="92" cy="80" rx="62" ry="19" fill="#f4ead2"/><path d="M30 78Q40 125 92 125Q145 125 155 78Z" fill="#d3e7e6" stroke="#557875" stroke-width="3"/><path d="M44 75Q50 36 91 44Q129 34 141 76" fill="#dfc59e" stroke="#ab8857" stroke-width="2"/><path d="m66 57 5 5m15-10 5 5m12 0 5 5m-33 7 5 5m27-6 5 5" stroke="#fff6dd" stroke-width="4" stroke-linecap="round"/><ellipse cx="170" cy="95" rx="28" ry="15" transform="rotate(-30 170 95)" fill="#b66674" stroke="#874c57" stroke-width="2"/>',
+    '<path d="M93 114 75 58h21l9 30 12-36 14 9-20 53Z" fill="#84ae64"/><g fill="#4c9259" stroke="#326b42" stroke-width="2"><circle cx="73" cy="47" r="24"/><circle cx="101" cy="33" r="27"/><circle cx="130" cy="48" r="26"/><circle cx="97" cy="63" r="25"/></g><path d="M151 65Q199 53 178 115Q148 95 151 65" fill="#67a65e" stroke="#326b42" stroke-width="2"/><path d="m164 76 12 29" stroke="#d0e6a3" stroke-width="3"/>',
+    '<path d="M65 50C25 29 18 102 57 116Q74 108 86 116C123 99 113 27 75 49Z" fill="#e66a5e" stroke="#a9413a" stroke-width="2"/><path d="m70 51 5-28" stroke="#755739" stroke-width="6"/><path d="M77 34Q90 12 109 25Q100 44 77 34" fill="#629a58"/><circle cx="160" cy="83" r="36" fill="#f2a942" stroke="#be7b24" stroke-width="2"/><path d="M150 47q10-17 22-5" fill="none" stroke="#5e8954" stroke-width="5"/>',
+    '<path d="M28 70Q68 19 122 70Q69 121 28 70Z" fill="#81b6c4" stroke="#3c7989" stroke-width="3"/><path d="m118 70 24-26v50Z" fill="#81b6c4" stroke="#3c7989" stroke-width="3"/><circle cx="49" cy="65" r="4" fill="#234e5b"/><path d="M68 48q-16 24 0 44" fill="none" stroke="#3c7989" stroke-width="2"/><ellipse cx="170" cy="88" rx="24" ry="33" fill="#f9e7ca" stroke="#b7986c" stroke-width="2"/>',
+    '<path d="M48 30h43l12 19v70H37V49Z" fill="#f7fcff" stroke="#638d9d" stroke-width="3"/><path d="M48 30v-9h43v9M37 49h66" fill="none" stroke="#638d9d" stroke-width="3"/><path d="M39 70h62v29H39" fill="#afdae7"/><path d="M135 72h57l-9 47h-39Z" fill="#fffdf4" stroke="#728c8b" stroke-width="3"/><ellipse cx="163" cy="72" rx="31" ry="7" fill="#e7cadc" stroke="#728c8b" stroke-width="2"/><path d="m170 63 17-34" stroke="#849d9d" stroke-width="5"/>',
+    '<path d="M60 17h23v22l16 16v64H44V55l16-16Z" fill="#f7db7c" stroke="#9b7f34" stroke-width="3"/><path d="M60 15h23v12H60Z" fill="#788c55"/><rect x="51" y="70" width="41" height="28" rx="5" fill="#fff4c5"/><g fill="#bb8756" stroke="#845733" stroke-width="2"><ellipse cx="149" cy="90" rx="12" ry="24" transform="rotate(-28 149 90)"/><ellipse cx="176" cy="96" rx="11" ry="23" transform="rotate(25 176 96)"/></g><path d="m140 73 17 33m27-30-16 37" stroke="#e5bc88" stroke-width="2"/>'
+  ];
+  const groups = ['全穀雜糧類','蔬菜類','水果類','豆魚蛋肉類','乳品類','油脂與堅果種子類'];
+  const foods = ['糙米飯、地瓜','青花菜、青江菜','蘋果、橘子','魚、雞蛋','牛奶、原味優格','食用油、杏仁'];
+  const colors = ['#c69444','#579563','#e47e57','#6197ab','#73b6c3','#b39a45'];
+  function art(i) {
+    return '<svg class="w2-art" viewBox="0 0 220 140" role="img" aria-label="' + foods[i] + '的教學插圖">' + drawings[i] + '</svg>';
+  }
+  let cards = '';
+  groups.forEach((name, i) => {
+    cards += '<article class="w2-card" style="--food-color:' + colors[i] + '">' + art(i) + '<h4>' + (i+1) + ' · ' + name + '</h4><p>' + foods[i] + '</p></article>';
+  });
+  const heads = read.querySelectorAll('h3.rsub');
+  heads[1].insertAdjacentHTML('beforebegin', `
+    <figure class="w2-panel" id="w2-food-map">
+      <h3>看圖認識：六大類食物</h3>
+      <p>先看食物，再念類別。指一張圖，說：「＿＿是＿＿類。」</p>
+      <div class="w2-grid">${cards}</div>
+      <figcaption class="w2-small">每張圖只列舉部分食物。這是分類示意，不是每餐的份量或比例；六格一樣大，不表示六類要吃一樣多。</figcaption>
+      <p class="w2-small">課文的「油脂」完整類名為「油脂與堅果種子類」。分類依據：<a href="https://www.hpa.gov.tw/Pages/EBook.aspx?nodeid=1208" target="_blank" rel="noopener">國健署《每日飲食指南手冊》</a>。</p>
+      <details><summary>念一念：牛奶和優格屬於哪一類？</summary><p>牛奶和優格都是乳品類。<br>換你說：＿＿和＿＿都是＿＿類。</p></details>
+    </figure>
+  `);
+  read.insertAdjacentHTML('afterend', `
+    <aside class="w2-panel" id="w2-research-map">
+      <h3>找關鍵詞：讀研究的四個問題</h3>
+      <p>照箭頭順序回課文找線索，再用手指出找到的詞。</p>
+      <ol class="w2-road">
+        <li><span class="w2-icon" aria-hidden="true">🔎</span><b>1 · 誰做研究？ →</b><p>找國家或研究者。</p></li>
+        <li><span class="w2-icon" aria-hidden="true">👥</span><b>2 · 多少人？ →</b><p>找「數字＋人」。</p></li>
+        <li><span class="w2-icon" aria-hidden="true">📅</span><b>3 · 做了多久？ →</b><p>找「數字＋週」。</p></li>
+        <li><span class="w2-icon" aria-hidden="true">📝</span><b>4 · 發現什麼？</b><p>找「結果」「明顯」。</p></li>
+      </ol>
+      <p class="w2-small">讀結果時，要一起看參加的人和研究時間。「沒有明顯變重」不等於「每個人都完全沒變」，也不能推成「所有人都可以無限量喝」。</p>
+    </aside>
+    <section class="w2-panel" id="w2-picture-practice" aria-labelledby="w2-practice-title">
+      <h3 id="w2-practice-title">看圖分類，再說一句話</h3>
+      <p>共三題，可重試。這是暖身練習，不計入原本五個遊戲的總分。</p>
+    </section>
+  `);
+  const practice = document.getElementById('w2-picture-practice');
+  const tasks = [
+    [4, [3,4,5], '牛奶和優格都是乳品類。'],
+    [0, [0,1,2], '糙米飯和地瓜都是全穀雜糧類。地瓜不是蔬菜類。'],
+    [5, [2,3,5], '食用油和杏仁都是油脂與堅果種子類。']
+  ];
+  tasks.forEach((task, n) => {
+    const box = document.createElement('div');
+    box.className = 'w2-prompt';
+    box.innerHTML = art(task[0]) + '<p><strong>' + (n+1) + ' · 圖中的' + foods[task[0]] + '屬於哪一類？</strong></p><div class="w2-options" role="group" aria-label="第' + (n+1) + '題選項">' + task[1].map(i => '<button type="button" data-group="' + i + '" aria-pressed="false">' + groups[i] + '</button>').join('') + '</div><p class="w2-feedback" role="status" aria-live="polite">選一個類別。</p>';
+    box.querySelectorAll('button').forEach(button => {
+      button.addEventListener('click', () => {
+        box.querySelectorAll('button').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+        box.querySelector('.w2-feedback').textContent = Number(button.dataset.group) === task[0]
+          ? '答對了！' + task[2] + '請把這句話念一次。'
+          : '再試一次：回到六大類圖卡，找到「' + foods[task[0]] + '」，再看類別名稱。';
+      });
+    });
+    practice.appendChild(box);
+  });
+})();
+</script>
+
 </body></html>

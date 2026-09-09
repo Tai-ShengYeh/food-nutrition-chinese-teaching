@@ -78,4 +78,83 @@ g4:[
 };
 </script>
 <script src='lesson_engine.js'></script>
+
+<script>
+/* Week 1 visual scaffolds; independent of the shared lesson engine. */
+(function () {
+  const host = document.getElementById('readBody');
+  if (!host) return;
+  const style = document.createElement('style');
+  style.textContent = `
+    .w1-visual{margin:24px 0;padding:22px;border:1px solid #b8dacc;border-radius:18px;background:#f2faf6;line-height:1.6}
+    .w1-visual h3{font-size:1.15rem;color:#15553e;margin:0 0 8px}
+    .w1-visual p{font-size:1rem;margin:8px 0}
+    .w1-steps,.w1-sugars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0}
+    .w1-tile{padding:16px;background:white;border:1px solid #d3e5dc;border-radius:14px;min-width:0}
+    .w1-tile strong{display:block;color:#164b39}
+    .w1-tile svg{width:100%;height:130px;display:block}
+    .w1-number{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#176b4a;color:white;font-weight:bold;margin-bottom:8px}
+    .w1-small{font-size:.88rem!important;color:#52665b}
+    .w1-options{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+    .w1-options button{background:white;color:#164b39;border:2px solid #6a9d83;border-radius:12px;padding:12px 20px;cursor:pointer;font:inherit}
+    .w1-options button:focus-visible,.w1-visual summary:focus-visible{outline:3px solid #2563eb;outline-offset:3px}
+    .w1-options button[aria-pressed="true"]{background:#d9eee2;border-color:#15553e}
+    .w1-feedback{min-height:3em;font-weight:bold}
+    .w1-visual summary{cursor:pointer;font-weight:bold;color:#15553e;padding:10px 0}
+    @media(max-width:620px){.w1-steps,.w1-sugars{grid-template-columns:1fr}.w1-visual{padding:16px}.w1-tile svg{height:110px}}
+  `;
+  document.head.appendChild(style);
+  const paper = '<svg viewBox="0 0 220 130" aria-hidden="true"><rect x="55" y="7" width="110" height="116" rx="8" fill="#fff" stroke="#527d68" stroke-width="3"/><rect x="70" y="24" width="80" height="14" rx="3" fill="#8fd7b0"/><path d="M70 55h80M70 70h65M70 85h80M70 100h50" stroke="#a1b9ac" stroke-width="5" stroke-linecap="round"/></svg>';
+  host.insertAdjacentHTML('beforebegin', `
+    <aside class="w1-visual" id="w1-reading-map" aria-labelledby="w1-map-title">
+      <h3 id="w1-map-title">先看圖：讀文章的三個地方</h3>
+      <p>先從左到右看；手機版從上到下看。每一步，問自己一個問題。</p>
+      <div class="w1-steps">
+        <div class="w1-tile"><span class="w1-number">1</span><strong>標題 → 找問題</strong>${paper}<p>「一樣是砂糖，差在哪？」</p><p class="w1-small">我猜：可能是大小不一樣。</p></div>
+        <div class="w1-tile"><span class="w1-number">2</span><strong>小標題 → 找重點</strong><svg viewBox="0 0 220 130" aria-hidden="true"><rect x="45" y="8" width="130" height="114" rx="8" fill="white" stroke="#527d68" stroke-width="3"/><path d="M60 33h75M60 65h75M60 97h75" stroke="#e7b55d" stroke-width="10"/><path d="M60 46h95M60 78h95M60 110h95" stroke="#a1b9ac" stroke-width="4"/></svg><p>「三種糖，三種用法」</p><p class="w1-small">這一段在說：糖怎麼用。</p></div>
+        <div class="w1-tile"><span class="w1-number">3</span><strong>最後一段 → 回想全文</strong><svg viewBox="0 0 220 130" aria-hidden="true"><path d="M40 15h140v80H95l-30 23V95H40Z" fill="#e4f2eb" stroke="#527d68" stroke-width="3"/><path d="m80 55 20 20 40-40" fill="none" stroke="#258358" stroke-width="8" stroke-linecap="round"/></svg><p>文章回答標題的問題了嗎？</p><p class="w1-small">把答案用自己的話說一次。</p></div>
+      </div>
+      <p class="w1-small">先猜沒有關係。讀完課文，再確認你的猜測。</p>
+    </aside>
+  `);
+  function bowl(fill, size, label) {
+    let grains = '';
+    for (let i = 0; i < 26; i++) {
+      const x = 55 + (i * 31 % 112);
+      const y = 35 + (i * 17 % 40);
+      grains += '<rect x="' + x + '" y="' + y + '" width="' + size + '" height="' + size + '" rx="1" fill="' + fill + '" stroke="#8b806b" stroke-width="0.8"/>';
+    }
+    return '<svg viewBox="0 0 220 130" role="img" aria-label="' + label + '"><ellipse cx="110" cy="72" rx="78" ry="24" fill="#e7ede8"/>' + grains + '<path d="M30 74Q40 120 110 120Q180 120 190 74Q110 107 30 74Z" fill="#e0ece5" stroke="#688875" stroke-width="2"/></svg>';
+  }
+  const heads = host.querySelectorAll('h3.rsub');
+  heads[3].insertAdjacentHTML('beforebegin', `
+    <figure class="w1-visual" id="w1-sugar-picture">
+      <h3>一眼比較：三種砂糖</h3>
+      <p>先看顆粒和顏色，再讀下面的名字。用手指出「比較大」「比較小」「顏色比較深」。</p>
+      <div class="w1-sugars">
+        <div class="w1-tile">${bowl('#fffdf5', 9, '特砂示意：白色，顆粒比細砂大')}<strong>特砂</strong><p>白色 · 顆粒比較大</p><p class="w1-small">和細砂比：哪個比較大？</p></div>
+        <div class="w1-tile">${bowl('#fffdf5', 4, '細砂示意：白色，顆粒比特砂小')}<strong>細砂</strong><p>白色 · 顆粒比較小</p><p class="w1-small">課文例子：煮菜、咖啡</p></div>
+        <div class="w1-tile">${bowl('#c18a39', 8, '二砂示意：黃褐色，顏色比較深')}<strong>二砂</strong><p>黃褐色 · 顏色比較深</p><p class="w1-small">課文例子：甜湯、滷肉</p></div>
+      </div>
+      <figcaption class="w1-small">教學示意圖，非實物照片；顆粒大小與顏色不代表實際比例或產品規格。味道要從課文找，不能只看圖判斷。</figcaption>
+      <div role="group" aria-labelledby="w1-question">
+        <p id="w1-question"><strong>看圖找答案：哪一種糖的顏色比較深？</strong></p>
+        <div class="w1-options"><button type="button" data-sugar="特砂" aria-pressed="false">特砂</button><button type="button" data-sugar="細砂" aria-pressed="false">細砂</button><button type="button" data-sugar="二砂" aria-pressed="false">二砂</button></div>
+        <p class="w1-feedback" role="status" aria-live="polite">選一個答案，看看你的觀察。</p>
+      </div>
+      <details><summary>再想一想：只看圖片，知道哪一種有甘蔗的味道嗎？</summary><p>不知道。圖片能幫我們比較顏色和大小；味道要回到課文找。課文說二砂留有一點甘蔗的味道。</p></details>
+      <details><summary>看圖說一句話：我會怎麼比較？</summary><p>「特砂的顆粒比細砂大。」<br>「二砂的顏色比較深。」<br>換你說：「我用＿＿做＿＿。」</p></details>
+    </figure>
+  `);
+  document.querySelectorAll('[data-sugar]').forEach(button => {
+    button.addEventListener('click', () => {
+      document.querySelectorAll('[data-sugar]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      document.querySelector('.w1-feedback').textContent = button.dataset.sugar === '二砂'
+        ? '答對了！二砂是黃褐色，比白色的特砂、細砂深。請把這句話說一次。'
+        : '再看一次：你選的是白色的糖。找找黃褐色的那一碗，再試一次。';
+    });
+  });
+})();
+</script>
+
 </body></html>

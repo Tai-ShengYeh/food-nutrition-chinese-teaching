@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>食品營養華語文獻閱讀｜互動教學工具 W10–W16</title>
+<title>食品營養華語文獻閱讀｜上下學期教材入口</title>
 <style>
 :root{
   --accent:#6d28d9;--bg:#f5f3ff;--card:#fff;--border:#ddd6fe;
@@ -52,6 +52,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:#1e2
   color:#94a3b8;margin-bottom:12px}
 
 footer{text-align:center;font-size:.75rem;color:#94a3b8;margin-top:36px;padding-bottom:20px}
+
+.semester-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.semester-card{padding:26px}
+.semester-card h3{font-size:1.25rem;margin:6px 0 12px}
+.semester-card p{font-size:.95rem;color:#475569}
+.semester-cta{display:block;margin-top:20px;font-weight:700}
+.card:focus-visible{outline:3px solid #2563eb;outline-offset:4px}
+@media(max-width:600px){.semester-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -59,10 +67,36 @@ footer{text-align:center;font-size:.75rem;color:#94a3b8;margin-top:36px;padding-
 <div class="hero">
   <h1>食品營養華語文獻閱讀</h1>
   <p>Food Nutrition Academic Chinese Reading｜A2–B1 Interactive Teaching Materials</p>
-  <p class="hero-meta">Spring 2026 ｜ 越南四技班 ｜ Tai-Sheng Yeh ｜ 期中考後 W10–W16</p>
+  <p class="hero-meta">上下學期教材入口 ｜ 越南四技班 ｜ Tai-Sheng Yeh</p>
 </div>
 
 <div class="page">
+
+<nav id="semester-entry" aria-labelledby="semester-heading">
+  <h2 id="semester-heading" style="font-size:1.35rem;margin-bottom:8px">選擇學期</h2>
+  <p style="color:#475569;margin-bottom:18px">從閱讀基礎到食品議題討論，選擇你的課程開始學習。</p>
+  <div class="grid semester-grid">
+    <a class="card semester-card" href="s1/semester1_lessons/" style="border-top-color:#059669">
+      <span class="tag" style="background:#dcfce7;color:#166534">上學期 · 寫作 I</span>
+      <h3>🌱 閱讀與寫作基礎</h3>
+      <p>16 週互動課程：課文、生詞、拼音與越南文、五種遊戲及寫作練習。</p>
+      <span class="semester-cta" style="color:#047857">進入上學期教材 →</span>
+    </a>
+    <a class="card semester-card" href="#semester2" style="border-top-color:#7c3aed">
+      <span class="tag" style="background:#ede9fe;color:#5b21b6">下學期 · 寫作 II</span>
+      <h3>🍱 食品議題閱讀與應用</h3>
+      <p>2026 春季教材：W10–W16 主題投影片、互動遊戲與期末複習。</p>
+      <span class="semester-cta" style="color:#6d28d9">瀏覽下學期教材 ↓</span>
+    </a>
+  </div>
+</nav>
+<hr class="divider">
+<div id="semester2" tabindex="-1" style="scroll-margin-top:24px;margin-bottom:24px">
+  <h2 style="font-size:1.35rem">下學期 · 寫作 II</h2>
+  <p style="color:#475569">2026 春季 ｜ 期中考後 W10–W16 與期末複習</p>
+  <a href="#semester-entry" style="display:inline-block;margin-top:8px;color:#6d28d9">↑ 返回學期入口</a>
+</div>
+
 
 <!-- ── W10 ── -->
 <div class="week-section">

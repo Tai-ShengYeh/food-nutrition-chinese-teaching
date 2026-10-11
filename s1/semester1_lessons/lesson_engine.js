@@ -27,6 +27,10 @@
   .nav .wrap{display:flex;gap:6px;overflow-x:auto;padding:10px 18px;}
   .nav a{white-space:nowrap;text-decoration:none;color:var(--brown);font-weight:700;font-size:.84rem;padding:7px 12px;border-radius:18px;border:1px solid var(--line);background:#fff;transition:.15s;}
   .nav a:hover{border-color:var(--brand);color:var(--brand);}
+  .vid{position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000;margin-top:10px;}
+  .vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .vid-link{margin-top:8px;font-size:.84rem;text-align:right;}
+  .vid-link a{color:var(--brand);font-weight:700;text-decoration:none;}
   .score-strip{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 18px;margin:18px 0;box-shadow:0 2px 8px rgba(0,0,0,.04);flex-wrap:wrap;}
   .score-strip b{font-size:1.02rem;}
   .stars{font-size:1.2rem;letter-spacing:2px;color:var(--gold);}
@@ -163,6 +167,7 @@
   </div></div>
   <div class="nav"><div class="wrap">
     ${W.review&&W.review.length?'<a href="#review">🔄 複習</a>':''}
+    ${W.video?'<a href="#video">🎬 動畫</a>':''}
     <a href="#read">📖 課文</a><a href="#vocab">🔑 詞彙</a><a href="#g1">🎮 配對</a>
     <a href="#g2">✅ 是非</a><a href="#g3">🧩 重組</a><a href="#g4">🧠 情境</a>
     <a href="#g5">✏️ 填空</a><a href="#write">✍️ 寫作</a><a href="#edcafe">🤖 Edcafe</a>
@@ -179,6 +184,12 @@
     ${W.review&&W.review.length?`<section id="review"><h2>🔄 上週複習</h2>
       <p class="lead">開始新課之前，先回想上週學過的。點選答案馬上知道對不對，不算分。</p>
       <div id="revHost"></div>
+    </section>`:''}
+
+    ${W.video?`<section id="video"><h2>🎬 教學動畫 · ${esc(W.video.title||W.theme)}</h2>
+      <p class="lead">${esc(W.video.note||'先看動畫，再讀課文。可以按 ⚙️ 調慢速度，或打開字幕（CC）選越南文翻譯。')}</p>
+      <div class="vid"><iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(W.video.yt)}?rel=0&cc_lang_pref=zh-TW" title="${esc(W.video.title||W.theme)}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+      <p class="vid-link"><a href="https://youtu.be/${encodeURIComponent(W.video.yt)}" target="_blank" rel="noopener">在 YouTube 開啟 ↗</a></p>
     </section>`:''}
 
     <section id="read"><h2>📖 課文 · ${esc(W.readingTitle||W.theme)}</h2>

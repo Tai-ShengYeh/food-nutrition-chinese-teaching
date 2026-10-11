@@ -87,6 +87,10 @@
   .opt.wrong{border-color:var(--red);background:#FFE5E7;color:var(--red);}
   .exp{font-size:.88rem;color:var(--brown);margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);display:none;}
   .exp.show{display:block;}
+  .lvh{font-weight:900;font-size:.98rem;color:${shade(ACC,-34)};margin:18px 0 10px;}
+  .lvh:first-child{margin-top:0;}
+  .lvh small{font-weight:500;color:var(--mut);margin-left:6px;}
+  .q .stem .lv{display:inline-block;font-size:.72rem;font-weight:700;color:${shade(ACC,-34)};background:${tint(ACC)};border:1px solid ${tint(ACC,true)};border-radius:10px;padding:1px 8px;margin-right:6px;vertical-align:2px;}
   .pool,.answer{display:flex;flex-wrap:wrap;gap:8px;min-height:54px;border:2px dashed var(--line);border-radius:10px;padding:12px;margin-bottom:10px;}
   .answer{border-style:solid;background:#FCFEF8;}
   .tok{background:#fff;border:2px solid var(--brand);color:${shade(ACC,-34)};border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:1rem;}
@@ -169,7 +173,7 @@
     ${W.review&&W.review.length?'<a href="#review">🔄 複習</a>':''}
     ${W.video?'<a href="#video">🎬 動畫</a>':''}
     <a href="#read">📖 課文</a><a href="#vocab">🔑 詞彙</a><a href="#g1">🎮 配對</a>
-    <a href="#g2">✅ 是非</a><a href="#g3">🧩 重組</a><a href="#g4">🧠 情境</a>
+    <a href="#g2">${W.pirls?'🔍 PIRLS':'✅ 是非'}</a><a href="#g3">🧩 重組</a><a href="#g4">🧠 情境</a>
     <a href="#g5">✏️ 填空</a><a href="#write">✍️ 寫作</a><a href="#edcafe">🤖 Edcafe</a>
     <a href="index.html">📚 全部課程</a>
   </div></div>
@@ -212,7 +216,7 @@
       <div class="done" aria-live="polite" id="g1done"><div class="pts">+<span id="g1pts">100</span> 分</div><p>配對完成！</p><button class="btn ghost" id="g1reset">🔄 再玩一次</button></div>
     </section>
 
-    <section id="g2"><h2>✅ 遊戲二 · 是非題</h2><p class="lead">根據課文，判斷對 ✔ 或 錯 ✘。</p>
+    <section id="g2">${W.pirls?'<h2>🔍 遊戲二 · PIRLS 閱讀闖關</h2><p class="lead">四關由易到難：① 找一找 → ② 想一想 → ③ 串起來 → ④ 評一評。全部選完再送出，看解說找證據在課文哪一段。</p>':'<h2>✅ 遊戲二 · 是非題</h2><p class="lead">根據課文，判斷對 ✔ 或 錯 ✘。</p>'}
       <div id="g2host"></div><button class="btn" id="g2btn">送出答案</button>
       <div class="done" aria-live="polite" id="g2done"><div class="pts">+<span id="g2pts">0</span> 分</div><p id="g2msg"></p><button class="btn ghost" id="g2reset">🔄 再玩一次</button></div>
     </section>
@@ -270,7 +274,7 @@
     sbTable:'interactions', course:'vn-chinese-s1',
     nameKey:'vncs1_student_name', anonIdKey:'vncs1_anon_id'
   };
-  const GAME_NAMES={g1:'詞義配對',g2:'是非題',g3:'句子重組',g4:'情境決策',g5:'選詞填空'};
+  const GAME_NAMES={g1:'詞義配對',g2:W.pirls?'PIRLS 閱讀闖關':'是非題',g3:'句子重組',g4:'情境決策',g5:'選詞填空'};
   const pad2=n=>String(n).padStart(2,'0');
   const SESSION_ID='vncs1_w'+pad2(W.week)+'_'+new Date().toISOString().slice(0,10).replace(/-/g,'');
   function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
@@ -458,8 +462,40 @@
     document.getElementById('g1reset').onclick=render;render();
   })();
 
+  /* ---------- G2 PIRLS 閱讀闖關（W.pirls 存在時取代是非題） ----------
+     資料格式：W.pirls=[{l:1~4,s:'題幹',o:['選項…'],a:正解索引,e:'解說＋證據：第N段「…」'},…]
+     l＝PIRLS 理解層次 ①直接提取 ②直接推論 ③詮釋整合 ④比較評估；依層次加權計分（1/1/2/3），仍以 g2 記錄。 */
+  if(W.pirls)(function(){
+    const LV={1:['① 找一找','直接提取：答案寫在課文裡'],2:['② 想一想','直接推論：把前後句連起來'],3:['③ 串起來','詮釋整合：看懂整篇的意思'],4:['④ 評一評','比較評估：判斷作者的說法']};
+    const WT={1:1,2:1,3:2,4:3};
+    const Q=W.pirls.map((q,i)=>({...q,i})).sort((x,y)=>x.l-y.l||x.i-y.i);let picks=[];
+    function render(){
+      picks=Q.map(()=>null);const h=document.getElementById('g2host');h.innerHTML='';
+      document.getElementById('g2done').classList.remove('show');document.getElementById('g2btn').style.display='';
+      let last=0;
+      Q.forEach((q,i)=>{
+        if(q.l!==last){last=q.l;h.insertAdjacentHTML('beforeend',`<div class="lvh">${LV[q.l][0]}<small>${LV[q.l][1]}</small></div>`);}
+        const opts=shuffle(q.o.map((t,k)=>({t,k}))).map(o=>`<div class="opt" role="button" tabindex="0" style="flex:1 1 100%" data-k="${o.k}">${esc(o.t)}</div>`).join('');
+        h.insertAdjacentHTML('beforeend',`<div class="q" id="g2q${i}"><div class="stem"><span class="n">${i+1}</span><span class="lv">${LV[q.l][0]}</span>${esc(q.s)}</div><div class="opts" style="flex-direction:column">${opts}</div><div class="exp">${esc(q.e||'')}</div></div>`);
+        const box=h.lastElementChild;box.querySelectorAll('.opt').forEach(o=>o.onclick=()=>{
+          picks[i]=+o.dataset.k;box.querySelectorAll('.opt').forEach(x=>x.classList.remove('pick'));o.classList.add('pick');});
+      });
+    }
+    document.getElementById('g2btn').onclick=function(){
+      if(picks.includes(null)){alert('還有題目沒作答喔！');return;}
+      let c=0,got=0,max=0;Q.forEach((q,i)=>{const box=document.getElementById('g2q'+i),opts=box.querySelectorAll('.opt');
+        max+=WT[q.l]||1;
+        opts.forEach(o=>o.style.pointerEvents='none');box.querySelector(`.opt[data-k="${q.a}"]`).classList.add('right');
+        if(picks[i]===q.a){c++;got+=WT[q.l]||1;}else box.querySelector(`.opt[data-k="${picks[i]}"]`).classList.add('wrong');box.querySelector('.exp').classList.add('show');});
+      const pts=Math.round(got/max*100);document.getElementById('g2pts').textContent=pts;
+      document.getElementById('g2msg').textContent=`答對 ${c} / ${Q.length} 題（③ 每題 2 分、④ 每題 3 分，越難越值錢）`;
+      this.style.display='none';document.getElementById('g2done').classList.add('show');award('g2',pts);
+    };
+    document.getElementById('g2reset').onclick=render;render();
+  })();
+
   /* ---------- G2 true/false ---------- */
-  (function(){
+  if(!W.pirls)(function(){
     const Q=W.g2;let picks=[];
     function render(){
       picks=Q.map(()=>null);const h=document.getElementById('g2host');h.innerHTML='';

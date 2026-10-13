@@ -1,0 +1,16 @@
+{
+  "week": 11,
+  "slug": "w11",
+  "title": "冷凍與包冰：依序寫流程",
+  "duration": 98.666667,
+  "bytes": 1392853,
+  "sha256": "952a927c5cc124564a6aeb38496a3ddf1a2baa72f34e6a15c371134061463679",
+  "width": 1280,
+  "height": 720,
+  "complete_decode": "passed",
+  "audible_narration_rms": 2580.03,
+  "full_subtitles": 9,
+  "scene_count": 9,
+  "ending_hold": 2.0004538480725813,
+  "speech_alignment": "per-sentence measured WAV durations"
+}

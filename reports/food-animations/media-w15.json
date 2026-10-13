@@ -1,0 +1,16 @@
+{
+  "week": 15,
+  "slug": "w15",
+  "title": "夜市小吃：抓大意，寫五句",
+  "duration": 102.333333,
+  "bytes": 1487785,
+  "sha256": "8410925a5ee2b0a5233da55b1c1375a0ca1a2b7bc37d4f8a4e697b103204a984",
+  "width": 1280,
+  "height": 720,
+  "complete_decode": "passed",
+  "audible_narration_rms": 2417.12,
+  "full_subtitles": 9,
+  "scene_count": 9,
+  "ending_hold": 2.1369157664399125,
+  "speech_alignment": "per-sentence measured WAV durations"
+}

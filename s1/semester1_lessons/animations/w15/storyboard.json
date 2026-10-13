@@ -1,0 +1,116 @@
+{
+  "number": 15,
+  "week": "W15",
+  "title": "夜市小吃：抓大意，寫五句",
+  "key_terms": [
+    "小吃 | xiǎo chī | món ăn vặt",
+    "夜市 | yè shì | chợ đêm",
+    "蚵仔煎 | é zǎi jiān | hàu chiên trứng"
+  ],
+  "sources": [
+    "s1/semester1_lessons/w15_台灣小吃文化.html"
+  ],
+  "reading_skill": "抓段落大意",
+  "writing_goal": "用五句介紹一道夜市小吃（台灣或越南皆可）：名字→材料→做法→味道→推薦誰吃。",
+  "style_reference": "Original YouTube W06 HrXwF8WgQSc / W07 PH1PZgDCTFs / W08 Vb88oe_c1Qs; see reports/food-animations/style-reference.md",
+  "voice": "Microsoft Hanhan Desktop, zh-TW, rate -1",
+  "simplification": "課文概念示意；研究非個人保證；包裝與流程圖非實際產品；語文教學不取代個人營養或食品安全建議",
+  "scenes": [
+    {
+      "speech": "朋友第一次來台灣夜市，你想介紹哪一道小吃？今天先抓段落大意，再做小小導遊。",
+      "focus": "我要介紹哪一道小吃？",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "夜市是晚上營業的市集。看一排攤位，有食物，也有遊戲。每個夜市都有不同特色。",
+      "focus": "段落大意：夜市各有特色",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "課文介紹萬華的三個夜市。讀一段時，不用抄每個店名，先想這段主要在介紹什麼。",
+      "focus": "不是抄全部細節，是抓重點",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "另一段介紹經典小吃。蚵仔煎、胡椒餅、甜不辣，是例子。大意是小吃也有生活故事。",
+      "focus": "大意：小吃記錄生活故事",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "介紹一道菜，可以先畫五欄。名字、材料、做法、味道、推薦對象，每欄寫一個重點。",
+      "focus": "名字／材料／做法／味道／推薦",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "第一句，它叫蚵仔煎。第二句，材料有蚵仔、蛋和青菜。先讓朋友知道你說的是什麼。",
+      "focus": "它叫蚵仔煎。材料有……",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "第三句，用平底鍋煎熟。第四句，吃起來軟軟的，有海鮮的味道。做法和口感要分開。",
+      "focus": "做法：煎熟／口感：軟軟的",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "第五句，喜歡海鮮的朋友可以試試。有食物過敏的朋友，先問清楚材料，再決定吃不吃。",
+      "focus": "推薦也要注意食物過敏",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "換你選台灣或越南的一道小吃，寫五句介紹。先填五欄，再連成句，念給同學聽。",
+      "focus": "任務：五欄變成五句介紹",
+      "illustration": "subject object and writing notebook"
+    }
+  ],
+  "timing": {
+    "speech_seconds": 100.19641723356008,
+    "video_seconds": 102.33333333333333,
+    "cues": [
+      {
+        "start": 0,
+        "end": 10.813333333333333,
+        "text": "朋友第一次來台灣夜市，你想介紹哪一道小吃？今天先抓段落大意，再做小小導遊。"
+      },
+      {
+        "start": 10.813333333333333,
+        "end": 21.838820861678002,
+        "text": "夜市是晚上營業的市集。看一排攤位，有食物，也有遊戲。每個夜市都有不同特色。"
+      },
+      {
+        "start": 21.838820861678002,
+        "end": 32.52140589569161,
+        "text": "課文介紹萬華的三個夜市。讀一段時，不用抄每個店名，先想這段主要在介紹什麼。"
+      },
+      {
+        "start": 32.52140589569161,
+        "end": 44.262902494331065,
+        "text": "另一段介紹經典小吃。蚵仔煎、胡椒餅、甜不辣，是例子。大意是小吃也有生活故事。"
+      },
+      {
+        "start": 44.262902494331065,
+        "end": 54.932108843537414,
+        "text": "介紹一道菜，可以先畫五欄。名字、材料、做法、味道、推薦對象，每欄寫一個重點。"
+      },
+      {
+        "start": 54.932108843537414,
+        "end": 66.82598639455782,
+        "text": "第一句，它叫蚵仔煎。第二句，材料有蚵仔、蛋和青菜。先讓朋友知道你說的是什麼。"
+      },
+      {
+        "start": 66.82598639455782,
+        "end": 78.49873015873015,
+        "text": "第三句，用平底鍋煎熟。第四句，吃起來軟軟的，有海鮮的味道。做法和口感要分開。"
+      },
+      {
+        "start": 78.49873015873015,
+        "end": 89.61691609977323,
+        "text": "第五句，喜歡海鮮的朋友可以試試。有食物過敏的朋友，先問清楚材料，再決定吃不吃。"
+      },
+      {
+        "start": 89.61691609977323,
+        "end": 100.19641723356008,
+        "text": "換你選台灣或越南的一道小吃，寫五句介紹。先填五欄，再連成句，念給同學聽。"
+      }
+    ]
+  }
+}

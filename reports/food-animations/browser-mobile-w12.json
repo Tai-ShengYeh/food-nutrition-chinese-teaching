@@ -1,0 +1,21 @@
+{
+  "week": 12,
+  "profile": "mobile",
+  "mp4_sha256": "ede67a0bb485f75e0bcff58a82b99380bf60fa63e8632a169d12af22d9748fb3",
+  "html_sha256": "c0951bb50e1615b67f3ad6b6097f2d118b6e86701e63e91a8ef890b75f81da64",
+  "enhancement_sha256": "8ddcd149f23979f2f479363ab61830eef0e1e5f1603920435d1c571d5ac0d355",
+  "playback": "passed",
+  "vtt_cues": 9,
+  "subtitle_text": "exact narration",
+  "correct_and_wrong_feedback": "passed",
+  "ending_seek": "passed",
+  "viewport_fit": "passed",
+  "existing_lessons_games_write": "preserved",
+  "media_keyboard_score_isolation": "passed",
+  "rect": {
+    "left": 41,
+    "right": 349,
+    "doc": 390,
+    "progress": 0.416658
+  }
+}

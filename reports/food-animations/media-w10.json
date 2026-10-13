@@ -1,0 +1,16 @@
+{
+  "week": 10,
+  "slug": "w10",
+  "title": "發酵食品：用因為找原因",
+  "duration": 99.833333,
+  "bytes": 1355699,
+  "sha256": "45284cf3c2e2b9ca1a5d08ff632f63ce92e948ae5fe9831ffd4784e0aad5ba8c",
+  "width": 1280,
+  "height": 720,
+  "complete_decode": "passed",
+  "audible_narration_rms": 2537.21,
+  "full_subtitles": 9,
+  "scene_count": 9,
+  "ending_hold": 2.061949780045367,
+  "speech_alignment": "per-sentence measured WAV durations"
+}

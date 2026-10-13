@@ -1,0 +1,16 @@
+{
+  "week": 4,
+  "slug": "w04",
+  "title": "蔬果顏色：看懂分類",
+  "duration": 96.333333,
+  "bytes": 1318502,
+  "sha256": "92f6f2aed7b16008ee4ec3eb7be9bd1bfe9b5ee669af42245a69c518b36f2c3b",
+  "width": 1280,
+  "height": 720,
+  "complete_decode": "passed",
+  "audible_narration_rms": 2244.83,
+  "full_subtitles": 9,
+  "scene_count": 9,
+  "ending_hold": 2.0372332267573654,
+  "speech_alignment": "per-sentence measured WAV durations"
+}

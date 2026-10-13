@@ -1,0 +1,16 @@
+{
+  "week": 16,
+  "slug": "w16",
+  "title": "台越市場：比較異同",
+  "duration": 100.333333,
+  "bytes": 1425153,
+  "sha256": "9ba677bf688e87cb08058316ebaddb4a60862daccc92f9e966db8f625e8d23f9",
+  "width": 1280,
+  "height": 720,
+  "complete_decode": "passed",
+  "audible_narration_rms": 2311.7,
+  "full_subtitles": 9,
+  "scene_count": 9,
+  "ending_hold": 2.087119848072561,
+  "speech_alignment": "per-sentence measured WAV durations"
+}

@@ -1,0 +1,116 @@
+{
+  "number": 10,
+  "week": "W10",
+  "title": "發酵食品：用因為找原因",
+  "key_terms": [
+    "發酵 | fā jiào | lên men",
+    "酵母 | jiào mǔ | nấm men",
+    "蜂蜜 | fēng mì | mật ong"
+  ],
+  "sources": [
+    "s1/semester1_lessons/w10_發酵食品.html"
+  ],
+  "reading_skill": "找原因",
+  "writing_goal": "挑一種你國家的發酵食物（或麵包/優格），寫 3 句：它是什麼＋因為什麼而有特殊味道＋你的感受。",
+  "style_reference": "Original YouTube W06 HrXwF8WgQSc / W07 PH1PZgDCTFs / W08 Vb88oe_c1Qs; see reports/food-animations/style-reference.md",
+  "voice": "Microsoft Hanhan Desktop, zh-TW, rate -1",
+  "simplification": "課文概念示意；研究非個人保證；包裝與流程圖非實際產品；語文教學不取代個人營養或食品安全建議",
+  "scenes": [
+    {
+      "speech": "麵包為什麼會膨起來？小小的酵母，能改變食物。今天找原因，練習因為和所以。",
+      "focus": "麵包為什麼膨起來？",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "發酵，是微生物改變食物的過程。優格、泡菜、醬油和麵包，都有發酵的步驟。",
+      "focus": "發酵：微生物改變食物",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "做麵包時，酵母會產生氣體。氣體留在麵團裡，讓麵團慢慢變大。這是原因和結果。",
+      "focus": "酵母 → 氣體 → 麵團變大",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "課文介紹蜂蜜酒。原料、酵母和時間不同，香氣也會不同。這是文章說明風味的原因。",
+      "focus": "原料／酵母／時間 → 風味",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "不是食物放久了，都叫發酵。控制好的發酵，和食物腐敗不一樣。壞掉的食物不要吃。",
+      "focus": "發酵，不等於腐敗",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "找原因時，先問為什麼。再找因為後面的說明，和所以後面的結果，把兩邊連起來。",
+      "focus": "為什麼？原因 → 結果",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "例如，因為酵母產生氣體，所以麵團變大。原因在前面，結果在後面，不能寫反。",
+      "focus": "因為酵母產生氣體，所以麵團變大。",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "介紹一種發酵食品，先寫它用什麼做。再說味道的原因，最後寫你自己的感受。",
+      "focus": "原料＋因果＋感受",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "換你選麵包、優格或家鄉的發酵食物，寫三句。不用自己做發酵，也能練習說明原因。",
+      "focus": "任務：三句介紹發酵食物",
+      "illustration": "subject object and writing notebook"
+    }
+  ],
+  "timing": {
+    "speech_seconds": 97.77138321995463,
+    "video_seconds": 99.83333333333333,
+    "cues": [
+      {
+        "start": 0,
+        "end": 11.098639455782314,
+        "text": "麵包為什麼會膨起來？小小的酵母，能改變食物。今天找原因，練習因為和所以。"
+      },
+      {
+        "start": 11.098639455782314,
+        "end": 21.283219954648526,
+        "text": "發酵，是微生物改變食物的過程。優格、泡菜、醬油和麵包，都有發酵的步驟。"
+      },
+      {
+        "start": 21.283219954648526,
+        "end": 32.6431746031746,
+        "text": "做麵包時，酵母會產生氣體。氣體留在麵團裡，讓麵團慢慢變大。這是原因和結果。"
+      },
+      {
+        "start": 32.6431746031746,
+        "end": 44.2027664399093,
+        "text": "課文介紹蜂蜜酒。原料、酵母和時間不同，香氣也會不同。這是文章說明風味的原因。"
+      },
+      {
+        "start": 44.2027664399093,
+        "end": 55.65954648526077,
+        "text": "不是食物放久了，都叫發酵。控制好的發酵，和食物腐敗不一樣。壞掉的食物不要吃。"
+      },
+      {
+        "start": 55.65954648526077,
+        "end": 66.15800453514738,
+        "text": "找原因時，先問為什麼。再找因為後面的說明，和所以後面的結果，把兩邊連起來。"
+      },
+      {
+        "start": 66.15800453514738,
+        "end": 76.62535147392289,
+        "text": "例如，因為酵母產生氣體，所以麵團變大。原因在前面，結果在後面，不能寫反。"
+      },
+      {
+        "start": 76.62535147392289,
+        "end": 86.62512471655327,
+        "text": "介紹一種發酵食品，先寫它用什麼做。再說味道的原因，最後寫你自己的感受。"
+      },
+      {
+        "start": 86.62512471655327,
+        "end": 97.77138321995463,
+        "text": "換你選麵包、優格或家鄉的發酵食物，寫三句。不用自己做發酵，也能練習說明原因。"
+      }
+    ]
+  }
+}

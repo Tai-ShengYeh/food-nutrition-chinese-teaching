@@ -1,0 +1,116 @@
+{
+  "number": 12,
+  "week": "W12",
+  "title": "藻藍素：功能與限制",
+  "key_terms": [
+    "添加物 | tiān jiā wù | phụ gia",
+    "著色劑 | zhuó sè jì | chất tạo màu",
+    "人工 | rén gōng | nhân tạo"
+  ],
+  "sources": [
+    "s1/semester1_lessons/w12_食品添加物.html"
+  ],
+  "reading_skill": "區分主要與次要",
+  "writing_goal": "挑一種添加物或食材，用「⋯⋯可以／能夠⋯⋯，可是⋯⋯」寫一句功能＋限制，共寫 2–3 句。",
+  "style_reference": "Original YouTube W06 HrXwF8WgQSc / W07 PH1PZgDCTFs / W08 Vb88oe_c1Qs; see reports/food-animations/style-reference.md",
+  "voice": "Microsoft Hanhan Desktop, zh-TW, rate -1",
+  "simplification": "課文概念示意；研究非個人保證；包裝與流程圖非實際產品；語文教學不取代個人營養或食品安全建議",
+  "scenes": [
+    {
+      "speech": "藍色的冰淇淋，顏色從哪裡來？今天看一種著色劑，也分清文章的主要和次要問題。",
+      "focus": "藍色從哪裡來？",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "著色劑能讓食物有顏色。課文介紹螺旋藻裡的藻藍素，它可以讓一些食品變成藍色。",
+      "focus": "藻藍素：讓食品呈藍色",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "可是藻藍素怕熱，也怕酸。加熱或放進酸的環境，顏色可能改變，不容易保持穩定。",
+      "focus": "功能：著色／限制：怕熱、怕酸",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "課文的主要問題，是顏色不穩定。價格和產量，是文章另外提到的次要問題。",
+      "focus": "主要：不穩定／次要：價格、產量",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "找主要問題時，問哪件事一直被說明。不能只選你最在意的事，要回到文章找證據。",
+      "focus": "主要重點，要有課文證據",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "天然和人工，是來源的分類，不是安全的保證。添加物仍然要依規定使用，也要看標示。",
+      "focus": "天然，不等於一定安全",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "寫功能句，藻藍素能夠讓冰淇淋變藍色。能夠後面，接它可以做的事情。",
+      "focus": "藻藍素能夠讓冰淇淋變藍色。",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "接著加限制，可是它怕熱。所以製作和保存時，要注意溫度。三句之間要能接得起來。",
+      "focus": "能夠……可是……所以……",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "換你挑一種食材或添加物，寫兩到三句。先說功能，再說限制，最後給一個合理建議。",
+      "focus": "任務：功能＋限制＋建議",
+      "illustration": "subject object and writing notebook"
+    }
+  ],
+  "timing": {
+    "speech_seconds": 95.83260770975058,
+    "video_seconds": 97.83333333333333,
+    "cues": [
+      {
+        "start": 0,
+        "end": 10.656190476190476,
+        "text": "藍色的冰淇淋，顏色從哪裡來？今天看一種著色劑，也分清文章的主要和次要問題。"
+      },
+      {
+        "start": 10.656190476190476,
+        "end": 21.31609977324263,
+        "text": "著色劑能讓食物有顏色。課文介紹螺旋藻裡的藻藍素，它可以讓一些食品變成藍色。"
+      },
+      {
+        "start": 21.31609977324263,
+        "end": 32.15605442176871,
+        "text": "可是藻藍素怕熱，也怕酸。加熱或放進酸的環境，顏色可能改變，不容易保持穩定。"
+      },
+      {
+        "start": 32.15605442176871,
+        "end": 42.0887074829932,
+        "text": "課文的主要問題，是顏色不穩定。價格和產量，是文章另外提到的次要問題。"
+      },
+      {
+        "start": 42.0887074829932,
+        "end": 52.803265306122455,
+        "text": "找主要問題時，問哪件事一直被說明。不能只選你最在意的事，要回到文章找證據。"
+      },
+      {
+        "start": 52.803265306122455,
+        "end": 63.81773242630386,
+        "text": "天然和人工，是來源的分類，不是安全的保證。添加物仍然要依規定使用，也要看標示。"
+      },
+      {
+        "start": 63.81773242630386,
+        "end": 73.22920634920635,
+        "text": "寫功能句，藻藍素能夠讓冰淇淋變藍色。能夠後面，接它可以做的事情。"
+      },
+      {
+        "start": 73.22920634920635,
+        "end": 84.89410430839003,
+        "text": "接著加限制，可是它怕熱。所以製作和保存時，要注意溫度。三句之間要能接得起來。"
+      },
+      {
+        "start": 84.89410430839003,
+        "end": 95.83260770975058,
+        "text": "換你挑一種食材或添加物，寫兩到三句。先說功能，再說限制，最後給一個合理建議。"
+      }
+    ]
+  }
+}

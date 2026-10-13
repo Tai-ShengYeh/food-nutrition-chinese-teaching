@@ -1,0 +1,116 @@
+{
+  "number": 1,
+  "week": "W01",
+  "title": "砂糖文章：看標題，再造句",
+  "key_terms": [
+    "砂糖 | shā táng | đường cát",
+    "特砂 | tè shā | đường cát hạt to",
+    "細砂 | xì shā | đường cát mịn"
+  ],
+  "sources": [
+    "s1/semester1_lessons/w01_怎麼讀食品文章.html"
+  ],
+  "reading_skill": "認識標題與文章",
+  "writing_goal": "挑 3 個本週詞彙，各寫一個完整的句子。句子要有主詞＋動詞＋其他內容。",
+  "style_reference": "Original YouTube W06 HrXwF8WgQSc / W07 PH1PZgDCTFs / W08 Vb88oe_c1Qs; see reports/food-animations/style-reference.md",
+  "voice": "Microsoft Hanhan Desktop, zh-TW, rate -1",
+  "simplification": "課文概念示意；研究非個人保證；包裝與流程圖非實際產品；語文教學不取代個人營養或食品安全建議",
+  "scenes": [
+    {
+      "speech": "三種砂糖有什麼不同？先看文章的標題。標題有問號，表示文章要回答一個問題。",
+      "focus": "特砂、細砂、二砂，差在哪？",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "讀文章以前，先猜一猜。是顏色不同，還是大小不同？把你的問題記在旁邊。",
+      "focus": "看標題 → 猜答案",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "看這三堆糖。特砂的顆粒比較大，細砂的顆粒比較小。二砂的顏色比較深。",
+      "focus": "顆粒大小／顏色深淺",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "課文說，二砂留了一點甘蔗的味道。有些人用它做甜湯。這是文章提供的細節。",
+      "focus": "二砂：甜湯的例子",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "讀完以後，回到標題。文章從大小、顏色、味道和用法，回答了差在哪這個問題。",
+      "focus": "標題的問題 → 內容的答案",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "現在挑一個詞來造句。不要只寫砂糖兩個字，要說誰做了什麼，讓意思完整。",
+      "focus": "誰？做什麼？",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "例如，我在超市買了一包砂糖。我是主詞，買是動詞，一包砂糖是買的東西。",
+      "focus": "我／買／一包砂糖。",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "再寫一句。二砂的顏色比較深。這句用課文的資訊，說出二砂的一個特點。",
+      "focus": "二砂的顏色比較深。",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "換你選三個本週詞彙，各寫一句。先想生活場景，再寫完整句，最後念給同學聽。",
+      "focus": "任務：三個詞，三個完整句。",
+      "illustration": "subject object and writing notebook"
+    }
+  ],
+  "timing": {
+    "speech_seconds": 94.01732426303853,
+    "video_seconds": 96.16666666666667,
+    "cues": [
+      {
+        "start": 0,
+        "end": 11.066757369614512,
+        "text": "三種砂糖有什麼不同？先看文章的標題。標題有問號，表示文章要回答一個問題。"
+      },
+      {
+        "start": 11.066757369614512,
+        "end": 21.877641723356007,
+        "text": "讀文章以前，先猜一猜。是顏色不同，還是大小不同？把你的問題記在旁邊。"
+      },
+      {
+        "start": 21.877641723356007,
+        "end": 32.34181405895691,
+        "text": "看這三堆糖。特砂的顆粒比較大，細砂的顆粒比較小。二砂的顏色比較深。"
+      },
+      {
+        "start": 32.34181405895691,
+        "end": 43.02680272108843,
+        "text": "課文說，二砂留了一點甘蔗的味道。有些人用它做甜湯。這是文章提供的細節。"
+      },
+      {
+        "start": 43.02680272108843,
+        "end": 53.291609977324256,
+        "text": "讀完以後，回到標題。文章從大小、顏色、味道和用法，回答了差在哪這個問題。"
+      },
+      {
+        "start": 53.291609977324256,
+        "end": 63.242131519274366,
+        "text": "現在挑一個詞來造句。不要只寫砂糖兩個字，要說誰做了什麼，讓意思完整。"
+      },
+      {
+        "start": 63.242131519274366,
+        "end": 73.11655328798184,
+        "text": "例如，我在超市買了一包砂糖。我是主詞，買是動詞，一包砂糖是買的東西。"
+      },
+      {
+        "start": 73.11655328798184,
+        "end": 83.25809523809522,
+        "text": "再寫一句。二砂的顏色比較深。這句用課文的資訊，說出二砂的一個特點。"
+      },
+      {
+        "start": 83.25809523809522,
+        "end": 94.01732426303853,
+        "text": "換你選三個本週詞彙，各寫一句。先想生活場景，再寫完整句，最後念給同學聽。"
+      }
+    ]
+  }
+}

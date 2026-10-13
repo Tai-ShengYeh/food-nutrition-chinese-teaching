@@ -1,0 +1,16 @@
+{
+  "week": 13,
+  "slug": "w13",
+  "title": "食品身分證：看標示與數字",
+  "duration": 98.666667,
+  "bytes": 1338729,
+  "sha256": "92c8017cca34fb1cb6c3b857b7853c5501ff6ee33226dd39bc449122b3ceaead",
+  "width": 1280,
+  "height": 720,
+  "complete_decode": "passed",
+  "audible_narration_rms": 2575.87,
+  "full_subtitles": 9,
+  "scene_count": 9,
+  "ending_hold": 2.0674379750566914,
+  "speech_alignment": "per-sentence measured WAV durations"
+}

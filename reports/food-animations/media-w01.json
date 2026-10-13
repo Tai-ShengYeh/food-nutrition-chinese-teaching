@@ -1,0 +1,16 @@
+{
+  "week": 1,
+  "slug": "w01",
+  "title": "砂糖文章：看標題，再造句",
+  "duration": 96.166667,
+  "bytes": 1354377,
+  "sha256": "88f75f70bc854c1a7df25dbd7a6a766049f7f08beaf6e67daf3b06d73d1e86b6",
+  "width": 1280,
+  "height": 720,
+  "complete_decode": "passed",
+  "audible_narration_rms": 2577.83,
+  "full_subtitles": 9,
+  "scene_count": 9,
+  "ending_hold": 2.149342736961472,
+  "speech_alignment": "per-sentence measured WAV durations"
+}

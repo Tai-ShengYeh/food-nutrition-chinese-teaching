@@ -1,0 +1,116 @@
+{
+  "number": 13,
+  "week": "W13",
+  "title": "食品身分證：看標示與數字",
+  "key_terms": [
+    "標示 | biāo shì | ghi nhãn",
+    "標章 | biāo zhāng | dấu chứng nhận",
+    "品名 | pǐn míng | tên sản phẩm"
+  ],
+  "sources": [
+    "s1/semester1_lessons/w13_看懂食品標示.html"
+  ],
+  "reading_skill": "看標示與數字",
+  "writing_goal": "家裡找一件包裝食品，寫 3 句：它的品名是什麼＋有哪些重要成分＋日期/產地。鼓勵拍照上傳 Edcafe 說明。",
+  "style_reference": "Original YouTube W06 HrXwF8WgQSc / W07 PH1PZgDCTFs / W08 Vb88oe_c1Qs; see reports/food-animations/style-reference.md",
+  "voice": "Microsoft Hanhan Desktop, zh-TW, rate -1",
+  "simplification": "課文概念示意；研究非個人保證；包裝與流程圖非實際產品；語文教學不取代個人營養或食品安全建議",
+  "scenes": [
+    {
+      "speech": "包裝食品有自己的身分證嗎？品名、成分、日期和產地，都是包裝上的重要資訊。",
+      "focus": "找食品的身分證",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "拿一包花生糖，先找品名。再找成分表，看看裡面有花生、糖，還有什麼材料。",
+      "focus": "① 品名 ② 成分",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "接著找有效日期和原產地。日期要完整看年、月、日，保存方法也要一起看。",
+      "focus": "③ 有效日期 ④ 原產地",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "課文介紹台灣花生標章。文章說，使用這個標章的產品，要全部使用台灣的花生。",
+      "focus": "課文：花生來源為台灣",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "這裡的百分之百，是說花生的來源。不是整包糖只有花生，也不是說它沒有加糖。",
+      "focus": "100% 指花生來源，不是全部成分",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "看標示與數字，要問數字在說什麼。圈出百分比旁邊的文字，才不會看錯意思。",
+      "focus": "數字＋對應文字，一起讀",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "寫第一句，它的品名是花生糖。第二句，成分有花生和糖。資料都要從真包裝找。",
+      "focus": "它的品名是……成分有……",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "第三句寫日期或產地。可以寫，它的原產地是台灣。圖上的包裝只是練習用的示意。",
+      "focus": "它的原產地是……",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "換你找一件包裝食品，寫三句介紹。不要猜資料。對照包裝，檢查品名、成分和日期。",
+      "focus": "任務：找真包裝，寫三句。",
+      "illustration": "subject object and writing notebook"
+    }
+  ],
+  "timing": {
+    "speech_seconds": 96.59922902494331,
+    "video_seconds": 98.66666666666667,
+    "cues": [
+      {
+        "start": 0,
+        "end": 10.54748299319728,
+        "text": "包裝食品有自己的身分證嗎？品名、成分、日期和產地，都是包裝上的重要資訊。"
+      },
+      {
+        "start": 10.54748299319728,
+        "end": 20.8892970521542,
+        "text": "拿一包花生糖，先找品名。再找成分表，看看裡面有花生、糖，還有什麼材料。"
+      },
+      {
+        "start": 20.8892970521542,
+        "end": 30.72249433106576,
+        "text": "接著找有效日期和原產地。日期要完整看年、月、日，保存方法也要一起看。"
+      },
+      {
+        "start": 30.72249433106576,
+        "end": 41.315283446712016,
+        "text": "課文介紹台灣花生標章。文章說，使用這個標章的產品，要全部使用台灣的花生。"
+      },
+      {
+        "start": 41.315283446712016,
+        "end": 51.67401360544218,
+        "text": "這裡的百分之百，是說花生的來源。不是整包糖只有花生，也不是說它沒有加糖。"
+      },
+      {
+        "start": 51.67401360544218,
+        "end": 61.867392290249434,
+        "text": "看標示與數字，要問數字在說什麼。圈出百分比旁邊的文字，才不會看錯意思。"
+      },
+      {
+        "start": 61.867392290249434,
+        "end": 73.26643990929705,
+        "text": "寫第一句，它的品名是花生糖。第二句，成分有花生和糖。資料都要從真包裝找。"
+      },
+      {
+        "start": 73.26643990929705,
+        "end": 84.60748299319728,
+        "text": "第三句寫日期或產地。可以寫，它的原產地是台灣。圖上的包裝只是練習用的示意。"
+      },
+      {
+        "start": 84.60748299319728,
+        "end": 96.59922902494331,
+        "text": "換你找一件包裝食品，寫三句介紹。不要猜資料。對照包裝，檢查品名、成分和日期。"
+      }
+    ]
+  }
+}

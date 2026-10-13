@@ -1,0 +1,56 @@
+[
+  {
+    "week": 6,
+    "profile": "desktop",
+    "playback": "passed",
+    "vtt_cues": 9,
+    "quiz": "passed",
+    "ending_seek": "passed",
+    "mobile_fit": "passed"
+  },
+  {
+    "week": 7,
+    "profile": "desktop",
+    "playback": "passed",
+    "vtt_cues": 9,
+    "quiz": "passed",
+    "ending_seek": "passed",
+    "mobile_fit": "passed"
+  },
+  {
+    "week": 8,
+    "profile": "desktop",
+    "playback": "passed",
+    "vtt_cues": 9,
+    "quiz": "passed",
+    "ending_seek": "passed",
+    "mobile_fit": "passed"
+  },
+  {
+    "week": 6,
+    "profile": "mobile",
+    "playback": "passed",
+    "vtt_cues": 9,
+    "quiz": "passed",
+    "ending_seek": "passed",
+    "mobile_fit": "passed"
+  },
+  {
+    "week": 7,
+    "profile": "mobile",
+    "playback": "passed",
+    "vtt_cues": 9,
+    "quiz": "passed",
+    "ending_seek": "passed",
+    "mobile_fit": "passed"
+  },
+  {
+    "week": 8,
+    "profile": "mobile",
+    "playback": "passed",
+    "vtt_cues": 9,
+    "quiz": "passed",
+    "ending_seek": "passed",
+    "mobile_fit": "passed"
+  }
+]

@@ -18,3 +18,8 @@ Thumbs.db
 w1w2w3_raw.json
 w4_raw.json
 *_raw.json
+
+# Teaching-animation intermediates
+.render-cache/
+__pycache__/
+*.wav

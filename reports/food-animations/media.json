@@ -1,0 +1,29 @@
+[
+  {
+    "week": "w06",
+    "duration": 91.333333,
+    "bytes": 1182865,
+    "sha256": "10bf560e02518e94e5fd776094e8553be76a023ceee47142dad026a512bfc44a",
+    "complete_decode": "passed",
+    "full_subtitles": 9,
+    "ending_hold": 2.040317126984121
+  },
+  {
+    "week": "w07",
+    "duration": 90.833333,
+    "bytes": 1160672,
+    "sha256": "8209648e6e60100f48c43b6aa09b8bfc4743cb9f84b6583ef92c300a315e41f6",
+    "complete_decode": "passed",
+    "full_subtitles": 9,
+    "ending_hold": 2.0208159931972745
+  },
+  {
+    "week": "w08",
+    "duration": 92.666667,
+    "bytes": 1174690,
+    "sha256": "949550fbddb0e5cdb137516630cd88ed56d06eab004e18e769bf131863f8a6c0",
+    "complete_decode": "passed",
+    "full_subtitles": 9,
+    "ending_hold": 2.082766773242639
+  }
+]

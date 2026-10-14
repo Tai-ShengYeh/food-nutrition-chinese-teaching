@@ -1,0 +1,27 @@
+{
+  "verified_media": 13,
+  "verified_browser_keys": 26,
+  "original_W06_W07_W08": "byte-identical to origin/master",
+  "lesson_engine": "byte-identical to origin/master",
+  "original_target_html_content": "only one enhancement script added to each target",
+  "excluded_exam_weeks": [
+    9,
+    18
+  ],
+  "total_mp4_bytes": 17907539,
+  "durations": {
+    "w01": 96.166667,
+    "w02": 94.166667,
+    "w03": 95.166667,
+    "w04": 96.333333,
+    "w05": 96.666667,
+    "w10": 99.833333,
+    "w11": 98.666667,
+    "w12": 97.833333,
+    "w13": 98.666667,
+    "w14": 97.0,
+    "w15": 102.333333,
+    "w16": 100.333333,
+    "w17": 100.166667
+  }
+}

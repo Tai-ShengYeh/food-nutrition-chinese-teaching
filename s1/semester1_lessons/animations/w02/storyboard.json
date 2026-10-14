@@ -1,0 +1,116 @@
+{
+  "number": 2,
+  "week": "W02",
+  "title": "六大類食物：找關鍵詞",
+  "key_terms": [
+    "六大類 | liù dà lèi | sáu nhóm thực phẩm",
+    "乳品 | rǔ pǐn | sản phẩm từ sữa",
+    "全脂 | quán zhī | nguyên kem"
+  ],
+  "sources": [
+    "s1/semester1_lessons/w02_六大類食物.html"
+  ],
+  "reading_skill": "找關鍵詞",
+  "writing_goal": "寫 4 句：① 用「……是……類」介紹兩種你常吃的食物；② 用「研究發現……」寫出這篇文章的結果；③ 加一句你自己想喝（或不喝）全脂乳品的想法。",
+  "style_reference": "Original YouTube W06 HrXwF8WgQSc / W07 PH1PZgDCTFs / W08 Vb88oe_c1Qs; see reports/food-animations/style-reference.md",
+  "voice": "Microsoft Hanhan Desktop, zh-TW, rate -1",
+  "simplification": "課文概念示意；研究非個人保證；包裝與流程圖非實際產品；語文教學不取代個人營養或食品安全建議",
+  "scenes": [
+    {
+      "speech": "牛奶只有脂肪嗎？今天先找關鍵詞，再用分類句，介紹你常吃的食物。",
+      "focus": "牛奶不只有脂肪",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "食物可以分成六大類。米飯是全榖雜糧類，青菜是蔬菜類，香蕉是水果類。",
+      "focus": "全榖雜糧／蔬菜／水果",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "另外還有豆魚蛋肉類、乳品類和油脂類。牛奶和優格是乳品，能提供蛋白質和鈣。",
+      "focus": "豆魚蛋肉／乳品／油脂",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "找關鍵詞，就是找重要的詞。讀研究段落時，圈出參加的人數、時間和研究結果。",
+      "focus": "圈出：誰？多久？結果？",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "課文介紹七十四位大人，十二星期的研究。這些數字告訴我們，研究的範圍有多大。",
+      "focus": "課文研究：74 人／12 星期",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "課文說，體重和膽固醇沒有明顯增加。這是這項研究的結果，不表示每個人都一樣。",
+      "focus": "研究結果，不是人人保證",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "用分類句寫：米飯是全榖雜糧類。優格是乳品類。先寫食物，再寫它的類別。",
+      "focus": "米飯是全榖雜糧類。",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "介紹結果可以寫，研究發現體重沒有明顯變重。寫自己的意見時，再加一個理由。",
+      "focus": "研究發現……／我覺得……因為……",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "換你寫四句。兩句介紹食物類別，一句說研究結果，最後一句說你自己的想法。",
+      "focus": "任務：分類兩句＋結果＋想法",
+      "illustration": "subject object and writing notebook"
+    }
+  ],
+  "timing": {
+    "speech_seconds": 92.07841269841269,
+    "video_seconds": 94.16666666666667,
+    "cues": [
+      {
+        "start": 0,
+        "end": 9.231519274376417,
+        "text": "牛奶只有脂肪嗎？今天先找關鍵詞，再用分類句，介紹你常吃的食物。"
+      },
+      {
+        "start": 9.231519274376417,
+        "end": 19.15034013605442,
+        "text": "食物可以分成六大類。米飯是全榖雜糧類，青菜是蔬菜類，香蕉是水果類。"
+      },
+      {
+        "start": 19.15034013605442,
+        "end": 29.34331065759637,
+        "text": "另外還有豆魚蛋肉類、乳品類和油脂類。牛奶和優格是乳品，能提供蛋白質和鈣。"
+      },
+      {
+        "start": 29.34331065759637,
+        "end": 40.003083900226756,
+        "text": "找關鍵詞，就是找重要的詞。讀研究段落時，圈出參加的人數、時間和研究結果。"
+      },
+      {
+        "start": 40.003083900226756,
+        "end": 50.581995464852604,
+        "text": "課文介紹七十四位大人，十二星期的研究。這些數字告訴我們，研究的範圍有多大。"
+      },
+      {
+        "start": 50.581995464852604,
+        "end": 61.093786848072554,
+        "text": "課文說，體重和膽固醇沒有明顯增加。這是這項研究的結果，不表示每個人都一樣。"
+      },
+      {
+        "start": 61.093786848072554,
+        "end": 71.65678004535147,
+        "text": "用分類句寫：米飯是全榖雜糧類。優格是乳品類。先寫食物，再寫它的類別。"
+      },
+      {
+        "start": 71.65678004535147,
+        "end": 81.90807256235827,
+        "text": "介紹結果可以寫，研究發現體重沒有明顯變重。寫自己的意見時，再加一個理由。"
+      },
+      {
+        "start": 81.90807256235827,
+        "end": 92.07841269841269,
+        "text": "換你寫四句。兩句介紹食物類別，一句說研究結果，最後一句說你自己的想法。"
+      }
+    ]
+  }
+}

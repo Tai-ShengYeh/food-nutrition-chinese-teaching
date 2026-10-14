@@ -1,0 +1,116 @@
+{
+  "number": 17,
+  "week": "W17",
+  "title": "健康飲食計畫：統整閱讀與寫作",
+  "key_terms": [
+    "長壽 | cháng shòu | sống lâu",
+    "藍區 | lán qū | vùng xanh",
+    "活動 | huó dòng | vận động"
+  ],
+  "sources": [
+    "s1/semester1_lessons/w17_健康飲食統整.html"
+  ],
+  "reading_skill": "全學期閱讀策略統整",
+  "writing_goal": "題目「我的健康飲食計畫」：主題句→三個具體做法（三餐／運動／睡眠擇二以上）→結尾展望。控制80–100字。",
+  "style_reference": "Original YouTube W06 HrXwF8WgQSc / W07 PH1PZgDCTFs / W08 Vb88oe_c1Qs; see reports/food-animations/style-reference.md",
+  "voice": "Microsoft Hanhan Desktop, zh-TW, rate -1",
+  "simplification": "課文概念示意；研究非個人保證；包裝與流程圖非實際產品；語文教學不取代個人營養或食品安全建議",
+  "scenes": [
+    {
+      "speech": "學期快結束了，你想養成什麼健康習慣？今天把閱讀方法，變成自己的生活計畫。",
+      "focus": "我的健康飲食計畫",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "課文用藍區介紹長壽者的生活。飲食、活動、人際連結和睡眠，都可能和健康有關。",
+      "focus": "飲食＋活動＋連結＋睡眠",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "這些觀察不是長壽的保證，也不是一個做法就能防病。我們可以選適合自己的小改變。",
+      "focus": "觀察不是保證，計畫要可行",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "讀文章時，先看標題，再找關鍵詞和主題句。需要細節時，回到原段落找證據。",
+      "focus": "標題 → 關鍵詞 → 主題句 → 證據",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "寫計畫以前，列出做法。多吃蔬果、口渴喝水、每天走路、早點睡，再選可行的三項。",
+      "focus": "從清單選三項可行做法",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "主題句可以寫，為了健康，我要改變生活。接著用首先和另外，把具體做法連起來。",
+      "focus": "為了健康，我要……",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "例如，首先每餐搭配蔬菜。另外口渴時喝白開水。晚飯後，我和朋友一起走路。",
+      "focus": "首先……另外……",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "最後寫展望，我會每天做一點，慢慢養成習慣。這是自己的計畫，不是保證一定長壽。",
+      "focus": "結尾：我會堅持……",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "換你寫八十到一百字。要有主題句、三個做法和結尾。檢查字數、標點，也檢查能不能做到。",
+      "focus": "任務：80–100 字，三個具體做法",
+      "illustration": "subject object and writing notebook"
+    }
+  ],
+  "timing": {
+    "speech_seconds": 98.09024943310659,
+    "video_seconds": 100.16666666666667,
+    "cues": [
+      {
+        "start": 0,
+        "end": 10.42108843537415,
+        "text": "學期快結束了，你想養成什麼健康習慣？今天把閱讀方法，變成自己的生活計畫。"
+      },
+      {
+        "start": 10.42108843537415,
+        "end": 21.36907029478458,
+        "text": "課文用藍區介紹長壽者的生活。飲食、活動、人際連結和睡眠，都可能和健康有關。"
+      },
+      {
+        "start": 21.36907029478458,
+        "end": 31.881133786848075,
+        "text": "這些觀察不是長壽的保證，也不是一個做法就能防病。我們可以選適合自己的小改變。"
+      },
+      {
+        "start": 31.881133786848075,
+        "end": 42.495827664399094,
+        "text": "讀文章時，先看標題，再找關鍵詞和主題句。需要細節時，回到原段落找證據。"
+      },
+      {
+        "start": 42.495827664399094,
+        "end": 53.813151927437644,
+        "text": "寫計畫以前，列出做法。多吃蔬果、口渴喝水、每天走路、早點睡，再選可行的三項。"
+      },
+      {
+        "start": 53.813151927437644,
+        "end": 64.32956916099774,
+        "text": "主題句可以寫，為了健康，我要改變生活。接著用首先和另外，把具體做法連起來。"
+      },
+      {
+        "start": 64.32956916099774,
+        "end": 75.24031746031747,
+        "text": "例如，首先每餐搭配蔬菜。另外口渴時喝白開水。晚飯後，我和朋友一起走路。"
+      },
+      {
+        "start": 75.24031746031747,
+        "end": 85.88272108843539,
+        "text": "最後寫展望，我會每天做一點，慢慢養成習慣。這是自己的計畫，不是保證一定長壽。"
+      },
+      {
+        "start": 85.88272108843539,
+        "end": 98.09024943310659,
+        "text": "換你寫八十到一百字。要有主題句、三個做法和結尾。檢查字數、標點，也檢查能不能做到。"
+      }
+    ]
+  }
+}

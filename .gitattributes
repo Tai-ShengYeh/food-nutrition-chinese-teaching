@@ -1,0 +1,3 @@
+# Subtitle cues intentionally use a blank separator after the final cue.
+s1/semester1_lessons/animations/**/*.srt whitespace=-blank-at-eof
+s1/semester1_lessons/animations/**/*.vtt whitespace=-blank-at-eof

@@ -1,0 +1,116 @@
+{
+  "number": 11,
+  "week": "W11",
+  "title": "冷凍與包冰：依序寫流程",
+  "key_terms": [
+    "保存 | bǎo cún | bảo quản",
+    "冷凍 | lěng dòng | đông lạnh",
+    "包冰 | bāo bīng | mạ băng"
+  ],
+  "sources": [
+    "s1/semester1_lessons/w11_食品保存.html"
+  ],
+  "reading_skill": "找步驟",
+  "writing_goal": "用順序詞寫出冷凍海鮮的處理流程（3 步以上），最後加一句給消費者的提醒。",
+  "style_reference": "Original YouTube W06 HrXwF8WgQSc / W07 PH1PZgDCTFs / W08 Vb88oe_c1Qs; see reports/food-animations/style-reference.md",
+  "voice": "Microsoft Hanhan Desktop, zh-TW, rate -1",
+  "simplification": "課文概念示意；研究非個人保證；包裝與流程圖非實際產品；語文教學不取代個人營養或食品安全建議",
+  "scenes": [
+    {
+      "speech": "買一包冷凍蝦，裡面只有蝦嗎？今天看包冰的作用，再把處理流程按順序寫出來。",
+      "focus": "蝦子外面的冰衣做什麼？",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "蝦子離開海水後，要盡快處理。低溫能減慢細菌生長，但冷凍不等於把細菌全部殺死。",
+      "focus": "低溫減慢生長，不是全部殺菌",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "先把海鮮冷凍，再用冰水讓表面結一層薄冰。這層冰衣像外套，幫忙保住水分。",
+      "focus": "先冷凍 → 再形成冰衣",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "這個方法叫包冰，可以減少乾燥和凍傷。但是冰衣太厚，解凍後的食物就可能變少。",
+      "focus": "薄冰衣保護海鮮",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "看流程時，圈出動詞和順序詞。捕撈、處理、冷凍、包冰、低溫運送，是不同步驟。",
+      "focus": "捕撈 → 冷凍 → 包冰 → 運送",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "課文的說法容易讓順序混亂。記住，冰衣形成在已冷凍的海鮮表面，不是先解凍。",
+      "focus": "包冰在已冷凍的海鮮表面",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "寫流程，例如，第一步先處理蝦子。接著快速冷凍，再包冰，最後保持低溫運送。",
+      "focus": "第一步先……接著……最後……",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "再加一句消費提醒。買的時候要看淨重和保存指示。回家依照包裝上的方法保存。",
+      "focus": "提醒大家：看淨重與保存指示。",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "換你寫三步以上的流程，每一步要有動詞。最後加一句提醒，再檢查前後順序對不對。",
+      "focus": "任務：三步以上＋一句提醒",
+      "illustration": "subject object and writing notebook"
+    }
+  ],
+  "timing": {
+    "speech_seconds": 96.66621315192742,
+    "video_seconds": 98.66666666666667,
+    "cues": [
+      {
+        "start": 0,
+        "end": 10.388979591836735,
+        "text": "買一包冷凍蝦，裡面只有蝦嗎？今天看包冰的作用，再把處理流程按順序寫出來。"
+      },
+      {
+        "start": 10.388979591836735,
+        "end": 21.601405895691613,
+        "text": "蝦子離開海水後，要盡快處理。低溫能減慢細菌生長，但冷凍不等於把細菌全部殺死。"
+      },
+      {
+        "start": 21.601405895691613,
+        "end": 31.884716553287987,
+        "text": "先把海鮮冷凍，再用冰水讓表面結一層薄冰。這層冰衣像外套，幫忙保住水分。"
+      },
+      {
+        "start": 31.884716553287987,
+        "end": 42.61337868480726,
+        "text": "這個方法叫包冰，可以減少乾燥和凍傷。但是冰衣太厚，解凍後的食物就可能變少。"
+      },
+      {
+        "start": 42.61337868480726,
+        "end": 53.628526077097504,
+        "text": "看流程時，圈出動詞和順序詞。捕撈、處理、冷凍、包冰、低溫運送，是不同步驟。"
+      },
+      {
+        "start": 53.628526077097504,
+        "end": 64.2037641723356,
+        "text": "課文的說法容易讓順序混亂。記住，冰衣形成在已冷凍的海鮮表面，不是先解凍。"
+      },
+      {
+        "start": 64.2037641723356,
+        "end": 74.78331065759636,
+        "text": "寫流程，例如，第一步先處理蝦子。接著快速冷凍，再包冰，最後保持低溫運送。"
+      },
+      {
+        "start": 74.78331065759636,
+        "end": 85.8544671201814,
+        "text": "再加一句消費提醒。買的時候要看淨重和保存指示。回家依照包裝上的方法保存。"
+      },
+      {
+        "start": 85.8544671201814,
+        "end": 96.66621315192742,
+        "text": "換你寫三步以上的流程，每一步要有動詞。最後加一句提醒，再檢查前後順序對不對。"
+      }
+    ]
+  }
+}

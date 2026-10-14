@@ -1,0 +1,116 @@
+{
+  "number": 3,
+  "week": "W03",
+  "title": "均衡餐盤：找主題句",
+  "key_terms": [
+    "均衡 | jūn héng | cân bằng",
+    "餐盤 | cān pán | đĩa ăn",
+    "蔬菜 | shū cài | rau"
+  ],
+  "sources": [
+    "s1/semester1_lessons/w03_均衡飲食餐盤.html"
+  ],
+  "reading_skill": "找主題句",
+  "writing_goal": "寫一個 4 句小段：先寫主題句，再用「首先…再來…」寫兩個做法，最後一句結尾。",
+  "style_reference": "Original YouTube W06 HrXwF8WgQSc / W07 PH1PZgDCTFs / W08 Vb88oe_c1Qs; see reports/food-animations/style-reference.md",
+  "voice": "Microsoft Hanhan Desktop, zh-TW, rate -1",
+  "simplification": "課文概念示意；研究非個人保證；包裝與流程圖非實際產品；語文教學不取代個人營養或食品安全建議",
+  "scenes": [
+    {
+      "speech": "你的午餐盤裡，有多少蔬菜和水果？今天看餐盤，也練習找段落的主題句。",
+      "focus": "我的餐盤均衡嗎？",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "課文的餐盤示意，蔬果合起來佔一半。另一半，搭配全榖雜糧和蛋白質食物。",
+      "focus": "課文示意：蔬果佔一半",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "這是搭配食物的提醒，不是每個人的固定份量。乳品和油脂，也要記得適量搭配。",
+      "focus": "份量要依個人需求調整",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "課文說，很多兒少吃的蔬果不夠。讀這一段時，找一句能說出整段重點的話。",
+      "focus": "主題句：兒少蔬果吃不夠",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "有人喜歡零食，有人覺得準備蔬菜麻煩。這些是細節，用來說明為什麼吃得不夠。",
+      "focus": "主題句／說明細節",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "寫小段也先有主題句。可以寫，我要每天多吃蔬果。讓讀者先知道你的計畫。",
+      "focus": "主題句：我要每天多吃蔬果。",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "接著寫第一個做法。首先，每餐先裝一份青菜。這是具體的行動，不只是說要健康。",
+      "focus": "首先，每餐先裝一份青菜。",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "再寫第二個做法。再來，點心選香蕉。最後加結尾，這樣能幫我養成新的習慣。",
+      "focus": "再來，點心選香蕉。",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "換你寫四句。主題句、兩個做法、結尾句。檢查每個做法，都有回到段落的主題。",
+      "focus": "任務：主題 → 做法 → 結尾",
+      "illustration": "subject object and writing notebook"
+    }
+  ],
+  "timing": {
+    "speech_seconds": 93.0122902494331,
+    "video_seconds": 95.16666666666667,
+    "cues": [
+      {
+        "start": 0,
+        "end": 9.675555555555556,
+        "text": "你的午餐盤裡，有多少蔬菜和水果？今天看餐盤，也練習找段落的主題句。"
+      },
+      {
+        "start": 9.675555555555556,
+        "end": 19.724761904761905,
+        "text": "課文的餐盤示意，蔬果合起來佔一半。另一半，搭配全榖雜糧和蛋白質食物。"
+      },
+      {
+        "start": 19.724761904761905,
+        "end": 29.75219954648526,
+        "text": "這是搭配食物的提醒，不是每個人的固定份量。乳品和油脂，也要記得適量搭配。"
+      },
+      {
+        "start": 29.75219954648526,
+        "end": 39.401269841269844,
+        "text": "課文說，很多兒少吃的蔬果不夠。讀這一段時，找一句能說出整段重點的話。"
+      },
+      {
+        "start": 39.401269841269844,
+        "end": 49.69687074829932,
+        "text": "有人喜歡零食，有人覺得準備蔬菜麻煩。這些是細節，用來說明為什麼吃得不夠。"
+      },
+      {
+        "start": 49.69687074829932,
+        "end": 59.94589569160998,
+        "text": "寫小段也先有主題句。可以寫，我要每天多吃蔬果。讓讀者先知道你的計畫。"
+      },
+      {
+        "start": 59.94589569160998,
+        "end": 71.24154195011337,
+        "text": "接著寫第一個做法。首先，每餐先裝一份青菜。這是具體的行動，不只是說要健康。"
+      },
+      {
+        "start": 71.24154195011337,
+        "end": 82.12462585034012,
+        "text": "再寫第二個做法。再來，點心選香蕉。最後加結尾，這樣能幫我養成新的習慣。"
+      },
+      {
+        "start": 82.12462585034012,
+        "end": 93.0122902494331,
+        "text": "換你寫四句。主題句、兩個做法、結尾句。檢查每個做法，都有回到段落的主題。"
+      }
+    ]
+  }
+}

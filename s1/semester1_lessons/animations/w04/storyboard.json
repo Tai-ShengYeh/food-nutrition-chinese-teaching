@@ -1,0 +1,116 @@
+{
+  "number": 4,
+  "week": "W04",
+  "title": "蔬果顏色：看懂分類",
+  "key_terms": [
+    "顏色 | yán sè | màu sắc",
+    "營養 | yíng yǎng | dinh dưỡng",
+    "色素 | sè sù | chất tạo màu"
+  ],
+  "sources": [
+    "s1/semester1_lessons/w04_蔬果顏色營養.html"
+  ],
+  "reading_skill": "看懂分類",
+  "writing_goal": "用「⋯⋯可以分成⋯⋯」寫一句分類句，再用一句舉例：「⋯⋯色的有⋯⋯」，共寫 2–3 句。",
+  "style_reference": "Original YouTube W06 HrXwF8WgQSc / W07 PH1PZgDCTFs / W08 Vb88oe_c1Qs; see reports/food-animations/style-reference.md",
+  "voice": "Microsoft Hanhan Desktop, zh-TW, rate -1",
+  "simplification": "課文概念示意；研究非個人保證；包裝與流程圖非實際產品；語文教學不取代個人營養或食品安全建議",
+  "scenes": [
+    {
+      "speech": "番茄紅，菠菜綠，葡萄紫。食物的顏色從哪裡來？今天練習分類和舉例。",
+      "focus": "紅、綠、紫，怎麼分類？",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "植物裡的天然色素，讓蔬果有不同顏色。我們可以先按顏色，把蔬果分成幾組。",
+      "focus": "分類依據：顏色",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "紅色的有番茄，綠色的有菠菜，紫色的有葡萄。每一組都要放對應的例子。",
+      "focus": "紅：番茄／綠：菠菜／紫：葡萄",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "課文又介紹三種紅色色素來源。花青素、甜菜色素和胭脂蟲紅，來源並不一樣。",
+      "focus": "色素來源，是另一種分類",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "胭脂蟲紅來自昆蟲，不是蔬果。分類時要先看依據，不能把所有天然色素都當植物。",
+      "focus": "天然，不一定來自植物",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "讀分類段落，圈出可以分成和各組名稱。再問自己，作者是按顏色，還是按來源分？",
+      "focus": "先找依據，再找各組",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "寫分類句，例如，蔬果可以分成不同顏色。可以分成，告訴讀者你要開始分類。",
+      "focus": "蔬果可以分成不同顏色。",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "下一句舉例，紅色的有番茄。也可以寫，我最喜歡紫色的葡萄。顏色不是健康保證。",
+      "focus": "紅色的有番茄。",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "換你寫兩到三句。先分類，再舉例，最後說喜好。吃多種蔬果，比只選一種顏色好。",
+      "focus": "任務：分類＋舉例＋喜好",
+      "illustration": "subject object and writing notebook"
+    }
+  ],
+  "timing": {
+    "speech_seconds": 94.29609977324263,
+    "video_seconds": 96.33333333333333,
+    "cues": [
+      {
+        "start": 0,
+        "end": 10.140589569160998,
+        "text": "番茄紅，菠菜綠，葡萄紫。食物的顏色從哪裡來？今天練習分類和舉例。"
+      },
+      {
+        "start": 10.140589569160998,
+        "end": 20.010340136054424,
+        "text": "植物裡的天然色素，讓蔬果有不同顏色。我們可以先按顏色，把蔬果分成幾組。"
+      },
+      {
+        "start": 20.010340136054424,
+        "end": 29.33170068027211,
+        "text": "紅色的有番茄，綠色的有菠菜，紫色的有葡萄。每一組都要放對應的例子。"
+      },
+      {
+        "start": 29.33170068027211,
+        "end": 39.92861678004535,
+        "text": "課文又介紹三種紅色色素來源。花青素、甜菜色素和胭脂蟲紅，來源並不一樣。"
+      },
+      {
+        "start": 39.92861678004535,
+        "end": 50.854512471655326,
+        "text": "胭脂蟲紅來自昆蟲，不是蔬果。分類時要先看依據，不能把所有天然色素都當植物。"
+      },
+      {
+        "start": 50.854512471655326,
+        "end": 61.60458049886621,
+        "text": "讀分類段落，圈出可以分成和各組名稱。再問自己，作者是按顏色，還是按來源分？"
+      },
+      {
+        "start": 61.60458049886621,
+        "end": 71.69963718820861,
+        "text": "寫分類句，例如，蔬果可以分成不同顏色。可以分成，告訴讀者你要開始分類。"
+      },
+      {
+        "start": 71.69963718820861,
+        "end": 82.78367346938775,
+        "text": "下一句舉例，紅色的有番茄。也可以寫，我最喜歡紫色的葡萄。顏色不是健康保證。"
+      },
+      {
+        "start": 82.78367346938775,
+        "end": 94.29609977324263,
+        "text": "換你寫兩到三句。先分類，再舉例，最後說喜好。吃多種蔬果，比只選一種顏色好。"
+      }
+    ]
+  }
+}

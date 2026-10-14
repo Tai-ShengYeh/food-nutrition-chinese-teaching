@@ -1,0 +1,16 @@
+{
+  "week": 5,
+  "slug": "w05",
+  "title": "甘藷的世界：找細節資訊",
+  "duration": 96.666667,
+  "bytes": 1355623,
+  "sha256": "451eca2ffbfd0ca3173c881e6754023e56d61cffe7358c6ab6ce1634517caecd",
+  "width": 1280,
+  "height": 720,
+  "complete_decode": "passed",
+  "audible_narration_rms": 2387.07,
+  "full_subtitles": 9,
+  "scene_count": 9,
+  "ending_hold": 2.0536057755102064,
+  "speech_alignment": "per-sentence measured WAV durations"
+}

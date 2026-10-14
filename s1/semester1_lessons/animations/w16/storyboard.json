@@ -1,0 +1,116 @@
+{
+  "number": 16,
+  "week": "W16",
+  "title": "台越市場：比較異同",
+  "key_terms": [
+    "市場 | shì chǎng | chợ",
+    "攤位 | tān wèi | gian hàng",
+    "批發 | pī fā | bán sỉ"
+  ],
+  "sources": [
+    "s1/semester1_lessons/w16_台越飲食比較.html"
+  ],
+  "reading_skill": "比較異同（入門）",
+  "writing_goal": "根據比較表，寫一個小段（約80字）：開頭一句總述→相同1點→不同1–2點→結尾感想。",
+  "style_reference": "Original YouTube W06 HrXwF8WgQSc / W07 PH1PZgDCTFs / W08 Vb88oe_c1Qs; see reports/food-animations/style-reference.md",
+  "voice": "Microsoft Hanhan Desktop, zh-TW, rate -1",
+  "simplification": "課文概念示意；研究非個人保證；包裝與流程圖非實際產品；語文教學不取代個人營養或食品安全建議",
+  "scenes": [
+    {
+      "speech": "市場是餐桌的起點。你家鄉的市場，和台北市場有什麼相同？今天用比較表來寫小段。",
+      "focus": "兩個市場，相同和不同？",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "課文介紹環南市場，從老舊的空間，慢慢改建成新的市場。這是一個台灣市場的例子。",
+      "focus": "讀本一：環南市場",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "批發，是大量買賣，餐廳可能一次買很多。零售，是少量買賣，家庭買回家做一餐。",
+      "focus": "批發：大量／零售：少量",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "第二份讀本，是你寫的家鄉市場。回想開市時間、主要食材和環境，把觀察寫下來。",
+      "focus": "讀本二：我的家鄉市場",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "比較表可以畫三欄。相同、台灣這個市場、越南這個市場。每一點都要有資料支持。",
+      "focus": "相同／台灣例子／越南例子",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "兩個市場都賣新鮮食材，是相同點。開市時間可能不同，要用你實際觀察的時間。",
+      "focus": "都：相同點／不同的是：差異",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "開頭可以寫，台灣和越南都有熱鬧的市場。接著寫相同的是，都能買到新鮮食材。",
+      "focus": "台灣和越南都……",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "再用不同的是，說一個有證據的差異。不要用一個市場，就說整個國家都一樣。",
+      "focus": "不同的是……要有觀察證據",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "換你根據比較表，寫約八十字。開頭、相同點、不同點、感想。兩邊各有特色，不用排名。",
+      "focus": "任務：約 80 字比較小段",
+      "illustration": "subject object and writing notebook"
+    }
+  ],
+  "timing": {
+    "speech_seconds": 98.24621315192744,
+    "video_seconds": 100.33333333333333,
+    "cues": [
+      {
+        "start": 0,
+        "end": 11.622902494331067,
+        "text": "市場是餐桌的起點。你家鄉的市場，和台北市場有什麼相同？今天用比較表來寫小段。"
+      },
+      {
+        "start": 11.622902494331067,
+        "end": 22.43501133786848,
+        "text": "課文介紹環南市場，從老舊的空間，慢慢改建成新的市場。這是一個台灣市場的例子。"
+      },
+      {
+        "start": 22.43501133786848,
+        "end": 33.21219954648526,
+        "text": "批發，是大量買賣，餐廳可能一次買很多。零售，是少量買賣，家庭買回家做一餐。"
+      },
+      {
+        "start": 33.21219954648526,
+        "end": 44.10181405895692,
+        "text": "第二份讀本，是你寫的家鄉市場。回想開市時間、主要食材和環境，把觀察寫下來。"
+      },
+      {
+        "start": 44.10181405895692,
+        "end": 55.29809523809524,
+        "text": "比較表可以畫三欄。相同、台灣這個市場、越南這個市場。每一點都要有資料支持。"
+      },
+      {
+        "start": 55.29809523809524,
+        "end": 65.97981859410432,
+        "text": "兩個市場都賣新鮮食材，是相同點。開市時間可能不同，要用你實際觀察的時間。"
+      },
+      {
+        "start": 65.97981859410432,
+        "end": 76.33886621315193,
+        "text": "開頭可以寫，台灣和越南都有熱鬧的市場。接著寫相同的是，都能買到新鮮食材。"
+      },
+      {
+        "start": 76.33886621315193,
+        "end": 86.10544217687075,
+        "text": "再用不同的是，說一個有證據的差異。不要用一個市場，就說整個國家都一樣。"
+      },
+      {
+        "start": 86.10544217687075,
+        "end": 98.24621315192744,
+        "text": "換你根據比較表，寫約八十字。開頭、相同點、不同點、感想。兩邊各有特色，不用排名。"
+      }
+    ]
+  }
+}

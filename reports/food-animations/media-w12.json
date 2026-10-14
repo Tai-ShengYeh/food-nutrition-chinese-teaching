@@ -1,0 +1,16 @@
+{
+  "week": 12,
+  "slug": "w12",
+  "title": "藻藍素：功能與限制",
+  "duration": 97.833333,
+  "bytes": 1393433,
+  "sha256": "ede67a0bb485f75e0bcff58a82b99380bf60fa63e8632a169d12af22d9748fb3",
+  "width": 1280,
+  "height": 720,
+  "complete_decode": "passed",
+  "audible_narration_rms": 2489.64,
+  "full_subtitles": 9,
+  "scene_count": 9,
+  "ending_hold": 2.00072529024942,
+  "speech_alignment": "per-sentence measured WAV durations"
+}

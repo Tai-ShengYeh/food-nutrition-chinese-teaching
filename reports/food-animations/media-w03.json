@@ -1,0 +1,16 @@
+{
+  "week": 3,
+  "slug": "w03",
+  "title": "均衡餐盤：找主題句",
+  "duration": 95.166667,
+  "bytes": 1361602,
+  "sha256": "c03f59e152622894f331eb1627c6bde93a5254326736ffc10eb95654aea8791a",
+  "width": 1280,
+  "height": 720,
+  "complete_decode": "passed",
+  "audible_narration_rms": 2294.65,
+  "full_subtitles": 9,
+  "scene_count": 9,
+  "ending_hold": 2.154376750566911,
+  "speech_alignment": "per-sentence measured WAV durations"
+}

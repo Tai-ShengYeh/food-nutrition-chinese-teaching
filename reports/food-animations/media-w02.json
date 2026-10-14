@@ -1,0 +1,16 @@
+{
+  "week": 2,
+  "slug": "w02",
+  "title": "六大類食物：找關鍵詞",
+  "duration": 94.166667,
+  "bytes": 1328764,
+  "sha256": "d231b24aded44d3bb5b7536e104c6c81f56a6389f8304a05c980c5a0660448ab",
+  "width": 1280,
+  "height": 720,
+  "complete_decode": "passed",
+  "audible_narration_rms": 2345.94,
+  "full_subtitles": 9,
+  "scene_count": 9,
+  "ending_hold": 2.0882543015873125,
+  "speech_alignment": "per-sentence measured WAV durations"
+}

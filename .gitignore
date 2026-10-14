@@ -18,3 +18,9 @@ Thumbs.db
 w1w2w3_raw.json
 w4_raw.json
 *_raw.json
+
+# Narration/render intermediates (regenerate from committed scripts)
+*.wav
+.render-cache/
+__pycache__/
+*.pyc

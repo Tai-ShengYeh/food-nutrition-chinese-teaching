@@ -1,0 +1,116 @@
+{
+  "number": 14,
+  "week": "W14",
+  "title": "食品安全：先找重點再提醒",
+  "key_terms": [
+    "衛生 | wèi shēng | vệ sinh",
+    "食用 | shí yòng | dùng để ăn",
+    "驗出 | yàn chū | phát hiện qua xét nghiệm"
+  ],
+  "sources": [
+    "s1/semester1_lessons/w14_食品安全衛生.html"
+  ],
+  "reading_skill": "找重點句",
+  "writing_goal": "用命令或建議句型寫 3 句食品安全提醒：「要⋯⋯」「請不要⋯⋯」，各配一句原因更好。",
+  "style_reference": "Original YouTube W06 HrXwF8WgQSc / W07 PH1PZgDCTFs / W08 Vb88oe_c1Qs; see reports/food-animations/style-reference.md",
+  "voice": "Microsoft Hanhan Desktop, zh-TW, rate -1",
+  "simplification": "課文概念示意；研究非個人保證；包裝與流程圖非實際產品；語文教學不取代個人營養或食品安全建議",
+  "scenes": [
+    {
+      "speech": "新聞寫致癌油，就表示吃一次一定生病嗎？今天練習找重點句，不只看嚇人的標題。",
+      "focus": "看到嚇人標題，先查內容",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "驗出，表示檢查時發現某種物質。超標，表示超過規定的標準。這兩個意思不一樣。",
+      "focus": "驗出／超標：意思不同",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "風險還要看吃了多少、多久，以及物質的種類。不能只看到一個詞，就猜一定生病。",
+      "focus": "看量、時間與物質種類",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "也不能因為不一定生病，就忽略超標。遇到問題產品，要看主管機關的通知和處理方法。",
+      "focus": "問題產品：依官方通知處理",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "讀文章時，找總結整段的句子。理性看待、不必恐慌，是課文提醒我們的重點。",
+      "focus": "重點句：理性看待、不必恐慌",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "廚房裡有具體做法。不要把油加熱到冒煙，也不要一直重複用同一鍋油。",
+      "focus": "不要把油加熱到冒煙",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "提醒句可以用要和請不要。要看油品的標示與來源。請不要把油加熱到冒煙。",
+      "focus": "要……／請不要……",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "加上因為，說出原因。例如，請不要一直重複用油，因為油的品質會改變。",
+      "focus": "請不要……因為……",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "換你寫三句安全提醒。每句要有清楚的動作，能加原因更好。讀完重點，再做安全選擇。",
+      "focus": "任務：三句具體安全提醒",
+      "illustration": "subject object and writing notebook"
+    }
+  ],
+  "timing": {
+    "speech_seconds": 94.87664399092971,
+    "video_seconds": 97.0,
+    "cues": [
+      {
+        "start": 0,
+        "end": 10.781587301587301,
+        "text": "新聞寫致癌油，就表示吃一次一定生病嗎？今天練習找重點句，不只看嚇人的標題。"
+      },
+      {
+        "start": 10.781587301587301,
+        "end": 21.99609977324263,
+        "text": "驗出，表示檢查時發現某種物質。超標，表示超過規定的標準。這兩個意思不一樣。"
+      },
+      {
+        "start": 21.99609977324263,
+        "end": 32.58439909297052,
+        "text": "風險還要看吃了多少、多久，以及物質的種類。不能只看到一個詞，就猜一定生病。"
+      },
+      {
+        "start": 32.58439909297052,
+        "end": 43.57582766439909,
+        "text": "也不能因為不一定生病，就忽略超標。遇到問題產品，要看主管機關的通知和處理方法。"
+      },
+      {
+        "start": 43.57582766439909,
+        "end": 53.69219954648526,
+        "text": "讀文章時，找總結整段的句子。理性看待、不必恐慌，是課文提醒我們的重點。"
+      },
+      {
+        "start": 53.69219954648526,
+        "end": 62.86557823129252,
+        "text": "廚房裡有具體做法。不要把油加熱到冒煙，也不要一直重複用同一鍋油。"
+      },
+      {
+        "start": 62.86557823129252,
+        "end": 73.29773242630385,
+        "text": "提醒句可以用要和請不要。要看油品的標示與來源。請不要把油加熱到冒煙。"
+      },
+      {
+        "start": 73.29773242630385,
+        "end": 82.94321995464853,
+        "text": "加上因為，說出原因。例如，請不要一直重複用油，因為油的品質會改變。"
+      },
+      {
+        "start": 82.94321995464853,
+        "end": 94.87664399092971,
+        "text": "換你寫三句安全提醒。每句要有清楚的動作，能加原因更好。讀完重點，再做安全選擇。"
+      }
+    ]
+  }
+}

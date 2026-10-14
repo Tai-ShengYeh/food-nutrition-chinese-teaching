@@ -1,0 +1,116 @@
+{
+  "number": 5,
+  "week": "W05",
+  "title": "甘藷的世界：找細節資訊",
+  "key_terms": [
+    "甘藷 | gān shǔ | khoai lang",
+    "產季 | chǎn jì | mùa thu hoạch",
+    "品種 | pǐn zhǒng | giống"
+  ],
+  "sources": [
+    "s1/semester1_lessons/w05_主食米飯麵包.html"
+  ],
+  "reading_skill": "找細節資訊",
+  "writing_goal": "寫 3 個句子介紹一種主食：它是什麼＋吃起來怎麼樣（口感或味道）＋你怎麼吃它。會寫了，再加一句跟別的食物比一比。",
+  "style_reference": "Original YouTube W06 HrXwF8WgQSc / W07 PH1PZgDCTFs / W08 Vb88oe_c1Qs; see reports/food-animations/style-reference.md",
+  "voice": "Microsoft Hanhan Desktop, zh-TW, rate -1",
+  "simplification": "課文概念示意；研究非個人保證；包裝與流程圖非實際產品；語文教學不取代個人營養或食品安全建議",
+  "scenes": [
+    {
+      "speech": "同樣是甘藷，吃起來都一樣嗎？今天比較兩個品種，練習找細節和描述口感。",
+      "focus": "同樣是甘藷，口感一樣嗎？",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "課文介紹台灣北海岸的甘藷。三芝有臺農五十七號，金山有臺農六十六號。",
+      "focus": "課文例子：57 號／66 號",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "五十七號的肉是黃色的，皮比較薄。課文說，吃起來粉粉的，味道像栗子，適合烤。",
+      "focus": "57 號：黃肉／粉粉的／烤",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "六十六號的肉是紅橘色的，水分比較多。課文說，吃起來比較軟，適合用蒸的。",
+      "focus": "66 號：紅橘肉／軟／蒸",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "找細節以前，先問問題。哪個是黃色？哪個比較軟？再回到對應段落找答案。",
+      "focus": "提問 → 回到段落找證據",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "不要只看品種名字就猜答案。把顏色、口感和做法分開記，才不容易弄錯。",
+      "focus": "顏色／口感／做法",
+      "illustration": "subject objects with pencil reveal"
+    },
+    {
+      "speech": "介紹主食，第一句寫它是什麼。我的主食是白飯。第二句寫口感，它吃起來軟軟的。",
+      "focus": "我的主食是白飯。",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "第三句寫你怎麼吃。我跟家人一起吃白飯和蛋。想挑戰時，再加一句比較句。",
+      "focus": "它吃起來……／我跟……一起吃……",
+      "illustration": "subject object and writing notebook"
+    },
+    {
+      "speech": "換你選白飯、麵包或甘藷，寫三句介紹。要有名字、口感和吃法，再找同學互相念。",
+      "focus": "任務：名字＋口感＋吃法",
+      "illustration": "subject object and writing notebook"
+    }
+  ],
+  "timing": {
+    "speech_seconds": 94.6130612244898,
+    "video_seconds": 96.66666666666667,
+    "cues": [
+      {
+        "start": 0,
+        "end": 10.09002267573696,
+        "text": "同樣是甘藷，吃起來都一樣嗎？今天比較兩個品種，練習找細節和描述口感。"
+      },
+      {
+        "start": 10.09002267573696,
+        "end": 19.855827664399094,
+        "text": "課文介紹台灣北海岸的甘藷。三芝有臺農五十七號，金山有臺農六十六號。"
+      },
+      {
+        "start": 19.855827664399094,
+        "end": 30.628526077097504,
+        "text": "五十七號的肉是黃色的，皮比較薄。課文說，吃起來粉粉的，味道像栗子，適合烤。"
+      },
+      {
+        "start": 30.628526077097504,
+        "end": 40.880045351473925,
+        "text": "六十六號的肉是紅橘色的，水分比較多。課文說，吃起來比較軟，適合用蒸的。"
+      },
+      {
+        "start": 40.880045351473925,
+        "end": 51.99065759637188,
+        "text": "找細節以前，先問問題。哪個是黃色？哪個比較軟？再回到對應段落找答案。"
+      },
+      {
+        "start": 51.99065759637188,
+        "end": 61.900589569161,
+        "text": "不要只看品種名字就猜答案。把顏色、口感和做法分開記，才不容易弄錯。"
+      },
+      {
+        "start": 61.900589569161,
+        "end": 73.13786848072563,
+        "text": "介紹主食，第一句寫它是什麼。我的主食是白飯。第二句寫口感，它吃起來軟軟的。"
+      },
+      {
+        "start": 73.13786848072563,
+        "end": 83.79569160997733,
+        "text": "第三句寫你怎麼吃。我跟家人一起吃白飯和蛋。想挑戰時，再加一句比較句。"
+      },
+      {
+        "start": 83.79569160997733,
+        "end": 94.6130612244898,
+        "text": "換你選白飯、麵包或甘藷，寫三句介紹。要有名字、口感和吃法，再找同學互相念。"
+      }
+    ]
+  }
+}

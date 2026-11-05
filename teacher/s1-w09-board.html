@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><title>華語寫作 I 期中複習課 流程板</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{--p:#0f3460;--a:#a04c08;--t:#117a65;--ink:#1b2a2b;--mut:#5a6a6b;--line:#cfd8dc;--bg:#f3f6f8}
+*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;color:var(--ink);background:var(--bg);font-size:18px;line-height:1.5}
+header{background:var(--p);color:#fff;padding:12px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+header h1{margin:0;font-size:24px}header .meta{font-size:15px;opacity:.9}
+.master{font-variant-numeric:tabular-nums;font-size:30px;font-weight:700;background:#fff;color:var(--p);border-radius:8px;padding:2px 14px}.master.warn{color:#c00}
+main{display:grid;grid-template-columns:1fr 300px;gap:18px;padding:18px 22px;max-width:1500px;margin:0 auto}
+.blk{background:#fff;border:2px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:14px;transition:border-color .2s,box-shadow .2s}
+.blk.active{border-color:var(--a);box-shadow:0 0 0 4px #fbe9dc}.blk.done{opacity:.55}
+.hd{display:grid;grid-template-columns:110px 1fr auto;gap:12px;align-items:center}
+.time{font-size:20px;font-weight:700;color:var(--p)}.ttl h2{margin:0;font-size:22px}.sub{color:var(--mut);font-size:15px}
+.timer{text-align:right}.clock{display:block;font-variant-numeric:tabular-nums;font-size:34px;font-weight:700;color:var(--t)}.blk.active .clock.low{color:#c00}
+.go{font:inherit;font-size:15px;padding:4px 12px;border-radius:6px;border:1px solid var(--p);background:#fff;color:var(--p);cursor:pointer}.blk.active .go{background:var(--a);border-color:var(--a);color:#fff}
+.steps{margin:8px 0 6px;padding-left:26px}.steps li{margin:4px 0}
+.links a.lnk{display:inline-block;margin:4px 8px 0 0;padding:4px 12px;border-radius:6px;background:#eaf2f8;color:var(--p);text-decoration:none;font-size:15px;border:1px solid #c9dbe8}.links a.lnk:hover{background:#d9e8f3}
+.show{background:#f7f9fb;border:1px dashed var(--line);border-radius:8px;padding:8px 12px;margin:6px 0}.showt{font-size:14px;color:var(--mut);margin-bottom:4px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px}.card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:5px 9px}.ck{font-size:13px;color:var(--p);font-weight:700}.cv{font-size:17px}
+aside{position:sticky;top:12px;align-self:start}
+.qr{background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px;text-align:center;margin-bottom:12px;display:none}.qr.show{display:block;border-color:var(--a)}.qr img{width:100%;max-width:250px;display:block;margin:0 auto}
+.qt{font-weight:700;font-size:20px;margin-top:4px}.qn{font-size:14px;color:var(--mut)}.qu{font-size:11px;color:var(--mut);word-break:break-all}
+.roster{background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:14px}.roster h3{margin:0 0 6px;font-size:17px}.roster .n{color:var(--a);font-weight:700}
+.stu{display:flex;gap:6px;align-items:center;margin:3px 0}.stu .nm{flex:1;font:inherit;font-size:15px;border:0;border-bottom:1px solid var(--line);padding:2px 4px}.stu input[type=checkbox]{width:20px;height:20px}
+.note{background:#fff8e6;border-left:4px solid var(--a);padding:8px 12px;border-radius:6px;font-size:15px;margin-bottom:14px}
+footer{text-align:center;color:var(--mut);font-size:13px;padding:10px}
+@media (max-width:900px){main{grid-template-columns:1fr}aside{position:static}}
+@media print{header,.go,aside{display:none}.qr{display:block}}
+</style></head><body>
+<header><div><h1>華語寫作 I 期中複習課 流程板</h1><div class="meta">國合班 8 人 · 以 100 分鐘算 · 下週期中考：閱讀 60 分＋寫作 40 分，B4 一張雙面</div></div>
+<div><span class="master" id="master">00:00</span> <button class="go" onclick="toggleMaster()" id="mbtn">上課開始</button></div></header>
+<main>
+<div>
+<div class="note">按每段的「開始這段」會啟動該段倒數，右邊 QR 自動切成那一段學生要掃的。上方總計時從「上課開始」算。</div>
+
+<section class="blk" id="b1" data-min="10" data-qr="">
+  <div class="hd">
+    <div class="time">0–10 分</div>
+    <div class="ttl"><h2>講考卷結構</h2><div class="sub">10/29 改版：閱讀 60、寫作 40，多了句型造句和 4–6 句短段</div></div>
+    <div class="timer"><span class="clock">10:00</span><button class="go" onclick="startBlock('b1')">開始這段</button></div>
+  </div>
+  <ol class="steps"><li>投影：閱讀 60 ＝ 詞彙配對 16、克漏字 16、閱讀 24、分類表 4</li><li>投影：寫作 40 ＝ 排句 8、句型造句 12（六句）、短段寫作 20（4–6 句）</li><li>原因可以用越南文或英文寫；不懂的字先跳過</li></ol>
+  <div class="links"></div>
+</section>
+<section class="blk" id="b2" data-min="30" data-qr="kahoot">
+  <div class="hd">
+    <div class="time">10–40 分</div>
+    <div class="ttl"><h2>期中複習 Kahoot 三份</h2><div class="sub">①詞彙 12 題 ②克漏字 10 題 ③閱讀〈香蕉〉8 題</div></div>
+    <div class="timer"><span class="clock">30:00</span><button class="go" onclick="startBlock('b2')">開始這段</button></div>
+  </div>
+  <ol class="steps"><li>實況主持 → 選取體驗選<b>正確度</b> → 齒輪：暱稱產生器關、答題時間不受限制開</li><li>暱稱規則投在 PIN 旁邊：<b>學號後三碼＋姓名</b></li><li>③閱讀那份先把〈香蕉〉文章投影讓大家讀完再開始</li><li>每題看選項分布，錯最多的詞記下來</li></ol>
+  <div class="links"><a class="lnk" target="_blank" rel="noopener" href="https://create.kahoot.it/details/3db5a68f-4dc5-4565-87e2-87e11910e11c">①詞彙 ↗</a><a class="lnk" target="_blank" rel="noopener" href="https://create.kahoot.it/details/7909b550-ba18-425c-8777-8273981bfd0d">②克漏字 ↗</a><a class="lnk" target="_blank" rel="noopener" href="https://create.kahoot.it/details/2364488e-bd52-436b-9bb5-6e6c18d877ce">③閱讀（香蕉） ↗</a></div>
+</section>
+<section class="blk" id="b3" data-min="20" data-qr="site">
+  <div class="hd">
+    <div class="time">40–60 分</div>
+    <div class="ttl"><h2>句型造句 六句（紙筆）</h2><div class="sub">考卷「陸」就是這六個句型，每個寫一句，兩人互看</div></div>
+    <div class="timer"><span class="clock">20:00</span><button class="go" onclick="startBlock('b3')">開始這段</button></div>
+  </div>
+  <ol class="steps"><li>發白紙，六個句型各寫一句，限 12 分鐘</li><li>兩人交換看：有沒有用到句型裡的詞？句子完整嗎？</li><li>每個句型請一位學生唸，老師當場改一句</li></ol><div class="show"><div class="showt">投影這六個句型（各週「寫一寫」的 chips）</div><div class="cards"><div class="card"><div class="ck">W1 詞彙造句</div><div class="cv">我在超市買…／…的味道…／我先看…</div></div><div class="card"><div class="ck">W2 名詞解釋句</div><div class="cv">……是……類／研究發現……／我覺得……，因為……</div></div><div class="card"><div class="ck">W4 分類句</div><div class="cv">蔬果可以分成…／紅色的有…／我最喜歡…色</div></div><div class="card"><div class="ck">W5 描述主食</div><div class="cv">我的主食是…／吃起來…／我跟家人一起吃…</div></div><div class="card"><div class="ck">W6 比較句</div><div class="cv">A 比 B 甜／都很便宜／形狀像…</div></div><div class="card"><div class="ck">W7 意見句</div><div class="cv">我覺得…不健康／因為…太多糖／所以我改喝…</div></div></div></div>
+  <div class="links"></div>
+</section>
+<section class="blk" id="b4" data-min="20" data-qr="edcafe">
+  <div class="hd">
+    <div class="time">60–80 分</div>
+    <div class="ttl"><h2>短段寫作 4–6 句 → Edcafe</h2><div class="sub">考卷「柒」20 分；Edcafe 目前 0 份提交，今天至少 6 份</div></div>
+    <div class="timer"><span class="clock">20:00</span><button class="go" onclick="startBlock('b4')">開始這段</button></div>
+  </div>
+  <ol class="steps"><li>老師先投影示範一次 Edcafe 操作：掃 QR → 貼上 → 送出</li><li>學生用手機寫 4–6 句，直接貼進 Edcafe，老師同時看結果</li><li>沒寫完的先送出已寫的，老師看到批改結果再講兩個共同問題</li></ol><div class="show"><div class="showt">投影題目（擇一）</div><div class="cards"><div class="card"><div class="ck">A 我的早餐（W8 順序詞）</div><div class="cv">先……，再……，最後……。</div></div><div class="card"><div class="ck">B 我要吃得更健康（W3 主題句）</div><div class="cv">我要多吃…。首先…。再來…。這樣會…。</div></div></div></div>
+  <div class="links"><a class="lnk" target="_blank" rel="noopener" href="https://app.edcafe.ai/me/file?fId=6aaba08d213c811c0712bed4">Edcafe W08 作文批改 ↗</a><a class="lnk" target="_blank" rel="noopener" href="https://app.edcafe.ai/me/file?fId=6aab9e3e213c811c0712acc7">Edcafe W03 作文批改 ↗</a></div>
+</section>
+<section class="blk" id="b5" data-min="20" data-qr="wayground">
+  <div class="hd">
+    <div class="time">80–100 分</div>
+    <div class="ttl"><h2>Wayground g2＋g5，老師控制進度</h2><div class="sub">挑考卷選擇題多的週：W3、W4、W7，時間夠再加 W6</div></div>
+    <div class="timer"><span class="clock">20:00</span><button class="go" onclick="startBlock('b5')">開始這段</button></div>
+  </div>
+  <ol class="steps"><li>Wayground 我的資源庫 → 寫作I W03 → 開始 → <b>老師控制進度</b>；關計時、關排行榜、關顯示答案</li><li>指派給「115_1_食品營養華語文獻閱讀與寫作」班級（已有 8 人）</li><li>做完一週換下一週；每週約 6 分鐘</li></ol>
+  <div class="links"><a class="lnk" target="_blank" rel="noopener" href="https://wayground.com/activity/admin/quiz/6acbba1228a947327391d2fc">W03 ↗</a><a class="lnk" target="_blank" rel="noopener" href="https://wayground.com/activity/admin/quiz/6acbba42859ef2057477464c">W04 ↗</a><a class="lnk" target="_blank" rel="noopener" href="https://wayground.com/activity/admin/quiz/6acbbaa7701eb0967b9638ea">W06 ↗</a><a class="lnk" target="_blank" rel="noopener" href="https://wayground.com/activity/admin/quiz/6acbbadaf0917f99a1e71703">W07 ↗</a><a class="lnk" target="_blank" rel="noopener" href="https://wayground.com/activity/admin/quiz/6acbb98c08c2d908088f0b67">W01 ↗</a><a class="lnk" target="_blank" rel="noopener" href="https://wayground.com/activity/admin/quiz/6acbb9d58a795cdfa9cfd16d">W02 ↗</a><a class="lnk" target="_blank" rel="noopener" href="https://wayground.com/activity/admin/quiz/6acbba75efe0231f636525bf">W05 ↗</a><a class="lnk" target="_blank" rel="noopener" href="https://wayground.com/activity/admin/quiz/6acbbb0bdc67065c11799f28">W08 ↗</a></div>
+</section>
+<div class="roster"><h3>點名 <span class="n" id="cnt">0</span>/8　<span class="sub">複習週目標：Wayground 8/8、Edcafe 作文至少 6 份</span></h3><label class="stu"><input type="checkbox" data-i="0"><input class="nm" type="text" placeholder="學生 1" data-i="0"></label><label class="stu"><input type="checkbox" data-i="1"><input class="nm" type="text" placeholder="學生 2" data-i="1"></label><label class="stu"><input type="checkbox" data-i="2"><input class="nm" type="text" placeholder="學生 3" data-i="2"></label><label class="stu"><input type="checkbox" data-i="3"><input class="nm" type="text" placeholder="學生 4" data-i="3"></label><label class="stu"><input type="checkbox" data-i="4"><input class="nm" type="text" placeholder="學生 5" data-i="4"></label><label class="stu"><input type="checkbox" data-i="5"><input class="nm" type="text" placeholder="學生 6" data-i="5"></label><label class="stu"><input type="checkbox" data-i="6"><input class="nm" type="text" placeholder="學生 7" data-i="6"></label><label class="stu"><input type="checkbox" data-i="7"><input class="nm" type="text" placeholder="學生 8" data-i="7"></label></div>
+<div class="roster"><h3>今天記下來（Kahoot 哪一份答對率最低、哪個句型大家寫不出來）</h3><textarea id="memo" style="width:100%;height:90px;font:inherit;font-size:15px;border:1px solid var(--line);border-radius:6px;padding:6px"></textarea></div>
+</div>
+<aside>
+<div class="qr" id="qr-kahoot"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIcAAACHCAIAAACzhd1dAAACxklEQVR4nO2dQU4DMQwAKeIZ+QH8/yXwg/yjXKFCkSLbm3GZuSGgaXfk9SZO3Nv9fn8RGK+n34D8gVaIaIWIVoi8Pfw83j+uGXh+fRaNOwOvXPeutsY1VohohYhWiGilQ7ZfZ6EI68y5Hmj8/t91To4MBLkaxgoRrRDRChGtNMz2D0TmyYmvvGbrWSCSwOuuhrFCRCtEtEJEK/2zfR3rFD3zFti3BjqFsUJEK0S0QkQrRCjZ/oG5k3UTC/UQjBUiWiGiFSJa6Z/t63Jj4hx7BioIkaeMRIwVIlohohUiWmmY7S/blL5m7Czs163VX3Y1jBUiWiGiFSJaIXJjnrcfeQmcWZlfY6wQ0QoRrRDRSsPz9onz5LqDcSMw5a57cIhcSWOFiFaIaIWIVjpk+60db1vZD9JOZ+yMG/njyOc1VohohYhWiGilfy+9SAa7bAY+d6bcW79N3P9nd51+eAcjohUiWnm6E3hbq9ORpjcjb469ReTBIfJIYqwQ0QoRrRDRytNl+8Q187q3UdfGJ3GvgXX7BngHI6IVIlrpX7dPzI11TwoTuUXfun17vIMR0QoRrfzv78BjTvVHWaF+/VLW7fvhHYyIVohopf95e8i695q63juX9eQ1VohohYhWiGilQ7av25MfYR76Or1TFQRjhYhWiGiFiFaIUHrpQfrbzqt67LtLrx/ewYhohYhW/nfd/oG6RnQzbyHg1JY+Y4WIVohohYhWGp7AS8xviTWCmfekcOrju5LfD+9gRLRCRCv9z9tflirnoQ0CpwbyvH0DvIMR0QoRrTxdd506BuNb7k414TVWiGiFiFaIaIUIJdsnTqpHXhUg8ttInyJjhYhWiGiFiFb6Z/u6bWpbuXFNYtO+xMrF1qUzVohohYhWiGilYbaH1LGZJ/Dqqg/GChGtENEKEa0QoZy3l58YK0S0QkQrRLTyAuQbmI1m7cdHt1sAAAAASUVORK5CYII=" alt="QR"><div class="qt">kahoot.it</div><div class="qn">輸入 PIN，暱稱＝學號後三碼＋姓名</div><div class="qu">https://kahoot.it</div></div><div class="qr" id="qr-site"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMMAAADDCAIAAACwHTL9AAAE4UlEQVR4nO3dy40bMRAFwLXhMJSBnX8kdgbMY32fAwGCr5uUUHUzrM9IeqBa3J6eH9/f31+w7ef+Q4AkEWNNIkOSyPj1+Pfr95+vFuPf3yPPOz+Mh8dRzW98533rPI7KmkSGJJEhSWRIEjUV98NSrXdnJbhkXuouFcJj4zCCvwPaPkFrEhmSRIYkkSFJtFTcO1VzsNYLbojPy9Wl6rXuN8TIvXVtn6A1iQxJIkOSyJAkTlTcdebFbF1tO3/knRJ7rOxTfwBrEhmSRIYkkSFJfFbFHWzn2NnFnj/Uzq+EMT2MpfveyZpEhiSRIUlkSBInKu660m+nnaOtpp7fd2xsai8dc12H+A5rEhmSRIYkkSFJtFTcbc0PO3vcdac71s0beU3f2Lod/zrWJDIkiQxJIkOSqKm4TzUwnNq3veS+r1xdfOoTtCaRIUlkSBIZkkTGj8cVcO7cP93RdvbjuGOS4s4x77w51iQyJIkMSSJDkrjvzMlTrSCnOlLaGrcfdhpU5v+78ylYk8iQJDIkiQxJ4sQed/A8w7ami7o97roXODbe9roGlflBWpPIkCQyJIkMSaKm4n4I1nrBHeG61oi6jeklwRfY9qvImkSGJJEhSWRIEi0V90NwdsdcXU/0Wxxz3c+R+SPv3NiaRIYkkSFJZEgSNX3cO9dteQh2PbdNy1uaHVh3kDvqTnbVx00H325kSBIZksSJMyeXisq3aPpuG889usaenNrTtyaRIUlkSBIZksQFfdxzdY3bd7ZVXFIXt/W8P1iTyJAkMiSJDEniglklbePx2k7gDHqVTX3Zed66+1qTyJAkMiSJDEmi5ZqTdX0UD20z7YK9LncW76Ns7vmcNYkMSSJDksiQJE6cOXnqYuR1hfAlHSmvlZ8Fl4wF18dNCd9uZEgSGZJES1fJXNuFIufPu+Qde7EfTl2oXsVNB99uZEgSGZLEBRV3nboO8Tt/UoyyvyUs0VXCeb7dyJAkMiSJC/q4T/U1B5+obnr1Q9vMkLm6D9SaRIYkkSFJZEgSJ/q4d1zSR/EW5flY6fK+ZJKiNYkMSSJDksiQJFr2uJcsXa8yKHjM80eu6y4fh8aezP/XHjcH+HYjQ5LIkCRO9HHfOdlj6SDnN67z6roU5FzdeG5rEhmSRIYkkSFJXFBxB11yxubDqbp4Sds1buasSWRIEhmSRIYkUdNVMlc36OPO0XrB572kWq97n61JZEgSGZJEhiTRUnHvjC6pG4B3alZJ3Zb36GpF37nv/MbWJDIkiQxJIkOSOLHHHezjnj/y0n2XBHfe2y6m8+q6BOUOaxIZkkSGJJEhSdT0cZ9SVxgGJ4zXnSna1s1Sd6lPaxIZkkSGJJEhSbTM465TN0tv6SW0XfvxtVHMLh3VTqVvHjfn+XYjQ5LIkCRO9HHvONW4Xberu2OUXfS9bd7hgzWJDEkiQ5LIkCTebVbJjuDz1m0QP7SV9nV/llh6ZGsSGZJEhiSRIUmcqLjvtNNtXTfKY3TN8g4exg5rEhmSRIYkkSFJfFbFXbcxvXTf4FEtqZvCuPN6TQfkAN9uZEgSGZLEBdMB27QNwq5rNh8bZzC2bVvvvHxrEhmSRIYkkSFJtFTcbaNL2orKuiaTJXVDCus6YVwBhw6+3ciQJDIkic+ax827syaRIUlkSBIZksRXxH/1oLAGHkcd9gAAAABJRU5ErkJggg==" alt="QR"><div class="qt">課程網站（各週課文）</div><div class="qn">寫作時可以回去看各週「寫一寫」</div><div class="qu">https://tai-shengyeh.github.io/food-nutrition-chinese-teaching/s1/semester1_lessons/</div></div><div class="qr" id="qr-edcafe"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK8AAACvCAIAAAAE8BkiAAAEEUlEQVR4nO3dUYrkNhQF0J4wy/AOkv2vJNmB99EDCeQyhhaWpSe54Zyf/qiyy9V1kR+SJf34/Pz8gH/98d8fkAZ+o20gpIH4+fG748+/PpY4//m76Mztr9D1uUfPqS5v7nq163MnulyGtoGQBkIaCGng6yqyrtbrqoxGyreJZ74YKQxH/pPLfgVtAyENhDQQ0sDtKvKiq14b6fWb2FU3UnKeA0Vl16le8itoGwhpIKSBkAaeVpG7dNWY7WMnvnliufoS2gZCGghpIKSB11eRy4a/d7267CnRLtoGQhoIaSCkgadV5K5iZ2RkuV2+1Q2OHwP9p12XMZG2gZAGQhoIaeB2FblrWPadHYjnvMck3zllW9tASAMhDYQ08HUV+ZKh1S5103jOTZ2Pu34FbQMhDYQ0ENLA7fUi62aMXM48cZmckYs8ml+/rlxtHzvCHG0ecqcgpIGQBuLHyN41IzNGli3t01ZXNZ9lq47XXaS2gZAGQhoIaeB2FfnODrW66vWYN927re7YkTNrGwhpIKSBkAaWjGgvKzlH+vXqisq2uoJ0hLaBkAZCGghpYNLsmro9qSdatoXOOW+QuuvY9qm6LlLbQEgDIQ2ENPD1iPZLls6eWM3VLZNzbvqgi4k/mbaBkAZCGghp4HYVeTFxt5auM3cd+y0c71iI80LbQEgDIQ2ENPC0L7LOsinMEx9I3FUYThxnv9A2ENJASAMhDTxd6WfXjisTi7u6Euyd83a6rkrbQEgDIQ2ENPB0B8Rd+7Esm8F9zivf6srGrn3D9UXykDsFIQ2ENFAzu+ZiWe/bxMtoq5uyvWwRcs9Fcpc7BSENhDRwuy/yW+zW0tU31z7zRdepdrFeJCXcKQhpIKSBpyPaF12bX+/qi2x/0MWxaqGjXetjei6Su9wpCGkgpIEl60Xumu69bLnv85WVb/tYVSR3uVMQ0kBIAztW+tk1Z3nXnJ9z1WTwNnvX8JA7BSENhDQwqYpctq32SyafHGXj3SOLWuqLpIQ7BSENhDRQM7tmYmHYVUa9pMY8e0418dWJ/ZjaBkIaCGkgpIGnq47XmbgAz7JNHM+yU7XV7cajbSCkgZAGQhr4ui9y1zZ+dasEtd/c1b247H+1bAudC20DIQ2ENBDSwO0R7brZNV2vfot9tC/qljfv+iBztHnInYKQBkIaePpcZN10monHtk185PCc10W4bK8efZHc5U5BSAMhDeyYXdOlrprbtVnNWXaRI7N6LsdqGwhpIKSBkAZeX0VejIw7j/TNnWXVXNuyeeUX2gZCGghpIKSBp1Xksn37Jq6fWLf69/kN69M2bQMhDYQ0ENLA7VXH64xURnVl41E2ObqtrtT1XCQPuVMQ0kBIA+9bL5I30DYQ0kBIAyENfPzvF0EjAADaiPBOAAAAAElFTkSuQmCC" alt="QR"><div class="qt">Edcafe 作文批改</div><div class="qn">W08 作文批改：貼上你寫的 4–6 句，按送出</div><div class="qu">https://app.edcafe.ai/me/file?fId=6aaba08d213c811c0712bed4</div></div><div class="qr" id="qr-wayground"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIcAAACHCAIAAACzhd1dAAACv0lEQVR4nO2dwW0jMQwAk+DKUAdJ/5XkOlAfvvcZgQCBpDR0Zn6Bnd21BxQtrqh9fzwebwLj4/YFyA9ohYhWiGiFyJ+nv8fn15kTz7/fi/NO5Kt1PJ3XWCGiFSJaIaKVDtl+nYUiJGbOsXOo9UfY+oDHvg1jhYhWiGiFiFYaZvu6NLt1orlzqMhkHvJtGCtEtEJEK0S00j/b17FOhiMvRdcl/0SMFSJaIaIVIlohQsn263nyDNTbmfl8jbFCRCtEtEJEK/2zfV2qjMztR94vhS3qjmysENEKEa0Q0UrDbH9sUXqLWv049W0YK0S0QkQrRLRC5L1Fv/3YydjMQsAWxgoRrRDRChGtdMj2kbyayCzrdUtM/om9+vbbN8ARjIhWiGilfyW/rsC+dRkREnv7tl59Yn1eY4WIVohohYhWGlbyE6e+EWbetPnYVUXqAsYKEa0Q0QoRrTTcOTdxW5v1mxOPfGwyX/e/xgoRrRDRChGt/O5++2Ml9Pn/kROX6CduwuvOuf1wBCOiFSJaefUOvLrK9ixrm6tbpRd5s7FCRCtEtEJEKw3X5B/b+v7WrfjJaL/3vn0DHMGIaIWIVvo/A+9WXp151fi6dfVbP5Ss5PfDEYyIVoho5eXu29c9K35eOvIWW1dlJb89jmBEtEJEKx2yfWQhWuTVxKrBKFuHd2xzIWOFiFaIaIWIVhp24NURSf6jbEnf1onW2G//ajiCEdEKEa30v28f4VYlf+aV/RNxTX4/HMGIaIWIVvrftz+WKsel9H6stLHGWCGiFSJaIaKV3727ToSRl94jdxDq2vXswGuAIxgRrRDRChFKtr+1oe28tLJwjbFCRCtEtEJEK/2z/a3Hv49TKRrS22esENEKEa0Q0cqr75wb4dZ0feQt7098KJCxQkQrRLRCRCsNn3grVzBWiGiFiFaIaOUNyD8//IR+DSCWwgAAAABJRU5ErkJggg==" alt="QR"><div class="qt">wayground.com/join</div><div class="qn">輸入老師投影的代碼</div><div class="qu">https://wayground.com/join</div></div>
+<div class="roster"><h3>連結備忘</h3><div style="font-size:14px"><a target="_blank" rel="noopener" href="https://create.kahoot.it/details/3db5a68f-4dc5-4565-87e2-87e11910e11c">Kahoot ①</a> · <a target="_blank" rel="noopener" href="https://create.kahoot.it/details/7909b550-ba18-425c-8777-8273981bfd0d">②</a> · <a target="_blank" rel="noopener" href="https://create.kahoot.it/details/2364488e-bd52-436b-9bb5-6e6c18d877ce">③</a> · <a target="_blank" rel="noopener" href="https://wayground.com/admin/private">Wayground 資源庫</a> · <a target="_blank" rel="noopener" href="https://app.edcafe.ai/">Edcafe</a> · <a target="_blank" rel="noopener" href="file:///D:/course/食品營養華語文獻閱讀/midterm_s1_chinese/期中考_master.md">考卷母版</a></div></div>
+</aside>
+</main>
+<footer>D:/course/食品營養華語文獻閱讀/midterm_s1_chinese/W09_上課流程板.html · 由 build_board.py 產生 · 點名與備註只存在這台電腦的瀏覽器</footer>
+<script>
+'use strict';
+const KEY='zh_w09_board';const TOTAL=100;
+let st=JSON.parse(localStorage.getItem(KEY)||'{}');
+function save(){localStorage.setItem(KEY,JSON.stringify(st));}
+document.querySelectorAll('.stu').forEach(l=>{const cb=l.querySelector('[type=checkbox]'),nm=l.querySelector('.nm');const i=cb.dataset.i;
+  cb.checked=!!(st.present||{})[i]; nm.value=(st.names||{})[i]||'';
+  cb.onchange=()=>{st.present=st.present||{};st.present[i]=cb.checked;save();cnt();};
+  nm.oninput=()=>{st.names=st.names||{};st.names[i]=nm.value;save();};});
+function cnt(){document.getElementById('cnt').textContent=Object.values(st.present||{}).filter(Boolean).length;}cnt();
+const memo=document.getElementById('memo');memo.value=st.memo||'';memo.oninput=()=>{st.memo=memo.value;save();};
+let mStart=st.mStart||null;const mEl=document.getElementById('master'),mBtn=document.getElementById('mbtn');
+function toggleMaster(){ if(mStart){mStart=null;mBtn.textContent='上課開始';} else {mStart=Date.now();mBtn.textContent='重設';} st.mStart=mStart;save(); }
+if(mStart)mBtn.textContent='重設';
+let cur=null,curEnd=0;
+function showQr(k){document.querySelectorAll('.qr').forEach(q=>q.classList.toggle('show',q.id==='qr-'+k));}
+function startBlock(id){
+  document.querySelectorAll('.blk').forEach(b=>{ if(b.id===id){b.classList.add('active');b.classList.remove('done');} else if(b.classList.contains('active')){b.classList.remove('active');b.classList.add('done');} });
+  const b=document.getElementById(id);cur=b;curEnd=Date.now()+Number(b.dataset.min)*60000;if(b.dataset.qr)showQr(b.dataset.qr);
+  if(!mStart){mStart=Date.now();st.mStart=mStart;save();mBtn.textContent='重設';}
+}
+function fmt(ms){const s=Math.max(0,Math.round(ms/1000));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+setInterval(()=>{
+  if(mStart){const el=Date.now()-mStart;mEl.textContent=fmt(el);mEl.classList.toggle('warn',el>TOTAL*60000);}
+  if(cur){const left=curEnd-Date.now();const c=cur.querySelector('.clock');c.textContent=fmt(left);c.classList.toggle('low',left<120000);}
+},500);
+if('kahoot')showQr('kahoot');
+</script></body></html>

@@ -1,0 +1,290 @@
+[
+  {
+    "id": "w01-01-read",
+    "unit": "w01",
+    "title": "閱讀：認識標題與文章",
+    "scenes": 7,
+    "minutes": 1.025,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w01-02-write",
+    "unit": "w01",
+    "title": "寫作：詞彙造句",
+    "scenes": 7,
+    "minutes": 1.033,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w02-01-read",
+    "unit": "w02",
+    "title": "閱讀：找關鍵詞",
+    "scenes": 7,
+    "minutes": 1.029,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w02-02-write",
+    "unit": "w02",
+    "title": "寫作：用名詞解釋寫句",
+    "scenes": 7,
+    "minutes": 1.059,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w03-01-read",
+    "unit": "w03",
+    "title": "閱讀：找主題句",
+    "scenes": 7,
+    "minutes": 1.0,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w03-02-write",
+    "unit": "w03",
+    "title": "寫作：寫主題句",
+    "scenes": 7,
+    "minutes": 1.064,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w04-01-read",
+    "unit": "w04",
+    "title": "閱讀：看懂分類",
+    "scenes": 7,
+    "minutes": 1.052,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w04-02-write",
+    "unit": "w04",
+    "title": "寫作：寫分類句",
+    "scenes": 7,
+    "minutes": 1.023,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w05-01-read",
+    "unit": "w05",
+    "title": "閱讀：找細節資訊",
+    "scenes": 7,
+    "minutes": 0.995,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w05-02-write",
+    "unit": "w05",
+    "title": "寫作：描述一種主食",
+    "scenes": 7,
+    "minutes": 1.065,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w06-01-read",
+    "unit": "w06",
+    "title": "閱讀：看簡單圖表",
+    "scenes": 7,
+    "minutes": 1.029,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w06-02-write",
+    "unit": "w06",
+    "title": "寫作：寫比較句",
+    "scenes": 7,
+    "minutes": 1.052,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w07-01-read",
+    "unit": "w07",
+    "title": "閱讀：猜詞義（看上下文）",
+    "scenes": 7,
+    "minutes": 1.037,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w07-02-write",
+    "unit": "w07",
+    "title": "寫作：寫意見句",
+    "scenes": 7,
+    "minutes": 1.105,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w08-01-read",
+    "unit": "w08",
+    "title": "閱讀：找順序詞",
+    "scenes": 7,
+    "minutes": 1.064,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w08-02-write",
+    "unit": "w08",
+    "title": "寫作：用順序詞寫步驟",
+    "scenes": 7,
+    "minutes": 1.089,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w10-01-read",
+    "unit": "w10",
+    "title": "閱讀：找原因",
+    "scenes": 7,
+    "minutes": 1.089,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w10-02-write",
+    "unit": "w10",
+    "title": "寫作：用「因為」找原因",
+    "scenes": 7,
+    "minutes": 1.135,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w11-01-read",
+    "unit": "w11",
+    "title": "閱讀：找步驟",
+    "scenes": 7,
+    "minutes": 1.122,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w11-02-write",
+    "unit": "w11",
+    "title": "寫作：依序寫出流程",
+    "scenes": 7,
+    "minutes": 1.061,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w12-01-read",
+    "unit": "w12",
+    "title": "閱讀：區分主要與次要",
+    "scenes": 7,
+    "minutes": 1.091,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w12-02-write",
+    "unit": "w12",
+    "title": "寫作：寫功能說明句",
+    "scenes": 7,
+    "minutes": 1.043,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w13-01-read",
+    "unit": "w13",
+    "title": "閱讀：看標示與數字",
+    "scenes": 7,
+    "minutes": 1.085,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w13-02-write",
+    "unit": "w13",
+    "title": "寫作：標示描述句",
+    "scenes": 7,
+    "minutes": 1.071,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w14-01-read",
+    "unit": "w14",
+    "title": "閱讀：找重點句",
+    "scenes": 7,
+    "minutes": 1.09,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w14-02-write",
+    "unit": "w14",
+    "title": "寫作：寫安全提醒",
+    "scenes": 7,
+    "minutes": 1.07,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w15-01-read",
+    "unit": "w15",
+    "title": "閱讀：抓段落大意",
+    "scenes": 7,
+    "minutes": 1.043,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w15-02-write",
+    "unit": "w15",
+    "title": "寫作：介紹一道菜",
+    "scenes": 7,
+    "minutes": 1.216,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w16-01-read",
+    "unit": "w16",
+    "title": "閱讀：比較異同（入門）",
+    "scenes": 7,
+    "minutes": 1.078,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w16-02-write",
+    "unit": "w16",
+    "title": "寫作：寫台越比較小段",
+    "scenes": 7,
+    "minutes": 1.356,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w17-01-read",
+    "unit": "w17",
+    "title": "閱讀：全學期閱讀策略統整",
+    "scenes": 7,
+    "minutes": 1.084,
+    "pauses": 2,
+    "audio": true
+  },
+  {
+    "id": "w17-02-write",
+    "unit": "w17",
+    "title": "寫作：80–100 字短文",
+    "scenes": 7,
+    "minutes": 1.412,
+    "pauses": 2,
+    "audio": true
+  }
+]

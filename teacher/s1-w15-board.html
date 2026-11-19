@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><title>華語寫作 I 第 15 週 流程板：台灣小吃與夜市文化</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{--p:#0891B2;--a:#a04c08;--t:#117a65;--ink:#1b2a2b;--mut:#5a6a6b;--line:#cfd8dc;--bg:#f3f6f8}
+*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;color:var(--ink);background:var(--bg);font-size:18px;line-height:1.5}
+header{background:var(--p);color:#fff;padding:12px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+header h1{margin:0;font-size:24px}header .meta{font-size:15px;opacity:.9}
+.master{font-variant-numeric:tabular-nums;font-size:30px;font-weight:700;background:#fff;color:var(--p);border-radius:8px;padding:2px 14px}.master.warn{color:#c00}
+main{display:grid;grid-template-columns:1fr 300px;gap:18px;padding:18px 22px;max-width:1500px;margin:0 auto}
+.blk{background:#fff;border:2px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:14px;transition:border-color .2s,box-shadow .2s}
+.blk.active{border-color:var(--a);box-shadow:0 0 0 4px #fbe9dc}.blk.done{opacity:.55}
+.hd{display:grid;grid-template-columns:110px 1fr auto;gap:12px;align-items:center}
+.time{font-size:20px;font-weight:700;color:var(--p)}.ttl h2{margin:0;font-size:22px}.sub{color:var(--mut);font-size:15px}
+.timer{text-align:right}.clock{display:block;font-variant-numeric:tabular-nums;font-size:34px;font-weight:700;color:var(--t)}.blk.active .clock.low{color:#c00}
+.go{font:inherit;font-size:15px;padding:4px 12px;border-radius:6px;border:1px solid var(--p);background:#fff;color:var(--p);cursor:pointer}.blk.active .go{background:var(--a);border-color:var(--a);color:#fff}
+.steps{margin:8px 0 6px;padding-left:26px}.steps li{margin:4px 0}
+.links a.lnk{display:inline-block;margin:4px 8px 0 0;padding:4px 12px;border-radius:6px;background:#eaf2f8;color:var(--p);text-decoration:none;font-size:15px;border:1px solid #c9dbe8}.links a.lnk:hover{background:#d9e8f3}
+.show{background:#f7f9fb;border:1px dashed var(--line);border-radius:8px;padding:8px 12px;margin:6px 0}.showt{font-size:14px;color:var(--mut);margin-bottom:4px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px}.card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:5px 9px}.ck{font-size:13px;color:var(--p);font-weight:700}.cv{font-size:17px}
+aside{position:sticky;top:12px;align-self:start}
+.qr{background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px;text-align:center;margin-bottom:12px;display:none}.qr.show{display:block;border-color:var(--a)}.qr img{width:100%;max-width:250px;display:block;margin:0 auto}
+.qt{font-weight:700;font-size:20px;margin-top:4px}.qn{font-size:14px;color:var(--mut)}.qu{font-size:11px;color:var(--mut);word-break:break-all}
+.roster{background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:14px}.roster h3{margin:0 0 6px;font-size:17px}.roster .n{color:var(--a);font-weight:700}
+.stu{display:flex;gap:6px;align-items:center;margin:3px 0}.stu .nm{flex:1;font:inherit;font-size:15px;border:0;border-bottom:1px solid var(--line);padding:2px 4px}.stu input[type=checkbox]{width:20px;height:20px}
+.note{background:#fff8e6;border-left:4px solid var(--a);padding:8px 12px;border-radius:6px;font-size:15px;margin-bottom:14px}
+footer{text-align:center;color:var(--mut);font-size:13px;padding:10px}
+@media (max-width:900px){main{grid-template-columns:1fr}aside{position:static}}
+@media print{header,.go,aside{display:none}.qr{display:block}}
+</style></head><body>
+<header><div><h1>華語寫作 I 第 15 週 流程板：台灣小吃與夜市文化</h1><div class="meta">國合班 8 人 · 100 分鐘 · 第二節 17:30 下課，通關就可以先走 · 全部在課堂完成、不留回家作業 · 寫的時候手機放講台籃子，成績看紙本</div></div>
+<div><span class="master" id="master">00:00</span> <button class="go" onclick="toggleMaster()" id="mbtn">上課開始</button></div></header>
+<main>
+<div>
+<div class="note">按每段的「開始這段」會啟動該段倒數，右邊 QR 自動切成那一段學生要掃的。上方總計時從「上課開始」算。</div>
+
+<section class="blk" id="b1" data-min="5" data-qr="">
+  <div class="hd">
+    <div class="time">0–5 分</div>
+    <div class="ttl"><h2>開場：發通關單＋規則提醒</h2><div class="sub">上週沒完成的項目，先在這 5 分鐘用紙本補完</div></div>
+    <div class="timer"><span class="clock">05:00</span><button class="go" onclick="startBlock('b1')">開始這段</button></div>
+  </div>
+  <ol class="steps"><li>發<b>通關單</b>（A4 雙面，一人一張；通關時整張交回）</li><li>規則跟上週一樣，30 秒講完（投影右邊這張）</li><li>上週沒完成的項目，這 5 分鐘先在紙上補完</li></ol><div class="show"><div class="showt">投影：寫作規則（跟上週一樣）</div><div class="cards"><div class="card"><div class="ck">寫的時候</div><div class="cv">手機放講台的籃子</div></div><div class="card"><div class="ck">不會的字</div><div class="cv">舉手問老師，老師寫在白板上</div></div><div class="card"><div class="ck">寫完以後</div><div class="cv">老師看紙本、可能請你「說給我聽」→ 簽名 → 拿回手機打字</div></div><div class="card"><div class="ck">成績</div><div class="cv">看紙本；Edcafe 是 AI 給你的建議</div></div></div></div>
+  <div class="links"><a class="lnk" target="_blank" rel="noopener" href="https://tai-shengyeh.github.io/food-nutrition-chinese-teaching/teacher/s1-w15-pass-sheet.pdf">W15 通關單 PDF（列印用） ↗</a></div>
+</section>
+<section class="blk" id="b2" data-min="7" data-qr="">
+  <div class="hd">
+    <div class="time">5–12 分</div>
+    <div class="ttl"><h2>① 不用手機小測 5 題（W14 複習）</h2><div class="sub">手機在籃子；寫在通關單正面，只寫 A／B／C，不算分數</div></div>
+    <div class="timer"><span class="clock">07:00</span><button class="go" onclick="startBlock('b2')">開始這段</button></div>
+  </div>
+  <ol class="steps"><li>限 4 分鐘；老師唸答案，學生自己改，錯的題號圈起來</li><li>答案在本地教師檔（W15_不用手機小測_教師用.md），<b>不要投影</b></li><li>舉手統計每題答錯的人，記在下面備註</li></ol><div class="show"><div class="showt">投影：在通關單上寫 1–5 題的答案</div><div class="cards"><div class="card"><div class="ck">1</div><div class="cv">「超標」的意思是？ A 檢查完全合格　B 數量還不夠　C 超過法定的量</div></div><div class="card"><div class="ck">2</div><div class="cv">「恐慌」是什麼樣的心情？ A 非常害怕　B 非常開心　C 有一點無聊</div></div><div class="card"><div class="ck">3</div><div class="cv">看到「致癌油」這種嚇人的標題，第一步？ A 馬上把家裡的油全丟掉　B 先查原始報導、找重點句　C 立刻轉發給朋友</div></div><div class="card"><div class="ck">4</div><div class="cv">請不要把油加熱到冒煙，＿＿有害物質會增加。 A 因為　B 先　C 可是</div></div><div class="card"><div class="ck">5</div><div class="cv">炸油已經用了很多次，應該怎麼做？ A 繼續用　B 更換新的　C 送給別人</div></div></div></div>
+  <div class="links"></div>
+</section>
+<section class="blk" id="b3" data-min="6" data-qr="">
+  <div class="hd">
+    <div class="time">12–18 分</div>
+    <div class="ttl"><h2>上週出場券回饋（不點名）</h2><div class="sub">老師從上週的紙本挑 1–2 個最常見的問題，用一句範例說明</div></div>
+    <div class="timer"><span class="clock">06:00</span><button class="go" onclick="startBlock('b3')">開始這段</button></div>
+  </div>
+  <ol class="steps"><li>先肯定上週大家都在課堂上寫完</li><li>挑 1–2 個上週紙本常見的問題，寫一句範例在白板（不念名字）</li><li>預告今天要介紹一道菜：五欄寫完就是一篇小文章</li></ol><div class="show"><div class="showt">投影：今天出場券的五欄（名字→材料→做法→味道→推薦）</div><div class="cards"><div class="card"><div class="ck">名字</div><div class="cv">它叫＿＿。</div></div><div class="card"><div class="ck">材料</div><div class="cv">材料有＿＿和＿＿。</div></div><div class="card"><div class="ck">做法</div><div class="cv">先＿＿，再＿＿。</div></div><div class="card"><div class="ck">味道</div><div class="cv">吃起來＿＿。</div></div><div class="card"><div class="ck">推薦</div><div class="cv">我推薦給＿＿，因為＿＿。</div></div></div></div>
+  <div class="links"></div>
+</section>
+<section class="blk" id="b4" data-min="10" data-qr="">
+  <div class="hd">
+    <div class="time">18–28 分</div>
+    <div class="ttl"><h2>暖身：你逛過哪個夜市？</h2><div class="sub">台南、屏東、越南的夜市都可以；先猜，再讀</div></div>
+    <div class="timer"><span class="clock">10:00</span><button class="go" onclick="startBlock('b4')">開始這段</button></div>
+  </div>
+  <ol class="steps"><li>請 3–4 位說：「我逛過＿＿夜市，我吃了＿＿。」（台灣或越南都可以）</li><li><b>白板登記</b>：每人想一道等一下要介紹的小吃，寫在白板上，<b>不能跟別人一樣</b>，先寫先贏</li><li>預測題舉手，人數記在下面備註；答案在第 1 段課文</li></ol><div class="show"><div class="showt">投影：預測題（舉手猜，先不公布）</div><div class="cards"><div class="card"><div class="ck">題目</div><div class="cv">在台北的萬華區，走路可以連續逛幾個夜市？</div></div><div class="card"><div class="ck">A</div><div class="cv">一個</div></div><div class="card"><div class="ck">B</div><div class="cv">三個</div></div><div class="card"><div class="ck">C</div><div class="cv">十個</div></div></div></div>
+  <div class="links"></div>
+</section>
+<section class="blk" id="b5" data-min="17" data-qr="lesson">
+  <div class="hd">
+    <div class="time">28–45 分</div>
+    <div class="ttl"><h2>讀課文第 1–2 段：三種夜市</h2><div class="sub">閱讀方法：段落大意＝這一段最想讓我知道的一件事</div></div>
+    <div class="timer"><span class="clock">17:00</span><button class="go" onclick="startBlock('b5')">開始這段</button></div>
+  </div>
+  <ol class="steps"><li>學生掃 QR 開課件，<b>先填「學號 姓名」</b>；詞彙卡（有 🔊）全班跟讀一次</li><li>讀第 1 段 → 公布預測（B：三個）</li><li>讀第 2 段：寫出三個夜市的名字；兩人用一句話說出第 1、2 段的大意，寫在通關單正面</li></ol>
+  <div class="links"></div>
+</section>
+<section class="blk" id="b6" data-min="5" data-qr="">
+  <div class="hd">
+    <div class="time">45–50 分</div>
+    <div class="ttl"><h2>休息</h2><div class="sub"></div></div>
+    <div class="timer"><span class="clock">05:00</span><button class="go" onclick="startBlock('b6')">開始這段</button></div>
+  </div>
+  <ol class="steps"><li>請大家站起來、喝水；老師準備好講台上的手機籃</li></ol>
+  <div class="links"></div>
+</section>
+<section class="blk" id="b7" data-min="5" data-qr="">
+  <div class="hd">
+    <div class="time">50–55 分</div>
+    <div class="ttl"><h2>公布今日通關卡</h2><div class="sub">三格都有老師簽名就可以先走；最晚 17:30 一定下課</div></div>
+    <div class="timer"><span class="clock">05:00</span><button class="go" onclick="startBlock('b7')">開始這段</button></div>
+  </div>
+  <ol class="steps"><li>先講通關卡，讓大家知道<b>今天怎樣可以早點回台南</b></li><li>提醒：分數看紙本，Edcafe 只要送出就好</li></ol><div class="show"><div class="showt">投影：今日通關卡</div><div class="cards"><div class="card"><div class="ck">① 學習單</div><div class="cv">正面小測＋夜市名字＋段落大意寫完 → 老師簽名</div></div><div class="card"><div class="ck">② 出場券 W15</div><div class="cv">介紹白板上你登記的那道菜（5 句），手機在籃子寫 → 老師看＋可能說給我聽 → 簽名 → 打進 Edcafe W15</div></div><div class="card"><div class="ck">③ 舊帳 W06</div><div class="cv">手機在籃子寫 → 老師簽名 → 打進 Edcafe W06</div></div><div class="card"><div class="ck">時間</div><div class="cv">72 分開始寫，寫得快的大約 92 分能走</div></div></div></div>
+  <div class="links"></div>
+</section>
+<section class="blk" id="b8" data-min="10" data-qr="lesson">
+  <div class="hd">
+    <div class="time">55–65 分</div>
+    <div class="ttl"><h2>讀課文第 3–4 段：經典味道＋換你當導遊</h2><div class="sub">再練一次段落大意</div></div>
+    <div class="timer"><span class="clock">10:00</span><button class="go" onclick="startBlock('b8')">開始這段</button></div>
+  </div>
+  <ol class="steps"><li>讀第 3 段：課文提到哪些小吃？為什麼說小吃「記錄了生活故事」？</li><li>讀第 4 段 → 兩人用一句話說出第 3、4 段的大意，寫在通關單正面</li><li>問：你的越南朋友第一次逛台灣夜市，你會帶他吃什麼？</li></ol>
+  <div class="links"></div>
+</section>
+<section class="blk" id="b9" data-min="7" data-qr="lesson">
+  <div class="hd">
+    <div class="time">65–72 分</div>
+    <div class="ttl"><h2>課件小遊戲（練習，可以用手機）</h2><div class="sub">不算通關；先填「學號 姓名」才記得到</div></div>
+    <div class="timer"><span class="clock">07:00</span><button class="go" onclick="startBlock('b9')">開始這段</button></div>
+  </div>
+  <ol class="steps"><li>課件往下做小遊戲，能做幾個做幾個</li><li>71 分：<b>手機放回講台籃子</b>，準備寫出場券</li><li>老師把課文投影<b>關掉</b>，白板只留五欄和大家登記的小吃</li></ol>
+  <div class="links"></div>
+</section>
+<section class="blk" id="b10" data-min="14" data-qr="edcafe">
+  <div class="hd">
+    <div class="time">72–86 分</div>
+    <div class="ttl"><h2>通關②：出場券 W15 → Edcafe W15</h2><div class="sub">介紹你在白板登記的那道菜；手機在籃子先寫，老師簽名後才拿手機打字</div></div>
+    <div class="timer"><span class="clock">14:00</span><button class="go" onclick="startBlock('b10')">開始這段</button></div>
+  </div>
+  <ol class="steps"><li><b>手機在籃子</b>，在紙上寫 5 句（8 分鐘）；不會的字舉手問，老師寫在白板</li><li>寫完舉手 → 老師看紙本，在四格打勾（五要素齊全／味道描述具體／3 個本週詞彙／推薦理由清楚）</li><li><b>隨機抽 2 位</b>：用嘴巴介紹自己的菜（不看紙說 2 句）；說得出來就簽名，說不出來就看著紙說一次再簽</li><li>簽名後去籃子拿手機 → <b>照紙上一字不改</b>打進 Edcafe W15 → 送出就打勾（Edcafe 的分數只是建議）</li><li>Edcafe 打不開 → 老師簽名的紙本就算；老師：第一位學生完成②，就按下一段「開始這段」切到 W06 的 QR</li></ol><div class="show"><div class="showt">投影：寫作鷹架（五句，一欄一句）</div><div class="cards"><div class="card"><div class="ck">第 1 句</div><div class="cv">它叫＿＿，是＿＿（台灣／越南）的小吃。</div></div><div class="card"><div class="ck">第 2 句</div><div class="cv">材料有＿＿、＿＿和＿＿。</div></div><div class="card"><div class="ck">第 3 句</div><div class="cv">做法是先＿＿，再＿＿。</div></div><div class="card"><div class="ck">第 4 句</div><div class="cv">吃起來＿＿。</div></div><div class="card"><div class="ck">第 5 句</div><div class="cv">我推薦給＿＿，因為＿＿。</div></div></div></div>
+  <div class="links"><a class="lnk" target="_blank" rel="noopener" href="https://app.edcafe.ai/join/DEOnCWrsHKfxbtNIL4O8kXFB9rZ2clUNH_1i9WKamqOYkMAWTpiPzgI0XlZVK-Zp">Edcafe W15 學生連結 ↗</a><a class="lnk" target="_blank" rel="noopener" href="https://app.edcafe.ai/me/file?fId=6aaba361213c811c0712d120">Edcafe W15 後台（看結果） ↗</a></div>
+</section>
+<section class="blk" id="b11" data-min="14" data-qr="edcafe06">
+  <div class="hd">
+    <div class="time">86–100 分</div>
+    <div class="ttl"><h2>通關③：還一筆舊帳 W06 → 下課</h2><div class="sub">W06 寫比較句：比較台灣和越南的一種水果</div></div>
+    <div class="timer"><span class="clock">14:00</span><button class="go" onclick="startBlock('b11')">開始這段</button></div>
+  </div>
+  <ol class="steps"><li>一樣<b>手機在籃子先寫 → 老師簽名 → 再拿手機打字</b>送進 Edcafe W06</li><li>寫你自己真的吃過的水果，送出就算還完</li><li>三格都簽名 → 收書包下課；先走的可以留下來幫一位同學，他也通關就加平時分</li><li>17:30 還沒通關的照常下課，W16 開場 5 分鐘補完</li></ol><div class="show"><div class="showt">投影：W06 題目</div><div class="cards"><div class="card"><div class="ck">第 1 句</div><div class="cv">台灣的＿＿比越南的＿＿＿＿。</div></div><div class="card"><div class="ck">第 2 句</div><div class="cv">台灣和越南都＿＿。</div></div><div class="card"><div class="ck">第 3 句</div><div class="cv">我比較喜歡＿＿，因為＿＿。</div></div></div></div>
+  <div class="links"><a class="lnk" target="_blank" rel="noopener" href="https://app.edcafe.ai/join/BuVrRjudVpBmCm_tAK1xFN8ZGtxlp-3nhDYn6Pj51GCYkMAWTpiPzgI0XlZVK-Zp">Edcafe W06 學生連結 ↗</a><a class="lnk" target="_blank" rel="noopener" href="https://app.edcafe.ai/join/26oIxOxTXWyPNbLILbDEVYjxj2frv1Oldy4gd4qoMmaYkMAWTpiPzgI0XlZVK-Zp">Edcafe W14 學生連結（上週沒交的補） ↗</a></div>
+</section>
+<div class="roster"><h3>點名 <span class="n" id="cnt">0</span>/8　<span class="sub">本週目標：8/8 通關（① 學習單 ② W15 出場券 ③ 舊帳 W06，紙本都有老師簽名）</span></h3><label class="stu"><input type="checkbox" data-i="0"><input class="nm" type="text" placeholder="學生 1" data-i="0"></label><label class="stu"><input type="checkbox" data-i="1"><input class="nm" type="text" placeholder="學生 2" data-i="1"></label><label class="stu"><input type="checkbox" data-i="2"><input class="nm" type="text" placeholder="學生 3" data-i="2"></label><label class="stu"><input type="checkbox" data-i="3"><input class="nm" type="text" placeholder="學生 4" data-i="3"></label><label class="stu"><input type="checkbox" data-i="4"><input class="nm" type="text" placeholder="學生 5" data-i="4"></label><label class="stu"><input type="checkbox" data-i="5"><input class="nm" type="text" placeholder="學生 6" data-i="5"></label><label class="stu"><input type="checkbox" data-i="6"><input class="nm" type="text" placeholder="學生 7" data-i="6"></label><label class="stu"><input type="checkbox" data-i="7"><input class="nm" type="text" placeholder="學生 8" data-i="7"></label></div>
+<div class="roster"><h3>今天記下來（小測錯最多的題、預測題人數、白板上登記的小吃、口說抽問結果、誰還沒通關）</h3><textarea id="memo" style="width:100%;height:90px;font:inherit;font-size:15px;border:1px solid var(--line);border-radius:6px;padding:6px"></textarea></div>
+</div>
+<aside>
+<div class="qr" id="qr-lesson"><img src="data:image/png;base64,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" alt="QR"><div class="qt">W15 課件：台灣小吃文化</div><div class="qn">第一次會問姓名：填「學號 姓名」</div><div class="qu">https://tai-shengyeh.github.io/food-nutrition-chinese-teaching/s1/semester1_lessons/w15_%E5%8F%B0%E7%81%A3%E5%B0%8F%E5%90%83%E6%96%87%E5%8C%96.html</div></div><div class="qr" id="qr-edcafe"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANcAAADXCAIAAAAGH1PiAAAFxklEQVR4nO3dXc4bKRAF0GQ0y/AOZva/kswOeh+Z935AQlB1wTnnLfps458rugkU/Pz9+/cPiPor2zxIIUfQF5InheT9/fr3559/exp+/vs1aPf11ykrH2HlXU21O/VSz8y3sfG5dV7vSl9InhSSJ4XkSSHnjU5eVkYJU3e+dcORttvztoY+XWOXtl9fX0ieFJInheRJIcePTuqmB6ZeeWpK4/XXqQdPvdTGj/8stDv1EVbUfXx9IXlSSJ4UkieF3DY6qbPxnnrj//hvfOWVCY9nYURV921spC8kTwrJk0LypJC8U0YnL1MrjlKTB20Ln75+sKIvJE8KyZNC8qSQ20Yndfe2daXsUw9eKWFZee6zMKLaOJJbaWiFvpA8KSRPCsmTQo4fnbRt4lQ3PbBxWuJlpd26yvbPGbufTdEXkieF5EkheVJI3s8zzzvZuJVv2+153d5ZnzO+jTr6QvKkkDwpJE8KOW90Uvf/8qlFU+OXuuIjfM547sqDx3/VF5InheRJIXlSyHkru+qGIxuPMpxqqK0s/MyjRA4x/rz6QvKkkDwpJE8Kue00xtQ5gG3b8bat7Bo39IRK6Dc29GLuhNO5IpMnheRJIbet7JrSttHvxuVJY20rncbaylDqNiOwsovjuCKTJ4XkSSG3VcXX3Re3VZbUlaOPnzvlKTvRpG5/szFzJ5zOFZk8KSRPCjlvZdfU/WndsRxXNDT13LZxQN38R91GzvpC8qSQPCkkTwq5re5kyvigw41l4W1Hxx9S9/6EBlh1z9UXkieF5EkheVLIbWfFt638mXrljWuoDilW/3S1O6VuY2N9IXlSSJ4UkieFXH4aY92w4AvqwFMHLH5C39WYHYU5nSsyeVJInhTyB+/ZNX7wyyHl6HUv9XTNf6TKX8b0heRJIXlSSJ4UcvzcycZdY9sODWwbyky127ZZ1if0o6x8fH0heVJInhSSJ4VcPndSd0/ddoTJ2MbB2Uq7h8wkjV/ZeSfczRWZPCkkTwq5vCq+bbOsl40nG76M3+QhBeefsq3DNm6zNvVgfSF5UkieFJInhdw2Ohlb2Vpq47TEIVsXT72rZ/jKdYfQvGxcuTf1V30heVJInhSSJ4WcNzqpO8Oj7ez0une1cWYl9RHadk6boi8kTwrJk0LypJDj507qarlTxdttBS5tZfBtn7fuJ9MXkieF5EkheVLI5Su76o4DmWq3rqR842KtKU9ozFTHeSeczhWZPCkkTwq57TTGQ44jrCthSc0VHbLvb+rn1heSJ4XkSSF5Ush5cydnlnRM3a3XLQObeldta7eehaHMxg2kV5KjLyRPCsmTQvKkkMur4jdOabQt1hq/8sowaOPZMHXqdn1e+RX0heRJIXlSSJ4Ucvzcydghw5G6e+q6AcfUl/OUbbc8pa7ARV9InhSSJ4XkSSHHz520bTzVVjM/pe1dPV27ck09t24p14u+kDwpJE8KyZNCLp87Gaubhllpt25qoW1/5bG2EnqnMfJVXJHJk0LypJDb9uz6vqNEXurWm9WNMJ4zNgezZxd3c0UmTwrJk0LOG53ULdZaee4VK8rO3CPgc0Y1/osdhTmOKzJ5UkieFPJdcycr2qrxV9RtWXbm0G2q3ZXn6gvJk0LypJA8KeSr607GVs5sX6nWvrGG/NM1/EqddqMvJE8KyZNC8qSQ80YnbftfjRuqq2w/ZA6jrt2X1FTK1LehLyRPCsmTQvKkkONHJy9t55+P2924O29bSXld/fmna5+xFc474XSuyORJIXlSyG2jkzapo+PH2ipa2tZfTTVUN8GjLyRPCsmTQvKkkLxTRicrd9wbi9XblnKl5j+efWfUb9xfWV9InhSSJ4XkSSHH7yicWp1Vt+Jo43KstgNdxs6sO5miLyRPCsmTQvKkkOPnTtrqEtqOA3mZmh5o2/7rWZhZOWTLMnMnXMYVmTwpJE8KyTvlvBP+ZPpC8qSQPCkkTwr5Efc/4WPIjj12b7AAAAAASUVORK5CYII=" alt="QR"><div class="qt">Edcafe W15 介紹一道菜</div><div class="qn">不用登入；Your name 填「學號 姓名」，照紙上一字不改打進去</div><div class="qu">https://app.edcafe.ai/join/DEOnCWrsHKfxbtNIL4O8kXFB9rZ2clUNH_1i9WKamqOYkMAWTpiPzgI0XlZVK-Zp</div></div><div class="qr" id="qr-edcafe06"><img src="data:image/png;base64,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" alt="QR"><div class="qt">Edcafe W06 寫比較句（舊帳）</div><div class="qn">不用登入；Your name 填「學號 姓名」，照紙上一字不改打進去</div><div class="qu">https://app.edcafe.ai/join/BuVrRjudVpBmCm_tAK1xFN8ZGtxlp-3nhDYn6Pj51GCYkMAWTpiPzgI0XlZVK-Zp</div></div>
+<div class="roster"><h3>連結備忘</h3><div style="font-size:14px"><a target="_blank" rel="noopener" href="https://tai-shengyeh.github.io/food-nutrition-chinese-teaching/teacher/s1-w15-pass-sheet.pdf">W15 通關單 PDF</a> · <a target="_blank" rel="noopener" href="https://tai-shengyeh.github.io/food-nutrition-chinese-teaching/s1/semester1_lessons/w15_%E5%8F%B0%E7%81%A3%E5%B0%8F%E5%90%83%E6%96%87%E5%8C%96.html">W15 課件</a> · <a target="_blank" rel="noopener" href="https://app.edcafe.ai/join/DEOnCWrsHKfxbtNIL4O8kXFB9rZ2clUNH_1i9WKamqOYkMAWTpiPzgI0XlZVK-Zp">Edcafe W15 學生</a> · <a target="_blank" rel="noopener" href="https://app.edcafe.ai/join/BuVrRjudVpBmCm_tAK1xFN8ZGtxlp-3nhDYn6Pj51GCYkMAWTpiPzgI0XlZVK-Zp">Edcafe W06 學生</a> · <a target="_blank" rel="noopener" href="https://app.edcafe.ai/me/file?fId=6aaba361213c811c0712d120">Edcafe W15 後台</a> · <a target="_blank" rel="noopener" href="https://create.kahoot.it/details/c4a83ddd-102d-472a-b1e8-ce543449b37b">Kahoot W15（備用）</a></div></div>
+</aside>
+</main>
+<footer>D:/course/食品營養華語文獻閱讀/midterm_s1_chinese/W15_上課流程板.html · 由 build_board.py 產生 · 點名與備註只存在這台電腦的瀏覽器</footer>
+<script>
+'use strict';
+const KEY='zh_w15_board';const TOTAL=100;
+let st=JSON.parse(localStorage.getItem(KEY)||'{}');
+function save(){localStorage.setItem(KEY,JSON.stringify(st));}
+document.querySelectorAll('.stu').forEach(l=>{const cb=l.querySelector('[type=checkbox]'),nm=l.querySelector('.nm');const i=cb.dataset.i;
+  cb.checked=!!(st.present||{})[i]; nm.value=(st.names||{})[i]||'';
+  cb.onchange=()=>{st.present=st.present||{};st.present[i]=cb.checked;save();cnt();};
+  nm.oninput=()=>{st.names=st.names||{};st.names[i]=nm.value;save();};});
+function cnt(){document.getElementById('cnt').textContent=Object.values(st.present||{}).filter(Boolean).length;}cnt();
+const memo=document.getElementById('memo');memo.value=st.memo||'';memo.oninput=()=>{st.memo=memo.value;save();};
+let mStart=st.mStart||null;const mEl=document.getElementById('master'),mBtn=document.getElementById('mbtn');
+function toggleMaster(){ if(mStart){mStart=null;mBtn.textContent='上課開始';} else {mStart=Date.now();mBtn.textContent='重設';} st.mStart=mStart;save(); }
+if(mStart)mBtn.textContent='重設';
+let cur=null,curEnd=0;
+function showQr(k){document.querySelectorAll('.qr').forEach(q=>q.classList.toggle('show',q.id==='qr-'+k));}
+function startBlock(id){
+  document.querySelectorAll('.blk').forEach(b=>{ if(b.id===id){b.classList.add('active');b.classList.remove('done');} else if(b.classList.contains('active')){b.classList.remove('active');b.classList.add('done');} });
+  const b=document.getElementById(id);cur=b;curEnd=Date.now()+Number(b.dataset.min)*60000;if(b.dataset.qr)showQr(b.dataset.qr);
+  if(!mStart){mStart=Date.now();st.mStart=mStart;save();mBtn.textContent='重設';}
+}
+function fmt(ms){const s=Math.max(0,Math.round(ms/1000));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+setInterval(()=>{
+  if(mStart){const el=Date.now()-mStart;mEl.textContent=fmt(el);mEl.classList.toggle('warn',el>TOTAL*60000);}
+  if(cur){const left=curEnd-Date.now();const c=cur.querySelector('.clock');c.textContent=fmt(left);c.classList.toggle('low',left<120000);}
+},500);
+if('lesson')showQr('lesson');
+</script></body></html>
